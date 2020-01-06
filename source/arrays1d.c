@@ -35,10 +35,9 @@
  */
 
 #include "arrays1d.h"
-#include "arraysInternals1d.h"
-#include "configurations.h"
+#include "arayehInternal.h"
 
-array1d *newArray1D(const size_t type, const size_t initialSize) {
+arayeh *newArayeh1D(size_t type, size_t initialSize) {
     /*
      * This function will create an array of type "type"
      * (one the supported types defined in configuration.h)
@@ -64,7 +63,7 @@ array1d *newArray1D(const size_t type, const size_t initialSize) {
     }
 
     // initialize a pointer and allocate memory
-    array1d *self = (array1d *) malloc(sizeof *self);
+    arayeh *self = (arayeh *) malloc(sizeof *self);
 
     // assign public methods
     _setPublicMethods(self);
@@ -77,7 +76,7 @@ array1d *newArray1D(const size_t type, const size_t initialSize) {
     arrayType arrayPointer;
     // this function identifies the right pointer for array type and sets it to point to NULL
     // and also checks for possible overflow in size_t initialSize
-    int state = (self->_privateMethods.initArray)(self, &arrayPointer, initialSize);
+    int state = (self->_privateMethods.initArayeh)(self, &arrayPointer, initialSize);
 
     // check for possible size_t overflow
     if (state == FAILURE) {
@@ -87,13 +86,13 @@ array1d *newArray1D(const size_t type, const size_t initialSize) {
 
     // allocate memory to map and array
     mapPointer = (char *) malloc(sizeof *mapPointer * initialSize);
-    state = (self->_privateMethods.mallocArray)(self, &arrayPointer, initialSize);
+    state = (self->_privateMethods.mallocArayeh)(self, &arrayPointer, initialSize);
 
     // check if memory allocated or not
     if (state == FAILURE || mapPointer == NULL) {
         // free map and array pointers
         free(mapPointer);
-        (self->_privateMethods.freeArray)(self);
+        (self->_privateMethods.freeArayeh)(self);
 
         // TODO error handler
         abort();
@@ -105,7 +104,7 @@ array1d *newArray1D(const size_t type, const size_t initialSize) {
     }
 
     // set array parameters
-    (self->_privateMethods.setArray)(self, &arrayPointer);
+    (self->_privateMethods.setArayehMemoryPointer)(self, &arrayPointer);
     self->_internalProperties.map = mapPointer;
     self->_internalProperties.type = type;
     self->_internalProperties.next = 0;

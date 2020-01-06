@@ -41,6 +41,8 @@
 #include <stdlib.h>
 #include <limits.h>
 
+#include "configurations.h"
+
 #ifndef SIZE_MAX
 # ifdef __SIZE_MAX__
 #  define SIZE_MAX __SIZE_MAX__
@@ -62,7 +64,7 @@
 __BEGIN_DECLS
 
 // Prototype array structs.
-typedef struct array1dStruct array1d;
+typedef struct arayehStruct arayeh;
 
 // Supported array types.
 typedef union arrayTypeUnion {
@@ -75,7 +77,7 @@ typedef union arrayTypeUnion {
 } arrayType;
 
 // Array 1D definition.
-typedef struct array1dStruct {
+typedef struct arayehStruct {
 
     // variables to hold state of the array.
     struct internalProperties {
@@ -90,46 +92,46 @@ typedef struct array1dStruct {
     // public methods of arrays, accessible for everyone.
     struct {
 
-        void (*extendSize)(array1d *self, size_t extendSize);
+        void (*extendSize)(arayeh *self, size_t extendSize);
 
-        void (*delete)(array1d *self);
+        void (*delete)(arayeh *self);
 
-        void (*fill)(array1d *self, size_t start, size_t step, size_t end, void *element);
+        void (*fill)(arayeh *self, size_t start, size_t step, size_t end, void *element);
 
-        void (*add)(array1d *self, void *element);
+        void (*add)(arayeh *self, void *element);
 
-        void (*insert)(array1d *self, size_t index, void *element);
+        void (*insert)(arayeh *self, size_t index, void *element);
 
-        void (*appendList)(array1d *self, void *list, size_t listSize, size_t startIndex);
+        void (*mergeCArray)(arayeh *self, void *list, size_t listSize, size_t startIndex);
 
-        void (*get)(array1d *self, size_t index, void *destination);
+        void (*get)(arayeh *self, size_t index, void *destination);
 
     };
 
     // private methods of array, should not be used by users.
     struct privateMethods {
 
-        int (*initArray)(array1d *self, arrayType *array, size_t initialSize);
+        int (*initArayeh)(arayeh *self, arrayType *array, size_t initialSize);
 
-        int (*mallocArray)(array1d *self, arrayType *array, size_t initialSize);
+        int (*mallocArayeh)(arayeh *self, arrayType *array, size_t initialSize);
 
-        int (*reallocArray)(array1d *self, arrayType *array, size_t initialSize);
+        int (*reallocArayeh)(arayeh *self, arrayType *array, size_t initialSize);
 
-        void (*freeArray)(array1d *self);
+        void (*freeArayeh)(arayeh *self);
 
-        void (*setArray)(array1d *self, arrayType *array);
+        void (*setArayehMemoryPointer)(arayeh *self, arrayType *array);
 
-        void (*addArray)(array1d *self, size_t index, void *element);
+        void (*addElementToArayeh)(arayeh *self, size_t index, void *element);
 
-        void (*appendArray)(array1d *self, void *list, size_t listSize, size_t startIndex);
+        void (*appendElementToArayeh)(arayeh *self, void *list, size_t listSize, size_t startIndex);
 
-        void (*getElementArray)(array1d *self, size_t index, void *destination);
+        void (*getElementFromArayeh)(arayeh *self, size_t index, void *destination);
 
     } _privateMethods;
 
-} array1d;
+} arayeh;
 
-array1d *newArray1D(size_t type, size_t initialSize);
+arayeh *newArayeh1D(size_t type, size_t initialSize);
 /*
  * This function will create an array of type "type"
  * (one the supported types defined in configuration.h)
