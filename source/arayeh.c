@@ -34,7 +34,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include "arrays1d.h"
+#include "arayeh.h"
 #include "arayehInternal.h"
 
 arayeh *newArayeh1D(size_t type, size_t initialSize) {

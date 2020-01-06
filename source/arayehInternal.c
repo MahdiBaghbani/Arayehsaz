@@ -190,7 +190,7 @@ void _fillArayeh(arayeh *array, size_t start, size_t step, size_t end, void *ele
         }
 
         // update "next"
-        _UpdateNextLocationPoinetr(array);
+        _UpdateNextLocationPointer(array);
     }
 }
 
@@ -223,7 +223,7 @@ void _addToArayeh(arayeh *array, void *element) {
     array->_internalProperties.used++;
 
     // update "next"
-    _UpdateNextLocationPoinetr(array);
+    _UpdateNextLocationPointer(array);
 }
 
 void _insertToArayeh(arayeh *array, size_t index, void *element) {
@@ -267,13 +267,13 @@ void _insertToArayeh(arayeh *array, size_t index, void *element) {
     }
 }
 
-void _addCArrayToArayeh(arayeh *self, void *list, size_t listSize, size_t startIndex) {
+void _mergeListToArayeh(arayeh *self, void *list, size_t listSize, size_t startIndex) {
     if (self->_internalProperties.size <= startIndex || self->_internalProperties.size < startIndex + listSize) {
         // TODO error handling
         abort();
     }
 
-    (self->_privateMethods.appendElementToArayeh)(self, list, listSize, startIndex);
+    (self->_privateMethods.mergeListToArayeh)(self, list, listSize, startIndex);
 }
 
 void _getElementFromArayeh(arayeh *array, size_t index, void *destination) {
@@ -290,7 +290,7 @@ void _setPublicMethods(arayeh *self) {
     self->fill = _fillArayeh;
     self->add = _addToArayeh;
     self->insert = _insertToArayeh;
-    self->mergeCArray = _addCArrayToArayeh;
+    self->mergeList = _mergeListToArayeh;
     self->get = _getElementFromArayeh;
 }
 
@@ -303,9 +303,9 @@ void _setPrivateMethods(arayeh *self, size_t type) {
             self->_privateMethods.mallocArayeh = _mallocTypeChar;
             self->_privateMethods.reallocArayeh = _reallocTypeChar;
             self->_privateMethods.freeArayeh = _freeTypeChar;
-            self->_privateMethods.setArayehMemoryPointer = _setTypeChar;
+            self->_privateMethods.setArayehMemoryPointer = _setMemoryPointerTypeChar;
             self->_privateMethods.addElementToArayeh = _addTypeChar;
-            self->_privateMethods.appendElementToArayeh = _appendTypeChar;
+            self->_privateMethods.mergeListToArayeh = _mergeListTypeChar;
             self->_privateMethods.getElementFromArayeh = _getTypeChar;
             break;
 
@@ -314,9 +314,9 @@ void _setPrivateMethods(arayeh *self, size_t type) {
             self->_privateMethods.mallocArayeh = _mallocTypeSInt;
             self->_privateMethods.reallocArayeh = _reallocTypeSInt;
             self->_privateMethods.freeArayeh = _freeTypeSInt;
-            self->_privateMethods.setArayehMemoryPointer = _setTypeSInt;
+            self->_privateMethods.setArayehMemoryPointer = _setMemoryPointerTypeSInt;
             self->_privateMethods.addElementToArayeh = _addTypeSInt;
-            self->_privateMethods.appendElementToArayeh = _appendTypeSInt;
+            self->_privateMethods.mergeListToArayeh = _mergeListTypeSInt;
             self->_privateMethods.getElementFromArayeh = _getTypeSInt;
             break;
 
@@ -325,9 +325,9 @@ void _setPrivateMethods(arayeh *self, size_t type) {
             self->_privateMethods.mallocArayeh = _mallocTypeInt;
             self->_privateMethods.reallocArayeh = _reallocTypeInt;
             self->_privateMethods.freeArayeh = _freeTypeInt;
-            self->_privateMethods.setArayehMemoryPointer = _setTypeInt;
+            self->_privateMethods.setArayehMemoryPointer = _setMemoryPointerTypeInt;
             self->_privateMethods.addElementToArayeh = _addTypeInt;
-            self->_privateMethods.appendElementToArayeh = _appendTypeInt;
+            self->_privateMethods.mergeListToArayeh = _mergeListTypeInt;
             self->_privateMethods.getElementFromArayeh = _getTypeInt;
             break;
 
@@ -336,9 +336,9 @@ void _setPrivateMethods(arayeh *self, size_t type) {
             self->_privateMethods.mallocArayeh = _mallocTypeLInt;
             self->_privateMethods.reallocArayeh = _reallocTypeLInt;
             self->_privateMethods.freeArayeh = _freeTypeLInt;
-            self->_privateMethods.setArayehMemoryPointer = _setTypeLInt;
+            self->_privateMethods.setArayehMemoryPointer = _setMemoryPointerTypeLInt;
             self->_privateMethods.addElementToArayeh = _addTypeLInt;
-            self->_privateMethods.appendElementToArayeh = _appendTypeLInt;
+            self->_privateMethods.mergeListToArayeh = _mergeListTypeLInt;
             self->_privateMethods.getElementFromArayeh = _getTypeLInt;
             break;
 
@@ -347,9 +347,9 @@ void _setPrivateMethods(arayeh *self, size_t type) {
             self->_privateMethods.mallocArayeh = _mallocTypeFloat;
             self->_privateMethods.reallocArayeh = _reallocTypeFloat;
             self->_privateMethods.freeArayeh = _freeTypeFloat;
-            self->_privateMethods.setArayehMemoryPointer = _setTypeFloat;
+            self->_privateMethods.setArayehMemoryPointer = _setMemoryPointerTypeFloat;
             self->_privateMethods.addElementToArayeh = _addTypeFloat;
-            self->_privateMethods.appendElementToArayeh = _appendTypeFloat;
+            self->_privateMethods.mergeListToArayeh = _mergeListTypeFloat;
             self->_privateMethods.getElementFromArayeh = _getTypeFloat;
             break;
 
@@ -358,9 +358,9 @@ void _setPrivateMethods(arayeh *self, size_t type) {
             self->_privateMethods.mallocArayeh = _mallocTypeDouble;
             self->_privateMethods.reallocArayeh = _reallocTypeDouble;
             self->_privateMethods.freeArayeh = _freeTypeDouble;
-            self->_privateMethods.setArayehMemoryPointer = _setTypeDouble;
+            self->_privateMethods.setArayehMemoryPointer = _setMemoryPointerTypeDouble;
             self->_privateMethods.addElementToArayeh = _addTypeDouble;
-            self->_privateMethods.appendElementToArayeh = _appendTypeDouble;
+            self->_privateMethods.mergeListToArayeh = _mergeListTypeDouble;
             self->_privateMethods.getElementFromArayeh = _getTypeDouble;
             break;
         default:
@@ -369,7 +369,7 @@ void _setPrivateMethods(arayeh *self, size_t type) {
     }
 }
 
-void _UpdateNextLocationPoinetr(arayeh *array) {
+void _UpdateNextLocationPointer(arayeh *array) {
     /*
      * This function purpose is to update
      * array.next variable to point to next empty [available]

@@ -37,7 +37,7 @@
 #ifndef __AA_A_ARRAYSINTERNALS1D_H__
 #define __AA_A_ARRAYSINTERNALS1D_H__
 
-#include "arrays1d.h"
+#include "arayeh.h"
 #include "arayehTypeManager.h"
 #include "configurations.h"
 
@@ -65,7 +65,7 @@ void _addToArayeh(arayeh *array, void *element);
 
 void _insertToArayeh(arayeh *array, size_t index, void *element);
 
-void _addCArrayToArayeh(arayeh *self, void *list, size_t listSize, size_t startIndex);
+void _mergeListToArayeh(arayeh *self, void *list, size_t listSize, size_t startIndex);
 
 void _getElementFromArayeh(arayeh *array, size_t index, void *destination);
 
@@ -73,7 +73,7 @@ void _setPublicMethods(arayeh *self);
 
 void _setPrivateMethods(arayeh *array, size_t type);
 
-void _UpdateNextLocationPoinetr(arayeh *array);
+void _UpdateNextLocationPointer(arayeh *array);
 
 __END_DECLS
 

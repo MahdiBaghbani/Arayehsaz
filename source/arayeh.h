@@ -102,7 +102,7 @@ typedef struct arayehStruct {
 
         void (*insert)(arayeh *self, size_t index, void *element);
 
-        void (*mergeCArray)(arayeh *self, void *list, size_t listSize, size_t startIndex);
+        void (*mergeList)(arayeh *self, void *list, size_t listSize, size_t startIndex);
 
         void (*get)(arayeh *self, size_t index, void *destination);
 
@@ -123,7 +123,7 @@ typedef struct arayehStruct {
 
         void (*addElementToArayeh)(arayeh *self, size_t index, void *element);
 
-        void (*appendElementToArayeh)(arayeh *self, void *list, size_t listSize, size_t startIndex);
+        void (*mergeListToArayeh)(arayeh *self, void *list, size_t listSize, size_t startIndex);
 
         void (*getElementFromArayeh)(arayeh *self, size_t index, void *destination);
 
