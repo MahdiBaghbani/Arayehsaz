@@ -38,6 +38,8 @@
 #define __AA_A_ARRAYSINTERNALS1D_H__
 
 #include "arrays1d.h"
+#include "arayehTypeManager.h"
+#include "configurations.h"
 
 // To ensure that the names declared in this portion of code have C linkage,
 // and thus C++ name mangling is not performed while using this code with C++.
@@ -53,121 +55,25 @@
 
 __BEGIN_DECLS
 
-void _extendSizeArray1D(array1d *array, size_t extendSize);
+void _extendArayehSize(arayeh *array, size_t extendSize);
 
-void _freeArray1D(array1d *array);
+void _freeArayehMemory(arayeh *array);
 
-void _fillArray1D(array1d *array, size_t start, size_t step, size_t end, void *element);
+void _fillArayeh(arayeh *array, size_t start, size_t step, size_t end, void *element);
 
-void _addArray1D(array1d *array, void *element);
+void _addToArayeh(arayeh *array, void *element);
 
-void _insertArray1D(array1d *array, size_t index, void *element);
+void _insertToArayeh(arayeh *array, size_t index, void *element);
 
-void _addListArray1D(array1d *self, void *list, size_t listSize, size_t startIndex);
+void _addCArrayToArayeh(arayeh *self, void *list, size_t listSize, size_t startIndex);
 
-void _getArray1D(array1d *array, size_t index, void *destination);
+void _getElementFromArayeh(arayeh *array, size_t index, void *destination);
 
-void _setPublicMethods(array1d *self);
+void _setPublicMethods(arayeh *self);
 
-void _setPrivateMethods(array1d *array, size_t type);
+void _setPrivateMethods(arayeh *array, size_t type);
 
-void _nextUpdaterArray1D(array1d *array);
-
-int _initTypeChar(array1d *self, arrayType *array, size_t initialSize);
-
-int _initTypeSInt(array1d *self, arrayType *array, size_t initialSize);
-
-int _initTypeInt(array1d *self, arrayType *array, size_t initialSize);
-
-int _initTypeLInt(array1d *self, arrayType *array, size_t initialSize);
-
-int _initTypeFloat(array1d *self, arrayType *array, size_t initialSize);
-
-int _initTypeDouble(array1d *self, arrayType *array, size_t initialSize);
-
-int _mallocTypeChar(array1d *self, arrayType *array, size_t initialSize);
-
-int _mallocTypeSInt(array1d *self, arrayType *array, size_t initialSize);
-
-int _mallocTypeInt(array1d *self, arrayType *array, size_t initialSize);
-
-int _mallocTypeLInt(array1d *self, arrayType *array, size_t initialSize);
-
-int _mallocTypeFloat(array1d *self, arrayType *array, size_t initialSize);
-
-int _mallocTypeDouble(array1d *self, arrayType *array, size_t initialSize);
-
-int _reallocTypeChar(array1d *self, arrayType *array, size_t newSize);
-
-int _reallocTypeSInt(array1d *self, arrayType *array, size_t newSize);
-
-int _reallocTypeInt(array1d *self, arrayType *array, size_t newSize);
-
-int _reallocTypeLInt(array1d *self, arrayType *array, size_t newSize);
-
-int _reallocTypeFloat(array1d *self, arrayType *array, size_t newSize);
-
-int _reallocTypeDouble(array1d *self, arrayType *array, size_t newSize);
-
-void _freeTypeChar(array1d *self);
-
-void _freeTypeSInt(array1d *self);
-
-void _freeTypeInt(array1d *self);
-
-void _freeTypeLInt(array1d *self);
-
-void _freeTypeFloat(array1d *self);
-
-void _freeTypeDouble(array1d *self);
-
-void _setTypeChar(array1d *self, arrayType *array);
-
-void _setTypeSInt(array1d *self, arrayType *array);
-
-void _setTypeInt(array1d *self, arrayType *array);
-
-void _setTypeLInt(array1d *self, arrayType *array);
-
-void _setTypeFloat(array1d *self, arrayType *array);
-
-void _setTypeDouble(array1d *self, arrayType *array);
-
-void _addTypeChar(array1d *self, size_t index, void *element);
-
-void _addTypeSInt(array1d *self, size_t index, void *element);
-
-void _addTypeInt(array1d *self, size_t index, void *element);
-
-void _addTypeLInt(array1d *self, size_t index, void *element);
-
-void _addTypeFloat(array1d *self, size_t index, void *element);
-
-void _addTypeDouble(array1d *self, size_t index, void *element);
-
-void _appendTypeChar(array1d *self, void *list, size_t listSize, size_t startIndex);
-
-void _appendTypeSInt(array1d *self, void *list, size_t listSize, size_t startIndex);
-
-void _appendTypeInt(array1d *self, void *list, size_t listSize, size_t startIndex);
-
-void _appendTypeLInt(array1d *self, void *list, size_t listSize, size_t startIndex);
-
-void _appendTypeFloat(array1d *self, void *list, size_t listSize, size_t startIndex);
-
-void _appendTypeDouble(array1d *self, void *list, size_t listSize, size_t startIndex);
-
-void _getTypeChar(array1d *self, size_t index, void *element);
-
-void _getTypeSInt(array1d *self, size_t index, void *element);
-
-void _getTypeInt(array1d *self, size_t index, void *element);
-
-void _getTypeLInt(array1d *self, size_t index, void *element);
-
-void _getTypeFloat(array1d *self, size_t index, void *element);
-
-void _getTypeDouble(array1d *self, size_t index, void *element);
+void _UpdateNextLocationPoinetr(arayeh *array);
 
 __END_DECLS
 
