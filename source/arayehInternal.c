@@ -1,4 +1,4 @@
-/* source/arraysInternals1d.c
+/* source/arayehInternal.h
  *
  * This file is a part of:
  * Azadeh Afzar - Arayehsaz (AA-A).
@@ -34,7 +34,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include "arraysInternals1d.h"
+#include "arayehInternal.h"
 #include "configurations.h"
 
 void _extendSizeArray1D(array1d *self, size_t extendSize) {

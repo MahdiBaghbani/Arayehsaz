@@ -1,4 +1,4 @@
-/* source/arraysInternals1d.h
+/* source/arayehInternal.h
  *
  * This file is a part of:
  * Azadeh Afzar - Arayehsaz (AA-A).
