@@ -54,7 +54,7 @@ arayeh *newArayeh1D(size_t type, size_t initialSize) {
      * Prints error message and exits.
      */
 
-    // check array type
+    // check array type.
     if (type != TYPE_CHAR && type != TYPE_SINT && type != TYPE_INT &&
         type != TYPE_LINT && type != TYPE_FLOAT && type != TYPE_DOUBLE) {
 
@@ -62,35 +62,35 @@ arayeh *newArayeh1D(size_t type, size_t initialSize) {
         abort();
     }
 
-    // initialize a pointer and allocate memory
+    // initialize a pointer and allocate memory.
     arayeh *self = (arayeh *) malloc(sizeof *self);
 
-    // assign public methods
+    // assign public methods.
     _setPublicMethods(self);
 
-    // assign private methods based on array type
+    // assign private methods based on array type.
     _setPrivateMethods(self, type);
 
-    // initialize variables for allocating memory
+    // initialize variables for allocating memory.
     char *mapPointer = NULL;
     arrayType arrayPointer;
     // this function identifies the right pointer for array type and sets it to point to NULL
-    // and also checks for possible overflow in size_t initialSize
+    // and also checks for possible overflow in size_t initialSize.
     int state = (self->_privateMethods.initArayeh)(self, &arrayPointer, initialSize);
 
-    // check for possible size_t overflow
+    // check for possible size_t overflow.
     if (state == FAILURE) {
         // TODO
         abort();
     }
 
-    // allocate memory to map and array
+    // allocate memory to map and array.
     mapPointer = (char *) malloc(sizeof *mapPointer * initialSize);
     state = (self->_privateMethods.mallocArayeh)(self, &arrayPointer, initialSize);
 
-    // check if memory allocated or not
+    // check if memory allocated or not.
     if (state == FAILURE || mapPointer == NULL) {
-        // free map and array pointers
+        // free map and array pointers.
         free(mapPointer);
         (self->_privateMethods.freeArayeh)(self);
 
@@ -98,12 +98,12 @@ arayeh *newArayeh1D(size_t type, size_t initialSize) {
         abort();
     }
 
-    // set all map elements to '0' [IS_EMPTY]
+    // set all map elements to '0' [IS_EMPTY].
     for (size_t i = 0; i < initialSize; ++i) {
         mapPointer[i] = IS_EMPTY;
     }
 
-    // set array parameters
+    // set array parameters.
     (self->_privateMethods.setArayehMemoryPointer)(self, &arrayPointer);
     self->_internalProperties.map = mapPointer;
     self->_internalProperties.type = type;
