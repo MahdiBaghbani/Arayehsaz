@@ -55,16 +55,25 @@
 
 __BEGIN_DECLS
 
+// this function will reallocate memory to the array and its map.
 void _extendArayehSize(arayeh *array, size_t extendSize);
 
+// this function will free the array and reset its parameters.
 void _freeArayehMemory(arayeh *array);
 
+// this function will fill array with an element from index (inclusive)
+// "start" to index (exclusive) "end" with step size "step".
 void _fillArayeh(arayeh *array, size_t start, size_t step, size_t end, void *element);
 
+// this function will insert an "element" into array at index = self->_internalProperties.next.
 void _addToArayeh(arayeh *array, void *element);
 
+// this function will insert an "element" into array at "index".
 void _insertToArayeh(arayeh *array, size_t index, void *element);
 
+// this function will merge a default C array (for example int a[4] = {1, 2, 3, 4};)
+// into arayeh array, the starting index for merging is "startIndex" and the size of
+// C array determines the last index (in the example above the size of C array is 4).
 void _mergeListToArayeh(arayeh *self, void *list, size_t listSize, size_t startIndex);
 
 void _getElementFromArayeh(arayeh *array, size_t index, void *destination);

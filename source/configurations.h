@@ -37,12 +37,15 @@
 #ifndef __AA_A_CONFIGURATIONS_H__
 #define __AA_A_CONFIGURATIONS_H__
 
+// return codes.
 #define FAILURE             0
 #define SUCCESS             1
 
+// map characters.
 #define IS_EMPTY           '0'
 #define IS_FILLED          '1'
 
+// type codes.
 #define TYPE_CHAR           1
 #define TYPE_SINT           2
 #define TYPE_INT            3

@@ -78,13 +78,13 @@ void test_Init_Free(void) {
     TEST_ASSERT_FALSE(typeFloat->_internalProperties.map == NULL)
     TEST_ASSERT_FALSE(typeDouble->_internalProperties.map == NULL)
 
-    // delete arrays.
-    (typeChar->delete)(typeChar);
-    (typeSInt->delete)(typeSInt);
-    (typeInt->delete)(typeInt);
-    (typeLInt->delete)(typeLInt);
-    (typeFloat->delete)(typeFloat);
-    (typeDouble->delete)(typeDouble);
+    // freeArayeh arrays.
+    (typeChar->freeArayeh)(typeChar);
+    (typeSInt->freeArayeh)(typeSInt);
+    (typeInt->freeArayeh)(typeInt);
+    (typeLInt->freeArayeh)(typeLInt);
+    (typeFloat->freeArayeh)(typeFloat);
+    (typeDouble->freeArayeh)(typeDouble);
 }
 
 void test_Fill(void) {
@@ -150,13 +150,13 @@ void test_Fill(void) {
     TEST_ASSERT_EQUAL(10, typeFloat->_internalProperties.next);
     TEST_ASSERT_EQUAL(10, typeDouble->_internalProperties.next);
 
-    // delete arrays
-    (typeChar->delete)(typeChar);
-    (typeSInt->delete)(typeSInt);
-    (typeInt->delete)(typeInt);
-    (typeLInt->delete)(typeLInt);
-    (typeFloat->delete)(typeFloat);
-    (typeDouble->delete)(typeDouble);
+    // freeArayeh arrays
+    (typeChar->freeArayeh)(typeChar);
+    (typeSInt->freeArayeh)(typeSInt);
+    (typeInt->freeArayeh)(typeInt);
+    (typeLInt->freeArayeh)(typeLInt);
+    (typeFloat->freeArayeh)(typeFloat);
+    (typeDouble->freeArayeh)(typeDouble);
 }
 
 void test_extend(void) {
@@ -184,13 +184,13 @@ void test_extend(void) {
     (typeFloat->fill)(typeFloat, 0, 1, 10, &varFloat);
     (typeDouble->fill)(typeDouble, 0, 1, 10, &varDouble);
 
-    // delete arrays
-    (typeChar->delete)(typeChar);
-    (typeSInt->delete)(typeSInt);
-    (typeInt->delete)(typeInt);
-    (typeLInt->delete)(typeLInt);
-    (typeFloat->delete)(typeFloat);
-    (typeDouble->delete)(typeDouble);
+    // freeArayeh arrays
+    (typeChar->freeArayeh)(typeChar);
+    (typeSInt->freeArayeh)(typeSInt);
+    (typeInt->freeArayeh)(typeInt);
+    (typeLInt->freeArayeh)(typeLInt);
+    (typeFloat->freeArayeh)(typeFloat);
+    (typeDouble->freeArayeh)(typeDouble);
 }
 
 

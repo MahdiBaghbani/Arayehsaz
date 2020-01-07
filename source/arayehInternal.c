@@ -38,58 +38,57 @@
 
 void _extendArayehSize(arayeh *array, size_t extendSize) {
     /*
-     * This function will reallocate memory to array and it's map
+     * This function will reallocate memory to the array and its map.
      *
      * ARGUMENTS:
-     * self             pointer to an array object
-     * extendSize       size increment
+     * self             pointer to an array object.
+     * extendSize       size increment.
      *
      */
 
-    // calculate new size for array
+    // calculate new size for array.
     size_t newSize = array->_internalProperties.size + extendSize;
 
-    // size_t overflow protection
+    // size_t overflow protection.
     if (newSize < array->_internalProperties.size) {
         // TODO error handler
         abort();
     }
 
-    // initialize variables for allocating memory
+    // initialize variables for allocating memory.
     char *mapPointer = NULL;
     arrayType arrayPointer;
     // this function identifies the right pointer for array type and sets it to point to NULL
-    // and also checks for possible overflow in size_t newSize
+    // and also checks for possible overflow in size_t newSize.
     int state = (array->_privateMethods.initArayeh)(array, &arrayPointer, newSize);
 
-    // protection for possible overflow in size_t
+    // protection for possible overflow in size_t.
     if (state == FAILURE) {
         // TODO error handler
         abort();
     }
 
-    // reallocate memory to map and array
+    // reallocate memory to map and array.
     mapPointer = (char *) realloc(array->_internalProperties.map, sizeof *mapPointer * newSize);
     state = (array->_privateMethods.reallocArayeh)(array, &arrayPointer, newSize);
 
-    // check if memory allocated or not
+    // check if memory allocated or not.
     if (state == FAILURE || mapPointer == NULL) {
-        // printf("Error: unable to allocate memory!\n");
-        // free map and array pointers
+        // free map and array pointers.
         free(mapPointer);
         (array->_privateMethods.freeArayeh)(array);
 
-        // failure
+        // failure.
         // TODO error handler
         abort();
     }
 
-    // set new map elements to '0' [IS_EMPTY]
+    // set new map elements to '0' [IS_EMPTY].
     for (size_t i = array->_internalProperties.size; i < newSize; ++i) {
         array->_internalProperties.map[i] = IS_EMPTY;
     }
 
-    // set array parameters
+    // set array parameters.
     (array->_privateMethods.setArayehMemoryPointer)(array, &arrayPointer);
     array->_internalProperties.map = mapPointer;
     array->_internalProperties.size = newSize;
@@ -97,27 +96,27 @@ void _extendArayehSize(arayeh *array, size_t extendSize) {
 
 void _freeArayehMemory(arayeh *array) {
     /*
-     * This function will free an array and reset it's parameters
+     * This function will free the array and reset its parameters.
      *
      * ARGUMENTS:
-     * self         pointer to an array object
+     * self         pointer to an array object.
      *
      */
 
-    // free array pointer
+    // free array pointer.
     (array->_privateMethods.freeArayeh)(array);
 
-    // free map pointer
+    // free map pointer.
     free(array->_internalProperties.map);
     array->_internalProperties.map = NULL;
 
-    // reset array parameters
+    // reset array parameters.
     array->_internalProperties.type = 0;
     array->_internalProperties.next = 0;
     array->_internalProperties.used = 0;
     array->_internalProperties.size = 0;
 
-    // free array pointer
+    // free array pointer.
     free(array);
 }
 
@@ -126,17 +125,19 @@ void _fillArayeh(arayeh *array, size_t start, size_t step, size_t end, void *ele
     /*
      * This function will fill array with an element
      * from index (inclusive) "start" to index (exclusive) "end"
-     * with step size "step"
+     * with step size "step".
      *
-     * it will update "map" and "used" parameters
-     * it may update "next" parameter
+     * this function WON'T increase array size!
+     *
+     * it will update "map" and "used" parameters.
+     * it may update "next" parameter.
      *
      * ARGUMENTS:
-     * self           pointer to an array object
-     * start          starting index (inclusive)
-     * step           step size
-     * end            ending index (exclusive)
-     * element        pointer to a variable that must fill the array
+     * self           pointer to an array object.
+     * start          starting index (inclusive).
+     * step           step size.
+     * end            ending index (exclusive).
+     * element        pointer to a variable that must fill the array.
      *
      */
 
@@ -151,32 +152,34 @@ void _fillArayeh(arayeh *array, size_t start, size_t step, size_t end, void *ele
         abort();
     }
 
-    // fill the array
+    // fill the array.
     for (size_t i = start; i < end; i += step) {
-        // assign element to array
+        // assign element to array.
         (array->_privateMethods.addElementToArayeh)(array, i, element);
 
-        // update array parameters
+        // update array parameters.
         if (array->_internalProperties.map[i] == IS_EMPTY) {
             // element has been assigned to an empty slot in array,
-            // so update the map and +1 to used slots
+            // so update the map and +1 to used slots.
             array->_internalProperties.map[i] = IS_FILLED;
             array->_internalProperties.used++;
         }
     }
 
-    // update "next" parameter of array
+    // update "next" parameter of array.
     if (start <= array->_internalProperties.next) {
-        // 0 is empty, 1 is data existing in the array, 2 is fill data
-        // before fill
+        // 0 is empty, 1 is data existing in the array, 2 is fill data.
+        //
+        // before fill >>
         // 111111111111111111111111110000000000000000000111111111111
         //          ^                ^              ^
-        //        start         self->_internalProperties.next        end
+        //        start          next pointer      end
         //
-        // after fill
+        // after fill >>
         // 111111111222222222222222222222222222222220000111111111111
         //                                          ^
-        //                                     self->_internalProperties.next
+        //                                      next pointer
+        //
         // the above case is for step = 1, if step is more than 1,
         // if (next - start) % step == 0, we can add 1 to 'next', because it will be filled.
         //
@@ -189,78 +192,80 @@ void _fillArayeh(arayeh *array, size_t start, size_t step, size_t end, void *ele
             array->_internalProperties.next++;
         }
 
-        // update "next"
+        // update "next" pointer.
         _UpdateNextLocationPointer(array);
     }
 }
 
 void _addToArayeh(arayeh *array, void *element) {
     /*
-     * This function will insert an "element" into array at index = self->_internalProperties.next
-     * function will extend size of array in case of self->_internalProperties.size == self->_internalProperties.used
-     * it will update "map" and "used" and "next" parameters
-     * it may update "size" parameter
+     * This function will insert an "element" into array at index = self->_internalProperties.next.
+     *
+     * function will extend size of array in case of self->_internalProperties.size == self->_internalProperties.used.
+     *
+     * it will update "map" and "used" and "next" parameters.
+     * it may update "size" parameter.
      *
      * self->_internalProperties.next will be updated in a manner that it points to the
-     * next EMPTY slot in the array
+     * next EMPTY slot in the array.
      *
      * ARGUMENTS:
-     * self           pointer to an array object
-     * element        pointer to a variable to be added to the array
+     * self           pointer to an array object.
+     * element        pointer to a variable to be added to the array.
      *
      */
 
-    // extend array size if needed
+    // extend array size if needed.
     if (array->_internalProperties.used == array->_internalProperties.size) {
         (array->extendSize)(array, array->_internalProperties.size);
     }
 
-    // add element
+    // add element.
     (array->_privateMethods.addElementToArayeh)(array, array->_internalProperties.next, element);
 
-    // update "map" and "used"
+    // update "map" and "used".
     array->_internalProperties.map[array->_internalProperties.next] = IS_FILLED;
     array->_internalProperties.used++;
 
-    // update "next"
+    // update "next" pointer.
     _UpdateNextLocationPointer(array);
 }
 
 void _insertToArayeh(arayeh *array, size_t index, void *element) {
     /*
-     * This function will insert an "element" into array at "index"
-     * function WON'T increase array size!
-     * it may update "map" and "used" and "next" parameters
+     * This function will insert an "element" into array at "index".
+     *
+     * this function WON'T increase array size!
+     *
+     * it may update "map" and "used" and "next" parameters.
      *
      * ARGUMENTS:
-     * self         pointer to an array object
-     * element      pointer to a variable to be inserted into the array
+     * self         pointer to an array object.
+     * element      pointer to a variable to be inserted into the array.
      *
      */
 
-    // tracks errors in function
+    // tracks errors in function.
     int state = SUCCESS;
 
-    // check array bounds
+    // check array bounds.
     if (index >= array->_internalProperties.size || index < 0) {
         // TODO error handler
         // state =
         abort();
     }
 
-    // insert element
+    // insert element.
     if (index == array->_internalProperties.next) {
-        // use _addToArayeh function to
-        // take care of everything
+        // use _addToArayeh for insertion.
         _addToArayeh(array, element);
 
     } else {
-        // assign element
+        // assign element.
         (array->_privateMethods.addElementToArayeh)(array, index, element);
-        // update array parameters
+        // update array parameters.
         if (index > array->_internalProperties.next && array->_internalProperties.map[index] == IS_EMPTY) {
-            // update "map" and "used" if they
-            // aren't already counted for this index
+            // update "map" and "used" if they aren't already counted for this index.
             array->_internalProperties.map[index] = IS_FILLED;
             array->_internalProperties.used++;
         }
@@ -268,11 +273,30 @@ void _insertToArayeh(arayeh *array, size_t index, void *element) {
 }
 
 void _mergeListToArayeh(arayeh *self, void *list, size_t listSize, size_t startIndex) {
+    /*
+     * This function will merge a default C array (for example int a[4] = {1, 2, 3, 4};)
+     * into arayeh array, the starting index for merging is "startIndex" and the size of
+     * C array determines the last index (in the example above the size of C array is 4).
+     *
+     * this function WON'T increase array size!
+     *
+     * it may update "map" and "used" and "next" parameters.
+     *
+     * ARGUMENTS:
+     * self         pointer to an array object.
+     * startIndex   starting index in the arayeh array.
+     * listSize     size of the C array.
+     * list         the C array to be merged into the arayeh array.
+     *
+     */
+
+    // check array bounds.
     if (self->_internalProperties.size <= startIndex || self->_internalProperties.size < startIndex + listSize) {
         // TODO error handling
         abort();
     }
 
+    // insert C array elements into arayeh array.
     (self->_privateMethods.mergeListToArayeh)(self, list, listSize, startIndex);
 }
 
@@ -286,7 +310,7 @@ void _getElementFromArayeh(arayeh *array, size_t index, void *destination) {
 
 void _setPublicMethods(arayeh *self) {
     self->extendSize = _extendArayehSize;
-    self->delete = _freeArayehMemory;
+    self->freeArayeh = _freeArayehMemory;
     self->fill = _fillArayeh;
     self->add = _addToArayeh;
     self->insert = _insertToArayeh;

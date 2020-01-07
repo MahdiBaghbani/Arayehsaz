@@ -63,10 +63,10 @@
 
 __BEGIN_DECLS
 
-// Prototype array structs.
+// Prototype of arayeh struct.
 typedef struct arayehStruct arayeh;
 
-// Supported array types.
+// Supported arayeh types.
 typedef union arrayTypeUnion {
     char        *pChar;
     short int   *pShortInt;
@@ -76,7 +76,7 @@ typedef union arrayTypeUnion {
     double      *pDouble;
 } arrayType;
 
-// Array 1D definition.
+// Arayeh definition.
 typedef struct arayehStruct {
 
     // variables to hold state of the array.
@@ -92,16 +92,25 @@ typedef struct arayehStruct {
     // public methods of arrays, accessible for everyone.
     struct {
 
+        // this function will reallocate memory to the array and its map.
         void (*extendSize)(arayeh *self, size_t extendSize);
 
-        void (*delete)(arayeh *self);
+        // this function will free the array and reset its parameters.
+        void (*freeArayeh)(arayeh *self);
 
+        // this function will fill array with an element from index (inclusive)
+        // "start" to index (exclusive) "end" with step size "step".
         void (*fill)(arayeh *self, size_t start, size_t step, size_t end, void *element);
 
+        // this function will insert an "element" into array at index = self->_internalProperties.next.
         void (*add)(arayeh *self, void *element);
 
+        // this function will insert an "element" into array at "index".
         void (*insert)(arayeh *self, size_t index, void *element);
 
+        // this function will merge a default C array (for example int a[4] = {1, 2, 3, 4};)
+        // into arayeh array, the starting index for merging is "startIndex" and the size of
+        // C array determines the last index (in the example above the size of C array is 4).
         void (*mergeList)(arayeh *self, void *list, size_t listSize, size_t startIndex);
 
         void (*get)(arayeh *self, size_t index, void *destination);
