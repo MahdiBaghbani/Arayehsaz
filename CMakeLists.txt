@@ -12,7 +12,7 @@ set(CMAKE_C_STANDARD_REQUIRED YES)
 set(BUILD_SHARED_LIBS YES)
 
 # Building options: Release, Debug, RelWithDebInfo, MinRelSize.
-set(CMAKE_BUILD_TYPE DEBUG)
+set(CMAKE_BUILD_TYPE Debug)
 
 # Toolchain options.
 set(CMAKE_MAKE_PROGRAM make)
@@ -23,7 +23,7 @@ set(CMAKE_CXX_COMPILER clang++)
 add_subdirectory(source)
 
 # include tests in Debug mode.
-if (CMAKE_BUILD_TYPE STREQUAL DEBUG)
+if (CMAKE_BUILD_TYPE STREQUAL Debug)
     include(CTest)
     add_subdirectory(test)
 endif ()
