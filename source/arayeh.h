@@ -1,4 +1,4 @@
-/* source/arrays1d.h
+/* source/arayeh.h
  *
  * This file is a part of:
  * Azadeh Afzar - Arayehsaz (AA-A).
