@@ -272,7 +272,7 @@ void _insertToArayeh(arayeh *array, size_t index, void *element) {
     }
 }
 
-void _mergeListToArayeh(arayeh *self, void *list, size_t listSize, size_t startIndex) {
+void _mergeListToArayeh(arayeh *self, size_t startIndex, size_t listSize, void *list) {
     /*
      * This function will merge a default C array (for example int a[4] = {1, 2, 3, 4};)
      * into arayeh array, the starting index for merging is "startIndex" and the size of
@@ -297,7 +297,7 @@ void _mergeListToArayeh(arayeh *self, void *list, size_t listSize, size_t startI
     }
 
     // insert C array elements into arayeh array.
-    (self->_privateMethods.mergeListToArayeh)(self, list, listSize, startIndex);
+    (self->_privateMethods.mergeListToArayeh)(self, startIndex, listSize, list);
 }
 
 void _getElementFromArayeh(arayeh *self, size_t index, void *destination) {

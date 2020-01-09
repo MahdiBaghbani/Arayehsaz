@@ -219,42 +219,42 @@ void _addTypeDouble(arayeh *self, size_t index, void *element) {
 
 // ARRAY MERGE LIST.
 
-void _mergeListTypeChar(arayeh *self, void *list, size_t listSize, size_t startIndex) {
+void _mergeListTypeChar(arayeh *self, size_t startIndex, size_t listSize, void *list) {
     char *temp = (char *) list;
     for (size_t i = 0; i < listSize; ++i) {
         (self->insert)(self, startIndex + i, temp + i);
     }
 }
 
-void _mergeListTypeSInt(arayeh *self, void *list, size_t listSize, size_t startIndex) {
+void _mergeListTypeSInt(arayeh *self, size_t startIndex, size_t listSize, void *list) {
     short int *temp = (short int *) list;
     for (size_t i = 0; i < listSize; ++i) {
         (self->insert)(self, startIndex + i, temp + i);
     }
 }
 
-void _mergeListTypeInt(arayeh *self, void *list, size_t listSize, size_t startIndex) {
+void _mergeListTypeInt(arayeh *self, size_t startIndex, size_t listSize, void *list) {
     int *temp = (int *) list;
     for (size_t i = 0; i < listSize; ++i) {
         (self->insert)(self, startIndex + i, temp + i);
     }
 }
 
-void _mergeListTypeLInt(arayeh *self, void *list, size_t listSize, size_t startIndex) {
+void _mergeListTypeLInt(arayeh *self, size_t startIndex, size_t listSize, void *list) {
     long int *temp = (long int *) list;
     for (size_t i = 0; i < listSize; ++i) {
         (self->insert)(self, startIndex + i, temp + i);
     }
 }
 
-void _mergeListTypeFloat(arayeh *self, void *list, size_t listSize, size_t startIndex) {
+void _mergeListTypeFloat(arayeh *self, size_t startIndex, size_t listSize, void *list) {
     float *temp = (float *) list;
     for (size_t i = 0; i < listSize; ++i) {
         (self->insert)(self, startIndex + i, temp + i);
     }
 }
 
-void _mergeListTypeDouble(arayeh *self, void *list, size_t listSize, size_t startIndex) {
+void _mergeListTypeDouble(arayeh *self, size_t startIndex, size_t listSize, void *list) {
     double *temp = (double *) list;
     for (size_t i = 0; i < listSize; ++i) {
         (self->insert)(self, startIndex + i, temp + i);

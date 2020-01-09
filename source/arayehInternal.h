@@ -74,7 +74,7 @@ void _insertToArayeh(arayeh *array, size_t index, void *element);
 // this function will merge a default C array (for example int a[4] = {1, 2, 3, 4};)
 // into arayeh array, the starting index for merging is "startIndex" and the size of
 // C array determines the last index (in the example above the size of C array is 4).
-void _mergeListToArayeh(arayeh *self, void *list, size_t listSize, size_t startIndex);
+void _mergeListToArayeh(arayeh *self, size_t startIndex, size_t listSize, void *list);
 
 // this function copies data in "index" cell of the array to the "destination" memory location.
 void _getElementFromArayeh(arayeh *array, size_t index, void *destination);

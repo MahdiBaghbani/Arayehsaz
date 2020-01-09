@@ -140,17 +140,17 @@ void _addTypeDouble(arayeh *self, size_t index, void *element);
 
 // ARRAY MERGE LIST.
 
-void _mergeListTypeChar(arayeh *self, void *list, size_t listSize, size_t startIndex);
+void _mergeListTypeChar(arayeh *self, size_t startIndex, size_t listSize, void *list);
 
-void _mergeListTypeSInt(arayeh *self, void *list, size_t listSize, size_t startIndex);
+void _mergeListTypeSInt(arayeh *self, size_t startIndex, size_t listSize, void *list);
 
-void _mergeListTypeInt(arayeh *self, void *list, size_t listSize, size_t startIndex);
+void _mergeListTypeInt(arayeh *self, size_t startIndex, size_t listSize, void *list);
 
-void _mergeListTypeLInt(arayeh *self, void *list, size_t listSize, size_t startIndex);
+void _mergeListTypeLInt(arayeh *self, size_t startIndex, size_t listSize, void *list);
 
-void _mergeListTypeFloat(arayeh *self, void *list, size_t listSize, size_t startIndex);
+void _mergeListTypeFloat(arayeh *self, size_t startIndex, size_t listSize, void *list);
 
-void _mergeListTypeDouble(arayeh *self, void *list, size_t listSize, size_t startIndex);
+void _mergeListTypeDouble(arayeh *self, size_t startIndex, size_t listSize, void *list);
 
 // ARRAY GET.
 
