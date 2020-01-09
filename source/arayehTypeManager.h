@@ -54,6 +54,8 @@
 
 __BEGIN_DECLS
 
+// ARRAY INITIALIZATION.
+
 int _initTypeChar(arayeh *self, arrayType *array, size_t initialSize);
 
 int _initTypeSInt(arayeh *self, arrayType *array, size_t initialSize);
@@ -65,6 +67,8 @@ int _initTypeLInt(arayeh *self, arrayType *array, size_t initialSize);
 int _initTypeFloat(arayeh *self, arrayType *array, size_t initialSize);
 
 int _initTypeDouble(arayeh *self, arrayType *array, size_t initialSize);
+
+// ARRAY MALLOC.
 
 int _mallocTypeChar(arayeh *self, arrayType *array, size_t initialSize);
 
@@ -78,6 +82,8 @@ int _mallocTypeFloat(arayeh *self, arrayType *array, size_t initialSize);
 
 int _mallocTypeDouble(arayeh *self, arrayType *array, size_t initialSize);
 
+// ARRAY REALLOC.
+
 int _reallocTypeChar(arayeh *self, arrayType *array, size_t newSize);
 
 int _reallocTypeSInt(arayeh *self, arrayType *array, size_t newSize);
@@ -89,6 +95,8 @@ int _reallocTypeLInt(arayeh *self, arrayType *array, size_t newSize);
 int _reallocTypeFloat(arayeh *self, arrayType *array, size_t newSize);
 
 int _reallocTypeDouble(arayeh *self, arrayType *array, size_t newSize);
+
+// ARRAY FREE.
 
 void _freeTypeChar(arayeh *self);
 
@@ -102,6 +110,8 @@ void _freeTypeFloat(arayeh *self);
 
 void _freeTypeDouble(arayeh *self);
 
+// ARRAY SET MEMORY POINTER.
+
 void _setMemoryPointerTypeChar(arayeh *self, arrayType *array);
 
 void _setMemoryPointerTypeSInt(arayeh *self, arrayType *array);
@@ -113,6 +123,8 @@ void _setMemoryPointerTypeLInt(arayeh *self, arrayType *array);
 void _setMemoryPointerTypeFloat(arayeh *self, arrayType *array);
 
 void _setMemoryPointerTypeDouble(arayeh *self, arrayType *array);
+
+// ARRAY ADD.
 
 void _addTypeChar(arayeh *self, size_t index, void *element);
 
@@ -126,6 +138,8 @@ void _addTypeFloat(arayeh *self, size_t index, void *element);
 
 void _addTypeDouble(arayeh *self, size_t index, void *element);
 
+// ARRAY MERGE LIST.
+
 void _mergeListTypeChar(arayeh *self, void *list, size_t listSize, size_t startIndex);
 
 void _mergeListTypeSInt(arayeh *self, void *list, size_t listSize, size_t startIndex);
@@ -137,6 +151,8 @@ void _mergeListTypeLInt(arayeh *self, void *list, size_t listSize, size_t startI
 void _mergeListTypeFloat(arayeh *self, void *list, size_t listSize, size_t startIndex);
 
 void _mergeListTypeDouble(arayeh *self, void *list, size_t listSize, size_t startIndex);
+
+// ARRAY GET.
 
 void _getTypeChar(arayeh *self, size_t index, void *element);
 

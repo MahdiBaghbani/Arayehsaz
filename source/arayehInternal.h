@@ -76,12 +76,17 @@ void _insertToArayeh(arayeh *array, size_t index, void *element);
 // C array determines the last index (in the example above the size of C array is 4).
 void _mergeListToArayeh(arayeh *self, void *list, size_t listSize, size_t startIndex);
 
+// this function copies data in "index" cell of the array to the "destination" memory location.
 void _getElementFromArayeh(arayeh *array, size_t index, void *destination);
 
+// this function assigns pointers to public functions of an arayeh instance.
 void _setPublicMethods(arayeh *self);
 
+// this function assigns pointers to public functions of an arayeh instance.
 void _setPrivateMethods(arayeh *array, size_t type);
 
+// This function purpose is to update array.next variable to point to next
+// empty [available] slot in the array.
 void _UpdateNextLocationPointer(arayeh *array);
 
 __END_DECLS

@@ -36,7 +36,7 @@
 
 #include "arayehTypeManager.h"
 
-//--------------------------------------- ARRAY INITIALIZATION ---------------------------------------------------------
+// ARRAY INITIALIZATION.
 
 int _initTypeChar(arayeh *self, arrayType *array, size_t initialSize) {
     array->pChar = NULL;
@@ -68,7 +68,7 @@ int _initTypeDouble(arayeh *self, arrayType *array, size_t initialSize) {
     return (initialSize > (size_t) SIZE_MAX / sizeof array->pDouble) ? FAILURE : SUCCESS;
 }
 
-//-------------------------------------------- ARRAY MALLOC ------------------------------------------------------------
+// ARRAY MALLOC.
 
 int _mallocTypeChar(arayeh *self, arrayType *array, size_t initialSize) {
     array->pChar = (char *) malloc(sizeof *array->pChar * initialSize);
@@ -100,7 +100,7 @@ int _mallocTypeDouble(arayeh *self, arrayType *array, size_t initialSize) {
     return (array->pDouble == NULL) ? FAILURE : SUCCESS;
 }
 
-//-------------------------------------------- ARRAY REALLOC -----------------------------------------------------------
+// ARRAY REALLOC.
 
 int _reallocTypeChar(arayeh *self, arrayType *array, size_t newSize) {
     array->pChar = (char *) realloc(self->_internalProperties.array.pChar, sizeof *array->pChar * newSize);
@@ -133,7 +133,7 @@ int _reallocTypeDouble(arayeh *self, arrayType *array, size_t newSize) {
     return (array->pDouble == NULL) ? FAILURE : SUCCESS;
 }
 
-//--------------------------------------------- ARRAY FREE -------------------------------------------------------------
+// ARRAY FREE.
 
 void _freeTypeChar(arayeh *self) {
     free(self->_internalProperties.array.pChar);
@@ -165,7 +165,7 @@ void _freeTypeDouble(arayeh *self) {
     self->_internalProperties.array.pDouble = NULL;
 }
 
-//--------------------------------------------- ARRAY SET --------------------------------------------------------------
+// ARRAY SET MEMORY POINTER.
 
 void _setMemoryPointerTypeChar(arayeh *self, arrayType *array) {
     self->_internalProperties.array.pChar = array->pChar;
@@ -191,7 +191,7 @@ void _setMemoryPointerTypeDouble(arayeh *self, arrayType *array) {
     self->_internalProperties.array.pDouble = array->pDouble;
 }
 
-//---------------------------------------------- ARRAY ADD -------------------------------------------------------------
+// ARRAY ADD.
 
 void _addTypeChar(arayeh *self, size_t index, void *element) {
     self->_internalProperties.array.pChar[index] = *((char *) element);
@@ -217,7 +217,7 @@ void _addTypeDouble(arayeh *self, size_t index, void *element) {
     self->_internalProperties.array.pDouble[index] = *((double *) element);
 }
 
-//-------------------------------------------- ARRAY APPEND ------------------------------------------------------------
+// ARRAY MERGE LIST.
 
 void _mergeListTypeChar(arayeh *self, void *list, size_t listSize, size_t startIndex) {
     char *temp = (char *) list;
@@ -261,7 +261,7 @@ void _mergeListTypeDouble(arayeh *self, void *list, size_t listSize, size_t star
     }
 }
 
-//---------------------------------------------- ARRAY GET -------------------------------------------------------------
+// ARRAY GET.
 
 void _getTypeChar(arayeh *self, size_t index, void *element) {
     char *ptr = (char *) element;

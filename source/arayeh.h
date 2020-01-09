@@ -102,7 +102,8 @@ typedef struct arayehStruct {
         // "start" to index (exclusive) "end" with step size "step".
         void (*fill)(arayeh *self, size_t start, size_t step, size_t end, void *element);
 
-        // this function will insert an "element" into array at index = self->_internalProperties.next.
+        // this function will insert an "element" into array at the next empty location in the array.
+        // if array is full, it will extend array size.
         void (*add)(arayeh *self, void *element);
 
         // this function will insert an "element" into array at "index".
@@ -113,6 +114,7 @@ typedef struct arayehStruct {
         // C array determines the last index (in the example above the size of C array is 4).
         void (*mergeList)(arayeh *self, void *list, size_t listSize, size_t startIndex);
 
+        // this function copies data in "index" cell of the array to the "destination" memory location.
         void (*get)(arayeh *self, size_t index, void *destination);
 
     };

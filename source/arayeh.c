@@ -45,8 +45,8 @@ arayeh *newArayeh1D(size_t type, size_t initialSize) {
      * (you have enough memory and right to allocate that memory).
      *
      * ARGUMENTS:
-     * initialSize    size of array.
-     * type           type of array elements.
+     * initialSize  size of array.
+     * type         type of array elements.
      *
      * RETURN:
      * A pointer to the initialized array.

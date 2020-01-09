@@ -41,7 +41,7 @@ void _extendArayehSize(arayeh *array, size_t extendSize) {
      * This function will reallocate memory to the array and its map.
      *
      * ARGUMENTS:
-     * self             pointer to an array object.
+     * self             pointer to the array object.
      * extendSize       size increment.
      *
      */
@@ -99,7 +99,7 @@ void _freeArayehMemory(arayeh *array) {
      * This function will free the array and reset its parameters.
      *
      * ARGUMENTS:
-     * self         pointer to an array object.
+     * self         pointer to the array object.
      *
      */
 
@@ -133,7 +133,7 @@ void _fillArayeh(arayeh *array, size_t start, size_t step, size_t end, void *ele
      * it may update "next" parameter.
      *
      * ARGUMENTS:
-     * self           pointer to an array object.
+     * self           pointer to the array object.
      * start          starting index (inclusive).
      * step           step size.
      * end            ending index (exclusive).
@@ -210,7 +210,7 @@ void _addToArayeh(arayeh *array, void *element) {
      * next EMPTY slot in the array.
      *
      * ARGUMENTS:
-     * self           pointer to an array object.
+     * self           pointer to the array object.
      * element        pointer to a variable to be added to the array.
      *
      */
@@ -240,7 +240,7 @@ void _insertToArayeh(arayeh *array, size_t index, void *element) {
      * it may update "map" and "used" and "next" parameters.
      *
      * ARGUMENTS:
-     * self         pointer to an array object.
+     * self         pointer to the array object.
      * element      pointer to a variable to be inserted into the array.
      *
      */
@@ -283,7 +283,7 @@ void _mergeListToArayeh(arayeh *self, void *list, size_t listSize, size_t startI
      * it may update "map" and "used" and "next" parameters.
      *
      * ARGUMENTS:
-     * self         pointer to an array object.
+     * self         pointer to the array object.
      * startIndex   starting index in the arayeh array.
      * listSize     size of the C array.
      * list         the C array to be merged into the arayeh array.
@@ -300,15 +300,36 @@ void _mergeListToArayeh(arayeh *self, void *list, size_t listSize, size_t startI
     (self->_privateMethods.mergeListToArayeh)(self, list, listSize, startIndex);
 }
 
-void _getElementFromArayeh(arayeh *array, size_t index, void *destination) {
-    if (array->_internalProperties.size <= index) {
+void _getElementFromArayeh(arayeh *self, size_t index, void *destination) {
+    /*
+     * This function copies data in "index" cell of the array to the "destination" memory location.
+     *
+     * ARGUMENTS:
+     * self         pointer to the array object.
+     * index        index of the element to be copied.
+     * destination  pointer to the destination memory location.
+     *
+     */
+
+    // check array bounds.
+    if (self->_internalProperties.size <= index) {
         // TODO error handling
         abort();
     }
-    (array->_privateMethods.getElementFromArayeh)(array, index, destination);
+
+    // copy data to destination memory location.
+    (self->_privateMethods.getElementFromArayeh)(self, index, destination);
 }
 
 void _setPublicMethods(arayeh *self) {
+    /*
+     * This function assigns pointers to public functions of an arayeh instance.
+     *
+     * ARGUMENTS:
+     * self         pointer to the array object.
+     *
+     */
+
     self->extendSize = _extendArayehSize;
     self->freeArayeh = _freeArayehMemory;
     self->fill = _fillArayeh;
@@ -319,8 +340,16 @@ void _setPublicMethods(arayeh *self) {
 }
 
 void _setPrivateMethods(arayeh *self, size_t type) {
+    /*
+     * This function assigns pointers to public functions of an arayeh instance.
+     *
+     * ARGUMENTS:
+     * self         pointer to the array object.
+     * type         type of array elements.
+     *
+     */
 
-    // decide which type to use
+    // assign based on the arayeh type.
     switch (type) {
         case TYPE_CHAR:
             self->_privateMethods.initArayeh = _initTypeChar;
@@ -397,10 +426,10 @@ void _UpdateNextLocationPointer(arayeh *array) {
     /*
      * This function purpose is to update
      * array.next variable to point to next empty [available]
-     * slot in the array
+     * slot in the array.
      *
      * ARGUMENTS:
-     * self           pointer to array variable
+     * self         pointer to the array object.
      */
 
     while (array->_internalProperties.next < array->_internalProperties.size &&
