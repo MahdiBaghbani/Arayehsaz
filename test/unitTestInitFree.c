@@ -46,13 +46,16 @@ void tearDown(void) {
 
 void test_Init_Free(void) {
 
-    // create new arrays
-    arayeh *typeChar = newArayeh1D(TYPE_CHAR, 100);
-    arayeh *typeSInt = newArayeh1D(TYPE_SINT, 100);
-    arayeh *typeInt = newArayeh1D(TYPE_INT, 100);
-    arayeh *typeLInt = newArayeh1D(TYPE_LINT, 100);
-    arayeh *typeFloat = newArayeh1D(TYPE_FLOAT, 100);
-    arayeh *typeDouble = newArayeh1D(TYPE_DOUBLE, 100);
+    // define default array size.
+    size_t arayehSize = 100;
+
+    // create new arrays.
+    arayeh *typeChar = newArayeh1D(TYPE_CHAR, arayehSize);
+    arayeh *typeSInt = newArayeh1D(TYPE_SINT, arayehSize);
+    arayeh *typeInt = newArayeh1D(TYPE_INT, arayehSize);
+    arayeh *typeLInt = newArayeh1D(TYPE_LINT, arayehSize);
+    arayeh *typeFloat = newArayeh1D(TYPE_FLOAT, arayehSize);
+    arayeh *typeDouble = newArayeh1D(TYPE_DOUBLE, arayehSize);
 
     // test created arayeh pointers.
     TEST_ASSERT_FALSE(typeChar == NULL)
@@ -78,128 +81,47 @@ void test_Init_Free(void) {
     TEST_ASSERT_FALSE(typeFloat->_internalProperties.map == NULL)
     TEST_ASSERT_FALSE(typeDouble->_internalProperties.map == NULL)
 
-    // freeArayeh arrays.
+    // test arayeh "size" attribute.
+    TEST_ASSERT_EQUAL_size_t(arayehSize,typeChar->_internalProperties.size);
+    TEST_ASSERT_EQUAL_size_t(arayehSize,typeSInt->_internalProperties.size);
+    TEST_ASSERT_EQUAL_size_t(arayehSize,typeInt->_internalProperties.size);
+    TEST_ASSERT_EQUAL_size_t(arayehSize,typeLInt->_internalProperties.size);
+    TEST_ASSERT_EQUAL_size_t(arayehSize,typeFloat->_internalProperties.size);
+    TEST_ASSERT_EQUAL_size_t(arayehSize,typeDouble->_internalProperties.size);
+
+    // test arayeh "used" attribute.
+    TEST_ASSERT_EQUAL_size_t(0,typeChar->_internalProperties.used);
+    TEST_ASSERT_EQUAL_size_t(0,typeSInt->_internalProperties.used);
+    TEST_ASSERT_EQUAL_size_t(0,typeInt->_internalProperties.used);
+    TEST_ASSERT_EQUAL_size_t(0,typeLInt->_internalProperties.used);
+    TEST_ASSERT_EQUAL_size_t(0,typeFloat->_internalProperties.used);
+    TEST_ASSERT_EQUAL_size_t(0,typeDouble->_internalProperties.used);
+
+    // test arayeh "next" attribute.
+    TEST_ASSERT_EQUAL_size_t(0,typeChar->_internalProperties.next);
+    TEST_ASSERT_EQUAL_size_t(0,typeSInt->_internalProperties.next);
+    TEST_ASSERT_EQUAL_size_t(0,typeInt->_internalProperties.next);
+    TEST_ASSERT_EQUAL_size_t(0,typeLInt->_internalProperties.next);
+    TEST_ASSERT_EQUAL_size_t(0,typeFloat->_internalProperties.next);
+    TEST_ASSERT_EQUAL_size_t(0,typeDouble->_internalProperties.next);
+
+    // free arrays.
     (typeChar->freeArayeh)(typeChar);
     (typeSInt->freeArayeh)(typeSInt);
     (typeInt->freeArayeh)(typeInt);
     (typeLInt->freeArayeh)(typeLInt);
     (typeFloat->freeArayeh)(typeFloat);
     (typeDouble->freeArayeh)(typeDouble);
+
+    typeChar = NULL;
+    typeSInt = NULL;
+
 }
-
-void test_Fill(void) {
-
-    // create new arrays
-    arayeh *typeChar = newArayeh1D(TYPE_CHAR, 10);
-    arayeh *typeSInt = newArayeh1D(TYPE_SINT, 10);
-    arayeh *typeInt = newArayeh1D(TYPE_INT, 10);
-    arayeh *typeLInt = newArayeh1D(TYPE_LINT, 10);
-    arayeh *typeFloat = newArayeh1D(TYPE_FLOAT, 10);
-    arayeh *typeDouble = newArayeh1D(TYPE_DOUBLE, 10);
-
-    // declare variables
-    char varChar        = 'a';
-    short int varSInt   = 12345;
-    int varInt          = 123456789;
-    long int varLInt    = 123456789123456789;
-    float varFloat      = 12345.1234;
-    double varDouble    = 123456789.123456789;
-
-    (typeChar->fill)(typeChar, 0, 1, 10, &varChar);
-    (typeSInt->fill)(typeSInt, 0, 1, 10, &varSInt);
-    (typeInt->fill)(typeInt, 0, 1, 10, &varInt);
-    (typeLInt->fill)(typeLInt, 0, 1, 10, &varLInt);
-    (typeFloat->fill)(typeFloat, 0, 1, 10, &varFloat);
-    (typeDouble->fill)(typeDouble, 0, 1, 10, &varDouble);
-
-    // test array
-    TEST_ASSERT_EQUAL(varChar, typeChar->_internalProperties.array.pChar[5]);
-    TEST_ASSERT_EQUAL(varSInt, typeSInt->_internalProperties.array.pShortInt[0]);
-    TEST_ASSERT_EQUAL(varInt, typeInt->_internalProperties.array.pInt[1]);
-    TEST_ASSERT_EQUAL(varLInt, typeLInt->_internalProperties.array.pLongInt[2]);
-    TEST_ASSERT_EQUAL(varFloat, typeFloat->_internalProperties.array.pFloat[3]);
-    TEST_ASSERT_EQUAL(varDouble, typeDouble->_internalProperties.array.pDouble[4]);
-
-    // test map
-    TEST_ASSERT_EQUAL(IS_FILLED, typeChar->_internalProperties.map[5]);
-    TEST_ASSERT_EQUAL(IS_FILLED, typeSInt->_internalProperties.map[7]);
-    TEST_ASSERT_EQUAL(IS_FILLED, typeInt->_internalProperties.map[6]);
-    TEST_ASSERT_EQUAL(IS_FILLED, typeLInt->_internalProperties.map[8]);
-    TEST_ASSERT_EQUAL(IS_FILLED, typeFloat->_internalProperties.map[9]);
-    TEST_ASSERT_EQUAL(IS_FILLED, typeDouble->_internalProperties.map[0]);
-
-    // test array parameters
-    TEST_ASSERT_EQUAL(10, typeChar->_internalProperties.size);
-    TEST_ASSERT_EQUAL(10, typeSInt->_internalProperties.size);
-    TEST_ASSERT_EQUAL(10, typeInt->_internalProperties.size);
-    TEST_ASSERT_EQUAL(10, typeLInt->_internalProperties.size);
-    TEST_ASSERT_EQUAL(10, typeFloat->_internalProperties.size);
-    TEST_ASSERT_EQUAL(10, typeDouble->_internalProperties.size);
-
-    TEST_ASSERT_EQUAL(10, typeChar->_internalProperties.used);
-    TEST_ASSERT_EQUAL(10, typeSInt->_internalProperties.used);
-    TEST_ASSERT_EQUAL(10, typeInt->_internalProperties.used);
-    TEST_ASSERT_EQUAL(10, typeLInt->_internalProperties.used);
-    TEST_ASSERT_EQUAL(10, typeFloat->_internalProperties.used);
-    TEST_ASSERT_EQUAL(10, typeDouble->_internalProperties.used);
-
-    TEST_ASSERT_EQUAL(10, typeChar->_internalProperties.next);
-    TEST_ASSERT_EQUAL(10, typeSInt->_internalProperties.next);
-    TEST_ASSERT_EQUAL(10, typeInt->_internalProperties.next);
-    TEST_ASSERT_EQUAL(10, typeLInt->_internalProperties.next);
-    TEST_ASSERT_EQUAL(10, typeFloat->_internalProperties.next);
-    TEST_ASSERT_EQUAL(10, typeDouble->_internalProperties.next);
-
-    // freeArayeh arrays
-    (typeChar->freeArayeh)(typeChar);
-    (typeSInt->freeArayeh)(typeSInt);
-    (typeInt->freeArayeh)(typeInt);
-    (typeLInt->freeArayeh)(typeLInt);
-    (typeFloat->freeArayeh)(typeFloat);
-    (typeDouble->freeArayeh)(typeDouble);
-}
-
-void test_extend(void) {
-
-    // create new arrays
-    arayeh *typeChar = newArayeh1D(TYPE_CHAR, 10);
-    arayeh *typeSInt = newArayeh1D(TYPE_SINT, 10);
-    arayeh *typeInt = newArayeh1D(TYPE_INT, 10);
-    arayeh *typeLInt = newArayeh1D(TYPE_LINT, 10);
-    arayeh *typeFloat = newArayeh1D(TYPE_FLOAT, 10);
-    arayeh *typeDouble = newArayeh1D(TYPE_DOUBLE, 10);
-
-    // declare variables
-    char varChar        = 'a';
-    short int varSInt   = 12345;
-    int varInt          = 123456789;
-    long int varLInt    = 123456789123456789;
-    float varFloat      = 12345.12345;
-    double varDouble    = 123456789.123456789;
-
-    (typeChar->fill)(typeChar, 0, 1, 10, &varChar);
-    (typeSInt->fill)(typeSInt, 0, 1, 10, &varSInt);
-    (typeInt->fill)(typeInt, 0, 1, 10, &varInt);
-    (typeLInt->fill)(typeLInt, 0, 1, 10, &varLInt);
-    (typeFloat->fill)(typeFloat, 0, 1, 10, &varFloat);
-    (typeDouble->fill)(typeDouble, 0, 1, 10, &varDouble);
-
-    // freeArayeh arrays
-    (typeChar->freeArayeh)(typeChar);
-    (typeSInt->freeArayeh)(typeSInt);
-    (typeInt->freeArayeh)(typeInt);
-    (typeLInt->freeArayeh)(typeLInt);
-    (typeFloat->freeArayeh)(typeFloat);
-    (typeDouble->freeArayeh)(typeDouble);
-}
-
 
 int main(void) {
     UnityBegin("unitTestInitFree.c");
 
     RUN_TEST(test_Init_Free);
-    RUN_TEST(test_Fill);
-    RUN_TEST(test_extend);
 
     return UnityEnd();
 }

@@ -5,6 +5,6 @@ cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
 add_subdirectory("unity test framework")
 
 # add tests.
-add_executable(testArayeh unitTestInitFree.c)
-target_link_libraries(testArayeh PRIVATE libarayeh unity)
-add_test(unitTestArayeh testArayeh)
+add_executable(testArayehInitFree unitTestInitFree.c)
+target_link_libraries(testArayehInitFree PRIVATE arayeh unity)
+add_test(unitTestArayehInitFree testArayehInitFree)
