@@ -40,97 +40,97 @@
 
 int _initTypeChar(arayeh *self, arrayType *array, size_t initialSize) {
     array->pChar = NULL;
-    return (initialSize > (size_t) SIZE_MAX / sizeof array->pChar) ? FAILURE : SUCCESS;
+    return (initialSize > (size_t) SIZE_MAX / sizeof array->pChar) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
 }
 
 int _initTypeSInt(arayeh *self, arrayType *array, size_t initialSize) {
     array->pShortInt = NULL;
-    return (initialSize > (size_t) SIZE_MAX / sizeof array->pShortInt) ? FAILURE : SUCCESS;
+    return (initialSize > (size_t) SIZE_MAX / sizeof array->pShortInt) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
 }
 
 int _initTypeInt(arayeh *self, arrayType *array, size_t initialSize) {
     array->pInt = NULL;
-    return (initialSize > (size_t) SIZE_MAX / sizeof array->pInt) ? FAILURE : SUCCESS;
+    return (initialSize > (size_t) SIZE_MAX / sizeof array->pInt) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
 }
 
 int _initTypeLInt(arayeh *self, arrayType *array, size_t initialSize) {
     array->pLongInt = NULL;
-    return (initialSize > (size_t) SIZE_MAX / sizeof array->pLongInt) ? FAILURE : SUCCESS;
+    return (initialSize > (size_t) SIZE_MAX / sizeof array->pLongInt) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
 }
 
 int _initTypeFloat(arayeh *self, arrayType *array, size_t initialSize) {
     array->pFloat = NULL;
-    return (initialSize > (size_t) SIZE_MAX / sizeof array->pFloat) ? FAILURE : SUCCESS;
+    return (initialSize > (size_t) SIZE_MAX / sizeof array->pFloat) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
 }
 
 int _initTypeDouble(arayeh *self, arrayType *array, size_t initialSize) {
     array->pDouble = NULL;
-    return (initialSize > (size_t) SIZE_MAX / sizeof array->pDouble) ? FAILURE : SUCCESS;
+    return (initialSize > (size_t) SIZE_MAX / sizeof array->pDouble) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
 }
 
 // ARRAY MALLOC.
 
 int _mallocTypeChar(arayeh *self, arrayType *array, size_t initialSize) {
     array->pChar = (char *) malloc(sizeof *array->pChar * initialSize);
-    return (array->pChar == NULL) ? FAILURE : SUCCESS;
+    return (array->pChar == NULL) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
 }
 
 int _mallocTypeSInt(arayeh *self, arrayType *array, size_t initialSize) {
     array->pShortInt = (short int *) malloc(sizeof *array->pShortInt * initialSize);
-    return (array->pShortInt == NULL) ? FAILURE : SUCCESS;
+    return (array->pShortInt == NULL) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
 }
 
 int _mallocTypeInt(arayeh *self, arrayType *array, size_t initialSize) {
     array->pInt = (int *) malloc(sizeof *array->pInt * initialSize);
-    return (array->pInt == NULL) ? FAILURE : SUCCESS;
+    return (array->pInt == NULL) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
 }
 
 int _mallocTypeLInt(arayeh *self, arrayType *array, size_t initialSize) {
     array->pLongInt = (long int *) malloc(sizeof *array->pLongInt * initialSize);
-    return (array->pLongInt == NULL) ? FAILURE : SUCCESS;
+    return (array->pLongInt == NULL) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
 }
 
 int _mallocTypeFloat(arayeh *self, arrayType *array, size_t initialSize) {
     array->pFloat = (float *) malloc(sizeof *array->pFloat * initialSize);
-    return (array->pFloat == NULL) ? FAILURE : SUCCESS;
+    return (array->pFloat == NULL) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
 }
 
 int _mallocTypeDouble(arayeh *self, arrayType *array, size_t initialSize) {
     array->pDouble = (double *) malloc(sizeof *array->pDouble * initialSize);
-    return (array->pDouble == NULL) ? FAILURE : SUCCESS;
+    return (array->pDouble == NULL) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
 }
 
 // ARRAY REALLOC.
 
 int _reallocTypeChar(arayeh *self, arrayType *array, size_t newSize) {
     array->pChar = (char *) realloc(self->_internalProperties.array.pChar, sizeof *array->pChar * newSize);
-    return (array->pChar == NULL) ? FAILURE : SUCCESS;
+    return (array->pChar == NULL) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
 }
 
 int _reallocTypeSInt(arayeh *self, arrayType *array, size_t newSize) {
     array->pShortInt = (short int *) realloc(self->_internalProperties.array.pShortInt,
                                              sizeof *array->pShortInt * newSize);
-    return (array->pShortInt == NULL) ? FAILURE : SUCCESS;
+    return (array->pShortInt == NULL) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
 }
 
 int _reallocTypeInt(arayeh *self, arrayType *array, size_t newSize) {
     array->pInt = (int *) realloc(self->_internalProperties.array.pInt, sizeof *array->pInt * newSize);
-    return (array->pInt == NULL) ? FAILURE : SUCCESS;
+    return (array->pInt == NULL) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
 }
 
 int _reallocTypeLInt(arayeh *self, arrayType *array, size_t newSize) {
     array->pLongInt = (long int *) realloc(self->_internalProperties.array.pLongInt, sizeof *array->pLongInt * newSize);
-    return (array->pLongInt == NULL) ? FAILURE : SUCCESS;
+    return (array->pLongInt == NULL) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
 }
 
 int _reallocTypeFloat(arayeh *self, arrayType *array, size_t newSize) {
     array->pFloat = (float *) realloc(self->_internalProperties.array.pFloat, sizeof *array->pFloat * newSize);
-    return (array->pFloat == NULL) ? FAILURE : SUCCESS;
+    return (array->pFloat == NULL) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
 }
 
 int _reallocTypeDouble(arayeh *self, arrayType *array, size_t newSize) {
     array->pDouble = (double *) realloc(self->_internalProperties.array.pDouble, sizeof *array->pDouble * newSize);
-    return (array->pDouble == NULL) ? FAILURE : SUCCESS;
+    return (array->pDouble == NULL) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
 }
 
 // ARRAY FREE.

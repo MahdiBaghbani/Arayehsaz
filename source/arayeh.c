@@ -79,7 +79,7 @@ arayeh *newArayeh1D(size_t type, size_t initialSize) {
     int state = (self->_privateMethods.initArayeh)(self, &arrayPointer, initialSize);
 
     // check for possible size_t overflow.
-    if (state == FAILURE) {
+    if (state == AA_ARAYEH_FAILURE) {
         // TODO
         abort();
     }
@@ -89,7 +89,7 @@ arayeh *newArayeh1D(size_t type, size_t initialSize) {
     state = (self->_privateMethods.mallocArayeh)(self, &arrayPointer, initialSize);
 
     // check if memory allocated or not.
-    if (state == FAILURE || mapPointer == NULL) {
+    if (state == AA_ARAYEH_FAILURE || mapPointer == NULL) {
         // free map and array pointers.
         free(mapPointer);
         (self->_privateMethods.freeArayeh)(self);

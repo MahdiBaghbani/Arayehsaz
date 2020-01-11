@@ -38,19 +38,19 @@
 #define __AA_A_CONFIGURATIONS_H__
 
 // return codes.
-#define FAILURE             0
-#define SUCCESS             1
+#define AA_ARAYEH_FAILURE               0
+#define AA_ARAYEH_SUCCESS               1
 
 // map characters.
-#define IS_EMPTY           '0'
-#define IS_FILLED          '1'
+#define IS_EMPTY                       '0'
+#define IS_FILLED                      '1'
 
 // type codes.
-#define TYPE_CHAR           1
-#define TYPE_SINT           2
-#define TYPE_INT            3
-#define TYPE_LINT           4
-#define TYPE_FLOAT          5
-#define TYPE_DOUBLE         6
+#define TYPE_CHAR                       1
+#define TYPE_SINT                       2
+#define TYPE_INT                        3
+#define TYPE_LINT                       4
+#define TYPE_FLOAT                      5
+#define TYPE_DOUBLE                     6
 
 #endif //__AA_A_CONFIGURATIONS_H__
