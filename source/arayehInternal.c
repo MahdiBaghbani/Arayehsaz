@@ -63,7 +63,7 @@ void _extendArayehSize(arayeh *array, size_t extendSize) {
     int state = (array->_privateMethods.initArayeh)(array, &arrayPointer, newSize);
 
     // protection for possible overflow in size_t.
-    if (state == FAILURE) {
+    if (state == AA_ARAYEH_FAILURE) {
         // TODO error handler
         abort();
     }
@@ -73,7 +73,7 @@ void _extendArayehSize(arayeh *array, size_t extendSize) {
     state = (array->_privateMethods.reallocArayeh)(array, &arrayPointer, newSize);
 
     // check if memory allocated or not.
-    if (state == FAILURE || mapPointer == NULL) {
+    if (state == AA_ARAYEH_FAILURE || mapPointer == NULL) {
         // free map and array pointers.
         free(mapPointer);
         (array->_privateMethods.freeArayeh)(array);
@@ -94,30 +94,41 @@ void _extendArayehSize(arayeh *array, size_t extendSize) {
     array->_internalProperties.size = newSize;
 }
 
-void _freeArayehMemory(arayeh *array) {
+int _freeArayehMemory(arayeh **self) {
     /*
      * This function will free the array and reset its parameters.
      *
      * ARGUMENTS:
-     * self         pointer to the array object.
-     *
+     * self         pointer to the pointer to the array object.
+
+     * RETURN:
+     * state        a code that indicates successful operation
+     *              or an error code defined in configuration.h
      */
 
-    // free array pointer.
-    (array->_privateMethods.freeArayeh)(array);
+    // no way to test if "free" really worked or not ...
+    // so I let this to be success.
+    int state = AA_ARAYEH_SUCCESS;
 
-    // free map pointer.
-    free(array->_internalProperties.map);
-    array->_internalProperties.map = NULL;
+    // free array pointer.
+    ((*self)->_privateMethods.freeArayeh)(*self);
+
+    // free map pointer and nullify the pointer.
+    free((*self)->_internalProperties.map);
+    (*self)->_internalProperties.map = NULL;
 
     // reset array parameters.
-    array->_internalProperties.type = 0;
-    array->_internalProperties.next = 0;
-    array->_internalProperties.used = 0;
-    array->_internalProperties.size = 0;
+    (*self)->_internalProperties.type = 0;
+    (*self)->_internalProperties.next = 0;
+    (*self)->_internalProperties.used = 0;
+    (*self)->_internalProperties.size = 0;
 
-    // free array pointer.
-    free(array);
+    // free array pointer and nullify the array pointer.
+    free(*self);
+    *self = NULL;
+
+    // return function state.
+    return state;
 }
 
 
@@ -246,7 +257,7 @@ void _insertToArayeh(arayeh *array, size_t index, void *element) {
      */
 
     // tracks errors in function.
-    int state = SUCCESS;
+    int state = AA_ARAYEH_SUCCESS;
 
     // check array bounds.
     if (index >= array->_internalProperties.size || index < 0) {

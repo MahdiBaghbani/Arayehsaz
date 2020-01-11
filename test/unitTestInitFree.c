@@ -57,29 +57,32 @@ void test_Init_Free(void) {
     arayeh *typeFloat = newArayeh1D(TYPE_FLOAT, arayehSize);
     arayeh *typeDouble = newArayeh1D(TYPE_DOUBLE, arayehSize);
 
-    // test created arayeh pointers.
-    TEST_ASSERT_FALSE(typeChar == NULL)
-    TEST_ASSERT_FALSE(typeSInt == NULL)
-    TEST_ASSERT_FALSE(typeInt == NULL)
-    TEST_ASSERT_FALSE(typeLInt == NULL)
-    TEST_ASSERT_FALSE(typeFloat == NULL)
-    TEST_ASSERT_FALSE(typeDouble == NULL)
+    printf("%ld\n", sizeof typeDouble->_internalProperties.array.pDouble);
+    printf("%ld\n", sizeof *(typeDouble->_internalProperties.array.pDouble));
+
+    // test arayeh pointers aren't null.
+    TEST_ASSERT_NOT_NULL(typeChar)
+    TEST_ASSERT_NOT_NULL(typeSInt)
+    TEST_ASSERT_NOT_NULL(typeInt)
+    TEST_ASSERT_NOT_NULL(typeLInt)
+    TEST_ASSERT_NOT_NULL(typeFloat)
+    TEST_ASSERT_NOT_NULL(typeDouble)
 
     // test array pointers.
-    TEST_ASSERT_FALSE(typeChar->_internalProperties.array.pChar == NULL)
-    TEST_ASSERT_FALSE(typeSInt->_internalProperties.array.pShortInt == NULL)
-    TEST_ASSERT_FALSE(typeInt->_internalProperties.array.pInt == NULL)
-    TEST_ASSERT_FALSE(typeLInt->_internalProperties.array.pLongInt == NULL)
-    TEST_ASSERT_FALSE(typeFloat->_internalProperties.array.pFloat == NULL)
-    TEST_ASSERT_FALSE(typeDouble->_internalProperties.array.pDouble == NULL)
+    TEST_ASSERT_NOT_NULL(typeChar->_internalProperties.array.pChar)
+    TEST_ASSERT_NOT_NULL(typeSInt->_internalProperties.array.pShortInt)
+    TEST_ASSERT_NOT_NULL(typeInt->_internalProperties.array.pInt)
+    TEST_ASSERT_NOT_NULL(typeLInt->_internalProperties.array.pLongInt)
+    TEST_ASSERT_NOT_NULL(typeFloat->_internalProperties.array.pFloat)
+    TEST_ASSERT_NOT_NULL(typeDouble->_internalProperties.array.pDouble)
 
     // test map pointers.
-    TEST_ASSERT_FALSE(typeChar->_internalProperties.map == NULL)
-    TEST_ASSERT_FALSE(typeSInt->_internalProperties.map == NULL)
-    TEST_ASSERT_FALSE(typeInt->_internalProperties.map == NULL)
-    TEST_ASSERT_FALSE(typeLInt->_internalProperties.map == NULL)
-    TEST_ASSERT_FALSE(typeFloat->_internalProperties.map == NULL)
-    TEST_ASSERT_FALSE(typeDouble->_internalProperties.map == NULL)
+    TEST_ASSERT_NOT_NULL(typeChar->_internalProperties.map)
+    TEST_ASSERT_NOT_NULL(typeSInt->_internalProperties.map)
+    TEST_ASSERT_NOT_NULL(typeInt->_internalProperties.map)
+    TEST_ASSERT_NOT_NULL(typeLInt->_internalProperties.map)
+    TEST_ASSERT_NOT_NULL(typeFloat->_internalProperties.map)
+    TEST_ASSERT_NOT_NULL(typeDouble->_internalProperties.map)
 
     // test arayeh "size" attribute.
     TEST_ASSERT_EQUAL_size_t(arayehSize,typeChar->_internalProperties.size);
@@ -105,17 +108,21 @@ void test_Init_Free(void) {
     TEST_ASSERT_EQUAL_size_t(0,typeFloat->_internalProperties.next);
     TEST_ASSERT_EQUAL_size_t(0,typeDouble->_internalProperties.next);
 
-    // free arrays.
-    (typeChar->freeArayeh)(typeChar);
-    (typeSInt->freeArayeh)(typeSInt);
-    (typeInt->freeArayeh)(typeInt);
-    (typeLInt->freeArayeh)(typeLInt);
-    (typeFloat->freeArayeh)(typeFloat);
-    (typeDouble->freeArayeh)(typeDouble);
+    // test if free returns success.
+    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, (typeChar->freeArayeh)(&typeChar));
+    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, (typeSInt->freeArayeh)(&typeSInt));
+    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, (typeInt->freeArayeh)(&typeInt));
+    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, (typeLInt->freeArayeh)(&typeLInt));
+    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, (typeFloat->freeArayeh)(&typeFloat));
+    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, (typeDouble->freeArayeh)(&typeDouble));
 
-    typeChar = NULL;
-    typeSInt = NULL;
-
+    // test if pointers are nullified after being freed.
+    TEST_ASSERT_NULL(typeChar)
+    TEST_ASSERT_NULL(typeSInt)
+    TEST_ASSERT_NULL(typeInt)
+    TEST_ASSERT_NULL(typeLInt)
+    TEST_ASSERT_NULL(typeFloat)
+    TEST_ASSERT_NULL(typeDouble)
 }
 
 int main(void) {

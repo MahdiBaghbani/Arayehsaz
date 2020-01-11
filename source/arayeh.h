@@ -96,7 +96,7 @@ typedef struct arayehStruct {
         void (*extendSize)(arayeh *self, size_t extendSize);
 
         // this function will free the array and reset its parameters.
-        void (*freeArayeh)(arayeh *self);
+        int (*freeArayeh)(arayeh **self);
 
         // this function will fill array with an element from index (inclusive)
         // "start" to index (exclusive) "end" with step size "step".

@@ -59,7 +59,7 @@ __BEGIN_DECLS
 void _extendArayehSize(arayeh *array, size_t extendSize);
 
 // this function will free the array and reset its parameters.
-void _freeArayehMemory(arayeh *array);
+int _freeArayehMemory(arayeh **self);
 
 // this function will fill array with an element from index (inclusive)
 // "start" to index (exclusive) "end" with step size "step".
