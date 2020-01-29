@@ -131,6 +131,80 @@ int _freeArayehMemory(arayeh **self) {
     return state;
 }
 
+void _addToArayeh(arayeh *array, void *element) {
+    /*
+     * This function will insert an "element" into array at index = self->_internalProperties.next.
+     *
+     * function will extend size of array in case of self->_internalProperties.size == self->_internalProperties.used.
+     *
+     * it will update "map" and "used" and "next" parameters.
+     * it may update "size" parameter.
+     *
+     * self->_internalProperties.next will be updated in a manner that it points to the
+     * next EMPTY slot in the array.
+     *
+     * ARGUMENTS:
+     * self           pointer to the array object.
+     * element        pointer to a variable to be added to the array.
+     *
+     */
+
+    // extend array size if needed.
+    if (array->_internalProperties.used == array->_internalProperties.size) {
+        (array->extendSize)(array, array->_internalProperties.size);
+    }
+
+    // add element.
+    (array->_privateMethods.addElementToArayeh)(array, array->_internalProperties.next, element);
+
+    // update "map" and "used".
+    array->_internalProperties.map[array->_internalProperties.next] = IS_FILLED;
+    array->_internalProperties.used++;
+
+    // update "next" pointer.
+    _UpdateNextLocationPointer(array);
+}
+
+void _insertToArayeh(arayeh *array, size_t index, void *element) {
+    /*
+     * This function will insert an "element" into array at "index".
+     *
+     * this function WON'T increase array size!
+     *
+     * it may update "map" and "used" and "next" parameters.
+     *
+     * ARGUMENTS:
+     * self         pointer to the array object.
+     * element      pointer to a variable to be inserted into the array.
+     *
+     */
+
+    // track error state in the function.
+    int state = AA_ARAYEH_SUCCESS;
+
+    // check array bounds.
+    if (index >= array->_internalProperties.size || index < 0) {
+        // TODO error handler
+        // state =
+        abort();
+    }
+
+    // insert element.
+    if (index == array->_internalProperties.next) {
+        // use _addToArayeh for insertion.
+        _addToArayeh(array, element);
+
+    } else {
+        // assign element.
+        (array->_privateMethods.addElementToArayeh)(array, index, element);
+        // update array parameters.
+        if (index > array->_internalProperties.next && array->_internalProperties.map[index] == IS_EMPTY) {
+            // update "map" and "used" if they aren't already counted for this index.
+            array->_internalProperties.map[index] = IS_FILLED;
+            array->_internalProperties.used++;
+        }
+    }
+}
 
 void _fillArayeh(arayeh *array, size_t start, size_t step, size_t end, void *element) {
     /*
@@ -205,81 +279,6 @@ void _fillArayeh(arayeh *array, size_t start, size_t step, size_t end, void *ele
 
         // update "next" pointer.
         _UpdateNextLocationPointer(array);
-    }
-}
-
-void _addToArayeh(arayeh *array, void *element) {
-    /*
-     * This function will insert an "element" into array at index = self->_internalProperties.next.
-     *
-     * function will extend size of array in case of self->_internalProperties.size == self->_internalProperties.used.
-     *
-     * it will update "map" and "used" and "next" parameters.
-     * it may update "size" parameter.
-     *
-     * self->_internalProperties.next will be updated in a manner that it points to the
-     * next EMPTY slot in the array.
-     *
-     * ARGUMENTS:
-     * self           pointer to the array object.
-     * element        pointer to a variable to be added to the array.
-     *
-     */
-
-    // extend array size if needed.
-    if (array->_internalProperties.used == array->_internalProperties.size) {
-        (array->extendSize)(array, array->_internalProperties.size);
-    }
-
-    // add element.
-    (array->_privateMethods.addElementToArayeh)(array, array->_internalProperties.next, element);
-
-    // update "map" and "used".
-    array->_internalProperties.map[array->_internalProperties.next] = IS_FILLED;
-    array->_internalProperties.used++;
-
-    // update "next" pointer.
-    _UpdateNextLocationPointer(array);
-}
-
-void _insertToArayeh(arayeh *array, size_t index, void *element) {
-    /*
-     * This function will insert an "element" into array at "index".
-     *
-     * this function WON'T increase array size!
-     *
-     * it may update "map" and "used" and "next" parameters.
-     *
-     * ARGUMENTS:
-     * self         pointer to the array object.
-     * element      pointer to a variable to be inserted into the array.
-     *
-     */
-
-    // tracks errors in function.
-    int state = AA_ARAYEH_SUCCESS;
-
-    // check array bounds.
-    if (index >= array->_internalProperties.size || index < 0) {
-        // TODO error handler
-        // state =
-        abort();
-    }
-
-    // insert element.
-    if (index == array->_internalProperties.next) {
-        // use _addToArayeh for insertion.
-        _addToArayeh(array, element);
-
-    } else {
-        // assign element.
-        (array->_privateMethods.addElementToArayeh)(array, index, element);
-        // update array parameters.
-        if (index > array->_internalProperties.next && array->_internalProperties.map[index] == IS_EMPTY) {
-            // update "map" and "used" if they aren't already counted for this index.
-            array->_internalProperties.map[index] = IS_FILLED;
-            array->_internalProperties.used++;
-        }
     }
 }
 
