@@ -37,16 +37,16 @@
 #ifndef __AA_A_ARRAYS1D_H__
 #define __AA_A_ARRAYS1D_H__
 
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <limits.h>
 
 #include "configurations.h"
 
 #ifndef SIZE_MAX
-# ifdef __SIZE_MAX__
-#  define SIZE_MAX __SIZE_MAX__
-# endif
+#    ifdef __SIZE_MAX__
+#        define SIZE_MAX __SIZE_MAX__
+#    endif
 #endif
 
 // To ensure that the names declared in this portion of code have C linkage,
@@ -54,11 +54,11 @@
 #undef __BEGIN_DECLS
 #undef __END_DECLS
 #ifdef __cplusplus
-# define __BEGIN_DECLS extern "C" {
-# define __END_DECLS }
+#    define __BEGIN_DECLS extern "C" {
+#    define __END_DECLS   }
 #else
-# define __BEGIN_DECLS /* empty */
-# define __END_DECLS /* empty */
+#    define __BEGIN_DECLS /* empty */
+#    define __END_DECLS   /* empty */
 #endif
 
 __BEGIN_DECLS
@@ -68,12 +68,12 @@ typedef struct arayehStruct arayeh;
 
 // Supported arayeh types.
 typedef union arrayTypeUnion {
-    char        *pChar;
-    short int   *pShortInt;
-    int         *pInt;
-    long int    *pLongInt;
-    float       *pFloat;
-    double      *pDouble;
+    char *pChar;
+    short int *pShortInt;
+    int *pInt;
+    long int *pLongInt;
+    float *pFloat;
+    double *pDouble;
 } arrayType;
 
 // Arayeh definition.
@@ -81,12 +81,12 @@ typedef struct arayehStruct {
 
     // variables to hold state of the array.
     struct internalProperties {
-        arrayType   array;
-        char        *map;
-        size_t      type;
-        size_t      next;
-        size_t      used;
-        size_t      size;
+        arrayType array;
+        char *map;
+        size_t type;
+        size_t next;
+        size_t used;
+        size_t size;
     } _internalProperties;
 
     // public methods of arrays, accessible for everyone.
@@ -98,8 +98,8 @@ typedef struct arayehStruct {
         // this function will free the array and reset its parameters.
         int (*freeArayeh)(arayeh **self);
 
-        // this function will insert an "element" into array at the next empty location in the array.
-        // if array is full, it will extend array size.
+        // this function will insert an "element" into array at the next empty
+        // location in the array. if array is full, it will extend array size.
         void (*add)(arayeh *self, void *element);
 
         // this function will insert an "element" into array at "index".
@@ -107,16 +107,19 @@ typedef struct arayehStruct {
 
         // this function will fill array with an element from index (inclusive)
         // "start" to index (exclusive) "end" with step size "step".
-        void (*fill)(arayeh *self, size_t start, size_t step, size_t end, void *element);
+        void (*fill)(arayeh *self, size_t start, size_t step, size_t end,
+                     void *element);
 
-        // this function will merge a default C array (for example int a[4] = {1, 2, 3, 4};)
-        // into arayeh array, the starting index for merging is "startIndex" and the size of
-        // C array determines the last index (in the example above the size of C array is 4).
-        void (*mergeList)(arayeh *self, size_t startIndex, size_t listSize, void *list);
+        // this function will merge a default C array (for example int a[4] = {1, 2,
+        // 3, 4};) into arayeh array, the starting index for merging is "startIndex"
+        // and the size of C array determines the last index (in the example above
+        // the size of C array is 4).
+        void (*mergeList)(arayeh *self, size_t startIndex, size_t listSize,
+                          void *list);
 
-        // this function copies data in "index" cell of the array to the "destination" memory location.
+        // this function copies data in "index" cell of the array to the
+        // "destination" memory location.
         void (*get)(arayeh *self, size_t index, void *destination);
-
     };
 
     // private methods of array, should not be used by users.
@@ -134,7 +137,8 @@ typedef struct arayehStruct {
 
         void (*addElementToArayeh)(arayeh *self, size_t index, void *element);
 
-        void (*mergeListToArayeh)(arayeh *self, size_t startIndex, size_t listSize, void *list);
+        void (*mergeListToArayeh)(arayeh *self, size_t startIndex, size_t listSize,
+                                  void *list);
 
         void (*getElementFromArayeh)(arayeh *self, size_t index, void *destination);
 
@@ -161,4 +165,4 @@ arayeh *newArayeh1D(size_t type, size_t initialSize);
 
 __END_DECLS
 
-#endif //__AA_A_ARRAYS1D_H__
+#endif    //__AA_A_ARRAYS1D_H__

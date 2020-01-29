@@ -37,7 +37,8 @@
 #include "arayeh.h"
 #include "arayehInternal.h"
 
-arayeh *newArayeh1D(size_t type, size_t initialSize) {
+arayeh *newArayeh1D(size_t type, size_t initialSize)
+{
     /*
      * This function will create an array of type "type"
      * (one the supported types defined in configuration.h)
@@ -74,8 +75,8 @@ arayeh *newArayeh1D(size_t type, size_t initialSize) {
     char *mapPointer = NULL;
     arrayType arrayPointer;
 
-    // this function identifies the right pointer for array type and sets it to point to NULL
-    // and also checks for possible overflow in size_t initialSize.
+    // this function identifies the right pointer for array type and sets it to point
+    // to NULL and also checks for possible overflow in size_t initialSize.
     int state = (self->_privateMethods.initArayeh)(self, &arrayPointer, initialSize);
 
     // check for possible size_t overflow.
@@ -106,7 +107,7 @@ arayeh *newArayeh1D(size_t type, size_t initialSize) {
 
     // set array parameters.
     (self->_privateMethods.setArayehMemoryPointer)(self, &arrayPointer);
-    self->_internalProperties.map = mapPointer;
+    self->_internalProperties.map  = mapPointer;
     self->_internalProperties.type = type;
     self->_internalProperties.next = 0;
     self->_internalProperties.used = 0;
