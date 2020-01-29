@@ -34,8 +34,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef __AA_A_ARRAYSINTERNALS1D_H__
-#define __AA_A_ARRAYSINTERNALS1D_H__
+#ifndef __AA_A_ARAYEHINTERNAL_H__
+#define __AA_A_ARAYEHINTERNAL_H__
 
 #include "arayeh.h"
 #include "arayehTypeManager.h"
@@ -95,4 +95,4 @@ void _UpdateNextLocationPointer(arayeh *array);
 
 __END_DECLS
 
-#endif    //__AA_A_ARRAYSINTERNALS1D_H__
+#endif    //__AA_A_ARAYEHINTERNAL_H__

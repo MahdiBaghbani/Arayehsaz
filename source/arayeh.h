@@ -34,8 +34,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef __AA_A_ARRAYS1D_H__
-#define __AA_A_ARRAYS1D_H__
+#ifndef __AA_A_ARAYEH_H__
+#define __AA_A_ARAYEH_H__
 
 #include <limits.h>
 #include <stdio.h>
@@ -165,4 +165,4 @@ arayeh *newArayeh1D(size_t type, size_t initialSize);
 
 __END_DECLS
 
-#endif    //__AA_A_ARRAYS1D_H__
+#endif    //__AA_A_ARAYEH_H__
