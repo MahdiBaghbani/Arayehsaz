@@ -46,11 +46,11 @@
 #undef __BEGIN_DECLS
 #undef __END_DECLS
 #ifdef __cplusplus
-# define __BEGIN_DECLS extern "C" {
-# define __END_DECLS }
+#    define __BEGIN_DECLS extern "C" {
+#    define __END_DECLS   }
 #else
-# define __BEGIN_DECLS /* empty */
-# define __END_DECLS /* empty */
+#    define __BEGIN_DECLS /* empty */
+#    define __END_DECLS   /* empty */
 #endif
 
 __BEGIN_DECLS
@@ -61,7 +61,8 @@ void _extendArayehSize(arayeh *array, size_t extendSize);
 // this function will free the array and reset its parameters.
 int _freeArayehMemory(arayeh **self);
 
-// this function will insert an "element" into array at index = self->_internalProperties.next.
+// this function will insert an "element" into array at
+// index = self->_internalProperties.next.
 void _addToArayeh(arayeh *array, void *element);
 
 // this function will insert an "element" into array at "index".
@@ -69,14 +70,17 @@ void _insertToArayeh(arayeh *array, size_t index, void *element);
 
 // this function will fill array with an element from index (inclusive)
 // "start" to index (exclusive) "end" with step size "step".
-void _fillArayeh(arayeh *array, size_t start, size_t step, size_t end, void *element);
+void _fillArayeh(arayeh *array, size_t start, size_t step, size_t end,
+                 void *element);
 
 // this function will merge a default C array (for example int a[4] = {1, 2, 3, 4};)
 // into arayeh array, the starting index for merging is "startIndex" and the size of
 // C array determines the last index (in the example above the size of C array is 4).
-void _mergeListToArayeh(arayeh *self, size_t startIndex, size_t listSize, void *list);
+void _mergeListToArayeh(arayeh *self, size_t startIndex, size_t listSize,
+                        void *list);
 
-// this function copies data in "index" cell of the array to the "destination" memory location.
+// this function copies data in "index" cell of the array to the "destination" memory
+// location.
 void _getElementFromArayeh(arayeh *array, size_t index, void *destination);
 
 // this function assigns pointers to public functions of an arayeh instance.
@@ -91,4 +95,4 @@ void _UpdateNextLocationPointer(arayeh *array);
 
 __END_DECLS
 
-#endif //__AA_A_ARRAYSINTERNALS1D_H__
+#endif    //__AA_A_ARRAYSINTERNALS1D_H__

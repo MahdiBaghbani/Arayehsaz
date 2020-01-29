@@ -45,16 +45,16 @@
 #undef __BEGIN_DECLS
 #undef __END_DECLS
 #ifdef __cplusplus
-# define __BEGIN_DECLS extern "C" {
-# define __END_DECLS }
+#    define __BEGIN_DECLS extern "C" {
+#    define __END_DECLS   }
 #else
-# define __BEGIN_DECLS /* empty */
-# define __END_DECLS /* empty */
+#    define __BEGIN_DECLS /* empty */
+#    define __END_DECLS   /* empty */
 #endif
 
 __BEGIN_DECLS
 
-// ARRAY INITIALIZATION.
+// Initialize arayeh pointer.
 
 int _initTypeChar(arayeh *self, arrayType *array, size_t initialSize);
 
@@ -68,7 +68,7 @@ int _initTypeFloat(arayeh *self, arrayType *array, size_t initialSize);
 
 int _initTypeDouble(arayeh *self, arrayType *array, size_t initialSize);
 
-// ARRAY MALLOC.
+// Allocate memory for arayeh.
 
 int _mallocTypeChar(arayeh *self, arrayType *array, size_t initialSize);
 
@@ -82,7 +82,7 @@ int _mallocTypeFloat(arayeh *self, arrayType *array, size_t initialSize);
 
 int _mallocTypeDouble(arayeh *self, arrayType *array, size_t initialSize);
 
-// ARRAY REALLOC.
+// Re-allocate memory for arayeh.
 
 int _reallocTypeChar(arayeh *self, arrayType *array, size_t newSize);
 
@@ -96,7 +96,7 @@ int _reallocTypeFloat(arayeh *self, arrayType *array, size_t newSize);
 
 int _reallocTypeDouble(arayeh *self, arrayType *array, size_t newSize);
 
-// ARRAY FREE.
+// Free arayeh memory.
 
 void _freeTypeChar(arayeh *self);
 
@@ -110,7 +110,7 @@ void _freeTypeFloat(arayeh *self);
 
 void _freeTypeDouble(arayeh *self);
 
-// ARRAY SET MEMORY POINTER.
+// Assign the initialized pointer of an array to the arayeh structs pointer.
 
 void _setMemoryPointerTypeChar(arayeh *self, arrayType *array);
 
@@ -124,7 +124,7 @@ void _setMemoryPointerTypeFloat(arayeh *self, arrayType *array);
 
 void _setMemoryPointerTypeDouble(arayeh *self, arrayType *array);
 
-// ARRAY ADD.
+// Add an element of a specific type to the arayeh.
 
 void _addTypeChar(arayeh *self, size_t index, void *element);
 
@@ -138,21 +138,26 @@ void _addTypeFloat(arayeh *self, size_t index, void *element);
 
 void _addTypeDouble(arayeh *self, size_t index, void *element);
 
-// ARRAY MERGE LIST.
+// Merge a C standard array of a specific type into the arayeh.
 
-void _mergeListTypeChar(arayeh *self, size_t startIndex, size_t listSize, void *list);
+void _mergeListTypeChar(arayeh *self, size_t startIndex, size_t listSize,
+                        void *list);
 
-void _mergeListTypeSInt(arayeh *self, size_t startIndex, size_t listSize, void *list);
+void _mergeListTypeSInt(arayeh *self, size_t startIndex, size_t listSize,
+                        void *list);
 
 void _mergeListTypeInt(arayeh *self, size_t startIndex, size_t listSize, void *list);
 
-void _mergeListTypeLInt(arayeh *self, size_t startIndex, size_t listSize, void *list);
+void _mergeListTypeLInt(arayeh *self, size_t startIndex, size_t listSize,
+                        void *list);
 
-void _mergeListTypeFloat(arayeh *self, size_t startIndex, size_t listSize, void *list);
+void _mergeListTypeFloat(arayeh *self, size_t startIndex, size_t listSize,
+                         void *list);
 
-void _mergeListTypeDouble(arayeh *self, size_t startIndex, size_t listSize, void *list);
+void _mergeListTypeDouble(arayeh *self, size_t startIndex, size_t listSize,
+                          void *list);
 
-// ARRAY GET.
+// Get an element from arayeh.
 
 void _getTypeChar(arayeh *self, size_t index, void *element);
 
@@ -168,4 +173,4 @@ void _getTypeDouble(arayeh *self, size_t index, void *element);
 
 __END_DECLS
 
-#endif //__AA_A_ARAYEHTYPEMANAGER_H__
+#endif    //__AA_A_ARAYEHTYPEMANAGER_H__
