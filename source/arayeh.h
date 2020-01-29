@@ -98,16 +98,16 @@ typedef struct arayehStruct {
         // this function will free the array and reset its parameters.
         int (*freeArayeh)(arayeh **self);
 
-        // this function will fill array with an element from index (inclusive)
-        // "start" to index (exclusive) "end" with step size "step".
-        void (*fill)(arayeh *self, size_t start, size_t step, size_t end, void *element);
-
         // this function will insert an "element" into array at the next empty location in the array.
         // if array is full, it will extend array size.
         void (*add)(arayeh *self, void *element);
 
         // this function will insert an "element" into array at "index".
         void (*insert)(arayeh *self, size_t index, void *element);
+
+        // this function will fill array with an element from index (inclusive)
+        // "start" to index (exclusive) "end" with step size "step".
+        void (*fill)(arayeh *self, size_t start, size_t step, size_t end, void *element);
 
         // this function will merge a default C array (for example int a[4] = {1, 2, 3, 4};)
         // into arayeh array, the starting index for merging is "startIndex" and the size of
@@ -156,7 +156,7 @@ arayeh *newArayeh1D(size_t type, size_t initialSize);
  * RETURN:
  * A pointer to the initialized array.
  * or
- * Prints error message and exits.
+ * return NULL in case of error.
  */
 
 __END_DECLS

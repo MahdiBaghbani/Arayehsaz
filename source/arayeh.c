@@ -51,15 +51,14 @@ arayeh *newArayeh1D(size_t type, size_t initialSize) {
      * RETURN:
      * A pointer to the initialized array.
      * or
-     * Prints error message and exits.
+     * return NULL in case of error.
      */
 
     // check array type.
     if (type != TYPE_CHAR && type != TYPE_SINT && type != TYPE_INT &&
         type != TYPE_LINT && type != TYPE_FLOAT && type != TYPE_DOUBLE) {
-
-        //TODO Error handler
-        abort();
+        // wrong array type.
+        return NULL;
     }
 
     // initialize a pointer and allocate memory.
@@ -74,14 +73,17 @@ arayeh *newArayeh1D(size_t type, size_t initialSize) {
     // initialize variables for allocating memory.
     char *mapPointer = NULL;
     arrayType arrayPointer;
+
     // this function identifies the right pointer for array type and sets it to point to NULL
     // and also checks for possible overflow in size_t initialSize.
     int state = (self->_privateMethods.initArayeh)(self, &arrayPointer, initialSize);
 
     // check for possible size_t overflow.
     if (state == AA_ARAYEH_FAILURE) {
-        // TODO
-        abort();
+        // overflow detected.
+        // free self.
+        free(self);
+        return NULL;
     }
 
     // allocate memory to map and array.
@@ -90,12 +92,11 @@ arayeh *newArayeh1D(size_t type, size_t initialSize) {
 
     // check if memory allocated or not.
     if (state == AA_ARAYEH_FAILURE || mapPointer == NULL) {
-        // free map and array pointers.
+        // free map, array and self pointers.
         free(mapPointer);
         (self->_privateMethods.freeArayeh)(self);
-
-        // TODO error handler
-        abort();
+        free(self);
+        return NULL;
     }
 
     // set all map elements to '0' [IS_EMPTY].
