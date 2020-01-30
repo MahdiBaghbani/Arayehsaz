@@ -93,7 +93,7 @@ typedef struct arayehStruct {
     struct {
 
         // this function will reallocate memory to the array and its map.
-        void (*extendSize)(arayeh *self, size_t extendSize);
+        int (*extendSize)(arayeh *self, size_t extendSize);
 
         // this function will free the array and reset its parameters.
         int (*freeArayeh)(arayeh **self);
