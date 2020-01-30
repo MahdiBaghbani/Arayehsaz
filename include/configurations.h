@@ -38,11 +38,14 @@
 #define __AA_A_CONFIGURATIONS_H__
 
 // return codes.
-#define AA_ARAYEH_SUCCESS        1
-#define AA_ARAYEH_FAILURE        0
-#define AA_ARAYEH_WRONG_NEW_SIZE 2
-#define AA_ARAYEH_OVERFLOW       3
-#define AA_ARAYEH_REALLOC_DENIED 4
+#define AA_ARAYEH_SUCCESS         1
+#define AA_ARAYEH_FAILURE         0
+#define AA_ARAYEH_WRONG_NEW_SIZE  2
+#define AA_ARAYEH_OVERFLOW        3
+#define AA_ARAYEH_REALLOC_DENIED  4
+#define AA_ARAYEH_WRONG_INDEX     5
+#define AA_ARAYEH_END_BIGGER_SIZE 6
+#define AA_ARAYEH_WRONG_STEP      7
 
 // map characters.
 #define IS_EMPTY  '0'
