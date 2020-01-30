@@ -1,9 +1,9 @@
 /* include/configurations.h
  *
  * This file is a part of:
- * ASL - Azadeh Scientific Library in C
+ * Azadeh Afzar - Arayehsaz (AA-A).
  *
- * Copyright (C) 2019 Mohammad Mahdi Baghbani Pourvahid
+ * Copyright (C) 2020 Mohammad Mahdi Baghbani Pourvahid
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
