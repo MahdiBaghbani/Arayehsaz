@@ -34,7 +34,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include "arayehInternal.h"
+#include "../include/arayehInternal.h"
 
 int _extendArayehSize(arayeh *array, size_t extendSize)
 {

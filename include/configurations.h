@@ -1,4 +1,4 @@
-/* Source/Library/Util/Configurations/asl_configurations.h
+/* include/configurations.h
  *
  * This file is a part of:
  * ASL - Azadeh Scientific Library in C
