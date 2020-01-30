@@ -49,6 +49,16 @@
         fprintf(stderr, "FATAL: " what " from " FILE_LINE "\n"); \
         exit(1);                                                 \
     } while (0)
+
+/*
+    Use below macros like this:
+
+    char *buf = malloc(size);
+    if (!buf)
+        FATAL_MALLOC("my_func()");
+
+*/
+
 #define FATAL_MALLOC(what)  FATAL("low memory? malloc() failed in " what)
 #define FATAL_CALLOC(what)  FATAL("low memory? calloc() failed in " what)
 #define FATAL_REALLOC(what) FATAL("low memory? realloc() failed in " what)
@@ -58,14 +68,9 @@
 #define WARN_CALLOC(what)   WARN("low memory? calloc() failed in " what)
 #define WARN_REALLOC(what)  WARN("low memory? realloc() failed in " what)
 #define WARN_STRDUP(what)   WARN("low memory? strdup() failed in " what)
-
-/*
-    Use like this:
-
-    char *buf = malloc(size);
-    if (!buf)
-        FATAL_MALLOC("my_func()");
-
-*/
+#define WARN_T_OVERFLOW(what) WARN("possible size_t overflow, failed in " what)
+#define WARN_NEW_SIZE(what) \
+    WARN("new size is less than current size, failed in " what)
+#define WARN_WRONG_INDEX(what) WARN("failed in " what)
 
 #endif    //__AA_A_FATAL_H__
