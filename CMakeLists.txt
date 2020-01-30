@@ -6,7 +6,9 @@
 cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
 
 # Project name.
-project(Arayehsaz VERSION 0.1.0 LANGUAGES C DESCRIPTION "Easy and almost safe array maker in C.")
+project(arayehsaz VERSION 0.1.0 LANGUAGES C
+        DESCRIPTION "Easy and almost safe dynamic array in C."
+        )
 
 ########################################################################
 # Compiler specific setup
@@ -32,6 +34,7 @@ endif()
 ########################################################################
 # Setup the library type and include and linker paths
 ########################################################################
+
 # Library type.
 set(BUILD_SHARED_LIBS YES)
 
@@ -43,6 +46,7 @@ include_directories(
 ########################################################################
 # Build tests
 ########################################################################
+
 include(CTest) # note: this adds a BUILD_TESTING which defaults to ON
 
 ########################################################################
