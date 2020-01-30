@@ -100,26 +100,26 @@ typedef struct arayehStruct {
 
         // this function will insert an "element" into array at the next empty
         // location in the array. if array is full, it will extend array size.
-        void (*add)(arayeh *self, void *element);
+        int (*add)(arayeh *self, void *element);
 
         // this function will insert an "element" into array at "index".
-        void (*insert)(arayeh *self, size_t index, void *element);
+        int (*insert)(arayeh *self, size_t index, void *element);
 
         // this function will fill array with an element from index (inclusive)
         // "start" to index (exclusive) "end" with step size "step".
-        void (*fill)(arayeh *self, size_t start, size_t step, size_t end,
-                     void *element);
+        int (*fill)(arayeh *self, size_t start, size_t step, size_t end,
+                    void *element);
 
-        // this function will merge a default C array (for example int a[4] = {1, 2,
-        // 3, 4};) into arayeh array, the starting index for merging is "startIndex"
-        // and the size of C array determines the last index (in the example above
-        // the size of C array is 4).
+        // this function will merge a default C array
+        // (for example int a[4] = {1, 2, 3, 4};) into arayeh array, the starting
+        // index for merging is "startIndex" and the size of C array determines the
+        // last index (in the example above the size of C array is 4).
         void (*mergeList)(arayeh *self, size_t startIndex, size_t listSize,
                           void *list);
 
         // this function copies data in "index" cell of the array to the
         // "destination" memory location.
-        void (*get)(arayeh *self, size_t index, void *destination);
+        int (*get)(arayeh *self, size_t index, void *destination);
     };
 
     // private methods of array, should not be used by users.

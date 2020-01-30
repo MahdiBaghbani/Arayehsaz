@@ -40,6 +40,7 @@
 #include "arayeh.h"
 #include "arayehTypeManager.h"
 #include "configurations.h"
+#include "fatal.h"
 
 // To ensure that the names declared in this portion of code have C linkage,
 // and thus C++ name mangling is not performed while using this code with C++.
@@ -63,15 +64,14 @@ int _freeArayehMemory(arayeh **self);
 
 // this function will insert an "element" into array at
 // index = self->_internalProperties.next.
-void _addToArayeh(arayeh *array, void *element);
+int _addToArayeh(arayeh *array, void *element);
 
 // this function will insert an "element" into array at "index".
-void _insertToArayeh(arayeh *array, size_t index, void *element);
+int _insertToArayeh(arayeh *array, size_t index, void *element);
 
 // this function will fill array with an element from index (inclusive)
 // "start" to index (exclusive) "end" with step size "step".
-void _fillArayeh(arayeh *array, size_t start, size_t step, size_t end,
-                 void *element);
+int _fillArayeh(arayeh *array, size_t start, size_t step, size_t end, void *element);
 
 // this function will merge a default C array (for example int a[4] = {1, 2, 3, 4};)
 // into arayeh array, the starting index for merging is "startIndex" and the size of
@@ -81,7 +81,7 @@ void _mergeListToArayeh(arayeh *self, size_t startIndex, size_t listSize,
 
 // this function copies data in "index" cell of the array to the "destination" memory
 // location.
-void _getElementFromArayeh(arayeh *array, size_t index, void *destination);
+int _getElementFromArayeh(arayeh *array, size_t index, void *destination);
 
 // this function assigns pointers to public functions of an arayeh instance.
 void _setPublicMethods(arayeh *self);
