@@ -6,5 +6,5 @@ add_subdirectory("unity test framework")
 
 # add tests.
 add_executable(testArayehInitFree unitTestInitFree.c)
-target_link_libraries(testArayehInitFree PRIVATE arayeh unity)
+target_link_libraries(testArayehInitFree PRIVATE arayehsaz unity)
 add_test(unitTestArayehInitFree testArayehInitFree)
