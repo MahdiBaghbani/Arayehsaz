@@ -1,4 +1,4 @@
-/* include/configurations.h
+/** include/configurations.h
  *
  * This file is a part of:
  * Azadeh Afzar - Arayehsaz (AA-A).

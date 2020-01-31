@@ -1,4 +1,4 @@
-/* source/arayehTypeManager.c
+/** source/arayehTypeManager.c
  *
  * This file is a part of:
  * Azadeh Afzar - Arayehsaz (AA-A).
