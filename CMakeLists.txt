@@ -6,8 +6,10 @@
 cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
 
 # Project name.
-project(arayehsaz VERSION 0.1.0 LANGUAGES C
-        DESCRIPTION "Easy and almost safe dynamic array in C."
+project(arayehsaz
+        VERSION 0.1.0
+        LANGUAGES C
+        DESCRIPTION "Easy and almost safe dynamic arrays in C."
         )
 
 ########################################################################
@@ -58,5 +60,6 @@ add_subdirectory(include)
 add_subdirectory(source)
 
 if(BUILD_TESTING)
+    enable_testing()
     add_subdirectory(test)
 endif(BUILD_TESTING)

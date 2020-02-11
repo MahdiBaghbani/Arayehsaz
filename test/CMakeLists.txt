@@ -1,10 +1,24 @@
 # CMake version.
 cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
 
-# add source directory.
+# add unity source directory.
 add_subdirectory("unity test framework")
 
-# add tests.
-add_executable(testArayehInitFree unitTestInitFree.c)
-target_link_libraries(testArayehInitFree PRIVATE arayehsaz unity)
-add_test(unitTestArayehInitFree testArayehInitFree)
+# create tests for each unit test file.
+set(files
+        unitTestInitFree.c
+        unitTestFillArayeh.c)
+
+foreach (file ${files})
+
+    get_filename_component(file_basename ${file} NAME_WE)
+
+    string(REGEX REPLACE "unitTest([^$]+)" "Test\\1" testCase ${file_basename})
+
+    add_executable(${testCase} ${file})
+
+    target_link_libraries(${testCase} PRIVATE arayehsaz unity)
+
+    add_test(NAME ${testCase} COMMAND ${testCase})
+
+endforeach ()
