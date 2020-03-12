@@ -63,6 +63,7 @@
 #define FATAL_CALLOC(what)  FATAL("low memory? calloc() failed in " what)
 #define FATAL_REALLOC(what) FATAL("low memory? realloc() failed in " what)
 #define FATAL_STRDUP(what)  FATAL("low memory? strdup() failed in " what)
+
 #define WARN(what)          fprintf(stderr, "WARNING: " what " from " FILE_LINE "\n")
 #define WARN_MALLOC(what)   WARN("low memory? malloc() failed in " what)
 #define WARN_CALLOC(what)   WARN("low memory? calloc() failed in " what)
