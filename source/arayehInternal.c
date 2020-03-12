@@ -94,10 +94,10 @@ int _extendArayehSize(arayeh *array, size_t extendSize)
 
     // set new map elements to '0' [IS_EMPTY].
     for (size_t i = array->_internalProperties.size; i < newSize; ++i) {
-        array->_internalProperties.map[i] = IS_EMPTY;
+        mapPointer[i] = IS_EMPTY;
     }
 
-    // set arayeh parameters.
+    // update arayeh parameters.
     (array->_privateMethods.setArayehMemoryPointer)(array, &arrayPointer);
     array->_internalProperties.map  = mapPointer;
     array->_internalProperties.size = newSize;
@@ -169,6 +169,8 @@ int _addToArayeh(arayeh *array, void *element)
 
     // extend arayeh size if needed.
     if (array->_internalProperties.used == array->_internalProperties.size) {
+
+        // extend arayeh size.
         state = (array->extendSize)(array, array->_internalProperties.size);
 
         // stop function and return error value if extending arayeh size failed.
@@ -199,7 +201,8 @@ int _insertToArayeh(arayeh *array, size_t index, void *element)
      *
      * this function WON'T increase arayeh size!
      *
-     * it may update "map" and "used" and "next" parameters.
+     * it will update "map" and "used" and "next" parameters.
+     * it may update "size" parameter.
      *
      * ARGUMENTS:
      * self         pointer to the arayeh object.
@@ -218,10 +221,17 @@ int _insertToArayeh(arayeh *array, size_t index, void *element)
     // track error state in the function.
     int state = AA_ARAYEH_SUCCESS;
 
-    // check arayeh bounds.
+    // check index number to be within arayeh bounds.
+    if (index < 0) {
+        // write to stderr and return error code.
+        WARN_WRONG_INDEX("_insertToArayeh() function, index is less than 0!");
+        return AA_ARAYEH_WRONG_INDEX;
+    }
+
     if (index >= array->_internalProperties.size) {
         // write to stderr and return error code.
-        WARN_WRONG_INDEX("index is bigger than size! _insertToArayeh()");
+        WARN_WRONG_INDEX(
+            "_insertToArayeh() function, index is bigger than arayeh size!");
         return AA_ARAYEH_WRONG_INDEX;
     }
 
@@ -248,7 +258,7 @@ int _insertToArayeh(arayeh *array, size_t index, void *element)
         }
     }
 
-    // return error state
+    // return error state code.
     return state;
 }
 
@@ -259,10 +269,8 @@ int _fillArayeh(arayeh *array, size_t start, size_t step, size_t end, void *elem
      * from index (inclusive) "start" to index (exclusive) "end"
      * with step size "step".
      *
-     * this function WON'T increase arayeh size!
-     *
-     * it will update "map" and "used" parameters.
-     * it may update "next" parameter.
+     * it will update "map" and "used" and "next" parameters.
+     * it may update "size" parameter.
      *
      * ARGUMENTS:
      * self         pointer to the arayeh object.
@@ -277,65 +285,44 @@ int _fillArayeh(arayeh *array, size_t start, size_t step, size_t end, void *elem
      *
      */
 
-    if (array->_internalProperties.size < end) {
+    // track error state in the function.
+    int state = AA_ARAYEH_SUCCESS;
+
+    // check starting index to be within arayeh bounds.
+    if (start < 0) {
         // write to stderr and return error code.
-        WARN_WRONG_INDEX("end is bigger than size! _fillArayeh()");
-        return AA_ARAYEH_END_BIGGER_SIZE;
+        WARN_WRONG_INDEX("_fillArayeh() function, start is less than 0!");
+        return AA_ARAYEH_WRONG_INDEX;
     }
 
-    if (step <= 0) {
+    if (start >= array->_internalProperties.size) {
         // write to stderr and return error code.
-        WARN_WRONG_INDEX("step should be bigger or equal to 1! _fillArayeh()");
+        WARN_WRONG_INDEX(
+            "_fillArayeh() function, start is bigger than arayeh size!");
+        return AA_ARAYEH_WRONG_INDEX;
+    }
+
+    // check step size.
+    if (step == 0) {
+        // write to stderr and return error code.
+        WARN_WRONG_INDEX(
+            "_fillArayeh() function, step should be bigger or equal to 1!");
         return AA_ARAYEH_WRONG_STEP;
     }
 
     // fill the arayeh.
-    for (size_t i = start; i < end; i += step) {
-        // assign element to arayeh.
-        (array->_privateMethods.addElementToArayeh)(array, i, element);
+    for (size_t index = start; index < end; index += step) {
 
-        // update arayeh parameters.
-        if (array->_internalProperties.map[i] == IS_EMPTY) {
-            // element has been assigned to an empty slot in arayeh,
-            // so update the map and +1 to used slots.
-            array->_internalProperties.map[i] = IS_FILLED;
-            array->_internalProperties.used++;
+        if (index < array->_internalProperties.next ||
+            index > array->_internalProperties.next) {
+            state = (array->insert)(array, index, element);
+        } else {
+            state = (array->add)(array, element);
         }
     }
 
-    // update "next" parameter of arayeh.
-    if (start <= array->_internalProperties.next) {
-        // 0 is empty, 1 is data existing in the arayeh, 2 is fill data.
-        //
-        // before fill >>
-        // 111111111111111111111111110000000000000000000111111111111
-        //          ^                ^              ^
-        //        start          next pointer      end
-        //
-        // after fill >>
-        // 111111111222222222222222222222222222222220000111111111111
-        //                                          ^
-        //                                      next pointer
-        //
-        // the above case is for step = 1, if step is more than 1,
-        // if (next - start) % step == 0, we can add 1 to 'next', because it will be
-        // filled.
-        //
-        // finally we will check next map slot to make sure it's empty and 'next' is
-        // valid and we will keep adding 1 to next until map[next] == IS_EMPTY.
-        //
-        if (step == 1) {
-            array->_internalProperties.next = end;
-        } else if ((array->_internalProperties.next - start) % step == 0) {
-            array->_internalProperties.next++;
-        }
-
-        // update "next" pointer.
-        _UpdateNextLocationPointer(array);
-    }
-
-    // return success code.
-    return AA_ARAYEH_SUCCESS;
+    // return error state code.
+    return state;
 }
 
 void _mergeListToArayeh(arayeh *self, size_t startIndex, size_t listSize, void *list)
