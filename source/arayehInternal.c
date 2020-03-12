@@ -47,7 +47,7 @@ int _extendArayehSize(arayeh *array, size_t extendSize)
      *
      * RETURN:
      * state        a code that indicates successful operation
-     *              or an error code defined in configuration.h
+     *              or an error code defined in configuration.h .
      *
      */
 
@@ -116,7 +116,7 @@ int _freeArayehMemory(arayeh **self)
      *
      * RETURN:
      * state        a code that indicates successful operation
-     *              or an error code defined in configuration.h
+     *              or an error code defined in configuration.h .
      */
 
     // free arayeh pointer.
@@ -161,7 +161,7 @@ int _addToArayeh(arayeh *array, void *element)
      *
      * RETURN:
      * state        a code that indicates successful operation
-     *              or an error code defined in configuration.h
+     *              or an error code defined in configuration.h .
      */
 
     // track error state in the function.
@@ -201,8 +201,8 @@ int _insertToArayeh(arayeh *array, size_t index, void *element)
      *
      * this function WON'T increase arayeh size!
      *
-     * it will update "map" and "used" and "next" parameters.
-     * it may update "size" parameter.
+     * it will update "map" and "used" parameters.
+     * it may update "size" and "next" parameter.
      *
      * ARGUMENTS:
      * self         pointer to the arayeh object.
@@ -214,7 +214,7 @@ int _insertToArayeh(arayeh *array, size_t index, void *element)
      *
      * RETURN:
      * state        a code that indicates successful operation
-     *              or an error code defined in configuration.h
+     *              or an error code defined in configuration.h .
      *
      */
 
@@ -243,7 +243,7 @@ int _insertToArayeh(arayeh *array, size_t index, void *element)
         // also it may need to extend arayeh memory size.
         state = _addToArayeh(array, element);
     } else {
-        // if index is either more or less the next pointer, just assign element
+        // if index is less (more) than the next pointer, just assign element
         // and check for arayeh map to see if the index had previous value
         // (IS_FILLED) or not, if it had, then "used" and map will stay same, but
         // if it was uninitialized, update map and "used" counter.
@@ -269,8 +269,8 @@ int _fillArayeh(arayeh *array, size_t start, size_t step, size_t end, void *elem
      * from index (inclusive) "start" to index (exclusive) "end"
      * with step size "step".
      *
-     * it will update "map" and "used" and "next" parameters.
-     * it may update "size" parameter.
+     * it will update "map" and "used" parameters.
+     * it may update "size" and "next" parameter.
      *
      * ARGUMENTS:
      * self         pointer to the arayeh object.
@@ -281,7 +281,7 @@ int _fillArayeh(arayeh *array, size_t start, size_t step, size_t end, void *elem
      *
      * RETURN:
      * state        a code that indicates successful operation
-     *              or an error code defined in configuration.h
+     *              or an error code defined in configuration.h .
      *
      */
 
@@ -313,6 +313,9 @@ int _fillArayeh(arayeh *array, size_t start, size_t step, size_t end, void *elem
     // fill the arayeh.
     for (size_t index = start; index < end; index += step) {
 
+        // if index is less (more) than array.next, use insert function so it
+        // won't affect next pointer, if index is equal to array.next, use add
+        // to also update next pointer.
         if (index < array->_internalProperties.next ||
             index > array->_internalProperties.next) {
             state = (array->insert)(array, index, element);
