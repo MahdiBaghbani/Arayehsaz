@@ -237,11 +237,11 @@ int _insertToArayeh(arayeh *array, size_t index, void *element)
 
     // insert element.
     if (index == array->_internalProperties.next) {
-        // use _addToArayeh for insertion if the index is same as next empty
+        // use arayeh.add for insertion if the index is same as next empty
         // slot in the arayeh.
         // this function will automatically update next pointer.
         // also it may need to extend arayeh memory size.
-        state = _addToArayeh(array, element);
+        state = (array->add)(array, element);
     } else {
         // if index is less (more) than the next pointer, just assign element
         // and check for arayeh map to see if the index had previous value
