@@ -303,7 +303,7 @@ int _fillArayeh(arayeh *array, size_t start, size_t step, size_t end, void *elem
     }
 
     // check step size.
-    if (step == 0) {
+    if (step <= 0) {
         // write to stderr and return error code.
         WARN_WRONG_INDEX(
             "_fillArayeh() function, step should be bigger or equal to 1!");
