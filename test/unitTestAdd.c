@@ -1,4 +1,4 @@
-/** test/unitTestExtend.c
+/** test/unitTestAdd.c
  *
  * This file is a part of:
  * Azadeh Afzar - Arayehsaz (AA-A).
@@ -46,24 +46,47 @@ void tearDown(void)
 {
 }
 
-void test_extend(void)
+void test_add(void)
 {
 
     // define default arayeh size.
-    size_t arayehSize = 20;
-    size_t extendSize = 34;
+    size_t arayehSize = 10;
+    int element       = 5;
 
     // create new arayeh.
     arayeh *testCase = newArayeh1D(TYPE_INT, arayehSize);
 
-    // test current size.
-    TEST_ASSERT_EQUAL_INT(arayehSize, testCase->_internalProperties.size);
+    // add element.
+    (testCase->add)(testCase, &element);
 
-    (testCase->extendSize)(testCase, extendSize);
+    // assert element is added.
+    TEST_ASSERT_EQUAL_INT(element, testCase->_internalProperties.array.pInt[0]);
+    TEST_ASSERT_EQUAL_CHAR(IS_FILLED, testCase->_internalProperties.map[0]);
+    TEST_ASSERT_EQUAL_INT(1, testCase->_internalProperties.next);
 
-    // test new size.
-    TEST_ASSERT_EQUAL_INT(arayehSize + extendSize,
-                          testCase->_internalProperties.size);
+    // free arayeh.
+    (testCase->freeArayeh)(&testCase);
+}
+
+void test_add_extend(void)
+{
+
+    // define default arayeh size.
+    size_t arayehSize = 1;
+    int element       = 5;
+
+    // create new arayeh.
+    arayeh *testCase = newArayeh1D(TYPE_INT, arayehSize);
+
+    // add 2 times to extend arayeh.
+    (testCase->add)(testCase, &element);
+    (testCase->add)(testCase, &element);
+
+    // assert size is increased.
+    TEST_ASSERT_GREATER_THAN_INT(arayehSize, testCase->_internalProperties.size);
+
+    // assert next pointer is pointing to 2.
+    TEST_ASSERT_EQUAL_INT(2, testCase->_internalProperties.next);
 
     // free arayeh.
     (testCase->freeArayeh)(&testCase);
@@ -73,7 +96,8 @@ int main(void)
 {
     UnityBegin("unitTestAdd.c");
 
-    RUN_TEST(test_extend);
+    RUN_TEST(test_add);
+    RUN_TEST(test_add_extend);
 
     return UnityEnd();
 }
