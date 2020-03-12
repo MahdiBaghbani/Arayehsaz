@@ -7,13 +7,15 @@ add_subdirectory("unity test framework")
 # create tests for each unit test file.
 set(files
         unitTestInitFree.c
-        unitTestFillArayeh.c)
+        unitTestExtend.c
+        unitTestAdd.c
+        unitTestFill.c)
 
 foreach (file ${files})
 
     get_filename_component(file_basename ${file} NAME_WE)
 
-    string(REGEX REPLACE "unitTest([^$]+)" "Test\\1" testCase ${file_basename})
+    string(REGEX REPLACE "unitTest([^$]+)" "test\\1" testCase ${file_basename})
 
     add_executable(${testCase} ${file})
 
