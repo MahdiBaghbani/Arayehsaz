@@ -37,6 +37,15 @@
 #ifndef __AA_A_CONFIGURATIONS_H__
 #define __AA_A_CONFIGURATIONS_H__
 
+// true false symbolic.
+#ifndef TRUE
+#   define TRUE 1
+#endif
+
+#ifndef FALSE
+#   define FALSE 0
+#endif
+
 // return codes.
 #define AA_ARAYEH_SUCCESS         1
 #define AA_ARAYEH_FAILURE         0
