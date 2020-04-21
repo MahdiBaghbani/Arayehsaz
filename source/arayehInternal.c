@@ -221,13 +221,6 @@ int _insertToArayeh(arayeh *array, size_t index, void *element)
     // track error state in the function.
     int state = AA_ARAYEH_SUCCESS;
 
-    // check index number to be within arayeh bounds.
-    if (index < 0) {
-        // write to stderr and return error code.
-        WARN_WRONG_INDEX("_insertToArayeh() function, index is less than 0!");
-        return AA_ARAYEH_WRONG_INDEX;
-    }
-
     if (index >= array->_internalProperties.size) {
         // write to stderr and return error code.
         WARN_WRONG_INDEX(
