@@ -244,8 +244,8 @@ int _insertToArayeh(arayeh *array, size_t index, void *element)
         state = (array->add)(array, element);
     } else {
         // if index is less (more) than the next pointer, just assign element
-        // and check for arayeh map to see if the index had previous value
-        // (IS_FILLED) or not, if it had, then "used" and map will stay same, but
+        // and check for arayeh map to see if that cell was already filled
+        // or not, if it had, then "used" and map will stay same, but
         // if it was uninitialized, update map and "used" counter.
 
         // assign element.
