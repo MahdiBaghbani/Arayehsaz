@@ -9,6 +9,7 @@ set(files
         unitTestInitFree.c
         unitTestExtend.c
         unitTestAdd.c
+        unitTestInsert.c
         unitTestFill.c)
 
 foreach (file ${files})
