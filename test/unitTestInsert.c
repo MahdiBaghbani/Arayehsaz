@@ -35,10 +35,7 @@
  */
 
 #include "../include/arayeh.h"
-#include "configurations.h"
 #include "unity test framework/unity.h"
-#pragma push_macro("TRUE")
-#define TRUE 0
 
 void setUp(void)
 {

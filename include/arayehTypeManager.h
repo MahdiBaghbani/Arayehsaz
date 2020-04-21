@@ -38,7 +38,6 @@
 #define __AA_A_ARAYEHTYPEMANAGER_H__
 
 #include "arayeh.h"
-#include "configurations.h"
 
 // To ensure that the names declared in this portion of code have C linkage,
 // and thus C++ name mangling is not performed while using this code with C++.

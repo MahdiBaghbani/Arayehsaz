@@ -35,7 +35,6 @@
  */
 
 #include "../include/arayeh.h"
-#include "configurations.h"
 #include "unity test framework/unity.h"
 
 void setUp(void)

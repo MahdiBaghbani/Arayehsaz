@@ -41,8 +41,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "configurations.h"
-
 #ifndef SIZE_MAX
 #    ifdef __SIZE_MAX__
 #        define SIZE_MAX __SIZE_MAX__
@@ -60,6 +58,37 @@
 #    define __BEGIN_DECLS /* empty */
 #    define __END_DECLS   /* empty */
 #endif
+
+// true false symbolic.
+#ifndef TRUE
+#    define TRUE 1
+#endif
+
+#ifndef FALSE
+#    define FALSE 0
+#endif
+
+// return codes.
+#define AA_ARAYEH_SUCCESS         1
+#define AA_ARAYEH_FAILURE         0
+#define AA_ARAYEH_WRONG_NEW_SIZE  2
+#define AA_ARAYEH_OVERFLOW        3
+#define AA_ARAYEH_REALLOC_DENIED  4
+#define AA_ARAYEH_WRONG_INDEX     5
+#define AA_ARAYEH_END_BIGGER_SIZE 6
+#define AA_ARAYEH_WRONG_STEP      7
+
+// map characters.
+#define IS_EMPTY  '0'
+#define IS_FILLED '1'
+
+// type codes.
+#define TYPE_CHAR   1
+#define TYPE_SINT   2
+#define TYPE_INT    3
+#define TYPE_LINT   4
+#define TYPE_FLOAT  5
+#define TYPE_DOUBLE 6
 
 __BEGIN_DECLS
 

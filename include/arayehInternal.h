@@ -39,7 +39,6 @@
 
 #include "arayeh.h"
 #include "arayehTypeManager.h"
-#include "configurations.h"
 #include "fatal.h"
 
 // To ensure that the names declared in this portion of code have C linkage,

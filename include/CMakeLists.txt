@@ -9,4 +9,6 @@ set(install_include_dir ${CMAKE_INSTALL_INCLUDEDIR}/${CMAKE_PROJECT_NAME})
 # Install general public header files manually
 ########################################################################
 
-install(FILES configurations.h DESTINATION ${install_include_dir})
+# use template below.
+
+# install(FILES name_of_header DESTINATION ${install_include_dir})
