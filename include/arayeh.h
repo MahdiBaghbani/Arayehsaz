@@ -67,21 +67,21 @@ __BEGIN_DECLS
 typedef struct arayehStruct arayeh;
 
 // Supported arayeh types.
-typedef union arrayTypeUnion {
+typedef union arayehTypeUnion {
     char *pChar;
     short int *pShortInt;
     int *pInt;
     long int *pLongInt;
     float *pFloat;
     double *pDouble;
-} arrayType;
+} arayehType;
 
 // Arayeh definition.
 typedef struct arayehStruct {
 
     // variables to hold state of the array.
     struct internalProperties {
-        arrayType array;
+        arayehType array;
         char *map;
         size_t type;
         size_t next;
@@ -125,15 +125,15 @@ typedef struct arayehStruct {
     // private methods of array, should not be used by users.
     struct privateMethods {
 
-        int (*initArayeh)(arayeh *self, arrayType *array, size_t initialSize);
+        int (*initArayeh)(arayeh *self, arayehType *array, size_t initialSize);
 
-        int (*mallocArayeh)(arayeh *self, arrayType *array, size_t initialSize);
+        int (*mallocArayeh)(arayeh *self, arayehType *array, size_t initialSize);
 
-        int (*reallocArayeh)(arayeh *self, arrayType *array, size_t initialSize);
+        int (*reallocArayeh)(arayeh *self, arayehType *array, size_t initialSize);
 
         void (*freeArayeh)(arayeh *self);
 
-        void (*setArayehMemoryPointer)(arayeh *self, arrayType *array);
+        void (*setArayehMemoryPointer)(arayeh *self, arayehType *array);
 
         void (*addElementToArayeh)(arayeh *self, size_t index, void *element);
 

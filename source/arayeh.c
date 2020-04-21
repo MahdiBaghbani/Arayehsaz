@@ -73,7 +73,7 @@ arayeh *newArayeh1D(size_t type, size_t initialSize)
 
     // initialize variables for allocating memory.
     char *mapPointer = NULL;
-    arrayType arrayPointer;
+    arayehType arrayPointer;
 
     // this function identifies the right pointer for array type and sets it to point
     // to NULL and also checks for possible overflow in size_t initialSize.

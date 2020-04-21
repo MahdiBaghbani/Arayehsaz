@@ -64,7 +64,7 @@ int _extendArayehSize(arayeh *array, size_t extendSize)
 
     // initialize variables for allocating memory.
     char *mapPointer = NULL;
-    arrayType arrayPointer;
+    arayehType arrayPointer;
 
     // this function identifies the right pointer for arayeh type and sets it to
     // point to NULL and also checks for possible overflow in size_t newSize.

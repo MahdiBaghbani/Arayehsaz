@@ -56,45 +56,45 @@ __BEGIN_DECLS
 
 // Initialize arayeh pointer.
 
-int _initTypeChar(arayeh *self, arrayType *array, size_t initialSize);
+int _initTypeChar(arayeh *self, arayehType *array, size_t initialSize);
 
-int _initTypeSInt(arayeh *self, arrayType *array, size_t initialSize);
+int _initTypeSInt(arayeh *self, arayehType *array, size_t initialSize);
 
-int _initTypeInt(arayeh *self, arrayType *array, size_t initialSize);
+int _initTypeInt(arayeh *self, arayehType *array, size_t initialSize);
 
-int _initTypeLInt(arayeh *self, arrayType *array, size_t initialSize);
+int _initTypeLInt(arayeh *self, arayehType *array, size_t initialSize);
 
-int _initTypeFloat(arayeh *self, arrayType *array, size_t initialSize);
+int _initTypeFloat(arayeh *self, arayehType *array, size_t initialSize);
 
-int _initTypeDouble(arayeh *self, arrayType *array, size_t initialSize);
+int _initTypeDouble(arayeh *self, arayehType *array, size_t initialSize);
 
 // Allocate memory for arayeh.
 
-int _mallocTypeChar(arayeh *self, arrayType *array, size_t initialSize);
+int _mallocTypeChar(arayeh *self, arayehType *array, size_t initialSize);
 
-int _mallocTypeSInt(arayeh *self, arrayType *array, size_t initialSize);
+int _mallocTypeSInt(arayeh *self, arayehType *array, size_t initialSize);
 
-int _mallocTypeInt(arayeh *self, arrayType *array, size_t initialSize);
+int _mallocTypeInt(arayeh *self, arayehType *array, size_t initialSize);
 
-int _mallocTypeLInt(arayeh *self, arrayType *array, size_t initialSize);
+int _mallocTypeLInt(arayeh *self, arayehType *array, size_t initialSize);
 
-int _mallocTypeFloat(arayeh *self, arrayType *array, size_t initialSize);
+int _mallocTypeFloat(arayeh *self, arayehType *array, size_t initialSize);
 
-int _mallocTypeDouble(arayeh *self, arrayType *array, size_t initialSize);
+int _mallocTypeDouble(arayeh *self, arayehType *array, size_t initialSize);
 
 // Re-allocate memory for arayeh.
 
-int _reallocTypeChar(arayeh *self, arrayType *array, size_t newSize);
+int _reallocTypeChar(arayeh *self, arayehType *array, size_t newSize);
 
-int _reallocTypeSInt(arayeh *self, arrayType *array, size_t newSize);
+int _reallocTypeSInt(arayeh *self, arayehType *array, size_t newSize);
 
-int _reallocTypeInt(arayeh *self, arrayType *array, size_t newSize);
+int _reallocTypeInt(arayeh *self, arayehType *array, size_t newSize);
 
-int _reallocTypeLInt(arayeh *self, arrayType *array, size_t newSize);
+int _reallocTypeLInt(arayeh *self, arayehType *array, size_t newSize);
 
-int _reallocTypeFloat(arayeh *self, arrayType *array, size_t newSize);
+int _reallocTypeFloat(arayeh *self, arayehType *array, size_t newSize);
 
-int _reallocTypeDouble(arayeh *self, arrayType *array, size_t newSize);
+int _reallocTypeDouble(arayeh *self, arayehType *array, size_t newSize);
 
 // Free arayeh memory.
 
@@ -112,17 +112,17 @@ void _freeTypeDouble(arayeh *self);
 
 // Assign the initialized pointer of an array to the arayeh structs pointer.
 
-void _setMemoryPointerTypeChar(arayeh *self, arrayType *array);
+void _setMemoryPointerTypeChar(arayeh *self, arayehType *array);
 
-void _setMemoryPointerTypeSInt(arayeh *self, arrayType *array);
+void _setMemoryPointerTypeSInt(arayeh *self, arayehType *array);
 
-void _setMemoryPointerTypeInt(arayeh *self, arrayType *array);
+void _setMemoryPointerTypeInt(arayeh *self, arayehType *array);
 
-void _setMemoryPointerTypeLInt(arayeh *self, arrayType *array);
+void _setMemoryPointerTypeLInt(arayeh *self, arayehType *array);
 
-void _setMemoryPointerTypeFloat(arayeh *self, arrayType *array);
+void _setMemoryPointerTypeFloat(arayeh *self, arayehType *array);
 
-void _setMemoryPointerTypeDouble(arayeh *self, arrayType *array);
+void _setMemoryPointerTypeDouble(arayeh *self, arayehType *array);
 
 // Add an element of a specific type to the arayeh.
 
