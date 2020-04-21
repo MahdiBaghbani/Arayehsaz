@@ -41,14 +41,13 @@
 #ifndef __AA_A_FATAL_H__
 #define __AA_A_FATAL_H__
 
+// this macro will be used to turn off warnings during tests.
+#define ALLOW_PRINT 1
+
+// macros for extracting line number from error code.
 #define STRINGIFYX(x) #x
 #define STRINGIFY(x)  STRINGIFYX(x)
 #define FILE_LINE     __FILE__ ":" STRINGIFY(__LINE__)
-#define FATAL(what)                                              \
-    do {                                                         \
-        fprintf(stderr, "FATAL: " what " from " FILE_LINE "\n"); \
-        exit(1);                                                 \
-    } while (0)
 
 /*
     Use below macros like this:
@@ -59,19 +58,40 @@
 
 */
 
-#define FATAL_MALLOC(what)  FATAL("low memory? malloc() failed in " what)
-#define FATAL_CALLOC(what)  FATAL("low memory? calloc() failed in " what)
-#define FATAL_REALLOC(what) FATAL("low memory? realloc() failed in " what)
-#define FATAL_STRDUP(what)  FATAL("low memory? strdup() failed in " what)
+// macros for fatal error codes.
+#define FATAL(what, allow_print)                                     \
+    do {                                                             \
+        if (allow_print) {                                           \
+            fprintf(stderr, "FATAL: " what " from " FILE_LINE "\n"); \
+        }                                                            \
+        exit(1);                                                     \
+    } while (0)
+#define FATAL_MALLOC(what, allow_print) \
+    FATAL("low memory? malloc() failed in " what, allow_print)
+#define FATAL_CALLOC(what, allow_print) \
+    FATAL("low memory? calloc() failed in " what, allow_print)
+#define FATAL_REALLOC(what, allow_print) \
+    FATAL("low memory? realloc() failed in " what, allow_print)
+#define FATAL_STRDUP(what, allow_print) \
+    FATAL("low memory? strdup() failed in " what, allow_print)
 
-#define WARN(what)          fprintf(stderr, "WARNING: " what " from " FILE_LINE "\n")
-#define WARN_MALLOC(what)   WARN("low memory? malloc() failed in " what)
-#define WARN_CALLOC(what)   WARN("low memory? calloc() failed in " what)
-#define WARN_REALLOC(what)  WARN("low memory? realloc() failed in " what)
-#define WARN_STRDUP(what)   WARN("low memory? strdup() failed in " what)
-#define WARN_T_OVERFLOW(what) WARN("possible size_t overflow, failed in " what)
-#define WARN_NEW_SIZE(what) \
-    WARN("new size is less than current size, failed in " what)
-#define WARN_WRONG_INDEX(what) WARN("failed in " what)
+// macros for fatal warning codes.
+#define WARN(what, allow_print)                                    \
+    if (allow_print) {                                             \
+        fprintf(stderr, "WARNING: " what " from " FILE_LINE "\n"); \
+    }
+#define WARN_MALLOC(what, allow_print) \
+    WARN("low memory? malloc() failed in " what, allow_print)
+#define WARN_CALLOC(what, allow_print) \
+    WARN("low memory? calloc() failed in " what, allow_print)
+#define WARN_REALLOC(what, allow_print) \
+    WARN("low memory? realloc() failed in " what, allow_print)
+#define WARN_STRDUP(what, allow_print) \
+    WARN("low memory? strdup() failed in " what, allow_print)
+#define WARN_T_OVERFLOW(what, allow_print) \
+    WARN("possible size_t overflow, failed in " what, allow_print)
+#define WARN_NEW_SIZE(what, allow_print) \
+    WARN("new size is less than current size, failed in " what, allow_print)
+#define WARN_WRONG_INDEX(what, allow_print) WARN("failed in " what, allow_print)
 
 #endif    //__AA_A_FATAL_H__
