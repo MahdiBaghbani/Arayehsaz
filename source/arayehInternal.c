@@ -58,7 +58,7 @@ int _extendArayehSize(arayeh *array, size_t extendSize)
     if (newSize < array->_internalProperties.size) {
         // wrong new size detected.
         // write to stderr and return error code.
-        WARN_NEW_SIZE("_extendArayehSize()");
+        WARN_NEW_SIZE("_extendArayehSize()", TRUE);
         return AA_ARAYEH_WRONG_NEW_SIZE;
     }
 
@@ -72,7 +72,7 @@ int _extendArayehSize(arayeh *array, size_t extendSize)
 
     // protection for possible overflow in size_t.
     if (state == AA_ARAYEH_FAILURE) {
-        WARN_T_OVERFLOW("_extendArayehSize()");
+        WARN_T_OVERFLOW("_extendArayehSize()", TRUE);
         return AA_ARAYEH_OVERFLOW;
     }
 
@@ -88,7 +88,7 @@ int _extendArayehSize(arayeh *array, size_t extendSize)
         (array->_privateMethods.freeArayeh)(array);
 
         // write to stderr and return error code.
-        WARN_REALLOC("_extendArayehSize()");
+        WARN_REALLOC("_extendArayehSize()", TRUE);
         return AA_ARAYEH_REALLOC_DENIED;
     }
 
@@ -224,7 +224,7 @@ int _insertToArayeh(arayeh *array, size_t index, void *element)
     if (index >= array->_internalProperties.size) {
         // write to stderr and return error code.
         WARN_WRONG_INDEX(
-            "_insertToArayeh() function, index is bigger than arayeh size!");
+            "_insertToArayeh() function, index is bigger than arayeh size!", TRUE);
         return AA_ARAYEH_WRONG_INDEX;
     }
 
@@ -284,14 +284,14 @@ int _fillArayeh(arayeh *array, size_t start, size_t step, size_t end, void *elem
     // check starting index to be within arayeh bounds.
     if (start < 0) {
         // write to stderr and return error code.
-        WARN_WRONG_INDEX("_fillArayeh() function, start is less than 0!");
+        WARN_WRONG_INDEX("_fillArayeh() function, start is less than 0!", TRUE);
         return AA_ARAYEH_WRONG_INDEX;
     }
 
     if (start >= array->_internalProperties.size) {
         // write to stderr and return error code.
         WARN_WRONG_INDEX(
-            "_fillArayeh() function, start is bigger than arayeh size!");
+            "_fillArayeh() function, start is bigger than arayeh size!", TRUE);
         return AA_ARAYEH_WRONG_INDEX;
     }
 
@@ -299,7 +299,7 @@ int _fillArayeh(arayeh *array, size_t start, size_t step, size_t end, void *elem
     if (step <= 0) {
         // write to stderr and return error code.
         WARN_WRONG_INDEX(
-            "_fillArayeh() function, step should be bigger or equal to 1!");
+            "_fillArayeh() function, step should be bigger or equal to 1!", TRUE);
         return AA_ARAYEH_WRONG_STEP;
     }
 
@@ -367,7 +367,7 @@ int _getElementFromArayeh(arayeh *self, size_t index, void *destination)
 
     // check arayeh bounds.
     if (index >= self->_internalProperties.size) {
-        WARN_WRONG_INDEX("index out of range! _getElementFromArayeh()");
+        WARN_WRONG_INDEX("index out of range! _getElementFromArayeh()", TRUE);
         return AA_ARAYEH_WRONG_INDEX;
     }
 
