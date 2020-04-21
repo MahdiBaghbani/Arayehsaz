@@ -40,6 +40,7 @@ endif()
 # Library type.
 set(BUILD_SHARED_LIBS YES)
 
+# Include header files.
 include_directories(
         BEFORE
         ${PROJECT_SOURCE_DIR}/include

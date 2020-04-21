@@ -6,7 +6,7 @@ include(GNUInstallDirs)
 set(install_include_dir ${CMAKE_INSTALL_INCLUDEDIR}/${CMAKE_PROJECT_NAME})
 
 ########################################################################
-# Install public header files
+# Install general public header files manually
 ########################################################################
 
 install(FILES configurations.h DESTINATION ${install_include_dir})
