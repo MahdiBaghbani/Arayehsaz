@@ -57,7 +57,7 @@ void test_insert(void)
     int element       = 5;
 
     // create new arayeh.
-    arayeh *testCase = newArayeh1D(TYPE_INT, arayehSize);
+    arayeh *testCase = newArayeh(TYPE_INT, arayehSize);
 
     // insert element.
     state = (testCase->insert)(testCase, 0, &element);
@@ -104,7 +104,7 @@ void test_error_out_of_range_index(void)
     int element       = 5;
 
     // create new arayeh.
-    arayeh *testCase = newArayeh1D(TYPE_INT, arayehSize);
+    arayeh *testCase = newArayeh(TYPE_INT, arayehSize);
 
     // insert element in index 10 (maximum possible index is 9).
     state = (testCase->insert)(testCase, 10, &element);

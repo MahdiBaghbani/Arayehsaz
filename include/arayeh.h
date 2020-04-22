@@ -193,7 +193,7 @@ typedef struct arayehStruct {
 
 } arayeh;
 
-arayeh *newArayeh1D(size_t type, size_t initialSize);
+arayeh *newArayeh(size_t type, size_t initialSize);
 /*
  * This function will create an arayeh of type "type"
  * (one the supported types defined in configuration.h)

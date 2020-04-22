@@ -57,7 +57,7 @@ void test_extend(void)
     size_t extendSize = 34;
 
     // create new arayeh.
-    arayeh *testCase = newArayeh1D(TYPE_INT, arayehSize);
+    arayeh *testCase = newArayeh(TYPE_INT, arayehSize);
 
     // test current size.
     TEST_ASSERT_EQUAL_INT(arayehSize, testCase->_internalProperties.size);

@@ -37,7 +37,7 @@
 #include "../include/arayeh.h"
 #include "../include/arayehInternal.h"
 
-arayeh *newArayeh1D(size_t type, size_t initialSize)
+arayeh *newArayeh(size_t type, size_t initialSize)
 {
     /*
      * This function will create an array of type "type"

@@ -55,7 +55,7 @@ void test_fill_all_empty_step_one(void)
     int element = 5;
 
     // create new arayeh.
-    arayeh *testCase = newArayeh1D(TYPE_INT, arayehSize);
+    arayeh *testCase = newArayeh(TYPE_INT, arayehSize);
 
     // fill all of the empty arayeh with element.
     int state = (testCase->fill)(testCase, 0, 1, arayehSize, &element);
@@ -87,7 +87,7 @@ void test_fill_all_empty_step_two(void)
     int element = 5;
 
     // create new arayeh.
-    arayeh *testCase = newArayeh1D(TYPE_INT, arayehSize);
+    arayeh *testCase = newArayeh(TYPE_INT, arayehSize);
 
     // fill all of the empty arayeh with element.
     int state = (testCase->fill)(testCase, 0, 2, arayehSize, &element);
@@ -126,7 +126,7 @@ void test_fill_existing_arayeh(void)
     int state;
 
     // create new arayeh.
-    arayeh *testCase = newArayeh1D(TYPE_INT, arayehSize);
+    arayeh *testCase = newArayeh(TYPE_INT, arayehSize);
 
     // add pre-filling arayeh with data.
     for (size_t i = 0; i < arayehSize; ++i) {
@@ -172,13 +172,13 @@ void test_fill_extends_arayeh(void)
     int element = 5;
 
     // create new arayeh.
-    arayeh *testCase = newArayeh1D(TYPE_INT, arayehSize);
+    arayeh *testCase = newArayeh(TYPE_INT, arayehSize);
 
     // fill all of the empty arayeh with element.
     int state = (testCase->fill)(testCase, 0, 1, fillSize, &element);
 
     // check arayeh size increased.
-    TEST_ASSERT_EQUAL_INT(arayehSize * 2, testCase->_internalProperties.size);
+    TEST_ASSERT_GREATER_THAN_size_t(arayehSize, testCase->_internalProperties.size);
 
     // check fill was successful.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
@@ -207,7 +207,7 @@ void test_error_bad_starting_point(void)
     int element = 5;
 
     // create new arayeh.
-    arayeh *testCase = newArayeh1D(TYPE_INT, arayehSize);
+    arayeh *testCase = newArayeh(TYPE_INT, arayehSize);
 
     // fill all of the empty arayeh with element.
     int state = (testCase->fill)(testCase, -5, 1, arayehSize, &element);
@@ -229,7 +229,7 @@ void test_error_starting_point_bigger_than_size(void)
     int element = 5;
 
     // create new arayeh.
-    arayeh *testCase = newArayeh1D(TYPE_INT, arayehSize);
+    arayeh *testCase = newArayeh(TYPE_INT, arayehSize);
 
     // fill all of the empty arayeh with element.
     int state = (testCase->fill)(testCase, 21, 1, arayehSize, &element);
@@ -251,7 +251,7 @@ void test_error_wrong_step(void)
     int element = 5;
 
     // create new arayeh.
-    arayeh *testCase = newArayeh1D(TYPE_INT, arayehSize);
+    arayeh *testCase = newArayeh(TYPE_INT, arayehSize);
 
     // fill all of the empty arayeh with element.
     int state = (testCase->fill)(testCase, 0, 0, arayehSize, &element);

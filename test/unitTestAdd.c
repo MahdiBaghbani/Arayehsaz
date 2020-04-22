@@ -57,7 +57,7 @@ void test_add(void)
     int element       = 5;
 
     // create new arayeh.
-    arayeh *testCase = newArayeh1D(TYPE_INT, arayehSize);
+    arayeh *testCase = newArayeh(TYPE_INT, arayehSize);
 
     // add element.
     state = (testCase->add)(testCase, &element);
@@ -87,7 +87,7 @@ void test_add_extend(void)
     int element       = 5;
 
     // create new arayeh.
-    arayeh *testCase = newArayeh1D(TYPE_INT, arayehSize);
+    arayeh *testCase = newArayeh(TYPE_INT, arayehSize);
 
     // test adding to arayeh for large amount of additions and see how it
     // dynamically extends memory space.
@@ -125,7 +125,7 @@ void test_add_extend_alternate_growth_function(void)
     int element       = 5;
 
     // create new arayeh.
-    arayeh *testCase = newArayeh1D(TYPE_INT, arayehSize);
+    arayeh *testCase = newArayeh(TYPE_INT, arayehSize);
 
     // change growth factor.
     (testCase->setGrowthFactorFunction)(testCase, growthFactorFunction);
