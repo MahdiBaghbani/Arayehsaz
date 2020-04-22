@@ -119,10 +119,10 @@ int _freeArayehMemory(arayeh **self)
      *              or an error code defined in configuration.h .
      */
 
-    // free arayeh pointer.
+    // free the arayeh's internal array pointer.
     ((*self)->_privateMethods.freeArayeh)(*self);
 
-    // free map pointer and nullify the pointer.
+    // free map array pointer and nullify the pointer.
     free((*self)->_internalProperties.map);
     (*self)->_internalProperties.map = NULL;
 
@@ -138,6 +138,53 @@ int _freeArayehMemory(arayeh **self)
 
     // return success code.
     return AA_ARAYEH_SUCCESS;
+}
+
+size_t _defaultGrowthFactor(arayeh *array)
+{
+    /*
+     * This function will calculate the extension size of memory.
+     *
+     * This is the default function to calculate memory growth size,
+     * users can use their appropriate functions and ignore this.
+     *
+     * ARGUMENTS:
+     * self             pointer to the arayeh object.
+     *
+     * RETURN:
+     * extension_size   the size of memory space
+     *                  to be added to current memory space.
+     *
+     */
+
+    // derived from python source code.
+    // calculate the extension size of memory.
+    // This over-allocates proportional to the list size, making room
+    // for additional growth.  The over-allocation is mild, but is
+    // enough to give linear-time amortized behavior over a long
+    // sequence of appends() in the presence of a poorly-performing
+    // system realloc().
+    // The growth pattern is:  0, 4, 8, 16, 25, 35, 46, 58, 72, 88, ...
+
+    size_t current_size   = array->_internalProperties.size;
+    size_t extension_size = (current_size >> 3) + (current_size < 9 ? 3 : 6);
+    return extension_size;
+}
+
+void _setGrowthFactorFunction(arayeh *self, size_t (*growthFactor)(arayeh *self))
+{
+    /*
+     * This function will override the arayehs default growth factor function
+     * with a new function provided by user.
+     *
+     * ARGUMENTS:
+     * self             pointer to the arayeh object.
+     *
+     * RETURN:
+     * no return, it's void dude.
+     *
+     */
+    (self->_privateMethods.growthFactor) = growthFactor;
 }
 
 int _addToArayeh(arayeh *array, void *element)
@@ -170,8 +217,11 @@ int _addToArayeh(arayeh *array, void *element)
     // extend arayeh size if needed.
     if (array->_internalProperties.used == array->_internalProperties.size) {
 
+        // calculate the extension memory size using growth factor function.
+        size_t extension_size = (array->_privateMethods.growthFactor)(array);
+
         // extend arayeh size.
-        state = (array->extendSize)(array, array->_internalProperties.size);
+        state = (array->extendSize)(array, extension_size);
 
         // stop function and return error value if extending arayeh size failed.
         if (state != AA_ARAYEH_SUCCESS) {
@@ -290,8 +340,8 @@ int _fillArayeh(arayeh *array, size_t start, size_t step, size_t end, void *elem
 
     if (start >= array->_internalProperties.size) {
         // write to stderr and return error code.
-        WARN_WRONG_INDEX(
-            "_fillArayeh() function, start is bigger than arayeh size!", TRUE);
+        WARN_WRONG_INDEX("_fillArayeh() function, start is bigger than arayeh size!",
+                         TRUE);
         return AA_ARAYEH_WRONG_INDEX;
     }
 
@@ -388,13 +438,14 @@ void _setPublicMethods(arayeh *self)
      *
      */
 
-    self->extendSize = _extendArayehSize;
-    self->freeArayeh = _freeArayehMemory;
-    self->fill       = _fillArayeh;
-    self->add        = _addToArayeh;
-    self->insert     = _insertToArayeh;
-    self->mergeList  = _mergeListToArayeh;
-    self->get        = _getElementFromArayeh;
+    self->extendSize              = _extendArayehSize;
+    self->freeArayeh              = _freeArayehMemory;
+    self->setGrowthFactorFunction = _setGrowthFactorFunction;
+    self->add                     = _addToArayeh;
+    self->insert                  = _insertToArayeh;
+    self->fill                    = _fillArayeh;
+    self->mergeList               = _mergeListToArayeh;
+    self->get                     = _getElementFromArayeh;
 }
 
 void _setPrivateMethods(arayeh *self, size_t type)
@@ -407,6 +458,9 @@ void _setPrivateMethods(arayeh *self, size_t type)
      * type         type of arayeh elements.
      *
      */
+
+    // set memory space growth factor function to default.
+    self->_privateMethods.growthFactor = _defaultGrowthFactor;
 
     // assign based on the arayeh type.
     switch (type) {

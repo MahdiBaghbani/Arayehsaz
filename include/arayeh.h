@@ -82,7 +82,7 @@
 #define IS_EMPTY  '0'
 #define IS_FILLED '1'
 
-// type codes.
+// arayeh types.
 #define TYPE_CHAR   1
 #define TYPE_SINT   2
 #define TYPE_INT    3
@@ -108,50 +108,64 @@ typedef union arayehTypeUnion {
 // Arayeh definition.
 typedef struct arayehStruct {
 
-    // variables to hold state of the array.
+    // variables to hold state of the arayeh.
     struct internalProperties {
+        // holds actual array.
         arayehType array;
+        // holds a map of arayeh cells,
+        // indicates they are empty or filled.
+        // using type char for this is to minimize the impact of memory usage.
         char *map;
+        // holds type of array.
         size_t type;
+        // holds next pointer, the pointer is pointing
+        // at the next empty cell in the arayeh.
         size_t next;
+        // holds the number of filled cells.
         size_t used;
+        // holds current size of arayeh.
         size_t size;
     } _internalProperties;
 
-    // public methods of arrays, accessible for everyone.
+    // public methods of arayehs, accessible for everyone.
     struct {
 
-        // this function will reallocate memory to the array and its map.
+        // this function will reallocate memory to the arayeh and its map.
         int (*extendSize)(arayeh *self, size_t extendSize);
 
-        // this function will free the array and reset its parameters.
+        // this function will free the arayeh and reset its parameters.
         int (*freeArayeh)(arayeh **self);
 
-        // this function will insert an "element" into array at the next empty
-        // location in the array. if array is full, it will extend array size.
+        // this function will override the arayehs default growth factor function
+        // with a new function provided by user.
+        void (*setGrowthFactorFunction)(arayeh *self,
+                                        size_t (*growthFactor)(arayeh *self));
+
+        // this function will insert an "element" into arayeh at the next empty
+        // location in the arayeh. if arayeh is full, it will extend arayeh size.
         int (*add)(arayeh *self, void *element);
 
-        // this function will insert an "element" into array at "index".
+        // this function will insert an "element" into arayeh at "index".
         int (*insert)(arayeh *self, size_t index, void *element);
 
-        // this function will fill array with an element from index (inclusive)
+        // this function will fill arayeh with an element from index (inclusive)
         // "start" to index (exclusive) "end" with step size "step".
         int (*fill)(arayeh *self, size_t start, size_t step, size_t end,
                     void *element);
 
-        // this function will merge a default C array
-        // (for example int a[4] = {1, 2, 3, 4};) into arayeh array, the starting
-        // index for merging is "startIndex" and the size of C array determines the
-        // last index (in the example above the size of C array is 4).
+        // this function will merge a default C arayeh
+        // (for example int a[4] = {1, 2, 3, 4};) into arayeh arayeh, the starting
+        // index for merging is "startIndex" and the size of C arayeh determines the
+        // last index (in the example above the size of C arayeh is 4).
         void (*mergeList)(arayeh *self, size_t startIndex, size_t listSize,
                           void *list);
 
-        // this function copies data in "index" cell of the array to the
+        // this function copies data in "index" cell of the arayeh to the
         // "destination" memory location.
         int (*get)(arayeh *self, size_t index, void *destination);
     };
 
-    // private methods of array, should not be used by users.
+    // private methods of arayeh, should not be used by users.
     struct privateMethods {
 
         int (*initArayeh)(arayeh *self, arayehType *array, size_t initialSize);
@@ -161,6 +175,10 @@ typedef struct arayehStruct {
         int (*reallocArayeh)(arayeh *self, arayehType *array, size_t initialSize);
 
         void (*freeArayeh)(arayeh *self);
+
+        // this function is implemented as a way to control the
+        // dynamic growth rate of the arayeh memory space.
+        size_t (*growthFactor)(arayeh *self);
 
         void (*setArayehMemoryPointer)(arayeh *self, arayehType *array);
 
@@ -177,17 +195,17 @@ typedef struct arayehStruct {
 
 arayeh *newArayeh1D(size_t type, size_t initialSize);
 /*
- * This function will create an array of type "type"
+ * This function will create an arayeh of type "type"
  * (one the supported types defined in configuration.h)
  * and size of  "initialSize" if it's possible
  * (you have enough memory and right to allocate that memory).
  *
  * ARGUMENTS:
- * initialSize    size of array.
- * type           type of array elements.
+ * initialSize    size of arayeh.
+ * type           type of arayeh elements.
  *
  * RETURN:
- * A pointer to the initialized array.
+ * A pointer to the initialized arayeh.
  * or
  * return NULL in case of error.
  */

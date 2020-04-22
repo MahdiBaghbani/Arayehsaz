@@ -61,6 +61,13 @@ int _extendArayehSize(arayeh *array, size_t extendSize);
 // this function will free the array and reset its parameters.
 int _freeArayehMemory(arayeh **self);
 
+// this function will calculate the extension size of memory.
+size_t _defaultGrowthFactor(arayeh *array);
+
+// this function will override the arayehs default growth factor function
+// with a new function provided by user.
+void _setGrowthFactorFunction(arayeh *self, size_t (*growthFactor)(arayeh *self));
+
 // this function will insert an "element" into array at
 // index = self->_internalProperties.next.
 int _addToArayeh(arayeh *array, void *element);
