@@ -56,28 +56,28 @@
 __BEGIN_DECLS
 
 // this function will reallocate memory to the array and its map.
-int _extendArayehSize(arayeh *array, size_t extendSize);
+int _extendArayehSize(arayeh *self, size_t extendSize);
 
 // this function will free the array and reset its parameters.
 int _freeArayehMemory(arayeh **self);
 
 // this function will calculate the extension size of memory.
-size_t _defaultGrowthFactor(arayeh *array);
+size_t _defaultGrowthFactor(arayeh *arayeh);
 
 // this function will override the arayehs default growth factor function
 // with a new function provided by user.
-void _setGrowthFactorFunction(arayeh *self, size_t (*growthFactor)(arayeh *self));
+void _setGrowthFactorFunction(arayeh *self, size_t (*growthFactor)(arayeh *arayeh));
 
 // this function will insert an "element" into array at
 // index = self->_internalProperties.next.
-int _addToArayeh(arayeh *array, void *element);
+int _addToArayeh(arayeh *self, void *element);
 
 // this function will insert an "element" into array at "index".
-int _insertToArayeh(arayeh *array, size_t index, void *element);
+int _insertToArayeh(arayeh *self, size_t index, void *element);
 
 // this function will fill array with an element from index (inclusive)
 // "start" to index (exclusive) "end" with step size "step".
-int _fillArayeh(arayeh *array, size_t start, size_t step, size_t end, void *element);
+int _fillArayeh(arayeh *self, size_t start, size_t step, size_t end, void *element);
 
 // this function will merge a default C array (for example int a[4] = {1, 2, 3, 4};)
 // into arayeh array, the starting index for merging is "startIndex" and the size of
@@ -87,17 +87,17 @@ void _mergeListToArayeh(arayeh *self, size_t startIndex, size_t listSize,
 
 // this function copies data in "index" cell of the array to the "destination" memory
 // location.
-int _getElementFromArayeh(arayeh *array, size_t index, void *destination);
+int _getElementFromArayeh(arayeh *self, size_t index, void *destination);
 
 // this function assigns pointers to public functions of an arayeh instance.
 void _setPublicMethods(arayeh *self);
 
 // this function assigns pointers to public functions of an arayeh instance.
-void _setPrivateMethods(arayeh *array, size_t type);
+void _setPrivateMethods(arayeh *self, size_t type);
 
 // This function purpose is to update array.next variable to point to next
 // empty [available] slot in the array.
-void _UpdateNextLocationPointer(arayeh *array);
+void _UpdateNextLocationPointer(arayeh *self);
 
 __END_DECLS
 

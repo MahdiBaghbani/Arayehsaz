@@ -153,10 +153,10 @@ typedef struct arayehStruct {
         int (*fill)(arayeh *self, size_t start, size_t step, size_t end,
                     void *element);
 
-        // this function will merge a default C arayeh
-        // (for example int a[4] = {1, 2, 3, 4};) into arayeh arayeh, the starting
-        // index for merging is "startIndex" and the size of C arayeh determines the
-        // last index (in the example above the size of C arayeh is 4).
+        // this function will merge a default C array
+        // (for example int a[4] = {1, 2, 3, 4};) into arayeh, the starting
+        // index for merging is "startIndex" and the size of C array determines the
+        // last index (in the example above the size of C array is 4).
         void (*mergeList)(arayeh *self, size_t startIndex, size_t listSize,
                           void *list);
 

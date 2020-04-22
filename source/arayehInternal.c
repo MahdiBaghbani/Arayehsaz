@@ -36,7 +36,7 @@
 
 #include "../include/arayehInternal.h"
 
-int _extendArayehSize(arayeh *array, size_t extendSize)
+int _extendArayehSize(arayeh *self, size_t extendSize)
 {
     /*
      * This function will reallocate memory to the arayeh and its map.
@@ -52,10 +52,10 @@ int _extendArayehSize(arayeh *array, size_t extendSize)
      */
 
     // calculate new size for arayeh.
-    size_t newSize = array->_internalProperties.size + extendSize;
+    size_t newSize = self->_internalProperties.size + extendSize;
 
     // size_t overflow protection.
-    if (newSize < array->_internalProperties.size) {
+    if (newSize < self->_internalProperties.size) {
         // wrong new size detected.
         // write to stderr and return error code.
         WARN_NEW_SIZE("_extendArayehSize()", TRUE);
@@ -68,7 +68,7 @@ int _extendArayehSize(arayeh *array, size_t extendSize)
 
     // this function identifies the right pointer for arayeh type and sets it to
     // point to NULL and also checks for possible overflow in size_t newSize.
-    int state = (array->_privateMethods.initArayeh)(array, &arrayPointer, newSize);
+    int state = (self->_privateMethods.initArayeh)(self, &arrayPointer, newSize);
 
     // protection for possible overflow in size_t.
     if (state == AA_ARAYEH_FAILURE) {
@@ -77,15 +77,15 @@ int _extendArayehSize(arayeh *array, size_t extendSize)
     }
 
     // reallocate memory to map and arayeh.
-    mapPointer = (char *) realloc(array->_internalProperties.map,
+    mapPointer = (char *) realloc(self->_internalProperties.map,
                                   sizeof *mapPointer * newSize);
-    state = (array->_privateMethods.reallocArayeh)(array, &arrayPointer, newSize);
+    state = (self->_privateMethods.reallocArayeh)(self, &arrayPointer, newSize);
 
     // check if memory re-allocated or not.
     if (state == AA_ARAYEH_FAILURE || mapPointer == NULL) {
         // free map and arayeh pointers.
         free(mapPointer);
-        (array->_privateMethods.freeArayeh)(array);
+        (self->_privateMethods.freeArayeh)(self);
 
         // write to stderr and return error code.
         WARN_REALLOC("_extendArayehSize()", TRUE);
@@ -93,14 +93,14 @@ int _extendArayehSize(arayeh *array, size_t extendSize)
     }
 
     // set new map elements to '0' [IS_EMPTY].
-    for (size_t i = array->_internalProperties.size; i < newSize; ++i) {
+    for (size_t i = self->_internalProperties.size; i < newSize; ++i) {
         mapPointer[i] = IS_EMPTY;
     }
 
     // update arayeh parameters.
-    (array->_privateMethods.setArayehMemoryPointer)(array, &arrayPointer);
-    array->_internalProperties.map  = mapPointer;
-    array->_internalProperties.size = newSize;
+    (self->_privateMethods.setArayehMemoryPointer)(self, &arrayPointer);
+    self->_internalProperties.map  = mapPointer;
+    self->_internalProperties.size = newSize;
 
     // return success code.
     return AA_ARAYEH_SUCCESS;
@@ -140,7 +140,7 @@ int _freeArayehMemory(arayeh **self)
     return AA_ARAYEH_SUCCESS;
 }
 
-size_t _defaultGrowthFactor(arayeh *array)
+size_t _defaultGrowthFactor(arayeh *arayeh)
 {
     /*
      * This function will calculate the extension size of memory.
@@ -166,12 +166,12 @@ size_t _defaultGrowthFactor(arayeh *array)
     // system realloc().
     // The growth pattern is:  0, 4, 8, 16, 25, 35, 46, 58, 72, 88, ...
 
-    size_t current_size   = array->_internalProperties.size;
+    size_t current_size   = arayeh->_internalProperties.size;
     size_t extension_size = (current_size >> 3) + (current_size < 9 ? 3 : 6);
     return extension_size;
 }
 
-void _setGrowthFactorFunction(arayeh *self, size_t (*growthFactor)(arayeh *self))
+void _setGrowthFactorFunction(arayeh *self, size_t (*growthFactor)(arayeh *array))
 {
     /*
      * This function will override the arayehs default growth factor function
@@ -187,7 +187,7 @@ void _setGrowthFactorFunction(arayeh *self, size_t (*growthFactor)(arayeh *self)
     (self->_privateMethods.growthFactor) = growthFactor;
 }
 
-int _addToArayeh(arayeh *array, void *element)
+int _addToArayeh(arayeh *self, void *element)
 {
     /*
      * This function will insert an "element" into arayeh at
@@ -215,13 +215,13 @@ int _addToArayeh(arayeh *array, void *element)
     int state;
 
     // extend arayeh size if needed.
-    if (array->_internalProperties.used == array->_internalProperties.size) {
+    if (self->_internalProperties.used == self->_internalProperties.size) {
 
         // calculate the extension memory size using growth factor function.
-        size_t extension_size = (array->_privateMethods.growthFactor)(array);
+        size_t extension_size = (self->_privateMethods.growthFactor)(self);
 
         // extend arayeh size.
-        state = (array->extendSize)(array, extension_size);
+        state = (self->extendSize)(self, extension_size);
 
         // stop function and return error value if extending arayeh size failed.
         if (state != AA_ARAYEH_SUCCESS) {
@@ -230,21 +230,20 @@ int _addToArayeh(arayeh *array, void *element)
     }
 
     // add element.
-    (array->_privateMethods.addElementToArayeh)(
-        array, array->_internalProperties.next, element);
+    (self->_privateMethods.addElementToArayeh)(self, self->_internalProperties.next, element);
 
     // update "map" and "used".
-    array->_internalProperties.map[array->_internalProperties.next] = IS_FILLED;
-    array->_internalProperties.used++;
+    self->_internalProperties.map[self->_internalProperties.next] = IS_FILLED;
+    self->_internalProperties.used++;
 
     // update "next" pointer.
-    _UpdateNextLocationPointer(array);
+    _UpdateNextLocationPointer(self);
 
     // return success code.
     return AA_ARAYEH_SUCCESS;
 }
 
-int _insertToArayeh(arayeh *array, size_t index, void *element)
+int _insertToArayeh(arayeh *self, size_t index, void *element)
 {
     /*
      * This function will insert an "element" into arayeh at "index".
@@ -271,7 +270,7 @@ int _insertToArayeh(arayeh *array, size_t index, void *element)
     // track error state in the function.
     int state = AA_ARAYEH_SUCCESS;
 
-    if (index >= array->_internalProperties.size) {
+    if (index >= self->_internalProperties.size) {
         // write to stderr and return error code.
         WARN_WRONG_INDEX(
             "_insertToArayeh() function, index is bigger than arayeh size!", TRUE);
@@ -279,12 +278,12 @@ int _insertToArayeh(arayeh *array, size_t index, void *element)
     }
 
     // insert element.
-    if (index == array->_internalProperties.next) {
+    if (index == self->_internalProperties.next) {
         // use arayeh.add for insertion if the index is same as next empty
         // slot in the arayeh.
         // this function will automatically update next pointer.
         // also it may need to extend arayeh memory size.
-        state = (array->add)(array, element);
+        state = (self->add)(self, element);
     } else {
         // if index is less (more) than the next pointer, just assign element
         // and check for arayeh map to see if that cell was already filled
@@ -292,12 +291,12 @@ int _insertToArayeh(arayeh *array, size_t index, void *element)
         // if it was uninitialized, update map and "used" counter.
 
         // assign element.
-        (array->_privateMethods.addElementToArayeh)(array, index, element);
+        (self->_privateMethods.addElementToArayeh)(self, index, element);
         // update arayeh parameters.
-        if (array->_internalProperties.map[index] == IS_EMPTY) {
+        if (self->_internalProperties.map[index] == IS_EMPTY) {
             // update "map" and "used" if they aren't already counted for this index.
-            array->_internalProperties.map[index] = IS_FILLED;
-            array->_internalProperties.used++;
+            self->_internalProperties.map[index] = IS_FILLED;
+            self->_internalProperties.used++;
         }
     }
 
@@ -305,7 +304,7 @@ int _insertToArayeh(arayeh *array, size_t index, void *element)
     return state;
 }
 
-int _fillArayeh(arayeh *array, size_t start, size_t step, size_t end, void *element)
+int _fillArayeh(arayeh *self, size_t start, size_t step, size_t end, void *element)
 {
     /*
      * This function will fill arayeh with an element
@@ -338,7 +337,7 @@ int _fillArayeh(arayeh *array, size_t start, size_t step, size_t end, void *elem
         return AA_ARAYEH_WRONG_INDEX;
     }
 
-    if (start >= array->_internalProperties.size) {
+    if (start >= self->_internalProperties.size) {
         // write to stderr and return error code.
         WARN_WRONG_INDEX("_fillArayeh() function, start is bigger than arayeh size!",
                          TRUE);
@@ -359,11 +358,11 @@ int _fillArayeh(arayeh *array, size_t start, size_t step, size_t end, void *elem
         // if index is less (more) than array.next, use insert function so it
         // won't affect next pointer, if index is equal to array.next, use add
         // to also update next pointer.
-        if (index < array->_internalProperties.next ||
-            index > array->_internalProperties.next) {
-            state = (array->insert)(array, index, element);
+        if (index < self->_internalProperties.next ||
+            index > self->_internalProperties.next) {
+            state = (self->insert)(self, index, element);
         } else {
-            state = (array->add)(array, element);
+            state = (self->add)(self, element);
         }
     }
 
@@ -535,7 +534,7 @@ void _setPrivateMethods(arayeh *self, size_t type)
     }
 }
 
-void _UpdateNextLocationPointer(arayeh *array)
+void _UpdateNextLocationPointer(arayeh *self)
 {
     /*
      * This function purpose is to update
@@ -546,9 +545,9 @@ void _UpdateNextLocationPointer(arayeh *array)
      * self         pointer to the arayeh object.
      */
 
-    while (array->_internalProperties.next < array->_internalProperties.size &&
-           array->_internalProperties.map[array->_internalProperties.next] ==
+    while (self->_internalProperties.next < self->_internalProperties.size &&
+           self->_internalProperties.map[self->_internalProperties.next] ==
                IS_FILLED) {
-        array->_internalProperties.next++;
+        self->_internalProperties.next++;
     }
 }
