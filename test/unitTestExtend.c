@@ -47,6 +47,10 @@ void tearDown(void)
 
 void test_extend(void)
 {
+    // This Test is here to ensure that extend works as expected.
+
+    // define error state variable.
+    int state;
 
     // define default arayeh size.
     size_t arayehSize = 20;
@@ -58,7 +62,11 @@ void test_extend(void)
     // test current size.
     TEST_ASSERT_EQUAL_INT(arayehSize, testCase->_internalProperties.size);
 
-    (testCase->extendSize)(testCase, extendSize);
+    // extend size.
+    state = (testCase->extendSize)(testCase, extendSize);
+
+    // assert successful extension.
+    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
 
     // test new size.
     TEST_ASSERT_EQUAL_INT(arayehSize + extendSize,
