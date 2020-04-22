@@ -47,6 +47,10 @@ void tearDown(void)
 
 void test_add(void)
 {
+    // This Test is here to ensure that test works as expected.
+
+    // define error state variable.
+    int state;
 
     // define default arayeh size.
     size_t arayehSize = 10;
@@ -56,7 +60,10 @@ void test_add(void)
     arayeh *testCase = newArayeh1D(TYPE_INT, arayehSize);
 
     // add element.
-    (testCase->add)(testCase, &element);
+    state = (testCase->add)(testCase, &element);
+
+    // assert successful adding.
+    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
 
     // assert element is added.
     TEST_ASSERT_EQUAL_INT(element, testCase->_internalProperties.array.pInt[0]);
@@ -69,6 +76,11 @@ void test_add(void)
 
 void test_add_extend(void)
 {
+    // Ensure arayeh extends its memory space
+    // when it lacks memory to add new item.
+
+    // define error state variable.
+    int state;
 
     // define default arayeh size.
     size_t arayehSize = 1;
@@ -77,15 +89,63 @@ void test_add_extend(void)
     // create new arayeh.
     arayeh *testCase = newArayeh1D(TYPE_INT, arayehSize);
 
-    // add 2 times to extend arayeh.
-    (testCase->add)(testCase, &element);
-    (testCase->add)(testCase, &element);
+    // test adding to arayeh for large amount of additions and see how it
+    // dynamically extends memory space.
+    for (int i = 0; i < 100000; i++) {
+        // add element to arayeh.
+        state = (testCase->add)(testCase, &element);
+        // assert successful adding.
+        TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
+        // assert elements are added.
+        TEST_ASSERT_EQUAL_INT(element, testCase->_internalProperties.array.pInt[i]);
+        TEST_ASSERT_EQUAL_CHAR(IS_FILLED, testCase->_internalProperties.map[i]);
+    }
 
-    // assert size is increased.
-    TEST_ASSERT_GREATER_THAN_INT(arayehSize, testCase->_internalProperties.size);
+    // free arayeh.
+    (testCase->freeArayeh)(&testCase);
+}
 
-    // assert next pointer is pointing to 2.
-    TEST_ASSERT_EQUAL_INT(2, testCase->_internalProperties.next);
+// define custom growth function.
+size_t growthFactorFunction(arayeh *array)
+{
+    // this growth function makes space 2x, by returning
+    // the array size for extending memory space.
+    return array->_internalProperties.size;
+}
+
+void test_add_extend_alternate_growth_function(void)
+{
+    // Testing using of an alternative growth function instead of default one.
+
+    // define error state variable.
+    int state;
+
+    // define default arayeh size.
+    size_t arayehSize = 1;
+    int element       = 5;
+
+    // create new arayeh.
+    arayeh *testCase = newArayeh1D(TYPE_INT, arayehSize);
+
+    // change growth factor.
+    (testCase->setGrowthFactorFunction)(testCase, growthFactorFunction);
+
+    // test adding to arayeh for large amount of additions and see how it
+    // dynamically extends memory space.
+    for (int i = 0; i < 100000; i++) {
+        // add element to arayeh.
+        state = (testCase->add)(testCase, &element);
+        // assert successful adding.
+        TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
+        // assert elements are added.
+        TEST_ASSERT_EQUAL_INT(element, testCase->_internalProperties.array.pInt[i]);
+        TEST_ASSERT_EQUAL_CHAR(IS_FILLED, testCase->_internalProperties.map[i]);
+    }
+
+    // assert final size.
+    // because size starts at 1 and multiplied by 2 to expand to 100,000 the final
+    // size should be 1 * 2^x >= 100,000 which results in x == 17 .
+    TEST_ASSERT_EQUAL_INT((1 << 17), testCase->_internalProperties.size);
 
     // free arayeh.
     (testCase->freeArayeh)(&testCase);
@@ -97,6 +157,7 @@ int main(void)
 
     RUN_TEST(test_add);
     RUN_TEST(test_add_extend);
+    RUN_TEST(test_add_extend_alternate_growth_function);
 
     return UnityEnd();
 }
