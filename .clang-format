@@ -1,5 +1,5 @@
 Language: Cpp
-Standard: Cpp11
+Standard: c++11
 DisableFormat: false
 
 # Common settings
