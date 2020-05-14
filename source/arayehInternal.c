@@ -79,7 +79,7 @@ int _extendArayehSize(arayeh *self, size_t extendSize)
     // reallocate memory to map and arayeh.
     mapPointer = (char *) realloc(self->_internalProperties.map,
                                   sizeof *mapPointer * newSize);
-    state = (self->_privateMethods.reallocArayeh)(self, &arrayPointer, newSize);
+    state      = (self->_privateMethods.reallocArayeh)(self, &arrayPointer, newSize);
 
     // check if memory re-allocated or not.
     if (state == AA_ARAYEH_FAILURE || mapPointer == NULL) {
@@ -230,7 +230,8 @@ int _addToArayeh(arayeh *self, void *element)
     }
 
     // add element.
-    (self->_privateMethods.addElementToArayeh)(self, self->_internalProperties.next, element);
+    (self->_privateMethods.addElementToArayeh)(self, self->_internalProperties.next,
+                                               element);
 
     // update "map" and "used".
     self->_internalProperties.map[self->_internalProperties.next] = IS_FILLED;
@@ -270,6 +271,7 @@ int _insertToArayeh(arayeh *self, size_t index, void *element)
     // track error state in the function.
     int state = AA_ARAYEH_SUCCESS;
 
+    // check starting index to be within arayeh bounds.
     if (index >= self->_internalProperties.size) {
         // write to stderr and return error code.
         WARN_WRONG_INDEX(
@@ -331,16 +333,18 @@ int _fillArayeh(arayeh *self, size_t start, size_t step, size_t end, void *eleme
     int state = AA_ARAYEH_SUCCESS;
 
     // check starting index to be within arayeh bounds.
-    if (start < 0) {
-        // write to stderr and return error code.
-        WARN_WRONG_INDEX("_fillArayeh() function, start is less than 0!", TRUE);
-        return AA_ARAYEH_WRONG_INDEX;
-    }
-
     if (start >= self->_internalProperties.size) {
         // write to stderr and return error code.
         WARN_WRONG_INDEX("_fillArayeh() function, start is bigger than arayeh size!",
                          TRUE);
+        return AA_ARAYEH_WRONG_INDEX;
+    }
+
+    // check for starting index being bigger than the ending index.
+    if (start > end) {
+        // write to stderr and return error code.
+        WARN_WRONG_INDEX(
+            "_fillArayeh() function, start index is bigger than end index!", TRUE);
         return AA_ARAYEH_WRONG_INDEX;
     }
 

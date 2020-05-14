@@ -47,6 +47,10 @@ void tearDown(void)
 
 void test_fill_all_empty_step_one(void)
 {
+    // This Test is here to ensure that test works as expected.
+
+    // define error state variable.
+    int state;
 
     // define default arayeh size.
     size_t arayehSize = 20;
@@ -58,7 +62,7 @@ void test_fill_all_empty_step_one(void)
     arayeh *testCase = newArayeh(TYPE_INT, arayehSize);
 
     // fill all of the empty arayeh with element.
-    int state = (testCase->fill)(testCase, 0, 1, arayehSize, &element);
+    state = (testCase->fill)(testCase, 0, 1, arayehSize, &element);
 
     // fill was successful.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
@@ -79,6 +83,10 @@ void test_fill_all_empty_step_one(void)
 
 void test_fill_all_empty_step_two(void)
 {
+    // Test filling by step 2.
+
+    // define error state variable.
+    int state;
 
     // define default arayeh size.
     size_t arayehSize = 20;
@@ -90,7 +98,7 @@ void test_fill_all_empty_step_two(void)
     arayeh *testCase = newArayeh(TYPE_INT, arayehSize);
 
     // fill all of the empty arayeh with element.
-    int state = (testCase->fill)(testCase, 0, 2, arayehSize, &element);
+    state = (testCase->fill)(testCase, 0, 2, arayehSize, &element);
 
     // fill was successful.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
@@ -116,6 +124,10 @@ void test_fill_all_empty_step_two(void)
 
 void test_fill_existing_arayeh(void)
 {
+    // Test filling function on a filled arayeh.
+
+    // define error state variable.
+    int state;
 
     // define default arayeh size.
     size_t arayehSize = 20;
@@ -123,7 +135,6 @@ void test_fill_existing_arayeh(void)
     // element for filling.
     int existingElement = 1;
     int element         = 5;
-    int state;
 
     // create new arayeh.
     arayeh *testCase = newArayeh(TYPE_INT, arayehSize);
@@ -163,6 +174,10 @@ void test_fill_existing_arayeh(void)
 
 void test_fill_extends_arayeh(void)
 {
+    // Test dynamic memory space extension.
+
+    // define error state variable.
+    int state;
 
     // define default arayeh size.
     size_t arayehSize = 20;
@@ -175,7 +190,7 @@ void test_fill_extends_arayeh(void)
     arayeh *testCase = newArayeh(TYPE_INT, arayehSize);
 
     // fill all of the empty arayeh with element.
-    int state = (testCase->fill)(testCase, 0, 1, fillSize, &element);
+    state = (testCase->fill)(testCase, 0, 1, fillSize, &element);
 
     // check arayeh size increased.
     TEST_ASSERT_GREATER_THAN_size_t(arayehSize, testCase->_internalProperties.size);
@@ -199,6 +214,10 @@ void test_fill_extends_arayeh(void)
 
 void test_error_bad_starting_point(void)
 {
+    // Test bad arguments as starting and ending points.
+
+    // define error state variable.
+    int state;
 
     // define default arayeh size.
     size_t arayehSize = 20;
@@ -209,30 +228,20 @@ void test_error_bad_starting_point(void)
     // create new arayeh.
     arayeh *testCase = newArayeh(TYPE_INT, arayehSize);
 
-    // fill all of the empty arayeh with element.
-    int state = (testCase->fill)(testCase, -5, 1, arayehSize, &element);
+    // fill with negative starting point.
+    state = (testCase->fill)(testCase, -5, 1, arayehSize, &element);
 
     // fill was successful.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_WRONG_INDEX, state);
 
-    // free arayeh.
-    (testCase->freeArayeh)(&testCase);
-}
+    // fill with starting point bigger than the array size.
+    state = (testCase->fill)(testCase, 21, 1, arayehSize, &element);
 
-void test_error_starting_point_bigger_than_size(void)
-{
+    // fill was successful.
+    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_WRONG_INDEX, state);
 
-    // define default arayeh size.
-    size_t arayehSize = 20;
-
-    // element for filling.
-    int element = 5;
-
-    // create new arayeh.
-    arayeh *testCase = newArayeh(TYPE_INT, arayehSize);
-
-    // fill all of the empty arayeh with element.
-    int state = (testCase->fill)(testCase, 21, 1, arayehSize, &element);
+    // fill with starting point bigger than ending point.
+    state = (testCase->fill)(testCase, 10, 1, 5, &element);
 
     // fill was successful.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_WRONG_INDEX, state);
@@ -243,6 +252,10 @@ void test_error_starting_point_bigger_than_size(void)
 
 void test_error_wrong_step(void)
 {
+    // Test wrong step size for filling.
+
+    // define error state variable.
+    int state;
 
     // define default arayeh size.
     size_t arayehSize = 20;
@@ -254,7 +267,7 @@ void test_error_wrong_step(void)
     arayeh *testCase = newArayeh(TYPE_INT, arayehSize);
 
     // fill all of the empty arayeh with element.
-    int state = (testCase->fill)(testCase, 0, 0, arayehSize, &element);
+    state = (testCase->fill)(testCase, 0, 0, arayehSize, &element);
 
     // fill was successful.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_WRONG_STEP, state);
@@ -272,7 +285,6 @@ int main(void)
     RUN_TEST(test_fill_existing_arayeh);
     RUN_TEST(test_fill_extends_arayeh);
     RUN_TEST(test_error_bad_starting_point);
-    RUN_TEST(test_error_starting_point_bigger_than_size);
     RUN_TEST(test_error_wrong_step);
 
     return UnityEnd();
