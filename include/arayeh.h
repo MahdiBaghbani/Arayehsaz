@@ -69,14 +69,14 @@
 #endif
 
 // return codes.
-#define AA_ARAYEH_SUCCESS         1
-#define AA_ARAYEH_FAILURE         0
-#define AA_ARAYEH_WRONG_NEW_SIZE  2
-#define AA_ARAYEH_OVERFLOW        3
-#define AA_ARAYEH_REALLOC_DENIED  4
-#define AA_ARAYEH_WRONG_INDEX     5
-#define AA_ARAYEH_END_BIGGER_SIZE 6
-#define AA_ARAYEH_WRONG_STEP      7
+#define AA_ARAYEH_SUCCESS            1
+#define AA_ARAYEH_FAILURE            0
+#define AA_ARAYEH_WRONG_NEW_SIZE     2
+#define AA_ARAYEH_OVERFLOW           3
+#define AA_ARAYEH_REALLOC_DENIED     4
+#define AA_ARAYEH_WRONG_INDEX        5
+#define AA_ARAYEH_EXCEED_ARAYEH_SIZE 6
+#define AA_ARAYEH_WRONG_STEP         7
 
 // map characters.
 #define IS_EMPTY  '0'
@@ -127,7 +127,7 @@ typedef struct arayehStruct {
         size_t size;
     } _internalProperties;
 
-    // public methods of arayehs, accessible for everyone.
+    // Public methods of arayehs, accessible for everyone.
     struct {
 
         // this function will reallocate memory to the arayeh and its map.
@@ -157,36 +157,46 @@ typedef struct arayehStruct {
         // (for example int a[4] = {1, 2, 3, 4};) into arayeh, the starting
         // index for merging is "startIndex" and the size of C array determines the
         // last index (in the example above the size of C array is 4).
-        void (*mergeList)(arayeh *self, size_t startIndex, size_t listSize,
-                          void *list);
+        int (*mergeList)(arayeh *self, size_t startIndex, size_t listSize,
+                         void *list);
 
         // this function copies data in "index" cell of the arayeh to the
         // "destination" memory location.
         int (*get)(arayeh *self, size_t index, void *destination);
     };
 
-    // private methods of arayeh, should not be used by users.
+    // Private methods of arayeh, should not be used by users.
     struct privateMethods {
 
+        // this function initializes arayeh pointer.
         int (*initArayeh)(arayeh *self, arayehType *array, size_t initialSize);
 
+        // this function allocates memory for arayeh.
         int (*mallocArayeh)(arayeh *self, arayehType *array, size_t initialSize);
 
+        // this function re-allocates memory for arayeh.
         int (*reallocArayeh)(arayeh *self, arayehType *array, size_t initialSize);
 
+        // this frees arayeh memory.
         void (*freeArayeh)(arayeh *self);
 
         // this function is implemented as a way to control the
         // dynamic growth rate of the arayeh memory space.
         size_t (*growthFactor)(arayeh *self);
 
+        // this function assigns the initialized pointer of an array to the arayeh
+        // structs pointer.
         void (*setArayehMemoryPointer)(arayeh *self, arayehType *array);
 
+        // this function adds an element of a specific type to the arayeh.
         void (*addElementToArayeh)(arayeh *self, size_t index, void *element);
 
-        void (*mergeListToArayeh)(arayeh *self, size_t startIndex, size_t listSize,
-                                  void *list);
-
+        // this function merges a C standard array of a specific type into the
+        // arayeh of the same type.
+        int (*mergeListToArayeh)(arayeh *self, size_t startIndex, size_t listSize,
+                                 void *list);
+        // this function gets an element from arayeh and places it into a destination
+        // memory location provided by caller.
         void (*getElementFromArayeh)(arayeh *self, size_t index, void *destination);
 
     } _privateMethods;

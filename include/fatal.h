@@ -76,12 +76,12 @@
     FATAL("low memory? strdup() failed in " what, allow_print)
 
 // macros for fatal warning codes.
-#define WARN(what, allow_print)                                         \
-    do {                                                                \
-        if (allow_print) {                                              \
-            fprintf(stderr, "WARNING: " what " from " FILE_LINE "\n");  \
-        }                                                               \
-    } while(0)
+#define WARN(what, allow_print)                                        \
+    do {                                                               \
+        if (allow_print) {                                             \
+            fprintf(stderr, "WARNING: " what " from " FILE_LINE "\n"); \
+        }                                                              \
+    } while (0)
 #define WARN_MALLOC(what, allow_print) \
     WARN("low memory? malloc() failed in " what, allow_print)
 #define WARN_CALLOC(what, allow_print) \
@@ -95,5 +95,8 @@
 #define WARN_NEW_SIZE(what, allow_print) \
     WARN("new size is less than current size, failed in " what, allow_print)
 #define WARN_WRONG_INDEX(what, allow_print) WARN("failed in " what, allow_print)
+#define WARN_WRONG_STEP(what, allow_print)  WARN("failed in " what, allow_print)
+#define WARN_EXCEED_ARAYEH_SIZE(what, allow_print) \
+    WARN("failed in " what, allow_print)
 
 #endif    //__AA_A_FATAL_H__

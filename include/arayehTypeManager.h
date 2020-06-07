@@ -139,22 +139,19 @@ void _addTypeDouble(arayeh *self, size_t index, void *element);
 
 // Merge a C standard array of a specific type into the arayeh.
 
-void _mergeListTypeChar(arayeh *self, size_t startIndex, size_t listSize,
+int _mergeListTypeChar(arayeh *self, size_t startIndex, size_t listSize, void *list);
+
+int _mergeListTypeSInt(arayeh *self, size_t startIndex, size_t listSize, void *list);
+
+int _mergeListTypeInt(arayeh *self, size_t startIndex, size_t listSize, void *list);
+
+int _mergeListTypeLInt(arayeh *self, size_t startIndex, size_t listSize, void *list);
+
+int _mergeListTypeFloat(arayeh *self, size_t startIndex, size_t listSize,
                         void *list);
 
-void _mergeListTypeSInt(arayeh *self, size_t startIndex, size_t listSize,
-                        void *list);
-
-void _mergeListTypeInt(arayeh *self, size_t startIndex, size_t listSize, void *list);
-
-void _mergeListTypeLInt(arayeh *self, size_t startIndex, size_t listSize,
-                        void *list);
-
-void _mergeListTypeFloat(arayeh *self, size_t startIndex, size_t listSize,
+int _mergeListTypeDouble(arayeh *self, size_t startIndex, size_t listSize,
                          void *list);
-
-void _mergeListTypeDouble(arayeh *self, size_t startIndex, size_t listSize,
-                          void *list);
 
 // Get an element from arayeh.
 

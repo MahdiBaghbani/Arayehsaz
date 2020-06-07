@@ -252,7 +252,8 @@ int _insertToArayeh(arayeh *self, size_t index, void *element)
      * this function WON'T increase arayeh size!
      *
      * it will update "map" and "used" parameters.
-     * it may update "size" and "next" parameter.
+     * it may update "next" parameter.
+     * it will not update "size" (won't increase arayeh memory space).
      *
      * ARGUMENTS:
      * self         pointer to the arayeh object.
@@ -351,7 +352,7 @@ int _fillArayeh(arayeh *self, size_t start, size_t step, size_t end, void *eleme
     // check step size.
     if (step <= 0) {
         // write to stderr and return error code.
-        WARN_WRONG_INDEX(
+        WARN_WRONG_STEP(
             "_fillArayeh() function, step should be bigger or equal to 1!", TRUE);
         return AA_ARAYEH_WRONG_STEP;
     }
@@ -374,17 +375,16 @@ int _fillArayeh(arayeh *self, size_t start, size_t step, size_t end, void *eleme
     return state;
 }
 
-void _mergeListToArayeh(arayeh *self, size_t startIndex, size_t listSize, void *list)
+int _mergeListToArayeh(arayeh *self, size_t startIndex, size_t listSize, void *list)
 {
     /*
      * This function will merge a default C arayeh
-     * (for example int a[4] = {1, 2, 3, 4};) into arayeh arayeh, the starting index
-     * for merging is "startIndex" and the size of C arayeh determines the last index
+     * (for example int a[4] = {1, 2, 3, 4};) into the arayeh, the starting index
+     * for merging is "startIndex" and the size of C array determines the last index
      * (in the example above the size of C arayeh is 4).
      *
-     * this function WON'T increase arayeh size!
-     *
-     * it may update "map" and "used" and "next" parameters.
+     * it will update "map" and "used" parameters.
+     * it may update "size" and "next" parameter.
      *
      * ARGUMENTS:
      * self         pointer to the arayeh object.
@@ -394,15 +394,34 @@ void _mergeListToArayeh(arayeh *self, size_t startIndex, size_t listSize, void *
      *
      */
 
-    // check arayeh bounds.
-    if (self->_internalProperties.size <= startIndex ||
-        self->_internalProperties.size < startIndex + listSize) {
-        // TODO error handling
-        abort();
+    // track error state in the function.
+    int state = AA_ARAYEH_SUCCESS;
+
+    // check if start index is bigger than the arayeh size.
+    if (self->_internalProperties.size <= startIndex) {
+        // write to stderr and return error code.
+        WARN_WRONG_INDEX("_mergeListToArayeh() function, start index is bigger than "
+                         "the arayeh size!",
+                         TRUE);
+        return AA_ARAYEH_WRONG_INDEX;
+    }
+
+    // check if list size exceeds arayeh size.
+    if (self->_internalProperties.size < startIndex + listSize) {
+        // write to stderr and return error code.
+        WARN_EXCEED_ARAYEH_SIZE(
+            "_mergeListToArayeh() function, merging this list "
+            "at from the specified starting point causes overflow.",
+            TRUE);
+        return AA_ARAYEH_EXCEED_ARAYEH_SIZE;
     }
 
     // insert C array elements into arayeh.
-    (self->_privateMethods.mergeListToArayeh)(self, startIndex, listSize, list);
+    state =
+        (self->_privateMethods.mergeListToArayeh)(self, startIndex, listSize, list);
+
+    // return error state code.
+    return state;
 }
 
 int _getElementFromArayeh(arayeh *self, size_t index, void *destination)
