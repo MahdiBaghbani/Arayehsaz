@@ -68,6 +68,9 @@ size_t _defaultGrowthFactor(arayeh *arayeh);
 // with a new function provided by user.
 void _setGrowthFactorFunction(arayeh *self, size_t (*growthFactor)(arayeh *arayeh));
 
+// This function will calculate the extension size of memory and extends arayeh size.
+int _calculateAndExtendSize(arayeh *self);
+
 // this function will insert an "element" into array at
 // index = self->_internalProperties.next.
 int _addToArayeh(arayeh *self, void *element);

@@ -187,6 +187,34 @@ void _setGrowthFactorFunction(arayeh *self, size_t (*growthFactor)(arayeh *array
     (self->_privateMethods.growthFactor) = growthFactor;
 }
 
+int _calculateAndExtendSize(arayeh *self)
+{
+    /*
+     * This function will calculate the extension size of memory and extends arayeh
+     * size.
+     *
+     * ARGUMENTS:
+     * self             pointer to the arayeh object.
+     *
+     * RETURN:
+     * state        a code that indicates successful operation
+     *              or an error code defined in configuration.h .
+     *
+     */
+
+    // track error state in the function.
+    int state;
+
+    // calculate the extension memory size using growth factor function.
+    size_t extension_size = (self->_privateMethods.growthFactor)(self);
+
+    // extend arayeh size.
+    state = (self->extendSize)(self, extension_size);
+
+    // return error state.
+    return state;
+}
+
 int _addToArayeh(arayeh *self, void *element)
 {
     /*
@@ -217,11 +245,8 @@ int _addToArayeh(arayeh *self, void *element)
     // extend arayeh size if needed.
     if (self->_internalProperties.used == self->_internalProperties.size) {
 
-        // calculate the extension memory size using growth factor function.
-        size_t extension_size = (self->_privateMethods.growthFactor)(self);
-
-        // extend arayeh size.
-        state = (self->extendSize)(self, extension_size);
+        // extend size.
+        state = _calculateAndExtendSize(self);
 
         // stop function and return error value if extending arayeh size failed.
         if (state != AA_ARAYEH_SUCCESS) {
