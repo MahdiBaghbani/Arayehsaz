@@ -57,7 +57,7 @@ void test_add(void)
     int element       = 5;
 
     // create new arayeh.
-    arayeh *testCase = newArayeh(TYPE_INT, arayehSize);
+    arayeh *testCase = newArayeh(AA_ARAYEH_TYPE_INT, arayehSize);
 
     // add element.
     state = (testCase->add)(testCase, &element);
@@ -67,7 +67,7 @@ void test_add(void)
 
     // assert element is added.
     TEST_ASSERT_EQUAL_INT(element, testCase->_internalProperties.array.pInt[0]);
-    TEST_ASSERT_EQUAL_CHAR(IS_FILLED, testCase->_internalProperties.map[0]);
+    TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_internalProperties.map[0]);
     TEST_ASSERT_EQUAL_INT(1, testCase->_internalProperties.next);
 
     // free arayeh.
@@ -87,7 +87,7 @@ void test_add_extend(void)
     int element       = 5;
 
     // create new arayeh.
-    arayeh *testCase = newArayeh(TYPE_INT, arayehSize);
+    arayeh *testCase = newArayeh(AA_ARAYEH_TYPE_INT, arayehSize);
 
     // test adding to arayeh for large amount of additions and see how it
     // dynamically extends memory space.
@@ -98,7 +98,7 @@ void test_add_extend(void)
         TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
         // assert elements are added.
         TEST_ASSERT_EQUAL_INT(element, testCase->_internalProperties.array.pInt[i]);
-        TEST_ASSERT_EQUAL_CHAR(IS_FILLED, testCase->_internalProperties.map[i]);
+        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_internalProperties.map[i]);
     }
 
     // free arayeh.
@@ -125,7 +125,7 @@ void test_add_extend_alternate_growth_function(void)
     int element       = 5;
 
     // create new arayeh.
-    arayeh *testCase = newArayeh(TYPE_INT, arayehSize);
+    arayeh *testCase = newArayeh(AA_ARAYEH_TYPE_INT, arayehSize);
 
     // change growth factor.
     (testCase->setGrowthFactorFunction)(testCase, growthFactorFunction);
@@ -139,7 +139,7 @@ void test_add_extend_alternate_growth_function(void)
         TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
         // assert elements are added.
         TEST_ASSERT_EQUAL_INT(element, testCase->_internalProperties.array.pInt[i]);
-        TEST_ASSERT_EQUAL_CHAR(IS_FILLED, testCase->_internalProperties.map[i]);
+        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_internalProperties.map[i]);
     }
 
     // assert final size.

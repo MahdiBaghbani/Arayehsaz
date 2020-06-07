@@ -55,6 +55,9 @@
 
 __BEGIN_DECLS
 
+// this function will override arayeh default extension settings.
+void _setExtensionSettings(arayeh *self, arayehSetting *settings);
+
 // this function will reallocate memory to the array and its map.
 int _extendArayehSize(arayeh *self, size_t extendSize);
 

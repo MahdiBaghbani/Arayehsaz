@@ -79,16 +79,16 @@
 #define AA_ARAYEH_WRONG_STEP         7
 
 // map characters.
-#define IS_EMPTY  '0'
-#define IS_FILLED '1'
+#define AA_ARAYEH_OFF '0'
+#define AA_ARAYEH_ON  '1'
 
 // arayeh types.
-#define TYPE_CHAR   1
-#define TYPE_SINT   2
-#define TYPE_INT    3
-#define TYPE_LINT   4
-#define TYPE_FLOAT  5
-#define TYPE_DOUBLE 6
+#define AA_ARAYEH_TYPE_CHAR   1
+#define AA_ARAYEH_TYPE_SINT   2
+#define AA_ARAYEH_TYPE_INT    3
+#define AA_ARAYEH_TYPE_LINT   4
+#define AA_ARAYEH_TYPE_FLOAT  5
+#define AA_ARAYEH_TYPE_DOUBLE 6
 
 __BEGIN_DECLS
 
@@ -105,30 +105,49 @@ typedef union arayehTypeUnion {
     double *pDouble;
 } arayehType;
 
+// Arayeh extension settings.
+typedef struct arayehSettingStruct {
+    char AllowExtendOnAdd;
+    char AllowExtendOnInsert;
+    char AllowExtendOnMergeList;
+} arayehSetting;
+
 // Arayeh definition.
 typedef struct arayehStruct {
 
     // variables to hold state of the arayeh.
     struct internalProperties {
+
         // holds actual array.
         arayehType array;
-        // holds a map of arayeh cells,
-        // indicates they are empty or filled.
+
+        // holds a map of arayeh cells, indicates they are empty or filled.
         // using type char for this is to minimize the impact of memory usage.
         char *map;
+
         // holds type of array.
         size_t type;
+
+        // hold settings for array size extension.
+        arayehSetting *settings;
+
         // holds next pointer, the pointer is pointing
         // at the next empty cell in the arayeh.
         size_t next;
+
         // holds the number of filled cells.
         size_t used;
+
         // holds current size of arayeh.
         size_t size;
+
     } _internalProperties;
 
     // Public methods of arayehs, accessible for everyone.
     struct {
+
+        // this function will override arayeh default extension settings.
+        void (*setExtensionSettings)(arayeh *self, arayehSetting *settings);
 
         // this function will reallocate memory to the arayeh and its map.
         int (*extendSize)(arayeh *self, size_t extendSize);

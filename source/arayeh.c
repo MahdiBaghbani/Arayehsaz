@@ -56,8 +56,9 @@ arayeh *newArayeh(size_t type, size_t initialSize)
      */
 
     // check array type.
-    if (type != TYPE_CHAR && type != TYPE_SINT && type != TYPE_INT &&
-        type != TYPE_LINT && type != TYPE_FLOAT && type != TYPE_DOUBLE) {
+    if (type != AA_ARAYEH_TYPE_CHAR && type != AA_ARAYEH_TYPE_SINT &&
+        type != AA_ARAYEH_TYPE_INT && type != AA_ARAYEH_TYPE_LINT &&
+        type != AA_ARAYEH_TYPE_FLOAT && type != AA_ARAYEH_TYPE_DOUBLE) {
         // wrong array type.
         return NULL;
     }
@@ -100,18 +101,28 @@ arayeh *newArayeh(size_t type, size_t initialSize)
         return NULL;
     }
 
-    // set all map elements to '0' [IS_EMPTY].
+    // set all map elements to '0' [AA_ARAYEH_OFF].
     for (size_t i = 0; i < initialSize; ++i) {
-        mapPointer[i] = IS_EMPTY;
+        mapPointer[i] = AA_ARAYEH_OFF;
     }
+
+    // create array default setting holder.
+    arayehSetting *defaultSettings =
+        (arayehSetting *) malloc(sizeof *defaultSettings);
+
+    // set default setting.
+    defaultSettings->AllowExtendOnAdd       = AA_ARAYEH_ON;
+    defaultSettings->AllowExtendOnInsert    = AA_ARAYEH_ON;
+    defaultSettings->AllowExtendOnMergeList = AA_ARAYEH_ON;
 
     // set array parameters.
     (self->_privateMethods.setArayehMemoryPointer)(self, &arrayPointer);
-    self->_internalProperties.map  = mapPointer;
-    self->_internalProperties.type = type;
-    self->_internalProperties.next = 0;
-    self->_internalProperties.used = 0;
-    self->_internalProperties.size = initialSize;
+    self->_internalProperties.map      = mapPointer;
+    self->_internalProperties.type     = type;
+    self->_internalProperties.settings = defaultSettings;
+    self->_internalProperties.next     = 0;
+    self->_internalProperties.used     = 0;
+    self->_internalProperties.size     = initialSize;
 
     return self;
 }

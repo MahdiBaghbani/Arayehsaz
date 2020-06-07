@@ -57,7 +57,7 @@ void test_insert(void)
     int element       = 5;
 
     // create new arayeh.
-    arayeh *testCase = newArayeh(TYPE_INT, arayehSize);
+    arayeh *testCase = newArayeh(AA_ARAYEH_TYPE_INT, arayehSize);
 
     // insert element.
     state = (testCase->insert)(testCase, 0, &element);
@@ -67,7 +67,7 @@ void test_insert(void)
 
     // assert element is inserted in index 0.
     TEST_ASSERT_EQUAL_INT(element, testCase->_internalProperties.array.pInt[0]);
-    TEST_ASSERT_EQUAL_CHAR(IS_FILLED, testCase->_internalProperties.map[0]);
+    TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_internalProperties.map[0]);
     TEST_ASSERT_EQUAL_INT(1, testCase->_internalProperties.next);
 
     // insert element.
@@ -78,7 +78,7 @@ void test_insert(void)
 
     // assert element is inserted in index 0.
     TEST_ASSERT_EQUAL_INT(element, testCase->_internalProperties.array.pInt[5]);
-    TEST_ASSERT_EQUAL_CHAR(IS_FILLED, testCase->_internalProperties.map[5]);
+    TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_internalProperties.map[5]);
     TEST_ASSERT_EQUAL_INT(1, testCase->_internalProperties.next);
 
     // free arayeh.
@@ -104,7 +104,7 @@ void test_error_out_of_range_index(void)
     int element       = 5;
 
     // create new arayeh.
-    arayeh *testCase = newArayeh(TYPE_INT, arayehSize);
+    arayeh *testCase = newArayeh(AA_ARAYEH_TYPE_INT, arayehSize);
 
     // insert element in index 10 (maximum possible index is 9).
     state = (testCase->insert)(testCase, 10, &element);
@@ -114,7 +114,7 @@ void test_error_out_of_range_index(void)
 
     // ensure arayeh is not affected.
     for (size_t i = 0; i < arayehSize; i++) {
-        TEST_ASSERT_EQUAL_CHAR(IS_EMPTY, testCase->_internalProperties.map[i]);
+        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_OFF, testCase->_internalProperties.map[i]);
     }
 
     // test a negative index number.
@@ -125,7 +125,7 @@ void test_error_out_of_range_index(void)
 
     // ensure arayeh is not affected.
     for (size_t i = 0; i < arayehSize; i++) {
-        TEST_ASSERT_EQUAL_CHAR(IS_EMPTY, testCase->_internalProperties.map[i]);
+        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_OFF, testCase->_internalProperties.map[i]);
     }
 
     // free arayeh.

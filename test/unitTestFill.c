@@ -59,7 +59,7 @@ void test_fill_all_empty_step_one(void)
     int element = 5;
 
     // create new arayeh.
-    arayeh *testCase = newArayeh(TYPE_INT, arayehSize);
+    arayeh *testCase = newArayeh(AA_ARAYEH_TYPE_INT, arayehSize);
 
     // fill all of the empty arayeh with element.
     state = (testCase->fill)(testCase, 0, 1, arayehSize, &element);
@@ -70,7 +70,7 @@ void test_fill_all_empty_step_one(void)
     // check all slots.
     for (size_t i = 0; i < arayehSize; ++i) {
         TEST_ASSERT_EQUAL_INT(element, testCase->_internalProperties.array.pInt[i]);
-        TEST_ASSERT_EQUAL_CHAR(IS_FILLED, testCase->_internalProperties.map[i]);
+        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_internalProperties.map[i]);
     }
 
     // assert "used" and "next" pointers.
@@ -95,7 +95,7 @@ void test_fill_all_empty_step_two(void)
     int element = 5;
 
     // create new arayeh.
-    arayeh *testCase = newArayeh(TYPE_INT, arayehSize);
+    arayeh *testCase = newArayeh(AA_ARAYEH_TYPE_INT, arayehSize);
 
     // fill all of the empty arayeh with element.
     state = (testCase->fill)(testCase, 0, 2, arayehSize, &element);
@@ -106,12 +106,12 @@ void test_fill_all_empty_step_two(void)
     // check for being filled.
     for (size_t i = 0; i < arayehSize; i += 2) {
         TEST_ASSERT_EQUAL_INT(element, testCase->_internalProperties.array.pInt[i]);
-        TEST_ASSERT_EQUAL_CHAR(IS_FILLED, testCase->_internalProperties.map[i]);
+        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_internalProperties.map[i]);
     }
 
     // check for being empty.
     for (size_t i = 1; i < arayehSize; i += 2) {
-        TEST_ASSERT_EQUAL_CHAR(IS_EMPTY, testCase->_internalProperties.map[i]);
+        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_OFF, testCase->_internalProperties.map[i]);
     }
 
     // assert "used" and "next" pointers.
@@ -137,7 +137,7 @@ void test_fill_existing_arayeh(void)
     int element         = 5;
 
     // create new arayeh.
-    arayeh *testCase = newArayeh(TYPE_INT, arayehSize);
+    arayeh *testCase = newArayeh(AA_ARAYEH_TYPE_INT, arayehSize);
 
     // add pre-filling arayeh with data.
     for (size_t i = 0; i < arayehSize; ++i) {
@@ -161,7 +161,7 @@ void test_fill_existing_arayeh(void)
     // check for being filled.
     for (size_t i = 5; i < 10; ++i) {
         TEST_ASSERT_EQUAL_INT(element, testCase->_internalProperties.array.pInt[i]);
-        TEST_ASSERT_EQUAL_CHAR(IS_FILLED, testCase->_internalProperties.map[i]);
+        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_internalProperties.map[i]);
     }
 
     // assert "used" and "next" pointers.
@@ -187,7 +187,7 @@ void test_fill_extends_arayeh(void)
     int element = 5;
 
     // create new arayeh.
-    arayeh *testCase = newArayeh(TYPE_INT, arayehSize);
+    arayeh *testCase = newArayeh(AA_ARAYEH_TYPE_INT, arayehSize);
 
     // fill all of the empty arayeh with element.
     state = (testCase->fill)(testCase, 0, 1, fillSize, &element);
@@ -201,7 +201,7 @@ void test_fill_extends_arayeh(void)
     // check all slots.
     for (size_t i = 0; i < fillSize; ++i) {
         TEST_ASSERT_EQUAL_INT(element, testCase->_internalProperties.array.pInt[i]);
-        TEST_ASSERT_EQUAL_CHAR(IS_FILLED, testCase->_internalProperties.map[i]);
+        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_internalProperties.map[i]);
     }
 
     // assert "used" and "next" pointers.
@@ -226,7 +226,7 @@ void test_error_bad_starting_point(void)
     int element = 5;
 
     // create new arayeh.
-    arayeh *testCase = newArayeh(TYPE_INT, arayehSize);
+    arayeh *testCase = newArayeh(AA_ARAYEH_TYPE_INT, arayehSize);
 
     // fill with negative starting point.
     state = (testCase->fill)(testCase, -5, 1, arayehSize, &element);
@@ -264,7 +264,7 @@ void test_error_wrong_step(void)
     int element = 5;
 
     // create new arayeh.
-    arayeh *testCase = newArayeh(TYPE_INT, arayehSize);
+    arayeh *testCase = newArayeh(AA_ARAYEH_TYPE_INT, arayehSize);
 
     // fill all of the empty arayeh with element.
     state = (testCase->fill)(testCase, 0, 0, arayehSize, &element);

@@ -36,6 +36,28 @@
 
 #include "../include/arayehInternal.h"
 
+void _setExtensionSettings(arayeh *self, arayehSetting *settings)
+{
+    /*
+     * This function will override arayeh default extension settings.
+     *
+     * ARGUMENTS:
+     * self         pointer to the arayeh object.
+     * settings      new setting to apply to arayeh.
+     *
+     * RETURN:
+     * no return, it's void dude.
+     *
+     */
+
+    self->_internalProperties.settings->AllowExtendOnAdd =
+        settings->AllowExtendOnAdd;
+    self->_internalProperties.settings->AllowExtendOnInsert =
+        settings->AllowExtendOnInsert;
+    self->_internalProperties.settings->AllowExtendOnMergeList =
+        settings->AllowExtendOnMergeList;
+}
+
 int _extendArayehSize(arayeh *self, size_t extendSize)
 {
     /*
@@ -92,9 +114,9 @@ int _extendArayehSize(arayeh *self, size_t extendSize)
         return AA_ARAYEH_REALLOC_DENIED;
     }
 
-    // set new map elements to '0' [IS_EMPTY].
+    // set new map elements to '0' [AA_ARAYEH_OFF].
     for (size_t i = self->_internalProperties.size; i < newSize; ++i) {
-        mapPointer[i] = IS_EMPTY;
+        mapPointer[i] = AA_ARAYEH_OFF;
     }
 
     // update arayeh parameters.
@@ -125,6 +147,10 @@ int _freeArayehMemory(arayeh **self)
     // free map array pointer and nullify the pointer.
     free((*self)->_internalProperties.map);
     (*self)->_internalProperties.map = NULL;
+
+    // free arayeh extension settings and nullify the pointer.
+    free((*self)->_internalProperties.settings);
+    (*self)->_internalProperties.settings = NULL;
 
     // reset arayeh parameters.
     (*self)->_internalProperties.type = 0;
@@ -259,7 +285,7 @@ int _addToArayeh(arayeh *self, void *element)
                                                element);
 
     // update "map" and "used".
-    self->_internalProperties.map[self->_internalProperties.next] = IS_FILLED;
+    self->_internalProperties.map[self->_internalProperties.next] = AA_ARAYEH_ON;
     self->_internalProperties.used++;
 
     // update "next" pointer.
@@ -322,9 +348,9 @@ int _insertToArayeh(arayeh *self, size_t index, void *element)
         // assign element.
         (self->_privateMethods.addElementToArayeh)(self, index, element);
         // update arayeh parameters.
-        if (self->_internalProperties.map[index] == IS_EMPTY) {
+        if (self->_internalProperties.map[index] == AA_ARAYEH_OFF) {
             // update "map" and "used" if they aren't already counted for this index.
-            self->_internalProperties.map[index] = IS_FILLED;
+            self->_internalProperties.map[index] = AA_ARAYEH_ON;
             self->_internalProperties.used++;
         }
     }
@@ -418,6 +444,10 @@ int _mergeListToArayeh(arayeh *self, size_t startIndex, size_t listSize, void *l
      * listSize     size of the C arayeh.
      * list         the C array to be merged into the arayeh.
      *
+     * RETURN:
+     * state        a code that indicates successful operation
+     *              or an error code defined in configuration.h .
+     *
      */
 
     // track error state in the function.
@@ -432,7 +462,7 @@ int _mergeListToArayeh(arayeh *self, size_t startIndex, size_t listSize, void *l
         return AA_ARAYEH_WRONG_INDEX;
     }
 
-    // check if list size exceeds arayeh size.
+    // check if list size exceeds arayeh size if being started from starting index.
     if (self->_internalProperties.size < startIndex + listSize) {
         // write to stderr and return error code.
         WARN_EXCEED_ARAYEH_SIZE(
@@ -486,6 +516,7 @@ void _setPublicMethods(arayeh *self)
      *
      */
 
+    self->setExtensionSettings    = _setExtensionSettings;
     self->extendSize              = _extendArayehSize;
     self->freeArayeh              = _freeArayehMemory;
     self->setGrowthFactorFunction = _setGrowthFactorFunction;
@@ -512,7 +543,7 @@ void _setPrivateMethods(arayeh *self, size_t type)
 
     // assign based on the arayeh type.
     switch (type) {
-    case TYPE_CHAR:
+    case AA_ARAYEH_TYPE_CHAR:
         self->_privateMethods.initArayeh             = _initTypeChar;
         self->_privateMethods.mallocArayeh           = _mallocTypeChar;
         self->_privateMethods.reallocArayeh          = _reallocTypeChar;
@@ -523,7 +554,7 @@ void _setPrivateMethods(arayeh *self, size_t type)
         self->_privateMethods.getElementFromArayeh   = _getTypeChar;
         break;
 
-    case TYPE_SINT:
+    case AA_ARAYEH_TYPE_SINT:
         self->_privateMethods.initArayeh             = _initTypeSInt;
         self->_privateMethods.mallocArayeh           = _mallocTypeSInt;
         self->_privateMethods.reallocArayeh          = _reallocTypeSInt;
@@ -534,7 +565,7 @@ void _setPrivateMethods(arayeh *self, size_t type)
         self->_privateMethods.getElementFromArayeh   = _getTypeSInt;
         break;
 
-    case TYPE_INT:
+    case AA_ARAYEH_TYPE_INT:
         self->_privateMethods.initArayeh             = _initTypeInt;
         self->_privateMethods.mallocArayeh           = _mallocTypeInt;
         self->_privateMethods.reallocArayeh          = _reallocTypeInt;
@@ -545,7 +576,7 @@ void _setPrivateMethods(arayeh *self, size_t type)
         self->_privateMethods.getElementFromArayeh   = _getTypeInt;
         break;
 
-    case TYPE_LINT:
+    case AA_ARAYEH_TYPE_LINT:
         self->_privateMethods.initArayeh             = _initTypeLInt;
         self->_privateMethods.mallocArayeh           = _mallocTypeLInt;
         self->_privateMethods.reallocArayeh          = _reallocTypeLInt;
@@ -556,7 +587,7 @@ void _setPrivateMethods(arayeh *self, size_t type)
         self->_privateMethods.getElementFromArayeh   = _getTypeLInt;
         break;
 
-    case TYPE_FLOAT:
+    case AA_ARAYEH_TYPE_FLOAT:
         self->_privateMethods.initArayeh             = _initTypeFloat;
         self->_privateMethods.mallocArayeh           = _mallocTypeFloat;
         self->_privateMethods.reallocArayeh          = _reallocTypeFloat;
@@ -567,7 +598,7 @@ void _setPrivateMethods(arayeh *self, size_t type)
         self->_privateMethods.getElementFromArayeh   = _getTypeFloat;
         break;
 
-    case TYPE_DOUBLE:
+    case AA_ARAYEH_TYPE_DOUBLE:
         self->_privateMethods.initArayeh             = _initTypeDouble;
         self->_privateMethods.mallocArayeh           = _mallocTypeDouble;
         self->_privateMethods.reallocArayeh          = _reallocTypeDouble;
@@ -596,7 +627,7 @@ void _UpdateNextLocationPointer(arayeh *self)
 
     while (self->_internalProperties.next < self->_internalProperties.size &&
            self->_internalProperties.map[self->_internalProperties.next] ==
-               IS_FILLED) {
+               AA_ARAYEH_ON) {
         self->_internalProperties.next++;
     }
 }
