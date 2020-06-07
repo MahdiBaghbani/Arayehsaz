@@ -261,6 +261,7 @@ int _insertToArayeh(arayeh *self, size_t index, void *element)
      *
      * ARGUMENTS:
      * self         pointer to the arayeh object.
+     * index        index of the desired arayeh cell to insert the element.
      * element      pointer to a variable to be added to the arayeh.
      *
      * RETURN:
