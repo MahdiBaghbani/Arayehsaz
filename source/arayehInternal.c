@@ -273,8 +273,8 @@ int _insertToArayeh(arayeh *self, size_t index, void *element)
     // track error state in the function.
     int state = AA_ARAYEH_SUCCESS;
 
-    // check starting index to be within arayeh bounds.
-    if (index >= self->_internalProperties.size) {
+    // check if index is bigger or equal to size of arayeh.
+    if (self->_internalProperties.size <= index) {
         // write to stderr and return error code.
         WARN_WRONG_INDEX(
             "_insertToArayeh() function, index is bigger than arayeh size!", TRUE);
@@ -334,15 +334,15 @@ int _fillArayeh(arayeh *self, size_t start, size_t step, size_t end, void *eleme
     // track error state in the function.
     int state = AA_ARAYEH_SUCCESS;
 
-    // check starting index to be within arayeh bounds.
-    if (start >= self->_internalProperties.size) {
+    // check if starting index is bigger than arayeh size.
+    if (self->_internalProperties.size <= start) {
         // write to stderr and return error code.
         WARN_WRONG_INDEX("_fillArayeh() function, start is bigger than arayeh size!",
                          TRUE);
         return AA_ARAYEH_WRONG_INDEX;
     }
 
-    // check for starting index being bigger than the ending index.
+    // check if starting index being bigger than the ending index.
     if (start > end) {
         // write to stderr and return error code.
         WARN_WRONG_INDEX(
