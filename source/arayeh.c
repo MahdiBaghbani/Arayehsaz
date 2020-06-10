@@ -111,9 +111,11 @@ arayeh *newArayeh(size_t type, size_t initialSize)
         (arayehSetting *) malloc(sizeof *defaultSettings);
 
     // set default setting.
-    defaultSettings->AllowExtendOnAdd       = AA_ARAYEH_ON;
-    defaultSettings->AllowExtendOnInsert    = AA_ARAYEH_ON;
-    defaultSettings->AllowExtendOnMergeList = AA_ARAYEH_ON;
+    defaultSettings->allowDebugMessages     = AA_ARAYEH_OFF;
+    defaultSettings->allowExtendOnAdd       = AA_ARAYEH_ON;
+    defaultSettings->allowExtendOnInsert    = AA_ARAYEH_ON;
+    defaultSettings->allowExtendOnFill      = AA_ARAYEH_ON;
+    defaultSettings->allowExtendOnMergeList = AA_ARAYEH_ON;
 
     // set array parameters.
     (self->_privateMethods.setArayehMemoryPointer)(self, &arrayPointer);

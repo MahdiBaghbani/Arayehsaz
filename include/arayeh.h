@@ -59,24 +59,24 @@
 #    define __END_DECLS   /* empty */
 #endif
 
-// true false symbolic.
-#ifndef TRUE
-#    define TRUE 1
-#endif
-
+// false true symbolic.
 #ifndef FALSE
 #    define FALSE 0
 #endif
 
+#ifndef TRUE
+#    define TRUE 1
+#endif
+
 // return codes.
-#define AA_ARAYEH_SUCCESS            1
-#define AA_ARAYEH_FAILURE            0
-#define AA_ARAYEH_WRONG_NEW_SIZE     2
-#define AA_ARAYEH_OVERFLOW           3
-#define AA_ARAYEH_REALLOC_DENIED     4
-#define AA_ARAYEH_WRONG_INDEX        5
-#define AA_ARAYEH_EXCEED_ARAYEH_SIZE 6
-#define AA_ARAYEH_WRONG_STEP         7
+#define AA_ARAYEH_FAILURE          0
+#define AA_ARAYEH_SUCCESS          1
+#define AA_ARAYEH_WRONG_NEW_SIZE   2
+#define AA_ARAYEH_OVERFLOW         3
+#define AA_ARAYEH_REALLOC_DENIED   4
+#define AA_ARAYEH_WRONG_INDEX      5
+#define AA_ARAYEH_NOT_ENOUGH_SPACE 6
+#define AA_ARAYEH_WRONG_STEP       7
 
 // map characters.
 #define AA_ARAYEH_OFF '0'
@@ -97,25 +97,38 @@ typedef struct arayehStruct arayeh;
 
 // Supported arayeh types.
 typedef union arayehTypeUnion {
+    // pointer to the array of type char.
     char *pChar;
+    // pointer to the array of type short int.
     short int *pShortInt;
+    // pointer to the array of type int.
     int *pInt;
+    // pointer to the array of type long int.
     long int *pLongInt;
+    // pointer to the array of type float.
     float *pFloat;
+    // pointer to the array of type double.
     double *pDouble;
 } arayehType;
 
 // Arayeh extension settings.
 typedef struct arayehSettingStruct {
-    char AllowExtendOnAdd;
-    char AllowExtendOnInsert;
-    char AllowExtendOnMergeList;
+    // allow debug messages to be printed on stdout and stderr.
+    char allowDebugMessages;
+    // allow extending arayeh size when using add method.
+    char allowExtendOnAdd;
+    // allow extending arayeh size when using insert method.
+    char allowExtendOnInsert;
+    // allow extending arayeh size when using fill method.
+    char allowExtendOnFill;
+    // allow extending arayeh size when using merge list method.
+    char allowExtendOnMergeList;
 } arayehSetting;
 
 // Arayeh definition.
 typedef struct arayehStruct {
 
-    // variables to hold state of the arayeh.
+    // this structure holds settings and states of the arayeh.
     struct internalProperties {
 
         // holds actual array.
@@ -125,10 +138,10 @@ typedef struct arayehStruct {
         // using type char for this is to minimize the impact of memory usage.
         char *map;
 
-        // holds type of array.
+        // holds type of arayeh.
         size_t type;
 
-        // hold settings for array size extension.
+        // hold settings for arayeh.
         arayehSetting *settings;
 
         // holds next pointer, the pointer is pointing
@@ -146,8 +159,8 @@ typedef struct arayehStruct {
     // Public methods of arayehs, accessible for everyone.
     struct {
 
-        // this function will override arayeh default extension settings.
-        void (*setExtensionSettings)(arayeh *self, arayehSetting *settings);
+        // this function will override arayeh default settings.
+        void (*setArayehSettings)(arayeh *self, arayehSetting *settings);
 
         // this function will reallocate memory to the arayeh and its map.
         int (*extendSize)(arayeh *self, size_t extendSize);
@@ -169,7 +182,7 @@ typedef struct arayehStruct {
 
         // this function will fill arayeh with an element from index (inclusive)
         // "start" to index (exclusive) "end" with step size "step".
-        int (*fill)(arayeh *self, size_t start, size_t step, size_t end,
+        int (*fill)(arayeh *self, size_t startIndex, size_t step, size_t endIndex,
                     void *element);
 
         // this function will merge a default C array

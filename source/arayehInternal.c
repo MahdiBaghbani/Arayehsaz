@@ -39,7 +39,7 @@
 void _setExtensionSettings(arayeh *self, arayehSetting *settings)
 {
     /*
-     * This function will override arayeh default extension settings.
+     * This function will override arayeh default settings.
      *
      * ARGUMENTS:
      * self         pointer to the arayeh object.
@@ -50,12 +50,16 @@ void _setExtensionSettings(arayeh *self, arayehSetting *settings)
      *
      */
 
-    self->_internalProperties.settings->AllowExtendOnAdd =
-        settings->AllowExtendOnAdd;
-    self->_internalProperties.settings->AllowExtendOnInsert =
-        settings->AllowExtendOnInsert;
-    self->_internalProperties.settings->AllowExtendOnMergeList =
-        settings->AllowExtendOnMergeList;
+    self->_internalProperties.settings->allowDebugMessages =
+        settings->allowDebugMessages;
+    self->_internalProperties.settings->allowExtendOnAdd =
+        settings->allowExtendOnAdd;
+    self->_internalProperties.settings->allowExtendOnInsert =
+        settings->allowExtendOnInsert;
+    self->_internalProperties.settings->allowExtendOnFill =
+        settings->allowExtendOnFill;
+    self->_internalProperties.settings->allowExtendOnMergeList =
+        settings->allowExtendOnMergeList;
 }
 
 int _extendArayehSize(arayeh *self, size_t extendSize)
@@ -73,6 +77,15 @@ int _extendArayehSize(arayeh *self, size_t extendSize)
      *
      */
 
+    // set debug flag.
+    int debug =
+        self->_internalProperties.settings->allowDebugMessages == AA_ARAYEH_ON
+            ? TRUE
+            : FALSE;
+
+    // track error state in the function.
+    int state;
+
     // calculate new size for arayeh.
     size_t newSize = self->_internalProperties.size + extendSize;
 
@@ -80,7 +93,7 @@ int _extendArayehSize(arayeh *self, size_t extendSize)
     if (newSize < self->_internalProperties.size) {
         // wrong new size detected.
         // write to stderr and return error code.
-        WARN_NEW_SIZE("_extendArayehSize()", TRUE);
+        WARN_NEW_SIZE("_extendArayehSize()", debug);
         return AA_ARAYEH_WRONG_NEW_SIZE;
     }
 
@@ -90,11 +103,11 @@ int _extendArayehSize(arayeh *self, size_t extendSize)
 
     // this function identifies the right pointer for arayeh type and sets it to
     // point to NULL and also checks for possible overflow in size_t newSize.
-    int state = (self->_privateMethods.initArayeh)(self, &arrayPointer, newSize);
+    state = (self->_privateMethods.initArayeh)(self, &arrayPointer, newSize);
 
     // protection for possible overflow in size_t.
     if (state == AA_ARAYEH_FAILURE) {
-        WARN_T_OVERFLOW("_extendArayehSize()", TRUE);
+        WARN_T_OVERFLOW("_extendArayehSize()", debug);
         return AA_ARAYEH_OVERFLOW;
     }
 
@@ -110,7 +123,7 @@ int _extendArayehSize(arayeh *self, size_t extendSize)
         (self->_privateMethods.freeArayeh)(self);
 
         // write to stderr and return error code.
-        WARN_REALLOC("_extendArayehSize()", TRUE);
+        WARN_REALLOC("_extendArayehSize()", debug);
         return AA_ARAYEH_REALLOC_DENIED;
     }
 
@@ -251,9 +264,9 @@ int _addToArayeh(arayeh *self, void *element)
      * self->_internalProperties.size == self->_internalProperties.used.
      *
      * it will update "map" and "used" and "next" parameters.
-     * it may update "size" parameter.
+     * it may update "size" parameter (based on the user specified settings).
      *
-     * self->_internalProperties.next will be updated in a manner that it points to
+     * self->_internalProperties.next will be updated in a way that it points to
      * the next EMPTY slot in the arayeh.
      *
      * ARGUMENTS:
@@ -265,18 +278,31 @@ int _addToArayeh(arayeh *self, void *element)
      *              or an error code defined in configuration.h .
      */
 
+    // set debug flag.
+    int debug =
+        self->_internalProperties.settings->allowDebugMessages == AA_ARAYEH_ON
+            ? TRUE
+            : FALSE;
+
     // track error state in the function.
     int state;
 
-    // extend arayeh size if needed.
+    // check if arayeh is full.
     if (self->_internalProperties.used == self->_internalProperties.size) {
-
-        // extend size.
-        state = _calculateAndExtendSize(self);
-
-        // stop function and return error value if extending arayeh size failed.
-        if (state != AA_ARAYEH_SUCCESS) {
-            return state;
+        // decide to extend arayeh size based on arayeh settings.
+        if (self->_internalProperties.settings->allowExtendOnAdd == AA_ARAYEH_ON) {
+            // extend arayeh size.
+            state = _calculateAndExtendSize(self);
+            // stop function and return error value if extending arayeh size failed.
+            if (state != AA_ARAYEH_SUCCESS) {
+                return state;
+            }
+        } else {
+            // write to stderr and return error code.
+            WARN_WRONG_INDEX(
+                "_addToArayeh() function, not enough space left in the arayeh.",
+                debug);
+            return AA_ARAYEH_NOT_ENOUGH_SPACE;
         }
     }
 
@@ -300,11 +326,9 @@ int _insertToArayeh(arayeh *self, size_t index, void *element)
     /*
      * This function will insert an "element" into arayeh at "index".
      *
-     * this function WON'T increase arayeh size!
-     *
      * it will update "map" and "used" parameters.
      * it may update "next" parameter.
-     * it will not update "size" (won't increase arayeh memory space).
+     * it may update "size" (based on the user specified settings).
      *
      * ARGUMENTS:
      * self         pointer to the arayeh object.
@@ -321,15 +345,36 @@ int _insertToArayeh(arayeh *self, size_t index, void *element)
      *
      */
 
+    // set debug flag.
+    int debug =
+        self->_internalProperties.settings->allowDebugMessages == AA_ARAYEH_ON
+            ? TRUE
+            : FALSE;
+
     // track error state in the function.
     int state = AA_ARAYEH_SUCCESS;
 
     // check if index is bigger or equal to size of arayeh.
     if (self->_internalProperties.size <= index) {
-        // write to stderr and return error code.
-        WARN_WRONG_INDEX(
-            "_insertToArayeh() function, index is bigger than arayeh size!", TRUE);
-        return AA_ARAYEH_WRONG_INDEX;
+        // decide to extend arayeh size based on arayeh settings.
+        if (self->_internalProperties.settings->allowExtendOnInsert ==
+            AA_ARAYEH_ON) {
+            // extend arayeh size until "index" is less than the arayeh size.
+            do {
+                state = _calculateAndExtendSize(self);
+                // stop function and return error value if extending arayeh size
+                // failed.
+                if (state != AA_ARAYEH_SUCCESS) {
+                    return state;
+                }
+            } while (self->_internalProperties.size <= index);
+        } else {
+            // write to stderr and return error code.
+            WARN_WRONG_INDEX("_insertToArayeh() function, index is equal or bigger "
+                             "than arayeh size!",
+                             debug);
+            return AA_ARAYEH_WRONG_INDEX;
+        }
     }
 
     // insert element.
@@ -359,11 +404,12 @@ int _insertToArayeh(arayeh *self, size_t index, void *element)
     return state;
 }
 
-int _fillArayeh(arayeh *self, size_t start, size_t step, size_t end, void *element)
+int _fillArayeh(arayeh *self, size_t startIndex, size_t step, size_t endIndex,
+                void *element)
 {
     /*
      * This function will fill arayeh with an element
-     * from index (inclusive) "start" to index (exclusive) "end"
+     * from index (inclusive) "startIndex" to index (exclusive) "endIndex"
      * with step size "step".
      *
      * it will update "map" and "used" parameters.
@@ -371,9 +417,9 @@ int _fillArayeh(arayeh *self, size_t start, size_t step, size_t end, void *eleme
      *
      * ARGUMENTS:
      * self         pointer to the arayeh object.
-     * start        starting index (inclusive).
+     * startIndex   starting index (inclusive).
      * step         step size.
-     * end          ending index (exclusive).
+     * endIndex     ending index (exclusive).
      * element      pointer to a variable that must fill the arayeh.
      *
      * RETURN:
@@ -382,22 +428,21 @@ int _fillArayeh(arayeh *self, size_t start, size_t step, size_t end, void *eleme
      *
      */
 
+    // set debug flag.
+    int debug =
+        self->_internalProperties.settings->allowDebugMessages == AA_ARAYEH_ON
+            ? TRUE
+            : FALSE;
+
     // track error state in the function.
     int state = AA_ARAYEH_SUCCESS;
 
-    // check if starting index is bigger than arayeh size.
-    if (self->_internalProperties.size <= start) {
+    // check if starting index being greater than the ending index.
+    if (endIndex < startIndex) {
         // write to stderr and return error code.
-        WARN_WRONG_INDEX("_fillArayeh() function, start is bigger than arayeh size!",
-                         TRUE);
-        return AA_ARAYEH_WRONG_INDEX;
-    }
-
-    // check if starting index being bigger than the ending index.
-    if (start > end) {
-        // write to stderr and return error code.
-        WARN_WRONG_INDEX(
-            "_fillArayeh() function, start index is bigger than end index!", TRUE);
+        WARN_WRONG_INDEX("_fillArayeh() function, startIndex index is greater than "
+                         "endIndex index!",
+                         debug);
         return AA_ARAYEH_WRONG_INDEX;
     }
 
@@ -405,12 +450,37 @@ int _fillArayeh(arayeh *self, size_t start, size_t step, size_t end, void *eleme
     if (step <= 0) {
         // write to stderr and return error code.
         WARN_WRONG_STEP(
-            "_fillArayeh() function, step should be bigger or equal to 1!", TRUE);
+            "_fillArayeh() function, step should be bigger or equal to 1!", debug);
         return AA_ARAYEH_WRONG_STEP;
     }
 
+    // check if startIndex or endIndex indexes are greater than arayeh size.
+    if (self->_internalProperties.size <= startIndex ||
+        self->_internalProperties.size < endIndex) {
+        // decide to extend arayeh size based on arayeh settings.
+        if (self->_internalProperties.settings->allowExtendOnFill == AA_ARAYEH_ON) {
+            // extend arayeh size until startIndex and endIndex indexes are less than
+            // the arayeh size.
+            do {
+                state = _calculateAndExtendSize(self);
+                // stop function and return error value if extending arayeh size
+                // failed.
+                if (state != AA_ARAYEH_SUCCESS) {
+                    return state;
+                }
+            } while (self->_internalProperties.size <= startIndex ||
+                     self->_internalProperties.size < endIndex);
+        } else {
+            // write to stderr and return error code.
+            WARN_WRONG_INDEX("_fillArayeh() function, startIndex or endIndex is "
+                             "greater than arayeh size!",
+                             debug);
+            return AA_ARAYEH_WRONG_INDEX;
+        }
+    }
+
     // fill the arayeh.
-    for (size_t index = start; index < end; index += step) {
+    for (size_t index = startIndex; index < endIndex; index += step) {
 
         // if index is less (more) than array.next, use insert function so it
         // won't affect next pointer, if index is equal to array.next, use add
@@ -450,26 +520,56 @@ int _mergeListToArayeh(arayeh *self, size_t startIndex, size_t listSize, void *l
      *
      */
 
+    // set debug flag.
+    int debug =
+        self->_internalProperties.settings->allowDebugMessages == AA_ARAYEH_ON
+            ? TRUE
+            : FALSE;
+
     // track error state in the function.
     int state = AA_ARAYEH_SUCCESS;
 
-    // check if start index is bigger than the arayeh size.
-    if (self->_internalProperties.size <= startIndex) {
-        // write to stderr and return error code.
-        WARN_WRONG_INDEX("_mergeListToArayeh() function, start index is bigger than "
-                         "the arayeh size!",
-                         TRUE);
-        return AA_ARAYEH_WRONG_INDEX;
-    }
+    // calculate endIndex.
+    size_t endIndex = startIndex + listSize;
 
-    // check if list size exceeds arayeh size if being started from starting index.
-    if (self->_internalProperties.size < startIndex + listSize) {
-        // write to stderr and return error code.
-        WARN_EXCEED_ARAYEH_SIZE(
-            "_mergeListToArayeh() function, merging this list "
-            "at from the specified starting point causes overflow.",
-            TRUE);
-        return AA_ARAYEH_EXCEED_ARAYEH_SIZE;
+    // check if startIndex or endIndex indexes are greater than arayeh size.
+    if (self->_internalProperties.size <= startIndex ||
+        self->_internalProperties.size < endIndex) {
+        // decide to extend arayeh size based on arayeh settings.
+        if (self->_internalProperties.settings->allowExtendOnFill == AA_ARAYEH_ON) {
+            // extend arayeh size until startIndex and endIndex indexes are less than
+            // the arayeh size.
+            do {
+                state = _calculateAndExtendSize(self);
+                // stop function and return error value if extending arayeh size
+                // failed.
+                if (state != AA_ARAYEH_SUCCESS) {
+                    return state;
+                }
+            } while (self->_internalProperties.size <= startIndex ||
+                     self->_internalProperties.size < endIndex);
+        } else {
+            // check if startIndex is greater than the arayeh size.
+            if (self->_internalProperties.size <= startIndex) {
+                // write to stderr and return error code.
+                WARN_WRONG_INDEX(
+                    "_mergeListToArayeh() function, start index is greater than "
+                    "the arayeh size!",
+                    debug);
+                return AA_ARAYEH_WRONG_INDEX;
+            }
+
+            // check if list size exceeds arayeh size if being started from
+            // startIndex.
+            if (self->_internalProperties.size < endIndex) {
+                // write to stderr and return error code.
+                WARN_EXCEED_ARAYEH_SIZE(
+                    "_mergeListToArayeh() function, starting from the specified "
+                    "index, arayeh doesn't have enough space to merge this list.",
+                    debug);
+                return AA_ARAYEH_NOT_ENOUGH_SPACE;
+            }
+        }
     }
 
     // insert C array elements into arayeh.
@@ -493,9 +593,15 @@ int _getElementFromArayeh(arayeh *self, size_t index, void *destination)
      *
      */
 
+    // set debug flag.
+    int debug =
+        self->_internalProperties.settings->allowDebugMessages == AA_ARAYEH_ON
+            ? TRUE
+            : FALSE;
+
     // check arayeh bounds.
     if (index >= self->_internalProperties.size) {
-        WARN_WRONG_INDEX("index out of range! _getElementFromArayeh()", TRUE);
+        WARN_WRONG_INDEX("index out of range! _getElementFromArayeh()", debug);
         return AA_ARAYEH_WRONG_INDEX;
     }
 
@@ -516,7 +622,7 @@ void _setPublicMethods(arayeh *self)
      *
      */
 
-    self->setExtensionSettings    = _setExtensionSettings;
+    self->setArayehSettings       = _setExtensionSettings;
     self->extendSize              = _extendArayehSize;
     self->freeArayeh              = _freeArayehMemory;
     self->setGrowthFactorFunction = _setGrowthFactorFunction;

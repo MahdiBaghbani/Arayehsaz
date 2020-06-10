@@ -151,6 +151,44 @@ void test_add_extend_alternate_growth_function(void)
     (testCase->freeArayeh)(&testCase);
 }
 
+void test_add_setting_extension_off(void)
+{
+    // Ensure arayeh doesn't extend its memory space
+    // when the memory extension on add is disabled in settings.
+
+    // define error state variable.
+    int state;
+
+    // define default arayeh size.
+    size_t arayehSize = 1;
+    int element       = 5;
+
+    // define new settings.
+    arayehSetting newSetting = {AA_ARAYEH_OFF, AA_ARAYEH_OFF, AA_ARAYEH_ON,
+                                AA_ARAYEH_ON, AA_ARAYEH_ON};
+
+    // create new arayeh.
+    arayeh *testCase = newArayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+
+    // set new settings.
+    (testCase->setArayehSettings)(testCase, &newSetting);
+
+    // fill the only empty space.
+    state = (testCase->add)(testCase, &element);
+
+    // assert successful addition.
+    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
+
+    // now fill again to see if the new settings prevents arayeh from extension.
+    state = (testCase->add)(testCase, &element);
+
+    // assert not enough space error.
+    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_NOT_ENOUGH_SPACE, state);
+
+    // free arayeh.
+    (testCase->freeArayeh)(&testCase);
+}
+
 int main(void)
 {
     UnityBegin("unitTestAdd.c");
@@ -158,6 +196,7 @@ int main(void)
     RUN_TEST(test_add);
     RUN_TEST(test_add_extend);
     RUN_TEST(test_add_extend_alternate_growth_function);
+    RUN_TEST(test_add_setting_extension_off);
 
     return UnityEnd();
 }

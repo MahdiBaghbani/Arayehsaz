@@ -55,7 +55,7 @@
 
 __BEGIN_DECLS
 
-// this function will override arayeh default extension settings.
+// this function will override arayeh default settings.
 void _setExtensionSettings(arayeh *self, arayehSetting *settings);
 
 // this function will reallocate memory to the array and its map.
@@ -82,8 +82,8 @@ int _addToArayeh(arayeh *self, void *element);
 int _insertToArayeh(arayeh *self, size_t index, void *element);
 
 // this function will fill array with an element from index (inclusive)
-// "start" to index (exclusive) "end" with step size "step".
-int _fillArayeh(arayeh *self, size_t start, size_t step, size_t end, void *element);
+// "startIndex" to index (exclusive) "endIndex" with step size "step".
+int _fillArayeh(arayeh *self, size_t startIndex, size_t step, size_t endIndex, void *element);
 
 // this function will merge a default C array (for example int a[4] = {1, 2, 3, 4};)
 // into arayeh, the starting index for merging is "startIndex" and the size of

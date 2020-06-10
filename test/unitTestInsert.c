@@ -85,16 +85,50 @@ void test_insert(void)
     (testCase->freeArayeh)(&testCase);
 }
 
-void test_error_out_of_range_index(void)
+void test_insert_memory_extension(void)
+{
+    // This Test is here to ensure that insert will extend memory space when the
+    // index for insertion is bigger than teh arayeh size.
+
+    // define error state variable.
+    int state;
+
+    // define default arayeh size.
+    size_t arayehSize = 10;
+    int element       = 5;
+    size_t index      = 1000000;
+
+    // create new arayeh.
+    arayeh *testCase = newArayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+
+    // insert element at index 1,000,000. arayeh should be extended to the size of 1
+    // million or bigger to do this insertion.
+    state = (testCase->insert)(testCase, index, &element);
+
+    // assert successful insertion.
+    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
+
+    // assert arayeh size to be greater or equal to 1,000,000 and then assert the
+    // element insertion.
+    TEST_ASSERT_GREATER_THAN_size_t(index, testCase->_internalProperties.size);
+    TEST_ASSERT_EQUAL_INT(element, testCase->_internalProperties.array.pInt[index]);
+    TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_internalProperties.map[index]);
+    TEST_ASSERT_EQUAL_INT(0, testCase->_internalProperties.next);
+
+    // free arayeh.
+    (testCase->freeArayeh)(&testCase);
+}
+
+void test_insert_setting_extension_off_error_out_of_range_index(void)
 {
     // This test ensures that a error code will be returned by insert function
-    // when the index is not in range of 0 to (arayeh size - 1), also because
-    // the index field of insert function is of type size_t, any negative number
-    // in the function call will be converted to unsigned and thus result in
-    // an overflow, most of time it will be a very big number that is possibly
-    // out of arayeh valid indexes range, but there is a chance that conversion
-    // would result in a number inside valid range and corrupt the data inside
-    // the arayeh.
+    // when the index is not in range of 0 to (arayeh size - 1) when memory extension
+    // on insert is disabled, also because the index field of insert function is of
+    // type size_t, any negative number in the function call will be converted to
+    // unsigned and thus result in an overflow, most of time it will be a very big
+    // number that is possibly out of arayeh valid indexes range, but there is a
+    // chance that conversion would result in a number inside valid range and corrupt
+    // the data inside the arayeh.
 
     // define error state variable.
     int state;
@@ -103,8 +137,15 @@ void test_error_out_of_range_index(void)
     size_t arayehSize = 10;
     int element       = 5;
 
+    // define new settings.
+    arayehSetting newSetting = {AA_ARAYEH_OFF, AA_ARAYEH_ON, AA_ARAYEH_OFF,
+                                AA_ARAYEH_ON, AA_ARAYEH_ON};
+
     // create new arayeh.
     arayeh *testCase = newArayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+
+    // set new settings.
+    (testCase->setArayehSettings)(testCase, &newSetting);
 
     // insert element in index 10 (maximum possible index is 9).
     state = (testCase->insert)(testCase, 10, &element);
@@ -137,7 +178,8 @@ int main(void)
     UnityBegin("unitTestInsert.c");
 
     RUN_TEST(test_insert);
-    RUN_TEST(test_error_out_of_range_index);
+    RUN_TEST(test_insert_memory_extension);
+    RUN_TEST(test_insert_setting_extension_off_error_out_of_range_index);
 
     return UnityEnd();
 }

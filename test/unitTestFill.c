@@ -175,13 +175,17 @@ void test_fill_existing_arayeh(void)
 void test_fill_extends_arayeh(void)
 {
     // Test dynamic memory space extension.
+    // this test is done when starting point is less than the arayeh size and
+    // end index is greater than arayeh size.
 
     // define error state variable.
     int state;
 
     // define default arayeh size.
     size_t arayehSize = 20;
-    size_t fillSize   = 30;
+
+    // define end index.
+    size_t endIndex = 30;
 
     // element for filling.
     int element = 5;
@@ -190,7 +194,7 @@ void test_fill_extends_arayeh(void)
     arayeh *testCase = newArayeh(AA_ARAYEH_TYPE_INT, arayehSize);
 
     // fill all of the empty arayeh with element.
-    state = (testCase->fill)(testCase, 0, 1, fillSize, &element);
+    state = (testCase->fill)(testCase, 0, 1, endIndex, &element);
 
     // check arayeh size increased.
     TEST_ASSERT_GREATER_THAN_size_t(arayehSize, testCase->_internalProperties.size);
@@ -199,22 +203,158 @@ void test_fill_extends_arayeh(void)
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
 
     // check all slots.
-    for (size_t i = 0; i < fillSize; ++i) {
+    for (size_t i = 0; i < endIndex; ++i) {
         TEST_ASSERT_EQUAL_INT(element, testCase->_internalProperties.array.pInt[i]);
         TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_internalProperties.map[i]);
     }
 
     // assert "used" and "next" pointers.
-    TEST_ASSERT_EQUAL_INT(fillSize, testCase->_internalProperties.used);
-    TEST_ASSERT_EQUAL_INT(fillSize, testCase->_internalProperties.next);
+    TEST_ASSERT_EQUAL_INT(endIndex, testCase->_internalProperties.used);
+    TEST_ASSERT_EQUAL_INT(endIndex, testCase->_internalProperties.next);
 
     // free arayeh.
     (testCase->freeArayeh)(&testCase);
 }
 
-void test_error_bad_starting_point(void)
+void test_fill_extends_arayeh_start_bigger_than_size(void)
+{
+    // Test dynamic memory space extension.
+    // this test is done when starting point is greater than the arayeh size and
+    // end index is greater than the start index. in case of end index < start index
+    // and error will occur.
+
+    // define error state variable.
+    int state;
+
+    // define default arayeh size.
+    size_t arayehSize = 20;
+
+    // define start index and end index.
+    size_t startIndex = 30;
+    size_t endIndex   = 50;
+
+    // element for filling.
+    int element = 5;
+
+    // create new arayeh.
+    arayeh *testCase = newArayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+
+    // fill all of the empty arayeh with element.
+    state = (testCase->fill)(testCase, startIndex, 1, endIndex, &element);
+
+    // check arayeh size increased.
+    TEST_ASSERT_GREATER_THAN_size_t(arayehSize, testCase->_internalProperties.size);
+
+    // check fill was successful.
+    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
+
+    // check all slots.
+    for (size_t i = startIndex; i < endIndex; ++i) {
+        TEST_ASSERT_EQUAL_INT(element, testCase->_internalProperties.array.pInt[i]);
+        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_internalProperties.map[i]);
+    }
+
+    // assert "used" and "next" pointers.
+    TEST_ASSERT_EQUAL_INT(endIndex - startIndex, testCase->_internalProperties.used);
+    TEST_ASSERT_EQUAL_INT(0, testCase->_internalProperties.next);
+
+    // free arayeh.
+    (testCase->freeArayeh)(&testCase);
+}
+
+void test_fill_extends_arayeh_add_insert_off_in_settings(void)
+{
+    // Test dynamic memory space extension.
+    // this test is to make sure that if add or insert memory extent settings are set
+    // to 'off', and fill is set to 'on', the memory will be extended if needed by
+    // fill function.
+
+    // define error state variable.
+    int state;
+
+    // define default arayeh size.
+    size_t arayehSize = 20;
+
+    // define start index and end index.
+    size_t startIndex = 0;
+    size_t endIndex   = 50;
+
+    // element for filling.
+    int element = 5;
+
+    // define new settings.
+    arayehSetting newSetting = {AA_ARAYEH_OFF, AA_ARAYEH_OFF, AA_ARAYEH_OFF,
+                                AA_ARAYEH_ON, AA_ARAYEH_ON};
+
+    // create new arayeh.
+    arayeh *testCase = newArayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+
+    // set new settings.
+    (testCase->setArayehSettings)(testCase, &newSetting);
+
+    // fill all of the empty arayeh with element.
+    state = (testCase->fill)(testCase, startIndex, 1, endIndex, &element);
+
+    // check arayeh size increased.
+    TEST_ASSERT_GREATER_THAN_size_t(arayehSize, testCase->_internalProperties.size);
+
+    // check fill was successful.
+    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
+
+    // check all slots.
+    for (size_t i = startIndex; i < endIndex; ++i) {
+        TEST_ASSERT_EQUAL_INT(element, testCase->_internalProperties.array.pInt[i]);
+        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_internalProperties.map[i]);
+    }
+
+    // assert "used" and "next" pointers.
+    TEST_ASSERT_EQUAL_INT(endIndex - startIndex, testCase->_internalProperties.used);
+    TEST_ASSERT_EQUAL_INT(50, testCase->_internalProperties.next);
+
+    // free arayeh.
+    (testCase->freeArayeh)(&testCase);
+}
+
+void test_fill_new_settings_no_extend(void)
+{
+    // Test new settings for fill to prevent memory extension.
+
+    // define error state variable.
+    int state;
+
+    // define default arayeh size.
+    size_t arayehSize = 20;
+    // define start index and end index.
+    size_t startIndex = 0;
+    size_t endIndex   = 50;
+
+    // element for filling.
+    int element = 5;
+
+    // define new settings.
+    arayehSetting newSetting = {AA_ARAYEH_OFF, AA_ARAYEH_ON, AA_ARAYEH_ON,
+                                AA_ARAYEH_OFF, AA_ARAYEH_ON};
+
+    // create new arayeh.
+    arayeh *testCase = newArayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+
+    // set new settings.
+    (testCase->setArayehSettings)(testCase, &newSetting);
+
+    // fill all of the empty arayeh with element.
+    state = (testCase->fill)(testCase, startIndex, 1, endIndex, &element);
+
+    // check fill was unsuccessful.
+    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_WRONG_INDEX, state);
+
+    // free arayeh.
+    (testCase->freeArayeh)(&testCase);
+}
+
+void test_fill_error_bad_starting_point(void)
 {
     // Test bad arguments as starting and ending points.
+    // the error is because starting point will be greater than the ending point.
 
     // define error state variable.
     int state;
@@ -229,13 +369,7 @@ void test_error_bad_starting_point(void)
     arayeh *testCase = newArayeh(AA_ARAYEH_TYPE_INT, arayehSize);
 
     // fill with negative starting point.
-    state = (testCase->fill)(testCase, -5, 1, arayehSize, &element);
-
-    // fill was successful.
-    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_WRONG_INDEX, state);
-
-    // fill with starting point bigger than the array size.
-    state = (testCase->fill)(testCase, 21, 1, arayehSize, &element);
+    state = (testCase->fill)(testCase, -5, 1, 5, &element);
 
     // fill was successful.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_WRONG_INDEX, state);
@@ -250,7 +384,7 @@ void test_error_bad_starting_point(void)
     (testCase->freeArayeh)(&testCase);
 }
 
-void test_error_wrong_step(void)
+void test_fill_error_wrong_step(void)
 {
     // Test wrong step size for filling.
 
@@ -284,8 +418,11 @@ int main(void)
     RUN_TEST(test_fill_all_empty_step_two);
     RUN_TEST(test_fill_existing_arayeh);
     RUN_TEST(test_fill_extends_arayeh);
-    RUN_TEST(test_error_bad_starting_point);
-    RUN_TEST(test_error_wrong_step);
+    RUN_TEST(test_fill_extends_arayeh_start_bigger_than_size);
+    RUN_TEST(test_fill_extends_arayeh_add_insert_off_in_settings);
+    RUN_TEST(test_fill_new_settings_no_extend);
+    RUN_TEST(test_fill_error_bad_starting_point);
+    RUN_TEST(test_fill_error_wrong_step);
 
     return UnityEnd();
 }
