@@ -35,7 +35,7 @@
  */
 
 #include "../include/arayeh.h"
-#include "../include/arayehInternal.h"
+#include "../include/methods.h"
 
 arayeh *newArayeh(size_t type, size_t initialSize)
 {

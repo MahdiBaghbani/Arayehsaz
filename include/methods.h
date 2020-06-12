@@ -1,4 +1,4 @@
-/** include/arayehInternal.h
+/** include/methods.h
  *
  * This file is a part of:
  * Azadeh Afzar - Arayehsaz (AA-A).
@@ -38,8 +38,8 @@
 #define __AA_A_ARAYEHINTERNAL_H__
 
 #include "arayeh.h"
-#include "arayehTypeManager.h"
 #include "fatal.h"
+#include "typeManager.h"
 
 // To ensure that the names declared in this portion of code have C linkage,
 // and thus C++ name mangling is not performed while using this code with C++.

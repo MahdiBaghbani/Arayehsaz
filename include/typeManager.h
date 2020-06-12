@@ -1,4 +1,4 @@
-/** include/arayehTypeManager.h
+/** include/typeManager.h
  *
  * This file is a part of:
  * Azadeh Afzar - Arayehsaz (AA-A).

@@ -1,4 +1,4 @@
-/** source/arayehTypeManager.c
+/** source/typeManager.c
  *
  * This file is a part of:
  * Azadeh Afzar - Arayehsaz (AA-A).
@@ -34,7 +34,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include "../include/arayehTypeManager.h"
+#include "../include/typeManager.h"
 
 // Initialize arayeh pointer.
 

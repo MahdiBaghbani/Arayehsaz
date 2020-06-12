@@ -1,4 +1,4 @@
-/** source/arayehInternal.c
+/** source/methods.c
  *
  * This file is a part of:
  * Azadeh Afzar - Arayehsaz (AA-A).
@@ -34,7 +34,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include "../include/arayehInternal.h"
+#include "../include/methods.h"
 
 void _setExtensionSettings(arayeh *self, arayehSetting *settings)
 {
