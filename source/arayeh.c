@@ -37,17 +37,21 @@
 #include "../include/arayeh.h"
 #include "../include/methods.h"
 
-arayeh *newArayeh(size_t type, size_t initialSize)
+arayeh *newArayeh(size_t type, size_t initialSize, int *errorCode)
 {
     /*
      * This function will create an array of type "type"
      * (one the supported types defined in configuration.h)
-     * and size of  "initialSize" if it's possible
+     * and size of "initialSize" if it's possible
      * (you have enough memory and right to allocate that memory).
      *
      * ARGUMENTS:
      * initialSize  size of array.
      * type         type of array elements.
+     * errorCode    pointer to an int memory location,
+     *              this location will be used to store
+     *              error codes for errors occurred during
+     *              this function.
      *
      * RETURN:
      * A pointer to the initialized array.
@@ -55,11 +59,15 @@ arayeh *newArayeh(size_t type, size_t initialSize)
      * return NULL in case of error.
      */
 
+    // set error code to success (means no errors occurred).
+    *errorCode = AA_ARAYEH_SUCCESS;
+
     // check array type.
     if (type != AA_ARAYEH_TYPE_CHAR && type != AA_ARAYEH_TYPE_SINT &&
         type != AA_ARAYEH_TYPE_INT && type != AA_ARAYEH_TYPE_LINT &&
         type != AA_ARAYEH_TYPE_FLOAT && type != AA_ARAYEH_TYPE_DOUBLE) {
         // wrong array type.
+        *errorCode = AA_ARAYEH_WRONG_TYPE;
         return NULL;
     }
 
@@ -76,6 +84,19 @@ arayeh *newArayeh(size_t type, size_t initialSize)
     char *mapPointer = NULL;
     arayehType arrayPointer;
 
+    /* Overflow happens when the arayeh initial size is bigger than the
+     * max allowed size (defined as MAX_SIZE in size_type) divided by the
+     * length of desired data type.
+     *
+     * for example MAX_SIZE in my machine is 18446744073709551615 and length of
+     * an int data type is 4, so if array initial size is bigger than
+     * 18446744073709551615 / 4 = 4611686018427387904, then an overflow occurs.
+     *
+     * the formula to determine if overflow happens or not is defined below:
+     * (initialSize > (size_t) SIZE_MAX / sizeof datatype)
+     *
+     */
+
     // this function identifies the right pointer for array type and sets it to point
     // to NULL and also checks for possible overflow in size_t initialSize.
     int state = (self->_privateMethods.initArayeh)(self, &arrayPointer, initialSize);
@@ -83,6 +104,7 @@ arayeh *newArayeh(size_t type, size_t initialSize)
     // check for possible size_t overflow.
     if (state == AA_ARAYEH_FAILURE) {
         // overflow detected.
+        *errorCode = AA_ARAYEH_OVERFLOW;
         // free self.
         free(self);
         return NULL;

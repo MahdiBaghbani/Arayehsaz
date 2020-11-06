@@ -71,12 +71,13 @@
 // return codes.
 #define AA_ARAYEH_FAILURE          0
 #define AA_ARAYEH_SUCCESS          1
-#define AA_ARAYEH_WRONG_NEW_SIZE   2
-#define AA_ARAYEH_OVERFLOW         3
-#define AA_ARAYEH_REALLOC_DENIED   4
-#define AA_ARAYEH_WRONG_INDEX      5
-#define AA_ARAYEH_NOT_ENOUGH_SPACE 6
-#define AA_ARAYEH_WRONG_STEP       7
+#define AA_ARAYEH_WRONG_TYPE       2
+#define AA_ARAYEH_WRONG_NEW_SIZE   3
+#define AA_ARAYEH_OVERFLOW         4
+#define AA_ARAYEH_REALLOC_DENIED   5
+#define AA_ARAYEH_WRONG_INDEX      6
+#define AA_ARAYEH_NOT_ENOUGH_SPACE 7
+#define AA_ARAYEH_WRONG_STEP       8
 
 // map characters.
 #define AA_ARAYEH_OFF '0'
@@ -235,19 +236,23 @@ typedef struct arayehStruct {
 
 } arayeh;
 
-arayeh *newArayeh(size_t type, size_t initialSize);
+arayeh *newArayeh(size_t type, size_t initialSize, int *errorCode);
 /*
- * This function will create an arayeh of type "type"
+ * This function will create an array of type "type"
  * (one the supported types defined in configuration.h)
- * and size of  "initialSize" if it's possible
+ * and size of "initialSize" if it's possible
  * (you have enough memory and right to allocate that memory).
  *
  * ARGUMENTS:
- * initialSize    size of arayeh.
- * type           type of arayeh elements.
+ * initialSize  size of array.
+ * type         type of array elements.
+ * errorCode    pointer to an int memory location,
+ *              this location will be used to store
+ *              error codes for errors occurred during
+ *              this function.
  *
  * RETURN:
- * A pointer to the initialized arayeh.
+ * A pointer to the initialized array.
  * or
  * return NULL in case of error.
  */
