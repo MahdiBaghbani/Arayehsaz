@@ -36,6 +36,19 @@
 
 #include "../include/typeManager.h"
 
+/* Overflow happens when the arayeh initial size is bigger than the
+ * max allowed size (defined as MAX_SIZE in size_type) divided by the
+ * length of desired data type.
+ *
+ * for example MAX_SIZE in my machine is 18446744073709551615 and length of
+ * an int data type is 4, so if array initial size is bigger than
+ * 18446744073709551615 / 4 = 4611686018427387904, then an overflow occurs.
+ *
+ * the formula to determine if overflow happens or not is defined below:
+ * (initialSize > (size_t) SIZE_MAX / sizeof datatype)
+ *
+ */
+
 // Initialize arayeh pointer.
 
 int _initTypeChar(arayeh *self, arayehType *array, size_t initialSize)
