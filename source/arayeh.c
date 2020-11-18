@@ -128,6 +128,20 @@ arayeh *newArayeh(size_t type, size_t initialSize, int *errorCode)
         mapPointer[i] = AA_ARAYEH_OFF;
     }
 
+    // set pointers to memory locations.
+    (self->_privateMethods.setArayehMemoryPointer)(self, &arrayPointer);
+    self->_privateProperties.map = mapPointer;
+
+    // set array parameters.
+    self->type                    = type;
+    self->next                    = 0;
+    self->used                    = 0;
+    self->size                    = initialSize;
+    self->_privateProperties.type = type;
+    self->_privateProperties.next = 0;
+    self->_privateProperties.used = 0;
+    self->_privateProperties.size = initialSize;
+
     // create array default setting holder.
     arayehSetting *defaultSettings =
         (arayehSetting *) malloc(sizeof *defaultSettings);
@@ -139,14 +153,7 @@ arayeh *newArayeh(size_t type, size_t initialSize, int *errorCode)
     defaultSettings->allowExtendOnFill      = AA_ARAYEH_ON;
     defaultSettings->allowExtendOnMergeList = AA_ARAYEH_ON;
 
-    // set array parameters.
-    (self->_privateMethods.setArayehMemoryPointer)(self, &arrayPointer);
-    self->_privateProperties.map      = mapPointer;
-    self->_privateProperties.type     = type;
     self->_privateProperties.settings = defaultSettings;
-    self->_privateProperties.next     = 0;
-    self->_privateProperties.used     = 0;
-    self->_privateProperties.size     = initialSize;
 
     return self;
 }
