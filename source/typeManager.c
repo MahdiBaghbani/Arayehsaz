@@ -141,7 +141,7 @@ int _mallocTypeDouble(arayeh *self, arayehType *array, size_t initialSize)
 
 int _reallocTypeChar(arayeh *self, arayehType *array, size_t newSize)
 {
-    array->pChar = (char *) realloc(self->_internalProperties.array.pChar,
+    array->pChar = (char *) realloc(self->_privateProperties.array.pChar,
                                     sizeof *array->pChar * newSize);
     return (array->pChar == NULL) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
 }
@@ -149,35 +149,35 @@ int _reallocTypeChar(arayeh *self, arayehType *array, size_t newSize)
 int _reallocTypeSInt(arayeh *self, arayehType *array, size_t newSize)
 {
     array->pShortInt =
-        (short int *) realloc(self->_internalProperties.array.pShortInt,
+        (short int *) realloc(self->_privateProperties.array.pShortInt,
                               sizeof *array->pShortInt * newSize);
     return (array->pShortInt == NULL) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
 }
 
 int _reallocTypeInt(arayeh *self, arayehType *array, size_t newSize)
 {
-    array->pInt = (int *) realloc(self->_internalProperties.array.pInt,
+    array->pInt = (int *) realloc(self->_privateProperties.array.pInt,
                                   sizeof *array->pInt * newSize);
     return (array->pInt == NULL) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
 }
 
 int _reallocTypeLInt(arayeh *self, arayehType *array, size_t newSize)
 {
-    array->pLongInt = (long int *) realloc(self->_internalProperties.array.pLongInt,
+    array->pLongInt = (long int *) realloc(self->_privateProperties.array.pLongInt,
                                            sizeof *array->pLongInt * newSize);
     return (array->pLongInt == NULL) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
 }
 
 int _reallocTypeFloat(arayeh *self, arayehType *array, size_t newSize)
 {
-    array->pFloat = (float *) realloc(self->_internalProperties.array.pFloat,
+    array->pFloat = (float *) realloc(self->_privateProperties.array.pFloat,
                                       sizeof *array->pFloat * newSize);
     return (array->pFloat == NULL) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
 }
 
 int _reallocTypeDouble(arayeh *self, arayehType *array, size_t newSize)
 {
-    array->pDouble = (double *) realloc(self->_internalProperties.array.pDouble,
+    array->pDouble = (double *) realloc(self->_privateProperties.array.pDouble,
                                         sizeof *array->pDouble * newSize);
     return (array->pDouble == NULL) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
 }
@@ -186,102 +186,102 @@ int _reallocTypeDouble(arayeh *self, arayehType *array, size_t newSize)
 
 void _freeTypeChar(arayeh *self)
 {
-    free(self->_internalProperties.array.pChar);
-    self->_internalProperties.array.pChar = NULL;
+    free(self->_privateProperties.array.pChar);
+    self->_privateProperties.array.pChar = NULL;
 }
 
 void _freeTypeSInt(arayeh *self)
 {
-    free(self->_internalProperties.array.pShortInt);
-    self->_internalProperties.array.pShortInt = NULL;
+    free(self->_privateProperties.array.pShortInt);
+    self->_privateProperties.array.pShortInt = NULL;
 }
 
 void _freeTypeInt(arayeh *self)
 {
-    free(self->_internalProperties.array.pInt);
-    self->_internalProperties.array.pInt = NULL;
+    free(self->_privateProperties.array.pInt);
+    self->_privateProperties.array.pInt = NULL;
 }
 
 void _freeTypeLInt(arayeh *self)
 {
-    free(self->_internalProperties.array.pLongInt);
-    self->_internalProperties.array.pLongInt = NULL;
+    free(self->_privateProperties.array.pLongInt);
+    self->_privateProperties.array.pLongInt = NULL;
 }
 
 void _freeTypeFloat(arayeh *self)
 {
-    free(self->_internalProperties.array.pFloat);
-    self->_internalProperties.array.pFloat = NULL;
+    free(self->_privateProperties.array.pFloat);
+    self->_privateProperties.array.pFloat = NULL;
 }
 
 void _freeTypeDouble(arayeh *self)
 {
-    free(self->_internalProperties.array.pDouble);
-    self->_internalProperties.array.pDouble = NULL;
+    free(self->_privateProperties.array.pDouble);
+    self->_privateProperties.array.pDouble = NULL;
 }
 
 // Assign the initialized pointer of an array to the arayeh structs pointer.
 
 void _setMemoryPointerTypeChar(arayeh *self, arayehType *array)
 {
-    self->_internalProperties.array.pChar = array->pChar;
+    self->_privateProperties.array.pChar = array->pChar;
 }
 
 void _setMemoryPointerTypeSInt(arayeh *self, arayehType *array)
 {
-    self->_internalProperties.array.pShortInt = array->pShortInt;
+    self->_privateProperties.array.pShortInt = array->pShortInt;
 }
 
 void _setMemoryPointerTypeInt(arayeh *self, arayehType *array)
 {
-    self->_internalProperties.array.pInt = array->pInt;
+    self->_privateProperties.array.pInt = array->pInt;
 }
 
 void _setMemoryPointerTypeLInt(arayeh *self, arayehType *array)
 {
-    self->_internalProperties.array.pLongInt = array->pLongInt;
+    self->_privateProperties.array.pLongInt = array->pLongInt;
 }
 
 void _setMemoryPointerTypeFloat(arayeh *self, arayehType *array)
 {
-    self->_internalProperties.array.pFloat = array->pFloat;
+    self->_privateProperties.array.pFloat = array->pFloat;
 }
 
 void _setMemoryPointerTypeDouble(arayeh *self, arayehType *array)
 {
-    self->_internalProperties.array.pDouble = array->pDouble;
+    self->_privateProperties.array.pDouble = array->pDouble;
 }
 
 // Add an element of a specific type to the arayeh.
 
 void _addTypeChar(arayeh *self, size_t index, void *element)
 {
-    self->_internalProperties.array.pChar[index] = *((char *) element);
+    self->_privateProperties.array.pChar[index] = *((char *) element);
 }
 
 void _addTypeSInt(arayeh *self, size_t index, void *element)
 {
-    self->_internalProperties.array.pShortInt[index] = *((short int *) element);
+    self->_privateProperties.array.pShortInt[index] = *((short int *) element);
 }
 
 void _addTypeInt(arayeh *self, size_t index, void *element)
 {
-    self->_internalProperties.array.pInt[index] = *((int *) element);
+    self->_privateProperties.array.pInt[index] = *((int *) element);
 }
 
 void _addTypeLInt(arayeh *self, size_t index, void *element)
 {
-    self->_internalProperties.array.pLongInt[index] = *((long int *) element);
+    self->_privateProperties.array.pLongInt[index] = *((long int *) element);
 }
 
 void _addTypeFloat(arayeh *self, size_t index, void *element)
 {
-    self->_internalProperties.array.pFloat[index] = *((float *) element);
+    self->_privateProperties.array.pFloat[index] = *((float *) element);
 }
 
 void _addTypeDouble(arayeh *self, size_t index, void *element)
 {
-    self->_internalProperties.array.pDouble[index] = *((double *) element);
+    self->_privateProperties.array.pDouble[index] = *((double *) element);
 }
 
 // Merge a C standard array of a specific type into the arayeh.
@@ -370,35 +370,35 @@ int _mergeListTypeDouble(arayeh *self, size_t startIndex, size_t listSize,
 void _getTypeChar(arayeh *self, size_t index, void *element)
 {
     char *ptr = (char *) element;
-    *ptr      = self->_internalProperties.array.pChar[index];
+    *ptr      = self->_privateProperties.array.pChar[index];
 }
 
 void _getTypeSInt(arayeh *self, size_t index, void *element)
 {
     short int *ptr = (short int *) element;
-    *ptr           = self->_internalProperties.array.pShortInt[index];
+    *ptr           = self->_privateProperties.array.pShortInt[index];
 }
 
 void _getTypeInt(arayeh *self, size_t index, void *element)
 {
     int *ptr = (int *) element;
-    *ptr     = self->_internalProperties.array.pInt[index];
+    *ptr     = self->_privateProperties.array.pInt[index];
 }
 
 void _getTypeLInt(arayeh *self, size_t index, void *element)
 {
     long int *ptr = (long int *) element;
-    *ptr          = self->_internalProperties.array.pLongInt[index];
+    *ptr          = self->_privateProperties.array.pLongInt[index];
 }
 
 void _getTypeFloat(arayeh *self, size_t index, void *element)
 {
     float *ptr = (float *) element;
-    *ptr       = self->_internalProperties.array.pFloat[index];
+    *ptr       = self->_privateProperties.array.pFloat[index];
 }
 
 void _getTypeDouble(arayeh *self, size_t index, void *element)
 {
     double *ptr = (double *) element;
-    *ptr        = self->_internalProperties.array.pDouble[index];
+    *ptr        = self->_privateProperties.array.pDouble[index];
 }

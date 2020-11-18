@@ -75,7 +75,7 @@ void _setGrowthFactorFunction(arayeh *self, size_t (*growthFactor)(arayeh *araye
 int _calculateAndExtendSize(arayeh *self);
 
 // this function will insert an "element" into array at
-// index = self->_internalProperties.next.
+// index = self->_privateProperties.next.
 int _addToArayeh(arayeh *self, void *element);
 
 // this function will insert an "element" into array at "index".

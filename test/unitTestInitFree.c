@@ -83,44 +83,44 @@ void test_init_free(void)
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, errorDouble);
 
     // test arayeh pointers.
-    TEST_ASSERT_NOT_NULL(typeChar->_internalProperties.array.pChar)
-    TEST_ASSERT_NOT_NULL(typeSInt->_internalProperties.array.pShortInt)
-    TEST_ASSERT_NOT_NULL(typeInt->_internalProperties.array.pInt)
-    TEST_ASSERT_NOT_NULL(typeLInt->_internalProperties.array.pLongInt)
-    TEST_ASSERT_NOT_NULL(typeFloat->_internalProperties.array.pFloat)
-    TEST_ASSERT_NOT_NULL(typeDouble->_internalProperties.array.pDouble)
+    TEST_ASSERT_NOT_NULL(typeChar->_privateProperties.array.pChar)
+    TEST_ASSERT_NOT_NULL(typeSInt->_privateProperties.array.pShortInt)
+    TEST_ASSERT_NOT_NULL(typeInt->_privateProperties.array.pInt)
+    TEST_ASSERT_NOT_NULL(typeLInt->_privateProperties.array.pLongInt)
+    TEST_ASSERT_NOT_NULL(typeFloat->_privateProperties.array.pFloat)
+    TEST_ASSERT_NOT_NULL(typeDouble->_privateProperties.array.pDouble)
 
     // test map pointers.
-    TEST_ASSERT_NOT_NULL(typeChar->_internalProperties.map)
-    TEST_ASSERT_NOT_NULL(typeSInt->_internalProperties.map)
-    TEST_ASSERT_NOT_NULL(typeInt->_internalProperties.map)
-    TEST_ASSERT_NOT_NULL(typeLInt->_internalProperties.map)
-    TEST_ASSERT_NOT_NULL(typeFloat->_internalProperties.map)
-    TEST_ASSERT_NOT_NULL(typeDouble->_internalProperties.map)
+    TEST_ASSERT_NOT_NULL(typeChar->_privateProperties.map)
+    TEST_ASSERT_NOT_NULL(typeSInt->_privateProperties.map)
+    TEST_ASSERT_NOT_NULL(typeInt->_privateProperties.map)
+    TEST_ASSERT_NOT_NULL(typeLInt->_privateProperties.map)
+    TEST_ASSERT_NOT_NULL(typeFloat->_privateProperties.map)
+    TEST_ASSERT_NOT_NULL(typeDouble->_privateProperties.map)
 
     // test arayeh "size" attribute.
-    TEST_ASSERT_EQUAL_size_t(arayehSize, typeChar->_internalProperties.size);
-    TEST_ASSERT_EQUAL_size_t(arayehSize, typeSInt->_internalProperties.size);
-    TEST_ASSERT_EQUAL_size_t(arayehSize, typeInt->_internalProperties.size);
-    TEST_ASSERT_EQUAL_size_t(arayehSize, typeLInt->_internalProperties.size);
-    TEST_ASSERT_EQUAL_size_t(arayehSize, typeFloat->_internalProperties.size);
-    TEST_ASSERT_EQUAL_size_t(arayehSize, typeDouble->_internalProperties.size);
+    TEST_ASSERT_EQUAL_size_t(arayehSize, typeChar->_privateProperties.size);
+    TEST_ASSERT_EQUAL_size_t(arayehSize, typeSInt->_privateProperties.size);
+    TEST_ASSERT_EQUAL_size_t(arayehSize, typeInt->_privateProperties.size);
+    TEST_ASSERT_EQUAL_size_t(arayehSize, typeLInt->_privateProperties.size);
+    TEST_ASSERT_EQUAL_size_t(arayehSize, typeFloat->_privateProperties.size);
+    TEST_ASSERT_EQUAL_size_t(arayehSize, typeDouble->_privateProperties.size);
 
     // test arayeh "used" attribute.
-    TEST_ASSERT_EQUAL_size_t(0, typeChar->_internalProperties.used);
-    TEST_ASSERT_EQUAL_size_t(0, typeSInt->_internalProperties.used);
-    TEST_ASSERT_EQUAL_size_t(0, typeInt->_internalProperties.used);
-    TEST_ASSERT_EQUAL_size_t(0, typeLInt->_internalProperties.used);
-    TEST_ASSERT_EQUAL_size_t(0, typeFloat->_internalProperties.used);
-    TEST_ASSERT_EQUAL_size_t(0, typeDouble->_internalProperties.used);
+    TEST_ASSERT_EQUAL_size_t(0, typeChar->_privateProperties.used);
+    TEST_ASSERT_EQUAL_size_t(0, typeSInt->_privateProperties.used);
+    TEST_ASSERT_EQUAL_size_t(0, typeInt->_privateProperties.used);
+    TEST_ASSERT_EQUAL_size_t(0, typeLInt->_privateProperties.used);
+    TEST_ASSERT_EQUAL_size_t(0, typeFloat->_privateProperties.used);
+    TEST_ASSERT_EQUAL_size_t(0, typeDouble->_privateProperties.used);
 
     // test arayeh "next" attribute.
-    TEST_ASSERT_EQUAL_size_t(0, typeChar->_internalProperties.next);
-    TEST_ASSERT_EQUAL_size_t(0, typeSInt->_internalProperties.next);
-    TEST_ASSERT_EQUAL_size_t(0, typeInt->_internalProperties.next);
-    TEST_ASSERT_EQUAL_size_t(0, typeLInt->_internalProperties.next);
-    TEST_ASSERT_EQUAL_size_t(0, typeFloat->_internalProperties.next);
-    TEST_ASSERT_EQUAL_size_t(0, typeDouble->_internalProperties.next);
+    TEST_ASSERT_EQUAL_size_t(0, typeChar->_privateProperties.next);
+    TEST_ASSERT_EQUAL_size_t(0, typeSInt->_privateProperties.next);
+    TEST_ASSERT_EQUAL_size_t(0, typeInt->_privateProperties.next);
+    TEST_ASSERT_EQUAL_size_t(0, typeLInt->_privateProperties.next);
+    TEST_ASSERT_EQUAL_size_t(0, typeFloat->_privateProperties.next);
+    TEST_ASSERT_EQUAL_size_t(0, typeDouble->_privateProperties.next);
 
     // test if free returns success.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, (typeChar->freeArayeh)(&typeChar));

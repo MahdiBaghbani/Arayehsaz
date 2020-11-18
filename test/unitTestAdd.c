@@ -66,9 +66,9 @@ void test_add(void)
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
 
     // assert element is added.
-    TEST_ASSERT_EQUAL_INT(element, testCase->_internalProperties.array.pInt[0]);
-    TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_internalProperties.map[0]);
-    TEST_ASSERT_EQUAL_INT(1, testCase->_internalProperties.next);
+    TEST_ASSERT_EQUAL_INT(element, testCase->_privateProperties.array.pInt[0]);
+    TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_privateProperties.map[0]);
+    TEST_ASSERT_EQUAL_INT(1, testCase->_privateProperties.next);
 
     // free arayeh.
     (testCase->freeArayeh)(&testCase);
@@ -97,8 +97,8 @@ void test_add_extend(void)
         // assert successful adding.
         TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
         // assert elements are added.
-        TEST_ASSERT_EQUAL_INT(element, testCase->_internalProperties.array.pInt[i]);
-        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_internalProperties.map[i]);
+        TEST_ASSERT_EQUAL_INT(element, testCase->_privateProperties.array.pInt[i]);
+        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_privateProperties.map[i]);
     }
 
     // free arayeh.
@@ -110,7 +110,7 @@ size_t growthFactorFunction(arayeh *array)
 {
     // this growth function makes space 2x, by returning
     // the array size for extending memory space.
-    return array->_internalProperties.size;
+    return array->_privateProperties.size;
 }
 
 void test_add_extend_alternate_growth_function(void)
@@ -138,14 +138,14 @@ void test_add_extend_alternate_growth_function(void)
         // assert successful adding.
         TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
         // assert elements are added.
-        TEST_ASSERT_EQUAL_INT(element, testCase->_internalProperties.array.pInt[i]);
-        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_internalProperties.map[i]);
+        TEST_ASSERT_EQUAL_INT(element, testCase->_privateProperties.array.pInt[i]);
+        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_privateProperties.map[i]);
     }
 
     // assert final size.
     // because size starts at 1 and multiplied by 2 to expand to 100,000 the final
     // size should be 1 * 2^x >= 100,000 which results in x == 17 .
-    TEST_ASSERT_EQUAL_INT((1 << 17), testCase->_internalProperties.size);
+    TEST_ASSERT_EQUAL_INT((1 << 17), testCase->_privateProperties.size);
 
     // free arayeh.
     (testCase->freeArayeh)(&testCase);

@@ -69,13 +69,13 @@ void test_fill_all_empty_step_one(void)
 
     // check all slots.
     for (size_t i = 0; i < arayehSize; ++i) {
-        TEST_ASSERT_EQUAL_INT(element, testCase->_internalProperties.array.pInt[i]);
-        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_internalProperties.map[i]);
+        TEST_ASSERT_EQUAL_INT(element, testCase->_privateProperties.array.pInt[i]);
+        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_privateProperties.map[i]);
     }
 
     // assert "used" and "next" pointers.
-    TEST_ASSERT_EQUAL_INT(arayehSize, testCase->_internalProperties.used);
-    TEST_ASSERT_EQUAL_INT(arayehSize, testCase->_internalProperties.next);
+    TEST_ASSERT_EQUAL_INT(arayehSize, testCase->_privateProperties.used);
+    TEST_ASSERT_EQUAL_INT(arayehSize, testCase->_privateProperties.next);
 
     // free arayeh.
     (testCase->freeArayeh)(&testCase);
@@ -105,18 +105,18 @@ void test_fill_all_empty_step_two(void)
 
     // check for being filled.
     for (size_t i = 0; i < arayehSize; i += 2) {
-        TEST_ASSERT_EQUAL_INT(element, testCase->_internalProperties.array.pInt[i]);
-        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_internalProperties.map[i]);
+        TEST_ASSERT_EQUAL_INT(element, testCase->_privateProperties.array.pInt[i]);
+        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_privateProperties.map[i]);
     }
 
     // check for being empty.
     for (size_t i = 1; i < arayehSize; i += 2) {
-        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_OFF, testCase->_internalProperties.map[i]);
+        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_OFF, testCase->_privateProperties.map[i]);
     }
 
     // assert "used" and "next" pointers.
-    TEST_ASSERT_EQUAL_INT(10, testCase->_internalProperties.used);
-    TEST_ASSERT_EQUAL_INT(1, testCase->_internalProperties.next);
+    TEST_ASSERT_EQUAL_INT(10, testCase->_privateProperties.used);
+    TEST_ASSERT_EQUAL_INT(1, testCase->_privateProperties.next);
 
     // free arayeh.
     (testCase->freeArayeh)(&testCase);
@@ -149,7 +149,7 @@ void test_fill_existing_arayeh(void)
     // check for existing element before filling arayeh with new element.
     for (size_t i = 0; i < arayehSize; ++i) {
         TEST_ASSERT_EQUAL_INT(existingElement,
-                              testCase->_internalProperties.array.pInt[i]);
+                              testCase->_privateProperties.array.pInt[i]);
     }
 
     // fill all of the empty arayeh with element.
@@ -160,13 +160,13 @@ void test_fill_existing_arayeh(void)
 
     // check for being filled.
     for (size_t i = 5; i < 10; ++i) {
-        TEST_ASSERT_EQUAL_INT(element, testCase->_internalProperties.array.pInt[i]);
-        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_internalProperties.map[i]);
+        TEST_ASSERT_EQUAL_INT(element, testCase->_privateProperties.array.pInt[i]);
+        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_privateProperties.map[i]);
     }
 
     // assert "used" and "next" pointers.
-    TEST_ASSERT_EQUAL_INT(arayehSize, testCase->_internalProperties.used);
-    TEST_ASSERT_EQUAL_INT(arayehSize, testCase->_internalProperties.next);
+    TEST_ASSERT_EQUAL_INT(arayehSize, testCase->_privateProperties.used);
+    TEST_ASSERT_EQUAL_INT(arayehSize, testCase->_privateProperties.next);
 
     // free arayeh.
     (testCase->freeArayeh)(&testCase);
@@ -197,20 +197,20 @@ void test_fill_extends_arayeh(void)
     state = (testCase->fill)(testCase, 0, 1, endIndex, &element);
 
     // check arayeh size increased.
-    TEST_ASSERT_GREATER_THAN_size_t(arayehSize, testCase->_internalProperties.size);
+    TEST_ASSERT_GREATER_THAN_size_t(arayehSize, testCase->_privateProperties.size);
 
     // check fill was successful.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
 
     // check all slots.
     for (size_t i = 0; i < endIndex; ++i) {
-        TEST_ASSERT_EQUAL_INT(element, testCase->_internalProperties.array.pInt[i]);
-        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_internalProperties.map[i]);
+        TEST_ASSERT_EQUAL_INT(element, testCase->_privateProperties.array.pInt[i]);
+        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_privateProperties.map[i]);
     }
 
     // assert "used" and "next" pointers.
-    TEST_ASSERT_EQUAL_INT(endIndex, testCase->_internalProperties.used);
-    TEST_ASSERT_EQUAL_INT(endIndex, testCase->_internalProperties.next);
+    TEST_ASSERT_EQUAL_INT(endIndex, testCase->_privateProperties.used);
+    TEST_ASSERT_EQUAL_INT(endIndex, testCase->_privateProperties.next);
 
     // free arayeh.
     (testCase->freeArayeh)(&testCase);
@@ -243,20 +243,20 @@ void test_fill_extends_arayeh_start_bigger_than_size(void)
     state = (testCase->fill)(testCase, startIndex, 1, endIndex, &element);
 
     // check arayeh size increased.
-    TEST_ASSERT_GREATER_THAN_size_t(arayehSize, testCase->_internalProperties.size);
+    TEST_ASSERT_GREATER_THAN_size_t(arayehSize, testCase->_privateProperties.size);
 
     // check fill was successful.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
 
     // check all slots.
     for (size_t i = startIndex; i < endIndex; ++i) {
-        TEST_ASSERT_EQUAL_INT(element, testCase->_internalProperties.array.pInt[i]);
-        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_internalProperties.map[i]);
+        TEST_ASSERT_EQUAL_INT(element, testCase->_privateProperties.array.pInt[i]);
+        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_privateProperties.map[i]);
     }
 
     // assert "used" and "next" pointers.
-    TEST_ASSERT_EQUAL_INT(endIndex - startIndex, testCase->_internalProperties.used);
-    TEST_ASSERT_EQUAL_INT(0, testCase->_internalProperties.next);
+    TEST_ASSERT_EQUAL_INT(endIndex - startIndex, testCase->_privateProperties.used);
+    TEST_ASSERT_EQUAL_INT(0, testCase->_privateProperties.next);
 
     // free arayeh.
     (testCase->freeArayeh)(&testCase);
@@ -296,20 +296,20 @@ void test_fill_extends_arayeh_add_insert_off_in_settings(void)
     state = (testCase->fill)(testCase, startIndex, 1, endIndex, &element);
 
     // check arayeh size increased.
-    TEST_ASSERT_GREATER_THAN_size_t(arayehSize, testCase->_internalProperties.size);
+    TEST_ASSERT_GREATER_THAN_size_t(arayehSize, testCase->_privateProperties.size);
 
     // check fill was successful.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
 
     // check all slots.
     for (size_t i = startIndex; i < endIndex; ++i) {
-        TEST_ASSERT_EQUAL_INT(element, testCase->_internalProperties.array.pInt[i]);
-        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_internalProperties.map[i]);
+        TEST_ASSERT_EQUAL_INT(element, testCase->_privateProperties.array.pInt[i]);
+        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_privateProperties.map[i]);
     }
 
     // assert "used" and "next" pointers.
-    TEST_ASSERT_EQUAL_INT(endIndex - startIndex, testCase->_internalProperties.used);
-    TEST_ASSERT_EQUAL_INT(50, testCase->_internalProperties.next);
+    TEST_ASSERT_EQUAL_INT(endIndex - startIndex, testCase->_privateProperties.used);
+    TEST_ASSERT_EQUAL_INT(50, testCase->_privateProperties.next);
 
     // free arayeh.
     (testCase->freeArayeh)(&testCase);

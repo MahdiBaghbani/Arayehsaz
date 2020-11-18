@@ -66,9 +66,9 @@ void test_insert(void)
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
 
     // assert element is inserted in index 0.
-    TEST_ASSERT_EQUAL_INT(element, testCase->_internalProperties.array.pInt[0]);
-    TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_internalProperties.map[0]);
-    TEST_ASSERT_EQUAL_INT(1, testCase->_internalProperties.next);
+    TEST_ASSERT_EQUAL_INT(element, testCase->_privateProperties.array.pInt[0]);
+    TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_privateProperties.map[0]);
+    TEST_ASSERT_EQUAL_INT(1, testCase->_privateProperties.next);
 
     // insert element.
     state = (testCase->insert)(testCase, 5, &element);
@@ -77,9 +77,9 @@ void test_insert(void)
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
 
     // assert element is inserted in index 0.
-    TEST_ASSERT_EQUAL_INT(element, testCase->_internalProperties.array.pInt[5]);
-    TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_internalProperties.map[5]);
-    TEST_ASSERT_EQUAL_INT(1, testCase->_internalProperties.next);
+    TEST_ASSERT_EQUAL_INT(element, testCase->_privateProperties.array.pInt[5]);
+    TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_privateProperties.map[5]);
+    TEST_ASSERT_EQUAL_INT(1, testCase->_privateProperties.next);
 
     // free arayeh.
     (testCase->freeArayeh)(&testCase);
@@ -110,10 +110,10 @@ void test_insert_memory_extension(void)
 
     // assert arayeh size to be greater or equal to 1,000,000 and then assert the
     // element insertion.
-    TEST_ASSERT_GREATER_THAN_size_t(index, testCase->_internalProperties.size);
-    TEST_ASSERT_EQUAL_INT(element, testCase->_internalProperties.array.pInt[index]);
-    TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_internalProperties.map[index]);
-    TEST_ASSERT_EQUAL_INT(0, testCase->_internalProperties.next);
+    TEST_ASSERT_GREATER_THAN_size_t(index, testCase->_privateProperties.size);
+    TEST_ASSERT_EQUAL_INT(element, testCase->_privateProperties.array.pInt[index]);
+    TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_privateProperties.map[index]);
+    TEST_ASSERT_EQUAL_INT(0, testCase->_privateProperties.next);
 
     // free arayeh.
     (testCase->freeArayeh)(&testCase);
@@ -155,7 +155,7 @@ void test_insert_setting_extension_off_error_out_of_range_index(void)
 
     // ensure arayeh is not affected.
     for (size_t i = 0; i < arayehSize; i++) {
-        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_OFF, testCase->_internalProperties.map[i]);
+        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_OFF, testCase->_privateProperties.map[i]);
     }
 
     // test a negative index number.
@@ -166,7 +166,7 @@ void test_insert_setting_extension_off_error_out_of_range_index(void)
 
     // ensure arayeh is not affected.
     for (size_t i = 0; i < arayehSize; i++) {
-        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_OFF, testCase->_internalProperties.map[i]);
+        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_OFF, testCase->_privateProperties.map[i]);
     }
 
     // free arayeh.

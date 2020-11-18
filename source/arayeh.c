@@ -141,12 +141,12 @@ arayeh *newArayeh(size_t type, size_t initialSize, int *errorCode)
 
     // set array parameters.
     (self->_privateMethods.setArayehMemoryPointer)(self, &arrayPointer);
-    self->_internalProperties.map      = mapPointer;
-    self->_internalProperties.type     = type;
-    self->_internalProperties.settings = defaultSettings;
-    self->_internalProperties.next     = 0;
-    self->_internalProperties.used     = 0;
-    self->_internalProperties.size     = initialSize;
+    self->_privateProperties.map      = mapPointer;
+    self->_privateProperties.type     = type;
+    self->_privateProperties.settings = defaultSettings;
+    self->_privateProperties.next     = 0;
+    self->_privateProperties.used     = 0;
+    self->_privateProperties.size     = initialSize;
 
     return self;
 }

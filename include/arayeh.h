@@ -129,8 +129,27 @@ typedef struct arayehSettingStruct {
 // Arayeh definition.
 typedef struct arayehStruct {
 
-    // this structure holds settings and states of the arayeh.
-    struct internalProperties {
+    // Public properties of arayeh.
+    struct {
+        // holds type of arayeh.
+        size_t type;
+
+        // hold settings for arayeh.
+        arayehSetting *settings;
+
+        // holds next pointer, the pointer is pointing
+        // at the next empty cell in the arayeh.
+        size_t next;
+
+        // holds the number of filled cells.
+        size_t used;
+
+        // holds current size of arayeh.
+        size_t size;
+    };
+
+    // Private properties of arayeh.
+    struct privateProperties {
 
         // holds actual array.
         arayehType array;
@@ -155,7 +174,7 @@ typedef struct arayehStruct {
         // holds current size of arayeh.
         size_t size;
 
-    } _internalProperties;
+    } _privateProperties;
 
     // Public methods of arayehs, accessible for everyone.
     struct {
