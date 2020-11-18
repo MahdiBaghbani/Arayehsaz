@@ -66,6 +66,10 @@
         }                                                            \
         exit(1);                                                     \
     } while (0)
+#define FATAL_WRONG_TYPE(what, allow_print) \
+    FATAL("wrong arayeh type? failed in " what, allow_print)
+#define FATAL_OVERFLOW(what, allow_print) \
+    FATAL("number is too big? failed in " what, allow_print)
 #define FATAL_MALLOC(what, allow_print) \
     FATAL("low memory? malloc() failed in " what, allow_print)
 #define FATAL_CALLOC(what, allow_print) \

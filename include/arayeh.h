@@ -255,7 +255,7 @@ typedef struct arayehStruct {
 
 } arayeh;
 
-arayeh *newArayeh(size_t type, size_t initialSize, int *errorCode);
+arayeh *newArayeh(size_t type, size_t initialSize);
 /*
  * This function will create an array of type "type"
  * (one the supported types defined in configuration.h)
@@ -265,10 +265,6 @@ arayeh *newArayeh(size_t type, size_t initialSize, int *errorCode);
  * ARGUMENTS:
  * initialSize  size of array.
  * type         type of array elements.
- * errorCode    pointer to an int memory location,
- *              this location will be used to store
- *              error codes for errors occurred during
- *              this function.
  *
  * RETURN:
  * A pointer to the initialized array.

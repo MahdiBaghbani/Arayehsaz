@@ -37,7 +37,7 @@
 #include "../include/arayeh.h"
 #include "../include/methods.h"
 
-arayeh *newArayeh(size_t type, size_t initialSize, int *errorCode)
+arayeh *newArayeh(size_t type, size_t initialSize)
 {
     /*
      * This function will create an array of type "type"
@@ -48,10 +48,6 @@ arayeh *newArayeh(size_t type, size_t initialSize, int *errorCode)
      * ARGUMENTS:
      * initialSize  size of array.
      * type         type of array elements.
-     * errorCode    pointer to an int memory location,
-     *              this location will be used to store
-     *              error codes for errors occurred during
-     *              this function.
      *
      * RETURN:
      * A pointer to the initialized array.
@@ -59,16 +55,10 @@ arayeh *newArayeh(size_t type, size_t initialSize, int *errorCode)
      * return NULL in case of error.
      */
 
-    // set error code to success (means no errors occurred).
-    *errorCode = AA_ARAYEH_SUCCESS;
-
     // check array type.
-    if (type != AA_ARAYEH_TYPE_CHAR && type != AA_ARAYEH_TYPE_SINT &&
-        type != AA_ARAYEH_TYPE_INT && type != AA_ARAYEH_TYPE_LINT &&
-        type != AA_ARAYEH_TYPE_FLOAT && type != AA_ARAYEH_TYPE_DOUBLE) {
+    if (type < AA_ARAYEH_TYPE_CHAR || AA_ARAYEH_TYPE_DOUBLE < type) {
         // wrong array type.
-        *errorCode = AA_ARAYEH_WRONG_TYPE;
-        return NULL;
+        FATAL_WRONG_TYPE("newArayeh", TRUE);
     }
 
     // initialize a pointer and allocate memory.
@@ -103,11 +93,10 @@ arayeh *newArayeh(size_t type, size_t initialSize, int *errorCode)
 
     // check for possible size_t overflow.
     if (state == AA_ARAYEH_FAILURE) {
-        // overflow detected.
-        *errorCode = AA_ARAYEH_OVERFLOW;
         // free self.
         free(self);
-        return NULL;
+        // overflow detected.
+        FATAL_OVERFLOW("newArayeh", TRUE);
     }
 
     // allocate memory to map and array.

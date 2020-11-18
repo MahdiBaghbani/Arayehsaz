@@ -47,24 +47,16 @@ void tearDown(void)
 
 void test_init_free(void)
 {
-    // define error code holders.
-    int errorChar;
-    int errorSint;
-    int errorInt;
-    int errorLInt;
-    int errorFloat;
-    int errorDouble;
-
     // define default arayeh size.
     size_t arayehSize = 100;
 
     // create new arayehs.
-    arayeh *typeChar   = newArayeh(AA_ARAYEH_TYPE_CHAR, arayehSize, &errorChar);
-    arayeh *typeSInt   = newArayeh(AA_ARAYEH_TYPE_SINT, arayehSize, &errorSint);
-    arayeh *typeInt    = newArayeh(AA_ARAYEH_TYPE_INT, arayehSize, &errorInt);
-    arayeh *typeLInt   = newArayeh(AA_ARAYEH_TYPE_LINT, arayehSize, &errorLInt);
-    arayeh *typeFloat  = newArayeh(AA_ARAYEH_TYPE_FLOAT, arayehSize, &errorFloat);
-    arayeh *typeDouble = newArayeh(AA_ARAYEH_TYPE_DOUBLE, arayehSize, &errorDouble);
+    arayeh *typeChar   = newArayeh(AA_ARAYEH_TYPE_CHAR, arayehSize);
+    arayeh *typeSInt   = newArayeh(AA_ARAYEH_TYPE_SINT, arayehSize);
+    arayeh *typeInt    = newArayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+    arayeh *typeLInt   = newArayeh(AA_ARAYEH_TYPE_LINT, arayehSize);
+    arayeh *typeFloat  = newArayeh(AA_ARAYEH_TYPE_FLOAT, arayehSize);
+    arayeh *typeDouble = newArayeh(AA_ARAYEH_TYPE_DOUBLE, arayehSize);
 
     // test arayeh pointers aren't null.
     TEST_ASSERT_NOT_NULL(typeChar)
@@ -73,14 +65,6 @@ void test_init_free(void)
     TEST_ASSERT_NOT_NULL(typeLInt)
     TEST_ASSERT_NOT_NULL(typeFloat)
     TEST_ASSERT_NOT_NULL(typeDouble)
-
-    // test error code for a successful new arayeh.
-    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, errorChar);
-    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, errorSint);
-    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, errorInt);
-    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, errorLInt);
-    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, errorFloat);
-    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, errorDouble);
 
     // test arayeh pointers.
     TEST_ASSERT_NOT_NULL(typeChar->_privateProperties.array.pChar)
@@ -139,67 +123,11 @@ void test_init_free(void)
     TEST_ASSERT_NULL(typeDouble)
 }
 
-void test_wrong_arayeh_type(void)
-{
-
-    // define error code holders.
-    int errorChar;
-
-    // define default arayeh size.
-    size_t arayehSize = 10;
-
-    // define wrong type.
-    size_t wrongType = 500;
-
-    // create new arayehs.
-    arayeh *typeChar = newArayeh(wrongType, arayehSize, &errorChar);
-
-    // test arayeh is null.
-    TEST_ASSERT_NULL(typeChar)
-
-    // test error code for a unsuccessful new arayeh.
-    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_WRONG_TYPE, errorChar);
-}
-
-void test_arayeh_overflow(void)
-{
-
-    /* Overflow happens when the arayeh initial size is bigger than the
-     * max allowed size (defined as MAX_SIZE in size_type) divided by the
-     * length of desired data type.
-     *
-     * for example MAX_SIZE in my machine is 18446744073709551615 and length of
-     * an int data type is 4, so if array initial size is bigger than
-     * 18446744073709551615 / 4 = 4611686018427387904, then an overflow occurs.
-     *
-     * the formula to determine if overflow happens or not is defined below:
-     * (initialSize > (size_t) SIZE_MAX / sizeof datatype)
-     *
-     */
-
-    // define error code holders.
-    int errorInt;
-
-    // define default arayeh size.
-    size_t arayehSize = SIZE_MAX;
-
-    // create new arayehs.
-    arayeh *typeChar = newArayeh(AA_ARAYEH_TYPE_INT, arayehSize, &errorInt);
-
-    // test arayeh is null.
-    TEST_ASSERT_NULL(typeChar)
-
-    // test error code for an unsuccessful new arayeh.
-    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_OVERFLOW, errorInt);
-}
-
 int main(void)
 {
     UnityBegin("unitTestInitFree.c");
 
     RUN_TEST(test_init_free);
-    RUN_TEST(test_wrong_arayeh_type);
-    RUN_TEST(test_arayeh_overflow);
 
     return UnityEnd();
 }
