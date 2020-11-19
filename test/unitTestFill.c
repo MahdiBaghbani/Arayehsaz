@@ -283,8 +283,7 @@ void test_fill_extends_arayeh_add_insert_off_in_settings(void)
     int element = 5;
 
     // define new settings.
-    arayehSetting newSetting = {AA_ARAYEH_OFF, AA_ARAYEH_OFF, AA_ARAYEH_OFF,
-                                AA_ARAYEH_ON, AA_ARAYEH_ON};
+    arayehSettings newSetting = {AA_ARAYEH_OFF, AA_ARAYEH_OFF};
 
     // create new arayeh.
     arayeh *testCase = newArayeh(AA_ARAYEH_TYPE_INT, arayehSize);
@@ -332,8 +331,7 @@ void test_fill_new_settings_no_extend(void)
     int element = 5;
 
     // define new settings.
-    arayehSetting newSetting = {AA_ARAYEH_OFF, AA_ARAYEH_ON, AA_ARAYEH_ON,
-                                AA_ARAYEH_OFF, AA_ARAYEH_ON};
+    arayehSettings newSetting = {AA_ARAYEH_OFF, AA_ARAYEH_OFF};
 
     // create new arayeh.
     arayeh *testCase = newArayeh(AA_ARAYEH_TYPE_INT, arayehSize);

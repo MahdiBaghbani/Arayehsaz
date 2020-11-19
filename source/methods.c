@@ -36,31 +36,6 @@
 
 #include "../include/methods.h"
 
-void _setExtensionSettings(arayeh *self, arayehSetting *settings)
-{
-    /*
-     * This function will override arayeh default settings.
-     *
-     * ARGUMENTS:
-     * self         pointer to the arayeh object.
-     * settings      new setting to apply to arayeh.
-     *
-     * RETURN:
-     * no return, it's void dude.
-     *
-     */
-
-    self->_privateProperties.settings->allowDebugMessages =
-        settings->allowDebugMessages;
-    self->_privateProperties.settings->allowExtendOnAdd = settings->allowExtendOnAdd;
-    self->_privateProperties.settings->allowExtendOnInsert =
-        settings->allowExtendOnInsert;
-    self->_privateProperties.settings->allowExtendOnFill =
-        settings->allowExtendOnFill;
-    self->_privateProperties.settings->allowExtendOnMergeList =
-        settings->allowExtendOnMergeList;
-}
-
 int _extendArayehSize(arayeh *self, size_t extendSize)
 {
     /*
@@ -182,81 +157,6 @@ int _freeArayehMemory(arayeh **self)
     return AA_ARAYEH_SUCCESS;
 }
 
-size_t _defaultGrowthFactor(arayeh *arayeh)
-{
-    /*
-     * This function will calculate the extension size of memory.
-     *
-     * This is the default function to calculate memory growth size,
-     * users can use their appropriate functions and ignore this.
-     *
-     * ARGUMENTS:
-     * self             pointer to the arayeh object.
-     *
-     * RETURN:
-     * extension_size   the size of memory space
-     *                  to be added to current memory space.
-     *
-     */
-
-    // derived from python source code.
-    // calculate the extension size of memory.
-    // This over-allocates proportional to the list size, making room
-    // for additional growth.  The over-allocation is mild, but is
-    // enough to give linear-time amortized behavior over a long
-    // sequence of appends() in the presence of a poorly-performing
-    // system realloc().
-    // The growth pattern is:  0, 4, 8, 16, 25, 35, 46, 58, 72, 88, ...
-
-    size_t current_size   = arayeh->_privateProperties.size;
-    size_t extension_size = (current_size >> 3) + (current_size < 9 ? 3 : 6);
-    return extension_size;
-}
-
-void _setGrowthFactorFunction(arayeh *self, size_t (*growthFactor)(arayeh *array))
-{
-    /*
-     * This function will override the arayehs default growth factor function
-     * with a new function provided by user.
-     *
-     * ARGUMENTS:
-     * self             pointer to the arayeh object.
-     *
-     * RETURN:
-     * no return, it's void dude.
-     *
-     */
-    (self->_privateMethods.growthFactor) = growthFactor;
-}
-
-int _calculateAndExtendSize(arayeh *self)
-{
-    /*
-     * This function will calculate the extension size of memory and extends arayeh
-     * size.
-     *
-     * ARGUMENTS:
-     * self             pointer to the arayeh object.
-     *
-     * RETURN:
-     * state        a code that indicates successful operation
-     *              or an error code defined in configuration.h .
-     *
-     */
-
-    // track error state in the function.
-    int state;
-
-    // calculate the extension memory size using growth factor function.
-    size_t extension_size = (self->_privateMethods.growthFactor)(self);
-
-    // extend arayeh size.
-    state = (self->extendSize)(self, extension_size);
-
-    // return error state.
-    return state;
-}
-
 int _addToArayeh(arayeh *self, void *element)
 {
     /*
@@ -281,6 +181,11 @@ int _addToArayeh(arayeh *self, void *element)
      *              or an error code defined in configuration.h .
      */
 
+    // shorten names for god's sake.
+    char allowExtendSize = self->_privateProperties.settings->allowExtendSize;
+    char allowExtendOnAdd =
+        self->_privateProperties.extendSizeSettings->allowExtendOnAdd;
+
     // set debug flag.
     int debug = self->_privateProperties.settings->allowDebugMessages == AA_ARAYEH_ON
                     ? TRUE
@@ -292,19 +197,50 @@ int _addToArayeh(arayeh *self, void *element)
     // check if arayeh is full.
     if (self->_privateProperties.used == self->_privateProperties.size) {
         // decide to extend arayeh size based on arayeh settings.
-        if (self->_privateProperties.settings->allowExtendOnAdd == AA_ARAYEH_ON) {
+        switch (allowExtendSize) {
+        case AA_ARAYEH_ON:
             // extend arayeh size.
             state = _calculateAndExtendSize(self);
             // stop function and return error value if extending arayeh size failed.
             if (state != AA_ARAYEH_SUCCESS) {
                 return state;
             }
-        } else {
+            break;
+        case AA_ARAYEH_OFF:
             // write to stderr and return error code.
             WARN_WRONG_INDEX(
                 "_addToArayeh() function, not enough space left in the arayeh.",
                 debug);
             return AA_ARAYEH_NOT_ENOUGH_SPACE;
+            break;
+        // if manual is enabled, check against the correct extend size rule.
+        case AA_ARAYEH_MANUAL_SETTINGS:
+            switch (allowExtendOnAdd) {
+            case AA_ARAYEH_ON:
+                // extend arayeh size.
+                state = _calculateAndExtendSize(self);
+                // stop function and return error value if extending arayeh size
+                // failed.
+                if (state != AA_ARAYEH_SUCCESS) {
+                    return state;
+                }
+                break;
+            case AA_ARAYEH_OFF:
+                // write to stderr and return error code.
+                WARN_WRONG_INDEX(
+                    "_addToArayeh() function, not enough space left in the arayeh.",
+                    debug);
+                return AA_ARAYEH_NOT_ENOUGH_SPACE;
+                break;
+            default:
+                FATAL_WRONG_SETTINGS("_addToArayeh() function, allowExtendOnAdd "
+                                     "value is not correct.",
+                                     debug);
+            }
+        default:
+            FATAL_WRONG_SETTINGS(
+                "_addToArayeh() function, allowExtendSize value is not correct.",
+                debug);
         }
     }
 
@@ -347,6 +283,11 @@ int _insertToArayeh(arayeh *self, size_t index, void *element)
      *
      */
 
+    // shorten names for god's sake.
+    char allowExtendSize = self->_privateProperties.settings->allowExtendSize;
+    char allowExtendOnInsert =
+        self->_privateProperties.extendSizeSettings->allowExtendOnInsert;
+
     // set debug flag.
     int debug = self->_privateProperties.settings->allowDebugMessages == AA_ARAYEH_ON
                     ? TRUE
@@ -358,7 +299,8 @@ int _insertToArayeh(arayeh *self, size_t index, void *element)
     // check if index is bigger or equal to size of arayeh.
     if (self->_privateProperties.size <= index) {
         // decide to extend arayeh size based on arayeh settings.
-        if (self->_privateProperties.settings->allowExtendOnInsert == AA_ARAYEH_ON) {
+        switch (allowExtendSize) {
+        case AA_ARAYEH_ON:
             // extend arayeh size until "index" is less than the arayeh size.
             do {
                 state = _calculateAndExtendSize(self);
@@ -368,12 +310,46 @@ int _insertToArayeh(arayeh *self, size_t index, void *element)
                     return state;
                 }
             } while (self->_privateProperties.size <= index);
-        } else {
+            break;
+        case AA_ARAYEH_OFF:
             // write to stderr and return error code.
             WARN_WRONG_INDEX("_insertToArayeh() function, index is equal or bigger "
                              "than arayeh size!",
                              debug);
             return AA_ARAYEH_WRONG_INDEX;
+            break;
+            // if manual is enabled, check against the correct extend size rule.
+        case AA_ARAYEH_MANUAL_SETTINGS:
+            switch (allowExtendOnInsert) {
+            case AA_ARAYEH_ON:
+                // extend arayeh size until "index" is less than the arayeh size.
+                do {
+                    state = _calculateAndExtendSize(self);
+                    // stop function and return error value if extending arayeh size
+                    // failed.
+                    if (state != AA_ARAYEH_SUCCESS) {
+                        return state;
+                    }
+                } while (self->_privateProperties.size <= index);
+                break;
+            case AA_ARAYEH_OFF:
+                // write to stderr and return error code.
+                WARN_WRONG_INDEX(
+                    "_insertToArayeh() function, index is equal or bigger "
+                    "than arayeh size!",
+                    debug);
+                return AA_ARAYEH_WRONG_INDEX;
+                break;
+            default:
+                FATAL_WRONG_SETTINGS(
+                    "_insertToArayeh() function, allowExtendOnInsert "
+                    "value is not correct.",
+                    debug);
+            }
+        default:
+            FATAL_WRONG_SETTINGS(
+                "_insertToArayeh() function, allowExtendSize value is not correct.",
+                debug);
         }
     }
 
@@ -429,6 +405,11 @@ int _fillArayeh(arayeh *self, size_t startIndex, size_t step, size_t endIndex,
      *
      */
 
+    // shorten names for god's sake.
+    char allowExtendSize = self->_privateProperties.settings->allowExtendSize;
+    char allowExtendOnFill =
+        self->_privateProperties.extendSizeSettings->allowExtendOnFill;
+
     // set debug flag.
     int debug = self->_privateProperties.settings->allowDebugMessages == AA_ARAYEH_ON
                     ? TRUE
@@ -458,7 +439,8 @@ int _fillArayeh(arayeh *self, size_t startIndex, size_t step, size_t endIndex,
     if (self->_privateProperties.size <= startIndex ||
         self->_privateProperties.size < endIndex) {
         // decide to extend arayeh size based on arayeh settings.
-        if (self->_privateProperties.settings->allowExtendOnFill == AA_ARAYEH_ON) {
+        switch (allowExtendSize) {
+        case AA_ARAYEH_ON:
             // extend arayeh size until startIndex and endIndex indexes are less than
             // the arayeh size.
             do {
@@ -470,12 +452,46 @@ int _fillArayeh(arayeh *self, size_t startIndex, size_t step, size_t endIndex,
                 }
             } while (self->_privateProperties.size <= startIndex ||
                      self->_privateProperties.size < endIndex);
-        } else {
+            break;
+        case AA_ARAYEH_OFF:
             // write to stderr and return error code.
             WARN_WRONG_INDEX("_fillArayeh() function, startIndex or endIndex is "
                              "greater than arayeh size!",
                              debug);
             return AA_ARAYEH_WRONG_INDEX;
+            break;
+            // if manual is enabled, check against the correct extend size rule.
+        case AA_ARAYEH_MANUAL_SETTINGS:
+            switch (allowExtendOnFill) {
+            case AA_ARAYEH_ON:
+                // extend arayeh size until startIndex and endIndex indexes are less
+                // than the arayeh size.
+                do {
+                    state = _calculateAndExtendSize(self);
+                    // stop function and return error value if extending arayeh size
+                    // failed.
+                    if (state != AA_ARAYEH_SUCCESS) {
+                        return state;
+                    }
+                } while (self->_privateProperties.size <= startIndex ||
+                         self->_privateProperties.size < endIndex);
+                break;
+            case AA_ARAYEH_OFF:
+                // write to stderr and return error code.
+                WARN_WRONG_INDEX("_fillArayeh() function, startIndex or endIndex is "
+                                 "greater than arayeh size!",
+                                 debug);
+                return AA_ARAYEH_WRONG_INDEX;
+                break;
+            default:
+                FATAL_WRONG_SETTINGS("_fillArayeh() function, allowExtendOnFill "
+                                     "value is not correct.",
+                                     debug);
+            }
+        default:
+            FATAL_WRONG_SETTINGS(
+                "_fillArayeh() function, allowExtendSize value is not correct.",
+                debug);
         }
     }
 
@@ -537,7 +553,7 @@ int _mergeListToArayeh(arayeh *self, size_t startIndex, size_t listSize, void *l
     if (self->_privateProperties.size <= startIndex ||
         self->_privateProperties.size < endIndex) {
         // decide to extend arayeh size based on arayeh settings.
-        if (self->_privateProperties.settings->allowExtendOnFill == AA_ARAYEH_ON) {
+        if (self->_privateProperties.settings->allowExtendSize == AA_ARAYEH_ON) {
             // extend arayeh size until startIndex and endIndex indexes are less than
             // the arayeh size.
             do {
@@ -612,6 +628,128 @@ int _getElementFromArayeh(arayeh *self, size_t index, void *destination)
     return AA_ARAYEH_SUCCESS;
 }
 
+void _setArayehSettings(arayeh *self, arayehSettings *newSettings)
+{
+    /*
+     * This function will override arayeh default settings with new one.
+     *
+     * ARGUMENTS:
+     * self             pointer to the arayeh object.
+     * newSettings      new setting to apply to arayeh.
+     *
+     * RETURN:
+     * no return, it's void dude.
+     *
+     */
+
+    // shorten name for god's sake.
+    arayehSettings *settings = self->_privateProperties.settings;
+
+    // override new settings.
+    settings->allowDebugMessages = newSettings->allowDebugMessages;
+    settings->allowExtendSize    = newSettings->allowExtendSize;
+}
+
+void _setArayehExtendSizeSettings(arayeh *self,
+                                  arayehExtendSizeSettings *newSettings)
+{
+    /*
+     * This function will override arayeh default extend size settings with new one.
+     *
+     * ARGUMENTS:
+     * self             pointer to the arayeh object.
+     * newSettings      new setting to apply to arayeh.
+     *
+     * RETURN:
+     * no return, it's void dude.
+     *
+     */
+
+    // shorten name for god's sake.
+    arayehExtendSizeSettings *settings = self->_privateProperties.extendSizeSettings;
+
+    // override new settings.
+    settings->allowExtendOnAdd       = newSettings->allowExtendOnAdd;
+    settings->allowExtendOnInsert    = newSettings->allowExtendOnInsert;
+    settings->allowExtendOnFill      = newSettings->allowExtendOnFill;
+    settings->allowExtendOnMergeList = newSettings->allowExtendOnMergeList;
+}
+
+size_t _defaultGrowthFactor(arayeh *arayeh)
+{
+    /*
+     * This function will calculate the extension size of memory.
+     *
+     * This is the default function to calculate memory growth size,
+     * users can use their appropriate functions and ignore this.
+     *
+     * ARGUMENTS:
+     * self             pointer to the arayeh object.
+     *
+     * RETURN:
+     * extension_size   the size of extra memory space to be
+     *                  added to the current memory space.
+     *
+     */
+
+    // derived from python source code.
+    // calculate the extension size of memory.
+    // This over-allocates proportional to the ARAYEH size,
+    // making room for additional growth. The over-allocation is mild,
+    // but is enough to give linear-time amortized behavior over a long
+    // sequence of adding elements to arayeh in the presence of
+    // a poorly-performing system realloc().
+    // The growth pattern is:  0, 4, 8, 16, 25, 35, 46, 58, 72, 88, ...
+
+    size_t current_size   = arayeh->_privateProperties.size;
+    size_t extension_size = (current_size >> 3) + (current_size < 9 ? 3 : 6);
+    return extension_size;
+}
+
+void _setGrowthFactorFunction(arayeh *self, size_t (*growthFactor)(arayeh *array))
+{
+    /*
+     * This function will override the arayehs default growth factor function
+     * with a new function provided by user.
+     *
+     * ARGUMENTS:
+     * self             pointer to the arayeh object.
+     *
+     * RETURN:
+     * no return, it's void dude.
+     *
+     */
+    (self->_privateMethods.growthFactor) = growthFactor;
+}
+
+int _calculateAndExtendSize(arayeh *self)
+{
+    /*
+     * This function will calculate the extension size of memory and extends arayeh
+     * size.
+     *
+     * ARGUMENTS:
+     * self             pointer to the arayeh object.
+     *
+     * RETURN:
+     * state        a code that indicates successful operation
+     *              or an error code defined in configuration.h .
+     *
+     */
+
+    // track error state in the function.
+    int state;
+
+    // calculate the extension memory size using growth factor function.
+    size_t extension_size = (self->_privateMethods.growthFactor)(self);
+
+    // extend arayeh size.
+    state = (self->extendSize)(self, extension_size);
+
+    // return error state.
+    return state;
+}
+
 void _setPublicMethods(arayeh *self)
 {
     /*
@@ -622,15 +760,16 @@ void _setPublicMethods(arayeh *self)
      *
      */
 
-    self->setArayehSettings       = _setExtensionSettings;
-    self->extendSize              = _extendArayehSize;
-    self->freeArayeh              = _freeArayehMemory;
-    self->setGrowthFactorFunction = _setGrowthFactorFunction;
-    self->add                     = _addToArayeh;
-    self->insert                  = _insertToArayeh;
-    self->fill                    = _fillArayeh;
-    self->mergeList               = _mergeListToArayeh;
-    self->get                     = _getElementFromArayeh;
+    self->extendSize                  = _extendArayehSize;
+    self->freeArayeh                  = _freeArayehMemory;
+    self->add                         = _addToArayeh;
+    self->insert                      = _insertToArayeh;
+    self->fill                        = _fillArayeh;
+    self->mergeList                   = _mergeListToArayeh;
+    self->get                         = _getElementFromArayeh;
+    self->setArayehSettings           = _setArayehSettings;
+    self->setArayehExtendSizeSettings = _setArayehExtendSizeSettings;
+    self->setGrowthFactorFunction     = _setGrowthFactorFunction;
 }
 
 void _setPrivateMethods(arayeh *self, size_t type)

@@ -80,8 +80,9 @@
 #define AA_ARAYEH_WRONG_STEP       8
 
 // map characters.
-#define AA_ARAYEH_OFF '0'
-#define AA_ARAYEH_ON  '1'
+#define AA_ARAYEH_OFF             '0'
+#define AA_ARAYEH_ON              '1'
+#define AA_ARAYEH_MANUAL_SETTINGS '3'
 
 // arayeh types.
 #define AA_ARAYEH_TYPE_CHAR   1
@@ -112,10 +113,15 @@ typedef union arayehTypeUnion {
     double *pDouble;
 } arayehType;
 
-// Arayeh extension settings.
-typedef struct arayehSettingStruct {
+// Arayeh settings.
+typedef struct arayehSettingsStruct {
     // allow debug messages to be printed on stdout and stderr.
     char allowDebugMessages;
+    // allow extending arayeh size whenever needed.
+    char allowExtendSize;
+} arayehSettings;
+
+typedef struct arayehExtendSizeSettingsStruct {
     // allow extending arayeh size when using add method.
     char allowExtendOnAdd;
     // allow extending arayeh size when using insert method.
@@ -124,7 +130,7 @@ typedef struct arayehSettingStruct {
     char allowExtendOnFill;
     // allow extending arayeh size when using merge list method.
     char allowExtendOnMergeList;
-} arayehSetting;
+} arayehExtendSizeSettings;
 
 // Arayeh definition.
 typedef struct arayehStruct {
@@ -134,8 +140,27 @@ typedef struct arayehStruct {
         // holds type of arayeh.
         size_t type;
 
+        // holds next pointer, the pointer is pointing
+        // at the next empty cell in the arayeh.
+        size_t next;
+
+        // holds the number of filled cells.
+        size_t used;
+
+        // holds current size of arayeh.
+        size_t size;
+
         // hold settings for arayeh.
-        arayehSetting *settings;
+        arayehSettings *settings;
+
+        // hold setting for extending size of arayeh.
+        arayehExtendSizeSettings *extendSizeSettings;
+    };
+
+    // Private properties of arayeh.
+    struct privateProperties {
+        // holds type of arayeh.
+        size_t type;
 
         // holds next pointer, the pointer is pointing
         // at the next empty cell in the arayeh.
@@ -146,10 +171,6 @@ typedef struct arayehStruct {
 
         // holds current size of arayeh.
         size_t size;
-    };
-
-    // Private properties of arayeh.
-    struct privateProperties {
 
         // holds actual array.
         arayehType array;
@@ -158,30 +179,16 @@ typedef struct arayehStruct {
         // using type char for this is to minimize the impact of memory usage.
         char *map;
 
-        // holds type of arayeh.
-        size_t type;
-
         // hold settings for arayeh.
-        arayehSetting *settings;
+        arayehSettings *settings;
 
-        // holds next pointer, the pointer is pointing
-        // at the next empty cell in the arayeh.
-        size_t next;
-
-        // holds the number of filled cells.
-        size_t used;
-
-        // holds current size of arayeh.
-        size_t size;
+        // hold setting for extending size of arayeh.
+        arayehExtendSizeSettings *extendSizeSettings;
 
     } _privateProperties;
 
     // Public methods of arayehs, accessible for everyone.
     struct {
-
-        // this function will override arayeh default settings.
-        void (*setArayehSettings)(arayeh *self, arayehSetting *settings);
-
         // this function will reallocate memory to the arayeh and its map.
         int (*extendSize)(arayeh *self, size_t extendSize);
 
@@ -215,6 +222,13 @@ typedef struct arayehStruct {
         // this function copies data in "index" cell of the arayeh to the
         // "destination" memory location.
         int (*get)(arayeh *self, size_t index, void *destination);
+
+        // this function will override arayeh default settings.
+        void (*setArayehSettings)(arayeh *self, arayehSettings *settings);
+
+        // this function will override arayeh extend size default settings.
+        void (*setArayehExtendSizeSettings)(arayeh *self,
+                                            arayehExtendSizeSettings *settings);
     };
 
     // Private methods of arayeh, should not be used by users.

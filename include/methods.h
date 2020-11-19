@@ -55,9 +55,6 @@
 
 __BEGIN_DECLS
 
-// this function will override arayeh default settings.
-void _setExtensionSettings(arayeh *self, arayehSetting *settings);
-
 // this function will reallocate memory to the array and its map.
 int _extendArayehSize(arayeh *self, size_t extendSize);
 
@@ -83,7 +80,8 @@ int _insertToArayeh(arayeh *self, size_t index, void *element);
 
 // this function will fill array with an element from index (inclusive)
 // "startIndex" to index (exclusive) "endIndex" with step size "step".
-int _fillArayeh(arayeh *self, size_t startIndex, size_t step, size_t endIndex, void *element);
+int _fillArayeh(arayeh *self, size_t startIndex, size_t step, size_t endIndex,
+                void *element);
 
 // this function will merge a default C array (for example int a[4] = {1, 2, 3, 4};)
 // into arayeh, the starting index for merging is "startIndex" and the size of
@@ -93,6 +91,13 @@ int _mergeListToArayeh(arayeh *self, size_t startIndex, size_t listSize, void *l
 // this function copies data in "index" cell of the array to the "destination" memory
 // location.
 int _getElementFromArayeh(arayeh *self, size_t index, void *destination);
+
+// this function will override arayeh default settings with new one.
+void _setArayehSettings(arayeh *self, arayehSettings *newSettings);
+
+// this function will override arayeh extend size default settings with new one.
+void _setArayehExtendSizeSettings(arayeh *self,
+                                  arayehExtendSizeSettings *newSettings);
 
 // this function assigns pointers to public functions of an arayeh instance.
 void _setPublicMethods(arayeh *self);

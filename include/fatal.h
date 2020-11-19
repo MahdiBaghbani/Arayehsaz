@@ -66,10 +66,6 @@
         }                                                            \
         exit(1);                                                     \
     } while (0)
-#define FATAL_WRONG_TYPE(what, allow_print) \
-    FATAL("wrong arayeh type? failed in " what, allow_print)
-#define FATAL_OVERFLOW(what, allow_print) \
-    FATAL("number is too big? failed in " what, allow_print)
 #define FATAL_MALLOC(what, allow_print) \
     FATAL("low memory? malloc() failed in " what, allow_print)
 #define FATAL_CALLOC(what, allow_print) \
@@ -78,6 +74,12 @@
     FATAL("low memory? realloc() failed in " what, allow_print)
 #define FATAL_STRDUP(what, allow_print) \
     FATAL("low memory? strdup() failed in " what, allow_print)
+#define FATAL_OVERFLOW(what, allow_print) \
+    FATAL("number is too big? failed in " what, allow_print)
+#define FATAL_WRONG_TYPE(what, allow_print) \
+    FATAL("wrong arayeh type? failed in " what, allow_print)
+#define FATAL_WRONG_SETTINGS(what, allow_print) \
+    FATAL("wrong settings detected. failed in " what, allow_print)
 
 // macros for fatal warning codes.
 #define WARN(what, allow_print)                                        \

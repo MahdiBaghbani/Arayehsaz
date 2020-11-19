@@ -132,17 +132,24 @@ arayeh *newArayeh(size_t type, size_t initialSize)
     self->_privateProperties.size = initialSize;
 
     // create array default setting holder.
-    arayehSetting *defaultSettings =
-        (arayehSetting *) malloc(sizeof *defaultSettings);
+    arayehSettings *defaultSettings =
+        (arayehSettings *) malloc(sizeof *defaultSettings);
 
     // set default setting.
-    defaultSettings->allowDebugMessages     = AA_ARAYEH_OFF;
-    defaultSettings->allowExtendOnAdd       = AA_ARAYEH_ON;
-    defaultSettings->allowExtendOnInsert    = AA_ARAYEH_ON;
-    defaultSettings->allowExtendOnFill      = AA_ARAYEH_ON;
-    defaultSettings->allowExtendOnMergeList = AA_ARAYEH_ON;
+    defaultSettings->allowDebugMessages = AA_ARAYEH_OFF;
+    defaultSettings->allowExtendSize    = AA_ARAYEH_ON;
 
     self->_privateProperties.settings = defaultSettings;
+
+    arayehExtendSizeSettings *defaultExtendSizeSettings =
+        (arayehExtendSizeSettings *) malloc(sizeof *defaultExtendSizeSettings);
+
+    defaultExtendSizeSettings->allowExtendOnAdd       = AA_ARAYEH_ON;
+    defaultExtendSizeSettings->allowExtendOnInsert    = AA_ARAYEH_ON;
+    defaultExtendSizeSettings->allowExtendOnFill      = AA_ARAYEH_ON;
+    defaultExtendSizeSettings->allowExtendOnMergeList = AA_ARAYEH_ON;
+
+    self->_privateProperties.extendSizeSettings = defaultExtendSizeSettings;
 
     return self;
 }

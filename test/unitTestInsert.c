@@ -138,8 +138,7 @@ void test_insert_setting_extension_off_error_out_of_range_index(void)
     int element       = 5;
 
     // define new settings.
-    arayehSetting newSetting = {AA_ARAYEH_OFF, AA_ARAYEH_ON, AA_ARAYEH_OFF,
-                                AA_ARAYEH_ON, AA_ARAYEH_ON};
+    arayehSettings newSetting = {AA_ARAYEH_OFF, AA_ARAYEH_OFF};
 
     // create new arayeh.
     arayeh *testCase = newArayeh(AA_ARAYEH_TYPE_INT, arayehSize);
