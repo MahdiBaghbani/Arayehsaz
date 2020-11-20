@@ -7,7 +7,7 @@ BasedOnStyle: LLVM
 TabWidth:     4
 IndentWidth:  4
 UseTab:       Never
-ColumnLimit:  85
+ColumnLimit:  90
 
 # Options
 AccessModifierOffset: -4
@@ -16,12 +16,12 @@ AlignConsecutiveAssignments: true
 AlignConsecutiveDeclarations: false
 AlignConsecutiveMacros: true
 AlignEscapedNewlines: Left
-AlignOperands:   true
+AlignOperands:   'true'
 AlignTrailingComments: true
 AllowAllArgumentsOnNextLine: true
 AllowAllParametersOfDeclarationOnNextLine: true
 AllowAllConstructorInitializersOnNextLine: true
-AllowShortBlocksOnASingleLine: false
+AllowShortBlocksOnASingleLine: Never
 AllowShortCaseLabelsOnASingleLine: false
 AllowShortFunctionsOnASingleLine: None
 AllowShortIfStatementsOnASingleLine: Never

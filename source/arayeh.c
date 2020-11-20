@@ -101,7 +101,7 @@ arayeh *newArayeh(size_t type, size_t initialSize)
 
     // allocate memory to map and array.
     mapPointer = (char *) malloc(sizeof *mapPointer * initialSize);
-    state = (self->_privateMethods.mallocArayeh)(self, &arrayPointer, initialSize);
+    state      = (self->_privateMethods.mallocArayeh)(self, &arrayPointer, initialSize);
 
     // check if memory allocated or not.
     if (state == AA_ARAYEH_FAILURE || mapPointer == NULL) {
@@ -132,8 +132,7 @@ arayeh *newArayeh(size_t type, size_t initialSize)
     self->_privateProperties.size = initialSize;
 
     // create array default setting holder.
-    arayehSettings *defaultSettings =
-        (arayehSettings *) malloc(sizeof *defaultSettings);
+    arayehSettings *defaultSettings = (arayehSettings *) malloc(sizeof *defaultSettings);
 
     // set default setting.
     defaultSettings->debugMessages = AA_ARAYEH_OFF;

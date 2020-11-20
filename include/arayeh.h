@@ -216,8 +216,7 @@ typedef struct arayehStruct {
         // (for example int a[4] = {1, 2, 3, 4};) into arayeh, the starting
         // index for merging is "startIndex" and the size of C array determines the
         // last index (in the example above the size of C array is 4).
-        int (*mergeList)(arayeh *self, size_t startIndex, size_t listSize,
-                         void *list);
+        int (*mergeList)(arayeh *self, size_t startIndex, size_t listSize, void *list);
 
         // this function copies data in "index" cell of the arayeh to the
         // "destination" memory location.

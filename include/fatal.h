@@ -100,9 +100,8 @@
     WARN("possible size_t overflow, failed in " what, allow_print)
 #define WARN_NEW_SIZE(what, allow_print) \
     WARN("new size is less than current size, failed in " what, allow_print)
-#define WARN_WRONG_INDEX(what, allow_print) WARN("failed in " what, allow_print)
-#define WARN_WRONG_STEP(what, allow_print)  WARN("failed in " what, allow_print)
-#define WARN_EXCEED_ARAYEH_SIZE(what, allow_print) \
-    WARN("failed in " what, allow_print)
+#define WARN_WRONG_INDEX(what, allow_print)        WARN("failed in " what, allow_print)
+#define WARN_WRONG_STEP(what, allow_print)         WARN("failed in " what, allow_print)
+#define WARN_EXCEED_ARAYEH_SIZE(what, allow_print) WARN("failed in " what, allow_print)
 
 #endif    //__AA_A_FATAL_H__

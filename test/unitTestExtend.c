@@ -69,8 +69,7 @@ void test_extend(void)
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
 
     // test new size.
-    TEST_ASSERT_EQUAL_INT(arayehSize + extendSize,
-                          testCase->_privateProperties.size);
+    TEST_ASSERT_EQUAL_INT(arayehSize + extendSize, testCase->_privateProperties.size);
 
     // free arayeh.
     (testCase->freeArayeh)(&testCase);

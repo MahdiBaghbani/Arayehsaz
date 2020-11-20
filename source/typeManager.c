@@ -54,9 +54,8 @@
 int _initTypeChar(arayeh *self, arayehType *array, size_t initialSize)
 {
     array->pChar = NULL;
-    return (initialSize > (size_t) SIZE_MAX / sizeof *(array->pChar))
-               ? AA_ARAYEH_FAILURE
-               : AA_ARAYEH_SUCCESS;
+    return (initialSize > (size_t) SIZE_MAX / sizeof *(array->pChar)) ? AA_ARAYEH_FAILURE
+                                                                      : AA_ARAYEH_SUCCESS;
 }
 
 int _initTypeSInt(arayeh *self, arayehType *array, size_t initialSize)
@@ -70,9 +69,8 @@ int _initTypeSInt(arayeh *self, arayehType *array, size_t initialSize)
 int _initTypeInt(arayeh *self, arayehType *array, size_t initialSize)
 {
     array->pInt = NULL;
-    return (initialSize > (size_t) SIZE_MAX / sizeof *(array->pInt))
-               ? AA_ARAYEH_FAILURE
-               : AA_ARAYEH_SUCCESS;
+    return (initialSize > (size_t) SIZE_MAX / sizeof *(array->pInt)) ? AA_ARAYEH_FAILURE
+                                                                     : AA_ARAYEH_SUCCESS;
 }
 
 int _initTypeLInt(arayeh *self, arayehType *array, size_t initialSize)
@@ -148,9 +146,8 @@ int _reallocTypeChar(arayeh *self, arayehType *array, size_t newSize)
 
 int _reallocTypeSInt(arayeh *self, arayehType *array, size_t newSize)
 {
-    array->pShortInt =
-        (short int *) realloc(self->_privateProperties.array.pShortInt,
-                              sizeof *array->pShortInt * newSize);
+    array->pShortInt = (short int *) realloc(self->_privateProperties.array.pShortInt,
+                                             sizeof *array->pShortInt * newSize);
     return (array->pShortInt == NULL) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
 }
 
@@ -351,8 +348,7 @@ int _mergeListTypeFloat(arayeh *self, size_t startIndex, size_t listSize, void *
     return state;
 }
 
-int _mergeListTypeDouble(arayeh *self, size_t startIndex, size_t listSize,
-                         void *list)
+int _mergeListTypeDouble(arayeh *self, size_t startIndex, size_t listSize, void *list)
 {
     int state;
     double *temp = (double *) list;

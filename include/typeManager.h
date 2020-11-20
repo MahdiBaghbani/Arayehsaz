@@ -147,11 +147,9 @@ int _mergeListTypeInt(arayeh *self, size_t startIndex, size_t listSize, void *li
 
 int _mergeListTypeLInt(arayeh *self, size_t startIndex, size_t listSize, void *list);
 
-int _mergeListTypeFloat(arayeh *self, size_t startIndex, size_t listSize,
-                        void *list);
+int _mergeListTypeFloat(arayeh *self, size_t startIndex, size_t listSize, void *list);
 
-int _mergeListTypeDouble(arayeh *self, size_t startIndex, size_t listSize,
-                         void *list);
+int _mergeListTypeDouble(arayeh *self, size_t startIndex, size_t listSize, void *list);
 
 // Get an element from arayeh.
 

@@ -96,8 +96,7 @@ int _getElementFromArayeh(arayeh *self, size_t index, void *destination);
 void _setArayehSettings(arayeh *self, arayehSettings *newSettings);
 
 // this function will override arayeh extend size default settings with new one.
-void _setArayehExtendSizeSettings(arayeh *self,
-                                  arayehExtendSizeSettings *newSettings);
+void _setArayehExtendSizeSettings(arayeh *self, arayehExtendSizeSettings *newSettings);
 
 // this function assigns pointers to public functions of an arayeh instance.
 void _setPublicMethods(arayeh *self);
