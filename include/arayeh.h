@@ -116,20 +116,20 @@ typedef union arayehTypeUnion {
 // Arayeh settings.
 typedef struct arayehSettingsStruct {
     // allow debug messages to be printed on stdout and stderr.
-    char allowDebugMessages;
+    char debugMessages;
     // allow extending arayeh size whenever needed.
-    char allowExtendSize;
+    char extendSize;
 } arayehSettings;
 
 typedef struct arayehExtendSizeSettingsStruct {
     // allow extending arayeh size when using add method.
-    char allowExtendOnAdd;
+    char extendAdd;
     // allow extending arayeh size when using insert method.
-    char allowExtendOnInsert;
+    char extendInsert;
     // allow extending arayeh size when using fill method.
-    char allowExtendOnFill;
+    char extendFill;
     // allow extending arayeh size when using merge list method.
-    char allowExtendOnMergeList;
+    char extendMergeArray;
 } arayehExtendSizeSettings;
 
 // Arayeh definition.

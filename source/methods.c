@@ -52,7 +52,7 @@ int _extendArayehSize(arayeh *self, size_t extendSize)
      */
 
     // set debug flag.
-    int debug = self->_privateProperties.settings->allowDebugMessages == AA_ARAYEH_ON
+    int debug = self->_privateProperties.settings->debugMessages == AA_ARAYEH_ON
                     ? TRUE
                     : FALSE;
 
@@ -186,12 +186,11 @@ int _addToArayeh(arayeh *self, void *element)
      */
 
     // shorten names for god's sake.
-    char allowExtendSize = self->_privateProperties.settings->allowExtendSize;
-    char allowExtendOnAdd =
-        self->_privateProperties.extendSizeSettings->allowExtendOnAdd;
+    char extendSize = self->_privateProperties.settings->extendSize;
+    char extendAdd  = self->_privateProperties.extendSizeSettings->extendAdd;
 
     // set debug flag.
-    int debug = self->_privateProperties.settings->allowDebugMessages == AA_ARAYEH_ON
+    int debug = self->_privateProperties.settings->debugMessages == AA_ARAYEH_ON
                     ? TRUE
                     : FALSE;
 
@@ -201,7 +200,7 @@ int _addToArayeh(arayeh *self, void *element)
     // check if arayeh is full.
     if (self->_privateProperties.used == self->_privateProperties.size) {
         // decide to extend arayeh size based on arayeh settings.
-        switch (allowExtendSize) {
+        switch (extendSize) {
         case AA_ARAYEH_ON:
             // extend arayeh size.
             state = _calculateAndExtendSize(self);
@@ -219,7 +218,7 @@ int _addToArayeh(arayeh *self, void *element)
             break;
         // if manual is enabled, check against the correct extend size rule.
         case AA_ARAYEH_MANUAL_SETTINGS:
-            switch (allowExtendOnAdd) {
+            switch (extendAdd) {
             case AA_ARAYEH_ON:
                 // extend arayeh size.
                 state = _calculateAndExtendSize(self);
@@ -237,14 +236,13 @@ int _addToArayeh(arayeh *self, void *element)
                 return AA_ARAYEH_NOT_ENOUGH_SPACE;
                 break;
             default:
-                FATAL_WRONG_SETTINGS("_addToArayeh() function, allowExtendOnAdd "
+                FATAL_WRONG_SETTINGS("_addToArayeh() function, extendAdd "
                                      "value is not correct.",
                                      debug);
             }
         default:
             FATAL_WRONG_SETTINGS(
-                "_addToArayeh() function, allowExtendSize value is not correct.",
-                debug);
+                "_addToArayeh() function, extendSize value is not correct.", debug);
         }
     }
 
@@ -288,12 +286,11 @@ int _insertToArayeh(arayeh *self, size_t index, void *element)
      */
 
     // shorten names for god's sake.
-    char allowExtendSize = self->_privateProperties.settings->allowExtendSize;
-    char allowExtendOnInsert =
-        self->_privateProperties.extendSizeSettings->allowExtendOnInsert;
+    char extendSize   = self->_privateProperties.settings->extendSize;
+    char extendInsert = self->_privateProperties.extendSizeSettings->extendInsert;
 
     // set debug flag.
-    int debug = self->_privateProperties.settings->allowDebugMessages == AA_ARAYEH_ON
+    int debug = self->_privateProperties.settings->debugMessages == AA_ARAYEH_ON
                     ? TRUE
                     : FALSE;
 
@@ -303,7 +300,7 @@ int _insertToArayeh(arayeh *self, size_t index, void *element)
     // check if index is bigger or equal to size of arayeh.
     if (self->_privateProperties.size <= index) {
         // decide to extend arayeh size based on arayeh settings.
-        switch (allowExtendSize) {
+        switch (extendSize) {
         case AA_ARAYEH_ON:
             // extend arayeh size until "index" is less than the arayeh size.
             do {
@@ -324,7 +321,7 @@ int _insertToArayeh(arayeh *self, size_t index, void *element)
             break;
             // if manual is enabled, check against the correct extend size rule.
         case AA_ARAYEH_MANUAL_SETTINGS:
-            switch (allowExtendOnInsert) {
+            switch (extendInsert) {
             case AA_ARAYEH_ON:
                 // extend arayeh size until "index" is less than the arayeh size.
                 do {
@@ -345,14 +342,13 @@ int _insertToArayeh(arayeh *self, size_t index, void *element)
                 return AA_ARAYEH_WRONG_INDEX;
                 break;
             default:
-                FATAL_WRONG_SETTINGS(
-                    "_insertToArayeh() function, allowExtendOnInsert "
-                    "value is not correct.",
-                    debug);
+                FATAL_WRONG_SETTINGS("_insertToArayeh() function, extendInsert "
+                                     "value is not correct.",
+                                     debug);
             }
         default:
             FATAL_WRONG_SETTINGS(
-                "_insertToArayeh() function, allowExtendSize value is not correct.",
+                "_insertToArayeh() function, extendSize value is not correct.",
                 debug);
         }
     }
@@ -410,12 +406,11 @@ int _fillArayeh(arayeh *self, size_t startIndex, size_t step, size_t endIndex,
      */
 
     // shorten names for god's sake.
-    char allowExtendSize = self->_privateProperties.settings->allowExtendSize;
-    char allowExtendOnFill =
-        self->_privateProperties.extendSizeSettings->allowExtendOnFill;
+    char extendSize = self->_privateProperties.settings->extendSize;
+    char extendFill = self->_privateProperties.extendSizeSettings->extendFill;
 
     // set debug flag.
-    int debug = self->_privateProperties.settings->allowDebugMessages == AA_ARAYEH_ON
+    int debug = self->_privateProperties.settings->debugMessages == AA_ARAYEH_ON
                     ? TRUE
                     : FALSE;
 
@@ -443,7 +438,7 @@ int _fillArayeh(arayeh *self, size_t startIndex, size_t step, size_t endIndex,
     if (self->_privateProperties.size <= startIndex ||
         self->_privateProperties.size < endIndex) {
         // decide to extend arayeh size based on arayeh settings.
-        switch (allowExtendSize) {
+        switch (extendSize) {
         case AA_ARAYEH_ON:
             // extend arayeh size until startIndex and endIndex indexes are less than
             // the arayeh size.
@@ -466,7 +461,7 @@ int _fillArayeh(arayeh *self, size_t startIndex, size_t step, size_t endIndex,
             break;
             // if manual is enabled, check against the correct extend size rule.
         case AA_ARAYEH_MANUAL_SETTINGS:
-            switch (allowExtendOnFill) {
+            switch (extendFill) {
             case AA_ARAYEH_ON:
                 // extend arayeh size until startIndex and endIndex indexes are less
                 // than the arayeh size.
@@ -488,14 +483,13 @@ int _fillArayeh(arayeh *self, size_t startIndex, size_t step, size_t endIndex,
                 return AA_ARAYEH_WRONG_INDEX;
                 break;
             default:
-                FATAL_WRONG_SETTINGS("_fillArayeh() function, allowExtendOnFill "
+                FATAL_WRONG_SETTINGS("_fillArayeh() function, extendFill "
                                      "value is not correct.",
                                      debug);
             }
         default:
             FATAL_WRONG_SETTINGS(
-                "_fillArayeh() function, allowExtendSize value is not correct.",
-                debug);
+                "_fillArayeh() function, extendSize value is not correct.", debug);
         }
     }
 
@@ -542,8 +536,13 @@ int _mergeListToArayeh(arayeh *self, size_t startIndex, size_t listSize, void *l
      *
      */
 
+    // shorten names for god's sake.
+    char extendSize = self->_privateProperties.settings->extendSize;
+    char extendMergeArray =
+        self->_privateProperties.extendSizeSettings->extendMergeArray;
+
     // set debug flag.
-    int debug = self->_privateProperties.settings->allowDebugMessages == AA_ARAYEH_ON
+    int debug = self->_privateProperties.settings->debugMessages == AA_ARAYEH_ON
                     ? TRUE
                     : FALSE;
 
@@ -557,7 +556,8 @@ int _mergeListToArayeh(arayeh *self, size_t startIndex, size_t listSize, void *l
     if (self->_privateProperties.size <= startIndex ||
         self->_privateProperties.size < endIndex) {
         // decide to extend arayeh size based on arayeh settings.
-        if (self->_privateProperties.settings->allowExtendSize == AA_ARAYEH_ON) {
+        switch (extendSize) {
+        case AA_ARAYEH_ON:
             // extend arayeh size until startIndex and endIndex indexes are less than
             // the arayeh size.
             do {
@@ -569,7 +569,8 @@ int _mergeListToArayeh(arayeh *self, size_t startIndex, size_t listSize, void *l
                 }
             } while (self->_privateProperties.size <= startIndex ||
                      self->_privateProperties.size < endIndex);
-        } else {
+            break;
+        case AA_ARAYEH_OFF:
             // check if startIndex is greater than the arayeh size.
             if (self->_privateProperties.size <= startIndex) {
                 // write to stderr and return error code.
@@ -590,6 +591,54 @@ int _mergeListToArayeh(arayeh *self, size_t startIndex, size_t listSize, void *l
                     debug);
                 return AA_ARAYEH_NOT_ENOUGH_SPACE;
             }
+            break;
+            // if manual is enabled, check against the correct extend size rule.
+        case AA_ARAYEH_MANUAL_SETTINGS:
+            switch (extendMergeArray) {
+            case AA_ARAYEH_ON:
+                // extend arayeh size until startIndex and endIndex indexes are less
+                // than the arayeh size.
+                do {
+                    state = _calculateAndExtendSize(self);
+                    // stop function and return error value if extending arayeh size
+                    // failed.
+                    if (state != AA_ARAYEH_SUCCESS) {
+                        return state;
+                    }
+                } while (self->_privateProperties.size <= startIndex ||
+                         self->_privateProperties.size < endIndex);
+                break;
+            case AA_ARAYEH_OFF:
+                // check if startIndex is greater than the arayeh size.
+                if (self->_privateProperties.size <= startIndex) {
+                    // write to stderr and return error code.
+                    WARN_WRONG_INDEX(
+                        "_mergeListToArayeh() function, start index is greater than "
+                        "the arayeh size!",
+                        debug);
+                    return AA_ARAYEH_WRONG_INDEX;
+                }
+
+                // check if list size exceeds arayeh size if being started from
+                // startIndex.
+                if (self->_privateProperties.size < endIndex) {
+                    // write to stderr and return error code.
+                    WARN_EXCEED_ARAYEH_SIZE(
+                        "_mergeListToArayeh() function, starting from the specified "
+                        "index, arayeh doesn't have enough space to merge this "
+                        "list.",
+                        debug);
+                    return AA_ARAYEH_NOT_ENOUGH_SPACE;
+                }
+                break;
+            default:
+                FATAL_WRONG_SETTINGS("_fillArayeh() function, extendMergeArray "
+                                     "value is not correct.",
+                                     debug);
+            }
+        default:
+            FATAL_WRONG_SETTINGS(
+                "_fillArayeh() function, extendSize value is not correct.", debug);
         }
     }
 
@@ -615,7 +664,7 @@ int _getElementFromArayeh(arayeh *self, size_t index, void *destination)
      */
 
     // set debug flag.
-    int debug = self->_privateProperties.settings->allowDebugMessages == AA_ARAYEH_ON
+    int debug = self->_privateProperties.settings->debugMessages == AA_ARAYEH_ON
                     ? TRUE
                     : FALSE;
 
@@ -650,8 +699,8 @@ void _setArayehSettings(arayeh *self, arayehSettings *newSettings)
     arayehSettings *settings = self->_privateProperties.settings;
 
     // override new settings.
-    settings->allowDebugMessages = newSettings->allowDebugMessages;
-    settings->allowExtendSize    = newSettings->allowExtendSize;
+    settings->debugMessages = newSettings->debugMessages;
+    settings->extendSize    = newSettings->extendSize;
 }
 
 void _setArayehExtendSizeSettings(arayeh *self,
@@ -673,10 +722,10 @@ void _setArayehExtendSizeSettings(arayeh *self,
     arayehExtendSizeSettings *settings = self->_privateProperties.extendSizeSettings;
 
     // override new settings.
-    settings->allowExtendOnAdd       = newSettings->allowExtendOnAdd;
-    settings->allowExtendOnInsert    = newSettings->allowExtendOnInsert;
-    settings->allowExtendOnFill      = newSettings->allowExtendOnFill;
-    settings->allowExtendOnMergeList = newSettings->allowExtendOnMergeList;
+    settings->extendAdd        = newSettings->extendAdd;
+    settings->extendInsert     = newSettings->extendInsert;
+    settings->extendFill       = newSettings->extendFill;
+    settings->extendMergeArray = newSettings->extendMergeArray;
 }
 
 size_t _defaultGrowthFactor(arayeh *arayeh)
