@@ -51,9 +51,11 @@ int _extendArayehSize(arayeh *self, size_t extendSize)
      *
      */
 
+    // shorten names for god's sake.
+    char debugMessages = self->_privateProperties.settings->debugMessages;
+
     // set debug flag.
-    int debug =
-        self->_privateProperties.settings->debugMessages == AA_ARAYEH_ON ? TRUE : FALSE;
+    int debug = debugMessages == AA_ARAYEH_ON ? TRUE : FALSE;
 
     // track error state in the function.
     int state;
@@ -104,9 +106,11 @@ int _extendArayehSize(arayeh *self, size_t extendSize)
         mapPointer[i] = AA_ARAYEH_OFF;
     }
 
+    // set pointers to memory locations.
+    (self->_privateMethods.setMemoryPointer)(self, &arrayPointer);
+    self->_privateProperties.map = mapPointer;
+
     // update arayeh parameters.
-    (self->_privateMethods.setArayehMemoryPointer)(self, &arrayPointer);
-    self->_privateProperties.map  = mapPointer;
     self->_privateProperties.size = newSize;
     self->size                    = newSize;
 
@@ -114,7 +118,7 @@ int _extendArayehSize(arayeh *self, size_t extendSize)
     return AA_ARAYEH_SUCCESS;
 }
 
-int _freeArayehMemory(arayeh **self)
+int _freeMemory(arayeh **self)
 {
     /*
      * This function will free the arayeh and reset its parameters.
@@ -185,12 +189,12 @@ int _addToArayeh(arayeh *self, void *element)
      */
 
     // shorten names for god's sake.
-    char extendSize = self->_privateProperties.settings->extendSize;
-    char extendAdd  = self->_privateProperties.extendSizeSettings->extendAdd;
+    char debugMessages = self->_privateProperties.settings->debugMessages;
+    char extendSize    = self->_privateProperties.settings->extendSize;
+    char extendAdd     = self->_privateProperties.extendSizeSettings->extendAdd;
 
     // set debug flag.
-    int debug =
-        self->_privateProperties.settings->debugMessages == AA_ARAYEH_ON ? TRUE : FALSE;
+    int debug = debugMessages == AA_ARAYEH_ON ? TRUE : FALSE;
 
     // track error state in the function.
     int state;
@@ -244,8 +248,7 @@ int _addToArayeh(arayeh *self, void *element)
     }
 
     // add element.
-    (self->_privateMethods.addElementToArayeh)(self, self->_privateProperties.next,
-                                               element);
+    (self->_privateMethods.addToArayeh)(self, self->_privateProperties.next, element);
 
     // update "map" and "used".
     self->_privateProperties.map[self->_privateProperties.next] = AA_ARAYEH_ON;
@@ -283,12 +286,12 @@ int _insertToArayeh(arayeh *self, size_t index, void *element)
      */
 
     // shorten names for god's sake.
-    char extendSize   = self->_privateProperties.settings->extendSize;
-    char extendInsert = self->_privateProperties.extendSizeSettings->extendInsert;
+    char debugMessages = self->_privateProperties.settings->debugMessages;
+    char extendSize    = self->_privateProperties.settings->extendSize;
+    char extendInsert  = self->_privateProperties.extendSizeSettings->extendInsert;
 
     // set debug flag.
-    int debug =
-        self->_privateProperties.settings->debugMessages == AA_ARAYEH_ON ? TRUE : FALSE;
+    int debug = debugMessages == AA_ARAYEH_ON ? TRUE : FALSE;
 
     // track error state in the function.
     int state = AA_ARAYEH_SUCCESS;
@@ -361,7 +364,7 @@ int _insertToArayeh(arayeh *self, size_t index, void *element)
         // if it was uninitialized, update map and "used" counter.
 
         // assign element.
-        (self->_privateMethods.addElementToArayeh)(self, index, element);
+        (self->_privateMethods.addToArayeh)(self, index, element);
         // update arayeh parameters.
         if (self->_privateProperties.map[index] == AA_ARAYEH_OFF) {
             // update "map" and "used" if they aren't already counted for this index.
@@ -400,12 +403,12 @@ int _fillArayeh(arayeh *self, size_t startIndex, size_t step, size_t endIndex,
      */
 
     // shorten names for god's sake.
-    char extendSize = self->_privateProperties.settings->extendSize;
-    char extendFill = self->_privateProperties.extendSizeSettings->extendFill;
+    char debugMessages = self->_privateProperties.settings->debugMessages;
+    char extendSize    = self->_privateProperties.settings->extendSize;
+    char extendFill    = self->_privateProperties.extendSizeSettings->extendFill;
 
     // set debug flag.
-    int debug =
-        self->_privateProperties.settings->debugMessages == AA_ARAYEH_ON ? TRUE : FALSE;
+    int debug = debugMessages == AA_ARAYEH_ON ? TRUE : FALSE;
 
     // track error state in the function.
     int state = AA_ARAYEH_SUCCESS;
@@ -490,7 +493,7 @@ int _fillArayeh(arayeh *self, size_t startIndex, size_t step, size_t endIndex,
     // TODO implicitly.
     // fill the arayeh.
     for (size_t index = startIndex; index < endIndex; index += step) {
-
+        // TODO Should check stat inside loop and break once it fails?
         // if index is less (more) than array.next, use insert function so it
         // won't affect next pointer, if index is equal to array.next, use add
         // to also update next pointer.
@@ -506,10 +509,10 @@ int _fillArayeh(arayeh *self, size_t startIndex, size_t step, size_t endIndex,
     return state;
 }
 
-int _mergeListToArayeh(arayeh *self, size_t startIndex, size_t listSize, void *list)
+int _mergeToArayeh(arayeh *self, size_t startIndex, size_t listSize, void *array)
 {
     /*
-     * This function will merge a default C arayeh
+     * This function will merge a default C array
      * (for example int a[4] = {1, 2, 3, 4};) into the arayeh, the starting index
      * for merging is "startIndex" and the size of C array determines the last index
      * (in the example above the size of C arayeh is 4).
@@ -521,7 +524,7 @@ int _mergeListToArayeh(arayeh *self, size_t startIndex, size_t listSize, void *l
      * self         pointer to the arayeh object.
      * startIndex   starting index in the arayeh arayeh.
      * listSize     size of the C arayeh.
-     * list         the C array to be merged into the arayeh.
+     * array        the C array to be merged into the arayeh.
      *
      * RETURN:
      * state        a code that indicates successful operation
@@ -530,12 +533,12 @@ int _mergeListToArayeh(arayeh *self, size_t startIndex, size_t listSize, void *l
      */
 
     // shorten names for god's sake.
+    char debugMessages    = self->_privateProperties.settings->debugMessages;
     char extendSize       = self->_privateProperties.settings->extendSize;
     char extendMergeArray = self->_privateProperties.extendSizeSettings->extendMergeArray;
 
     // set debug flag.
-    int debug =
-        self->_privateProperties.settings->debugMessages == AA_ARAYEH_ON ? TRUE : FALSE;
+    int debug = debugMessages == AA_ARAYEH_ON ? TRUE : FALSE;
 
     // track error state in the function.
     int state = AA_ARAYEH_SUCCESS;
@@ -565,20 +568,19 @@ int _mergeListToArayeh(arayeh *self, size_t startIndex, size_t listSize, void *l
             // check if startIndex is greater than the arayeh size.
             if (self->_privateProperties.size <= startIndex) {
                 // write to stderr and return error code.
-                WARN_WRONG_INDEX(
-                    "_mergeListToArayeh() function, start index is greater than "
-                    "the arayeh size!",
-                    debug);
+                WARN_WRONG_INDEX("_mergeToArayeh() function, start index is greater than "
+                                 "the arayeh size!",
+                                 debug);
                 return AA_ARAYEH_WRONG_INDEX;
             }
 
-            // check if list size exceeds arayeh size if being started from
+            // check if array size exceeds arayeh size if being started from
             // startIndex.
             if (self->_privateProperties.size < endIndex) {
                 // write to stderr and return error code.
                 WARN_EXCEED_ARAYEH_SIZE(
-                    "_mergeListToArayeh() function, starting from the specified "
-                    "index, arayeh doesn't have enough space to merge this list.",
+                    "_mergeToArayeh() function, starting from the specified "
+                    "index, arayeh doesn't have enough space to merge this array.",
                     debug);
                 return AA_ARAYEH_NOT_ENOUGH_SPACE;
             }
@@ -604,20 +606,20 @@ int _mergeListToArayeh(arayeh *self, size_t startIndex, size_t listSize, void *l
                 if (self->_privateProperties.size <= startIndex) {
                     // write to stderr and return error code.
                     WARN_WRONG_INDEX(
-                        "_mergeListToArayeh() function, start index is greater than "
+                        "_mergeToArayeh() function, start index is greater than "
                         "the arayeh size!",
                         debug);
                     return AA_ARAYEH_WRONG_INDEX;
                 }
 
-                // check if list size exceeds arayeh size if being started from
+                // check if array size exceeds arayeh size if being started from
                 // startIndex.
                 if (self->_privateProperties.size < endIndex) {
                     // write to stderr and return error code.
                     WARN_EXCEED_ARAYEH_SIZE(
-                        "_mergeListToArayeh() function, starting from the specified "
+                        "_mergeToArayeh() function, starting from the specified "
                         "index, arayeh doesn't have enough space to merge this "
-                        "list.",
+                        "array.",
                         debug);
                     return AA_ARAYEH_NOT_ENOUGH_SPACE;
                 }
@@ -634,13 +636,13 @@ int _mergeListToArayeh(arayeh *self, size_t startIndex, size_t listSize, void *l
     }
 
     // insert C array elements into arayeh.
-    state = (self->_privateMethods.mergeListToArayeh)(self, startIndex, listSize, list);
+    state = (self->_privateMethods.mergeToArayeh)(self, startIndex, listSize, array);
 
     // return error state code.
     return state;
 }
 
-int _getElementFromArayeh(arayeh *self, size_t index, void *destination)
+int _getFromArayeh(arayeh *self, size_t index, void *destination)
 {
     /*
      * This function copies data in "index" cell of the arayeh to the "destination"
@@ -653,24 +655,26 @@ int _getElementFromArayeh(arayeh *self, size_t index, void *destination)
      *
      */
 
+    // shorten names for god's sake.
+    char debugMessages = self->_privateProperties.settings->debugMessages;
+
     // set debug flag.
-    int debug =
-        self->_privateProperties.settings->debugMessages == AA_ARAYEH_ON ? TRUE : FALSE;
+    int debug = debugMessages == AA_ARAYEH_ON ? TRUE : FALSE;
 
     // check arayeh bounds.
     if (index >= self->_privateProperties.size) {
-        WARN_WRONG_INDEX("index out of range! _getElementFromArayeh()", debug);
+        WARN_WRONG_INDEX("index out of range! _getFromArayeh()", debug);
         return AA_ARAYEH_WRONG_INDEX;
     }
 
     // copy data to destination memory location.
-    (self->_privateMethods.getElementFromArayeh)(self, index, destination);
+    (self->_privateMethods.getFromArayeh)(self, index, destination);
 
     // return success code.
     return AA_ARAYEH_SUCCESS;
 }
 
-void _setArayehSettings(arayeh *self, arayehSettings *newSettings)
+void _setSettings(arayeh *self, arayehSettings *newSettings)
 {
     /*
      * This function will override arayeh default settings with new one.
@@ -684,7 +688,7 @@ void _setArayehSettings(arayeh *self, arayehSettings *newSettings)
      *
      */
 
-    // shorten name for god's sake.
+    // shorten names for god's sake.
     arayehSettings *settings = self->_privateProperties.settings;
 
     // override new settings.
@@ -692,7 +696,7 @@ void _setArayehSettings(arayeh *self, arayehSettings *newSettings)
     settings->extendSize    = newSettings->extendSize;
 }
 
-void _setArayehExtendSizeSettings(arayeh *self, arayehExtendSizeSettings *newSettings)
+void _setSizeSettings(arayeh *self, arayehSizeSettings *newSettings)
 {
     /*
      * This function will override arayeh default extend size settings with new one.
@@ -706,8 +710,8 @@ void _setArayehExtendSizeSettings(arayeh *self, arayehExtendSizeSettings *newSet
      *
      */
 
-    // shorten name for god's sake.
-    arayehExtendSizeSettings *settings = self->_privateProperties.extendSizeSettings;
+    // shorten names for god's sake.
+    arayehSizeSettings *settings = self->_privateProperties.extendSizeSettings;
 
     // override new settings.
     settings->extendAdd        = newSettings->extendAdd;
@@ -801,16 +805,16 @@ void _setPublicMethods(arayeh *self)
      *
      */
 
-    self->extendSize                  = _extendArayehSize;
-    self->freeArayeh                  = _freeArayehMemory;
-    self->add                         = _addToArayeh;
-    self->insert                      = _insertToArayeh;
-    self->fill                        = _fillArayeh;
-    self->mergeList                   = _mergeListToArayeh;
-    self->get                         = _getElementFromArayeh;
-    self->setArayehSettings           = _setArayehSettings;
-    self->setArayehExtendSizeSettings = _setArayehExtendSizeSettings;
-    self->setGrowthFactorFunction     = _setGrowthFactorFunction;
+    self->extendSize              = _extendArayehSize;
+    self->freeArayeh              = _freeMemory;
+    self->add                     = _addToArayeh;
+    self->insert                  = _insertToArayeh;
+    self->fill                    = _fillArayeh;
+    self->mergeList               = _mergeToArayeh;
+    self->get                     = _getFromArayeh;
+    self->setSettings             = _setSettings;
+    self->setSizeSettings         = _setSizeSettings;
+    self->setGrowthFactorFunction = _setGrowthFactorFunction;
 }
 
 void _setPrivateMethods(arayeh *self, size_t type)
@@ -830,69 +834,69 @@ void _setPrivateMethods(arayeh *self, size_t type)
     // assign based on the arayeh type.
     switch (type) {
     case AA_ARAYEH_TYPE_CHAR:
-        self->_privateMethods.initArayeh             = _initTypeChar;
-        self->_privateMethods.mallocArayeh           = _mallocTypeChar;
-        self->_privateMethods.reallocArayeh          = _reallocTypeChar;
-        self->_privateMethods.freeArayeh             = _freeTypeChar;
-        self->_privateMethods.setArayehMemoryPointer = _setMemoryPointerTypeChar;
-        self->_privateMethods.addElementToArayeh     = _addTypeChar;
-        self->_privateMethods.mergeListToArayeh      = _mergeListTypeChar;
-        self->_privateMethods.getElementFromArayeh   = _getTypeChar;
+        self->_privateMethods.initArayeh       = _initTypeChar;
+        self->_privateMethods.mallocArayeh     = _mallocTypeChar;
+        self->_privateMethods.reallocArayeh    = _reallocTypeChar;
+        self->_privateMethods.freeArayeh       = _freeTypeChar;
+        self->_privateMethods.setMemoryPointer = _setMemoryPointerTypeChar;
+        self->_privateMethods.addToArayeh      = _addTypeChar;
+        self->_privateMethods.mergeToArayeh    = _mergeListTypeChar;
+        self->_privateMethods.getFromArayeh    = _getTypeChar;
         break;
 
     case AA_ARAYEH_TYPE_SINT:
-        self->_privateMethods.initArayeh             = _initTypeSInt;
-        self->_privateMethods.mallocArayeh           = _mallocTypeSInt;
-        self->_privateMethods.reallocArayeh          = _reallocTypeSInt;
-        self->_privateMethods.freeArayeh             = _freeTypeSInt;
-        self->_privateMethods.setArayehMemoryPointer = _setMemoryPointerTypeSInt;
-        self->_privateMethods.addElementToArayeh     = _addTypeSInt;
-        self->_privateMethods.mergeListToArayeh      = _mergeListTypeSInt;
-        self->_privateMethods.getElementFromArayeh   = _getTypeSInt;
+        self->_privateMethods.initArayeh       = _initTypeSInt;
+        self->_privateMethods.mallocArayeh     = _mallocTypeSInt;
+        self->_privateMethods.reallocArayeh    = _reallocTypeSInt;
+        self->_privateMethods.freeArayeh       = _freeTypeSInt;
+        self->_privateMethods.setMemoryPointer = _setMemoryPointerTypeSInt;
+        self->_privateMethods.addToArayeh      = _addTypeSInt;
+        self->_privateMethods.mergeToArayeh    = _mergeListTypeSInt;
+        self->_privateMethods.getFromArayeh    = _getTypeSInt;
         break;
 
     case AA_ARAYEH_TYPE_INT:
-        self->_privateMethods.initArayeh             = _initTypeInt;
-        self->_privateMethods.mallocArayeh           = _mallocTypeInt;
-        self->_privateMethods.reallocArayeh          = _reallocTypeInt;
-        self->_privateMethods.freeArayeh             = _freeTypeInt;
-        self->_privateMethods.setArayehMemoryPointer = _setMemoryPointerTypeInt;
-        self->_privateMethods.addElementToArayeh     = _addTypeInt;
-        self->_privateMethods.mergeListToArayeh      = _mergeListTypeInt;
-        self->_privateMethods.getElementFromArayeh   = _getTypeInt;
+        self->_privateMethods.initArayeh       = _initTypeInt;
+        self->_privateMethods.mallocArayeh     = _mallocTypeInt;
+        self->_privateMethods.reallocArayeh    = _reallocTypeInt;
+        self->_privateMethods.freeArayeh       = _freeTypeInt;
+        self->_privateMethods.setMemoryPointer = _setMemoryPointerTypeInt;
+        self->_privateMethods.addToArayeh      = _addTypeInt;
+        self->_privateMethods.mergeToArayeh    = _mergeListTypeInt;
+        self->_privateMethods.getFromArayeh    = _getTypeInt;
         break;
 
     case AA_ARAYEH_TYPE_LINT:
-        self->_privateMethods.initArayeh             = _initTypeLInt;
-        self->_privateMethods.mallocArayeh           = _mallocTypeLInt;
-        self->_privateMethods.reallocArayeh          = _reallocTypeLInt;
-        self->_privateMethods.freeArayeh             = _freeTypeLInt;
-        self->_privateMethods.setArayehMemoryPointer = _setMemoryPointerTypeLInt;
-        self->_privateMethods.addElementToArayeh     = _addTypeLInt;
-        self->_privateMethods.mergeListToArayeh      = _mergeListTypeLInt;
-        self->_privateMethods.getElementFromArayeh   = _getTypeLInt;
+        self->_privateMethods.initArayeh       = _initTypeLInt;
+        self->_privateMethods.mallocArayeh     = _mallocTypeLInt;
+        self->_privateMethods.reallocArayeh    = _reallocTypeLInt;
+        self->_privateMethods.freeArayeh       = _freeTypeLInt;
+        self->_privateMethods.setMemoryPointer = _setMemoryPointerTypeLInt;
+        self->_privateMethods.addToArayeh      = _addTypeLInt;
+        self->_privateMethods.mergeToArayeh    = _mergeListTypeLInt;
+        self->_privateMethods.getFromArayeh    = _getTypeLInt;
         break;
 
     case AA_ARAYEH_TYPE_FLOAT:
-        self->_privateMethods.initArayeh             = _initTypeFloat;
-        self->_privateMethods.mallocArayeh           = _mallocTypeFloat;
-        self->_privateMethods.reallocArayeh          = _reallocTypeFloat;
-        self->_privateMethods.freeArayeh             = _freeTypeFloat;
-        self->_privateMethods.setArayehMemoryPointer = _setMemoryPointerTypeFloat;
-        self->_privateMethods.addElementToArayeh     = _addTypeFloat;
-        self->_privateMethods.mergeListToArayeh      = _mergeListTypeFloat;
-        self->_privateMethods.getElementFromArayeh   = _getTypeFloat;
+        self->_privateMethods.initArayeh       = _initTypeFloat;
+        self->_privateMethods.mallocArayeh     = _mallocTypeFloat;
+        self->_privateMethods.reallocArayeh    = _reallocTypeFloat;
+        self->_privateMethods.freeArayeh       = _freeTypeFloat;
+        self->_privateMethods.setMemoryPointer = _setMemoryPointerTypeFloat;
+        self->_privateMethods.addToArayeh      = _addTypeFloat;
+        self->_privateMethods.mergeToArayeh    = _mergeListTypeFloat;
+        self->_privateMethods.getFromArayeh    = _getTypeFloat;
         break;
 
     case AA_ARAYEH_TYPE_DOUBLE:
-        self->_privateMethods.initArayeh             = _initTypeDouble;
-        self->_privateMethods.mallocArayeh           = _mallocTypeDouble;
-        self->_privateMethods.reallocArayeh          = _reallocTypeDouble;
-        self->_privateMethods.freeArayeh             = _freeTypeDouble;
-        self->_privateMethods.setArayehMemoryPointer = _setMemoryPointerTypeDouble;
-        self->_privateMethods.addElementToArayeh     = _addTypeDouble;
-        self->_privateMethods.mergeListToArayeh      = _mergeListTypeDouble;
-        self->_privateMethods.getElementFromArayeh   = _getTypeDouble;
+        self->_privateMethods.initArayeh       = _initTypeDouble;
+        self->_privateMethods.mallocArayeh     = _mallocTypeDouble;
+        self->_privateMethods.reallocArayeh    = _reallocTypeDouble;
+        self->_privateMethods.freeArayeh       = _freeTypeDouble;
+        self->_privateMethods.setMemoryPointer = _setMemoryPointerTypeDouble;
+        self->_privateMethods.addToArayeh      = _addTypeDouble;
+        self->_privateMethods.mergeToArayeh    = _mergeListTypeDouble;
+        self->_privateMethods.getFromArayeh    = _getTypeDouble;
         break;
     default:
         // TODO Error Handler

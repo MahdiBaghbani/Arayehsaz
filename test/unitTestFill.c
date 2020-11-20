@@ -289,7 +289,7 @@ void test_fill_extends_arayeh_add_insert_off_in_settings(void)
     arayeh *testCase = newArayeh(AA_ARAYEH_TYPE_INT, arayehSize);
 
     // set new settings.
-    (testCase->setArayehSettings)(testCase, &newSetting);
+    (testCase->setSettings)(testCase, &newSetting);
 
     // fill all of the empty arayeh with element.
     state = (testCase->fill)(testCase, startIndex, 1, endIndex, &element);
@@ -337,7 +337,7 @@ void test_fill_new_settings_no_extend(void)
     arayeh *testCase = newArayeh(AA_ARAYEH_TYPE_INT, arayehSize);
 
     // set new settings.
-    (testCase->setArayehSettings)(testCase, &newSetting);
+    (testCase->setSettings)(testCase, &newSetting);
 
     // fill all of the empty arayeh with element.
     state = (testCase->fill)(testCase, startIndex, 1, endIndex, &element);

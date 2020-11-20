@@ -170,7 +170,7 @@ void test_add_setting_extension_off(void)
     arayeh *testCase = newArayeh(AA_ARAYEH_TYPE_INT, arayehSize);
 
     // set new settings.
-    (testCase->setArayehSettings)(testCase, &newSetting);
+    (testCase->setSettings)(testCase, &newSetting);
 
     // fill the only empty space.
     state = (testCase->add)(testCase, &element);

@@ -144,7 +144,7 @@ void test_insert_setting_extension_off_error_out_of_range_index(void)
     arayeh *testCase = newArayeh(AA_ARAYEH_TYPE_INT, arayehSize);
 
     // set new settings.
-    (testCase->setArayehSettings)(testCase, &newSetting);
+    (testCase->setSettings)(testCase, &newSetting);
 
     // insert element in index 10 (maximum possible index is 9).
     state = (testCase->insert)(testCase, 10, &element);

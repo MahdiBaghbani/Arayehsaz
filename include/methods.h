@@ -59,7 +59,7 @@ __BEGIN_DECLS
 int _extendArayehSize(arayeh *self, size_t extendSize);
 
 // this function will free the array and reset its parameters.
-int _freeArayehMemory(arayeh **self);
+int _freeMemory(arayeh **self);
 
 // this function will calculate the extension size of memory.
 size_t _defaultGrowthFactor(arayeh *arayeh);
@@ -86,17 +86,17 @@ int _fillArayeh(arayeh *self, size_t startIndex, size_t step, size_t endIndex,
 // this function will merge a default C array (for example int a[4] = {1, 2, 3, 4};)
 // into arayeh, the starting index for merging is "startIndex" and the size of
 // C array determines the last index (in the example above the size of C array is 4).
-int _mergeListToArayeh(arayeh *self, size_t startIndex, size_t listSize, void *list);
+int _mergeToArayeh(arayeh *self, size_t startIndex, size_t listSize, void *array);
 
 // this function copies data in "index" cell of the array to the "destination" memory
 // location.
-int _getElementFromArayeh(arayeh *self, size_t index, void *destination);
+int _getFromArayeh(arayeh *self, size_t index, void *destination);
 
 // this function will override arayeh default settings with new one.
-void _setArayehSettings(arayeh *self, arayehSettings *newSettings);
+void _setSettings(arayeh *self, arayehSettings *newSettings);
 
 // this function will override arayeh extend size default settings with new one.
-void _setArayehExtendSizeSettings(arayeh *self, arayehExtendSizeSettings *newSettings);
+void _setSizeSettings(arayeh *self, arayehSizeSettings *newSettings);
 
 // this function assigns pointers to public functions of an arayeh instance.
 void _setPublicMethods(arayeh *self);

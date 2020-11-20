@@ -121,7 +121,7 @@ typedef struct arayehSettingsStruct {
     char extendSize;
 } arayehSettings;
 
-typedef struct arayehExtendSizeSettingsStruct {
+typedef struct arayehSizeSettingsStruct {
     // allow extending arayeh size when using add method.
     char extendAdd;
     // allow extending arayeh size when using insert method.
@@ -130,7 +130,7 @@ typedef struct arayehExtendSizeSettingsStruct {
     char extendFill;
     // allow extending arayeh size when using merge list method.
     char extendMergeArray;
-} arayehExtendSizeSettings;
+} arayehSizeSettings;
 
 // Arayeh definition.
 typedef struct arayehStruct {
@@ -154,7 +154,7 @@ typedef struct arayehStruct {
         arayehSettings *settings;
 
         // hold setting for extending size of arayeh.
-        arayehExtendSizeSettings *extendSizeSettings;
+        arayehSizeSettings *extendSizeSettings;
     };
 
     // Private properties of arayeh.
@@ -183,7 +183,7 @@ typedef struct arayehStruct {
         arayehSettings *settings;
 
         // hold setting for extending size of arayeh.
-        arayehExtendSizeSettings *extendSizeSettings;
+        arayehSizeSettings *extendSizeSettings;
 
     } _privateProperties;
 
@@ -223,11 +223,10 @@ typedef struct arayehStruct {
         int (*get)(arayeh *self, size_t index, void *destination);
 
         // this function will override arayeh default settings.
-        void (*setArayehSettings)(arayeh *self, arayehSettings *settings);
+        void (*setSettings)(arayeh *self, arayehSettings *settings);
 
         // this function will override arayeh extend size default settings.
-        void (*setArayehExtendSizeSettings)(arayeh *self,
-                                            arayehExtendSizeSettings *settings);
+        void (*setSizeSettings)(arayeh *self, arayehSizeSettings *settings);
     };
 
     // Private methods of arayeh, should not be used by users.
@@ -251,18 +250,18 @@ typedef struct arayehStruct {
 
         // this function assigns the initialized pointer of an array to the arayeh
         // structs pointer.
-        void (*setArayehMemoryPointer)(arayeh *self, arayehType *array);
+        void (*setMemoryPointer)(arayeh *self, arayehType *array);
 
         // this function adds an element of a specific type to the arayeh.
-        void (*addElementToArayeh)(arayeh *self, size_t index, void *element);
+        void (*addToArayeh)(arayeh *self, size_t index, void *element);
 
         // this function merges a C standard array of a specific type into the
         // arayeh of the same type.
-        int (*mergeListToArayeh)(arayeh *self, size_t startIndex, size_t listSize,
-                                 void *list);
+        int (*mergeToArayeh)(arayeh *self, size_t startIndex, size_t listSize,
+                             void *array);
         // this function gets an element from arayeh and places it into a destination
         // memory location provided by caller.
-        void (*getElementFromArayeh)(arayeh *self, size_t index, void *destination);
+        void (*getFromArayeh)(arayeh *self, size_t index, void *destination);
 
     } _privateMethods;
 

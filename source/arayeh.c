@@ -118,7 +118,7 @@ arayeh *newArayeh(size_t type, size_t initialSize)
     }
 
     // set pointers to memory locations.
-    (self->_privateMethods.setArayehMemoryPointer)(self, &arrayPointer);
+    (self->_privateMethods.setMemoryPointer)(self, &arrayPointer);
     self->_privateProperties.map = mapPointer;
 
     // set array parameters.
@@ -140,8 +140,8 @@ arayeh *newArayeh(size_t type, size_t initialSize)
 
     self->_privateProperties.settings = defaultSettings;
 
-    arayehExtendSizeSettings *defaultExtendSizeSettings =
-        (arayehExtendSizeSettings *) malloc(sizeof *defaultExtendSizeSettings);
+    arayehSizeSettings *defaultExtendSizeSettings =
+        (arayehSizeSettings *) malloc(sizeof *defaultExtendSizeSettings);
 
     defaultExtendSizeSettings->extendAdd        = AA_ARAYEH_ON;
     defaultExtendSizeSettings->extendInsert     = AA_ARAYEH_ON;
