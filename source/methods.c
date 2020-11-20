@@ -128,17 +128,6 @@ int _freeArayehMemory(arayeh **self)
      *              or an error code defined in configuration.h .
      */
 
-    // free the arayeh's internal array pointer.
-    ((*self)->_privateMethods.freeArayeh)(*self);
-
-    // free map array pointer and nullify the pointer.
-    free((*self)->_privateProperties.map);
-    (*self)->_privateProperties.map = NULL;
-
-    // free arayeh extension settings and nullify the pointer.
-    free((*self)->_privateProperties.settings);
-    (*self)->_privateProperties.settings = NULL;
-
     // reset arayeh parameters.
     (*self)->type                    = 0;
     (*self)->next                    = 0;
@@ -148,6 +137,21 @@ int _freeArayehMemory(arayeh **self)
     (*self)->_privateProperties.next = 0;
     (*self)->_privateProperties.used = 0;
     (*self)->_privateProperties.size = 0;
+
+    // free the arayeh's internal array pointer.
+    ((*self)->_privateMethods.freeArayeh)(*self);
+
+    // free map array pointer and nullify the pointer.
+    free((*self)->_privateProperties.map);
+    (*self)->_privateProperties.map = NULL;
+
+    // free arayeh settings.
+    free((*self)->_privateProperties.settings);
+    free((*self)->_privateProperties.extendSizeSettings);
+
+    // nullify the pointer.
+    (*self)->_privateProperties.settings           = NULL;
+    (*self)->_privateProperties.extendSizeSettings = NULL;
 
     // free arayeh pointer and nullify the arayeh pointer.
     free(*self);
