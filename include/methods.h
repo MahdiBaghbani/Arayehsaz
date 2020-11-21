@@ -56,7 +56,7 @@
 __BEGIN_DECLS
 
 // this function will reallocate memory to the array and its map.
-int _extendArayehSize(arayeh *self, size_t extendSize);
+int _extendSize(arayeh *self, size_t extendSize);
 
 // this function will free the array and reset its parameters.
 int _freeMemory(arayeh **self);

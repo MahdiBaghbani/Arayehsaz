@@ -36,7 +36,7 @@
 
 #include "../include/methods.h"
 
-int _extendArayehSize(arayeh *self, size_t extendSize)
+int _extendSize(arayeh *self, size_t extendSize)
 {
     /*
      * This function will reallocate memory to the arayeh and its map.
@@ -67,7 +67,7 @@ int _extendArayehSize(arayeh *self, size_t extendSize)
     if (newSize < self->_privateProperties.size) {
         // wrong new size detected.
         // write to stderr and return error code.
-        WARN_NEW_SIZE("_extendArayehSize()", debug);
+        WARN_NEW_SIZE("_extendSize()", debug);
         return AA_ARAYEH_WRONG_NEW_SIZE;
     }
 
@@ -81,7 +81,7 @@ int _extendArayehSize(arayeh *self, size_t extendSize)
 
     // protection for possible overflow in size_t.
     if (state == AA_ARAYEH_FAILURE) {
-        WARN_T_OVERFLOW("_extendArayehSize()", debug);
+        WARN_T_OVERFLOW("_extendSize()", debug);
         return AA_ARAYEH_OVERFLOW;
     }
 
@@ -97,7 +97,7 @@ int _extendArayehSize(arayeh *self, size_t extendSize)
         (self->_privateMethods.freeArayeh)(self);
 
         // write to stderr and return error code.
-        WARN_REALLOC("_extendArayehSize()", debug);
+        WARN_REALLOC("_extendSize()", debug);
         return AA_ARAYEH_REALLOC_DENIED;
     }
 
@@ -805,7 +805,7 @@ void _setPublicMethods(arayeh *self)
      *
      */
 
-    self->extendSize              = _extendArayehSize;
+    self->extendSize              = _extendSize;
     self->freeArayeh              = _freeMemory;
     self->add                     = _addToArayeh;
     self->insert                  = _insertToArayeh;
