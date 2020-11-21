@@ -489,19 +489,11 @@ int _fillArayeh(arayeh *self, size_t startIndex, size_t step, size_t endIndex,
         }
     }
 
-    // TODO how about just using "insert"? since insert also uses "add" method
-    // TODO implicitly.
-    // fill the arayeh.
+    // fill the arayeh using a sequence of insert method.
     for (size_t index = startIndex; index < endIndex; index += step) {
-        // TODO Should check stat inside loop and break once it fails?
-        // if index is less (more) than array.next, use insert function so it
-        // won't affect next pointer, if index is equal to array.next, use add
-        // to also update next pointer.
-        if (index < self->_privateProperties.next ||
-            index > self->_privateProperties.next) {
-            state = (self->insert)(self, index, element);
-        } else {
-            state = (self->add)(self, element);
+        state = (self->insert)(self, index, element);
+        if (state != AA_ARAYEH_SUCCESS) {
+            break;
         }
     }
 
