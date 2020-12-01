@@ -34,12 +34,12 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef __AA_A_ARAYEHINTERNAL_H__
-#define __AA_A_ARAYEHINTERNAL_H__
+#ifndef __AA_A_METHODS_H__
+#define __AA_A_METHODS_H__
 
 #include "arayeh.h"
 #include "fatal.h"
-#include "typeManager.h"
+#include "types.h"
 
 // To ensure that the names declared in this portion of code have C linkage,
 // and thus C++ name mangling is not performed while using this code with C++.
@@ -56,7 +56,7 @@
 __BEGIN_DECLS
 
 // this function will reallocate memory to the array and its map.
-// the reallocation with this function INCREASES size of the arayeh.
+// the reallocation with this function increases size of the arayeh.
 int _extendSize(arayeh *self, size_t extendSize);
 
 // this function will free the array and reset its parameters.
@@ -111,4 +111,4 @@ void _UpdateNextLocationPointer(arayeh *self);
 
 __END_DECLS
 
-#endif    //__AA_A_ARAYEHINTERNAL_H__
+#endif //__AA_A_METHODS_H__

@@ -40,7 +40,7 @@ int _extendSize(arayeh *self, size_t extendSize)
 {
     /*
      * This function will reallocate memory to the arayeh and its map.
-     * The reallocation with this function INCREASES size of the arayeh.
+     * The reallocation with this function increases size of the arayeh.
      *
      * ARGUMENTS:
      * self         pointer to the arayeh object.

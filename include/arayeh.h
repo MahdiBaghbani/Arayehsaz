@@ -190,7 +190,7 @@ typedef struct arayehStruct {
     // Public methods of arayehs, accessible for everyone.
     struct {
         // this function will reallocate memory to the arayeh and its map.
-        // the reallocation with this function INCREASES size of the arayeh.
+        // the reallocation with this function increases size of the arayeh.
         int (*extendSize)(arayeh *self, size_t extendSize);
 
         // this function will free the arayeh and reset its parameters.
@@ -287,4 +287,4 @@ arayeh *newArayeh(size_t type, size_t initialSize);
 
 __END_DECLS
 
-#endif    //__AA_A_ARAYEH_H__
+#endif //__AA_A_ARAYEH_H__

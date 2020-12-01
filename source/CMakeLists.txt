@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
 add_library(arayehsaz
         arayeh.c
         methods.c
-        typeManager.c)
+        types.c)
 
 # set library version, so symlink version and public header.
 set_target_properties(arayehsaz

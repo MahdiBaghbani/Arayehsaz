@@ -104,4 +104,4 @@
 #define WARN_WRONG_STEP(what, allow_print)         WARN("failed in " what, allow_print)
 #define WARN_EXCEED_ARAYEH_SIZE(what, allow_print) WARN("failed in " what, allow_print)
 
-#endif    //__AA_A_FATAL_H__
+#endif //__AA_A_FATAL_H__

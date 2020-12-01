@@ -1,4 +1,4 @@
-/** source/typeManager.c
+/** source/types.c
  *
  * This file is a part of:
  * Azadeh Afzar - Arayehsaz (AA-A).
@@ -34,7 +34,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include "../include/typeManager.h"
+#include "../include/types.h"
 
 /* Overflow happens when the arayeh initial size is bigger than the
  * max allowed size (defined as MAX_SIZE in size_type) divided by the

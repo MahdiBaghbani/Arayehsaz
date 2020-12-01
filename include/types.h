@@ -1,4 +1,4 @@
-/** include/typeManager.h
+/** include/types.h
  *
  * This file is a part of:
  * Azadeh Afzar - Arayehsaz (AA-A).
@@ -34,8 +34,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef __AA_A_ARAYEHTYPEMANAGER_H__
-#define __AA_A_ARAYEHTYPEMANAGER_H__
+#ifndef __AA_A_TYPES_H__
+#define __AA_A_TYPES_H__
 
 #include "arayeh.h"
 
@@ -167,4 +167,4 @@ void _getTypeDouble(arayeh *self, size_t index, void *element);
 
 __END_DECLS
 
-#endif    //__AA_A_ARAYEHTYPEMANAGER_H__
+#endif //__AA_A_TYPES_H__
