@@ -100,17 +100,17 @@ typedef struct arayehStruct arayeh;
 // Supported arayeh types.
 typedef union arayehTypeUnion {
     // pointer to the array of type char.
-    char *pChar;
+    char *charPtr;
     // pointer to the array of type short int.
-    short int *pShortInt;
+    short int *shortIntPtr;
     // pointer to the array of type int.
-    int *pInt;
+    int *intPtr;
     // pointer to the array of type long int.
-    long int *pLongInt;
+    long int *longIntPtr;
     // pointer to the array of type float.
-    float *pFloat;
+    float *floatPtr;
     // pointer to the array of type double.
-    double *pDouble;
+    double *doublePtr;
 } arayehType;
 
 // Arayeh settings.
@@ -190,6 +190,7 @@ typedef struct arayehStruct {
     // Public methods of arayehs, accessible for everyone.
     struct {
         // this function will reallocate memory to the arayeh and its map.
+        // the reallocation with this function INCREASES size of the arayeh.
         int (*extendSize)(arayeh *self, size_t extendSize);
 
         // this function will free the arayeh and reset its parameters.
@@ -216,7 +217,7 @@ typedef struct arayehStruct {
         // (for example int a[4] = {1, 2, 3, 4};) into arayeh, the starting
         // index for merging is "startIndex" and the size of C array determines the
         // last index (in the example above the size of C array is 4).
-        int (*mergeList)(arayeh *self, size_t startIndex, size_t listSize, void *list);
+        int (*mergeArray)(arayeh *self, size_t startIndex, size_t listSize, void *list);
 
         // this function copies data in "index" cell of the arayeh to the
         // "destination" memory location.
@@ -257,8 +258,8 @@ typedef struct arayehStruct {
 
         // this function merges a C standard array of a specific type into the
         // arayeh of the same type.
-        int (*mergeToArayeh)(arayeh *self, size_t startIndex, size_t listSize,
-                             void *array);
+        int (*mergeFromArray)(arayeh *self, size_t startIndex, size_t listSize,
+                              void *array);
         // this function gets an element from arayeh and places it into a destination
         // memory location provided by caller.
         void (*getFromArayeh)(arayeh *self, size_t index, void *destination);

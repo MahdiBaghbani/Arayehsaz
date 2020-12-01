@@ -66,7 +66,7 @@ void test_add(void)
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
 
     // assert element is added.
-    TEST_ASSERT_EQUAL_INT(element, testCase->_privateProperties.array.pInt[0]);
+    TEST_ASSERT_EQUAL_INT(element, testCase->_privateProperties.array.intPtr[0]);
     TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_privateProperties.map[0]);
     TEST_ASSERT_EQUAL_INT(1, testCase->_privateProperties.next);
 
@@ -97,7 +97,7 @@ void test_add_extend(void)
         // assert successful adding.
         TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
         // assert elements are added.
-        TEST_ASSERT_EQUAL_INT(element, testCase->_privateProperties.array.pInt[i]);
+        TEST_ASSERT_EQUAL_INT(element, testCase->_privateProperties.array.intPtr[i]);
         TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_privateProperties.map[i]);
     }
 
@@ -138,7 +138,7 @@ void test_add_extend_alternate_growth_function(void)
         // assert successful adding.
         TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
         // assert elements are added.
-        TEST_ASSERT_EQUAL_INT(element, testCase->_privateProperties.array.pInt[i]);
+        TEST_ASSERT_EQUAL_INT(element, testCase->_privateProperties.array.intPtr[i]);
         TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_privateProperties.map[i]);
     }
 

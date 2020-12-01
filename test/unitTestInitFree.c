@@ -67,12 +67,12 @@ void test_init_free(void)
     TEST_ASSERT_NOT_NULL(typeDouble)
 
     // test arayeh pointers.
-    TEST_ASSERT_NOT_NULL(typeChar->_privateProperties.array.pChar)
-    TEST_ASSERT_NOT_NULL(typeSInt->_privateProperties.array.pShortInt)
-    TEST_ASSERT_NOT_NULL(typeInt->_privateProperties.array.pInt)
-    TEST_ASSERT_NOT_NULL(typeLInt->_privateProperties.array.pLongInt)
-    TEST_ASSERT_NOT_NULL(typeFloat->_privateProperties.array.pFloat)
-    TEST_ASSERT_NOT_NULL(typeDouble->_privateProperties.array.pDouble)
+    TEST_ASSERT_NOT_NULL(typeChar->_privateProperties.array.charPtr)
+    TEST_ASSERT_NOT_NULL(typeSInt->_privateProperties.array.shortIntPtr)
+    TEST_ASSERT_NOT_NULL(typeInt->_privateProperties.array.intPtr)
+    TEST_ASSERT_NOT_NULL(typeLInt->_privateProperties.array.longIntPtr)
+    TEST_ASSERT_NOT_NULL(typeFloat->_privateProperties.array.floatPtr)
+    TEST_ASSERT_NOT_NULL(typeDouble->_privateProperties.array.doublePtr)
 
     // test map pointers.
     TEST_ASSERT_NOT_NULL(typeChar->_privateProperties.map)

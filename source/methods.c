@@ -40,6 +40,7 @@ int _extendSize(arayeh *self, size_t extendSize)
 {
     /*
      * This function will reallocate memory to the arayeh and its map.
+     * The reallocation with this function INCREASES size of the arayeh.
      *
      * ARGUMENTS:
      * self         pointer to the arayeh object.
@@ -501,7 +502,7 @@ int _fillArayeh(arayeh *self, size_t startIndex, size_t step, size_t endIndex,
     return state;
 }
 
-int _mergeToArayeh(arayeh *self, size_t startIndex, size_t listSize, void *array)
+int _mergeFromArray(arayeh *self, size_t startIndex, size_t listSize, void *array)
 {
     /*
      * This function will merge a default C array
@@ -560,7 +561,7 @@ int _mergeToArayeh(arayeh *self, size_t startIndex, size_t listSize, void *array
             // check if startIndex is greater than the arayeh size.
             if (self->_privateProperties.size <= startIndex) {
                 // write to stderr and return error code.
-                WARN_WRONG_INDEX("_mergeToArayeh() function, start index is greater than "
+                WARN_WRONG_INDEX("_mergeFromArray() function, start index is greater than "
                                  "the arayeh size!",
                                  debug);
                 return AA_ARAYEH_WRONG_INDEX;
@@ -571,7 +572,7 @@ int _mergeToArayeh(arayeh *self, size_t startIndex, size_t listSize, void *array
             if (self->_privateProperties.size < endIndex) {
                 // write to stderr and return error code.
                 WARN_EXCEED_ARAYEH_SIZE(
-                    "_mergeToArayeh() function, starting from the specified "
+                    "_mergeFromArray() function, starting from the specified "
                     "index, arayeh doesn't have enough space to merge this array.",
                     debug);
                 return AA_ARAYEH_NOT_ENOUGH_SPACE;
@@ -598,7 +599,7 @@ int _mergeToArayeh(arayeh *self, size_t startIndex, size_t listSize, void *array
                 if (self->_privateProperties.size <= startIndex) {
                     // write to stderr and return error code.
                     WARN_WRONG_INDEX(
-                        "_mergeToArayeh() function, start index is greater than "
+                        "_mergeFromArray() function, start index is greater than "
                         "the arayeh size!",
                         debug);
                     return AA_ARAYEH_WRONG_INDEX;
@@ -609,7 +610,7 @@ int _mergeToArayeh(arayeh *self, size_t startIndex, size_t listSize, void *array
                 if (self->_privateProperties.size < endIndex) {
                     // write to stderr and return error code.
                     WARN_EXCEED_ARAYEH_SIZE(
-                        "_mergeToArayeh() function, starting from the specified "
+                        "_mergeFromArray() function, starting from the specified "
                         "index, arayeh doesn't have enough space to merge this "
                         "array.",
                         debug);
@@ -628,7 +629,7 @@ int _mergeToArayeh(arayeh *self, size_t startIndex, size_t listSize, void *array
     }
 
     // insert C array elements into arayeh.
-    state = (self->_privateMethods.mergeToArayeh)(self, startIndex, listSize, array);
+    state = (self->_privateMethods.mergeFromArray)(self, startIndex, listSize, array);
 
     // return error state code.
     return state;
@@ -802,7 +803,7 @@ void _setPublicMethods(arayeh *self)
     self->add                     = _addToArayeh;
     self->insert                  = _insertToArayeh;
     self->fill                    = _fillArayeh;
-    self->mergeList               = _mergeToArayeh;
+    self->mergeArray              = _mergeFromArray;
     self->get                     = _getFromArayeh;
     self->setSettings             = _setSettings;
     self->setSizeSettings         = _setSizeSettings;
@@ -826,68 +827,68 @@ void _setPrivateMethods(arayeh *self, size_t type)
     // assign based on the arayeh type.
     switch (type) {
     case AA_ARAYEH_TYPE_CHAR:
-        self->_privateMethods.initArayeh       = _initTypeChar;
+        self->_privateMethods.initArayeh       = _initPtrTypeChar;
         self->_privateMethods.mallocArayeh     = _mallocTypeChar;
         self->_privateMethods.reallocArayeh    = _reallocTypeChar;
         self->_privateMethods.freeArayeh       = _freeTypeChar;
-        self->_privateMethods.setMemoryPointer = _setMemoryPointerTypeChar;
+        self->_privateMethods.setMemoryPointer = _setMemPtrTypeChar;
         self->_privateMethods.addToArayeh      = _addTypeChar;
-        self->_privateMethods.mergeToArayeh    = _mergeListTypeChar;
+        self->_privateMethods.mergeFromArray   = _mergeArrayTypeChar;
         self->_privateMethods.getFromArayeh    = _getTypeChar;
         break;
 
     case AA_ARAYEH_TYPE_SINT:
-        self->_privateMethods.initArayeh       = _initTypeSInt;
+        self->_privateMethods.initArayeh       = _initPtrTypeSInt;
         self->_privateMethods.mallocArayeh     = _mallocTypeSInt;
         self->_privateMethods.reallocArayeh    = _reallocTypeSInt;
         self->_privateMethods.freeArayeh       = _freeTypeSInt;
-        self->_privateMethods.setMemoryPointer = _setMemoryPointerTypeSInt;
+        self->_privateMethods.setMemoryPointer = _setMemPtrTypeSInt;
         self->_privateMethods.addToArayeh      = _addTypeSInt;
-        self->_privateMethods.mergeToArayeh    = _mergeListTypeSInt;
+        self->_privateMethods.mergeFromArray   = _mergeArrayTypeSInt;
         self->_privateMethods.getFromArayeh    = _getTypeSInt;
         break;
 
     case AA_ARAYEH_TYPE_INT:
-        self->_privateMethods.initArayeh       = _initTypeInt;
+        self->_privateMethods.initArayeh       = _initPtrTypeInt;
         self->_privateMethods.mallocArayeh     = _mallocTypeInt;
         self->_privateMethods.reallocArayeh    = _reallocTypeInt;
         self->_privateMethods.freeArayeh       = _freeTypeInt;
-        self->_privateMethods.setMemoryPointer = _setMemoryPointerTypeInt;
+        self->_privateMethods.setMemoryPointer = _setMemPtrTypeInt;
         self->_privateMethods.addToArayeh      = _addTypeInt;
-        self->_privateMethods.mergeToArayeh    = _mergeListTypeInt;
+        self->_privateMethods.mergeFromArray   = _mergeArrayTypeInt;
         self->_privateMethods.getFromArayeh    = _getTypeInt;
         break;
 
     case AA_ARAYEH_TYPE_LINT:
-        self->_privateMethods.initArayeh       = _initTypeLInt;
+        self->_privateMethods.initArayeh       = _initPtrTypeLInt;
         self->_privateMethods.mallocArayeh     = _mallocTypeLInt;
         self->_privateMethods.reallocArayeh    = _reallocTypeLInt;
         self->_privateMethods.freeArayeh       = _freeTypeLInt;
-        self->_privateMethods.setMemoryPointer = _setMemoryPointerTypeLInt;
+        self->_privateMethods.setMemoryPointer = _setMemPtrTypeLInt;
         self->_privateMethods.addToArayeh      = _addTypeLInt;
-        self->_privateMethods.mergeToArayeh    = _mergeListTypeLInt;
+        self->_privateMethods.mergeFromArray   = _mergeArrayTypeLInt;
         self->_privateMethods.getFromArayeh    = _getTypeLInt;
         break;
 
     case AA_ARAYEH_TYPE_FLOAT:
-        self->_privateMethods.initArayeh       = _initTypeFloat;
+        self->_privateMethods.initArayeh       = _initPtrTypeFloat;
         self->_privateMethods.mallocArayeh     = _mallocTypeFloat;
         self->_privateMethods.reallocArayeh    = _reallocTypeFloat;
         self->_privateMethods.freeArayeh       = _freeTypeFloat;
-        self->_privateMethods.setMemoryPointer = _setMemoryPointerTypeFloat;
+        self->_privateMethods.setMemoryPointer = _setMemPtrTypeFloat;
         self->_privateMethods.addToArayeh      = _addTypeFloat;
-        self->_privateMethods.mergeToArayeh    = _mergeListTypeFloat;
+        self->_privateMethods.mergeFromArray   = _mergeArrayTypeFloat;
         self->_privateMethods.getFromArayeh    = _getTypeFloat;
         break;
 
     case AA_ARAYEH_TYPE_DOUBLE:
-        self->_privateMethods.initArayeh       = _initTypeDouble;
+        self->_privateMethods.initArayeh       = _initPtrTypeDouble;
         self->_privateMethods.mallocArayeh     = _mallocTypeDouble;
         self->_privateMethods.reallocArayeh    = _reallocTypeDouble;
         self->_privateMethods.freeArayeh       = _freeTypeDouble;
-        self->_privateMethods.setMemoryPointer = _setMemoryPointerTypeDouble;
+        self->_privateMethods.setMemoryPointer = _setMemPtrTypeDouble;
         self->_privateMethods.addToArayeh      = _addTypeDouble;
-        self->_privateMethods.mergeToArayeh    = _mergeListTypeDouble;
+        self->_privateMethods.mergeFromArray   = _mergeArrayTypeDouble;
         self->_privateMethods.getFromArayeh    = _getTypeDouble;
         break;
     default:

@@ -56,6 +56,7 @@
 __BEGIN_DECLS
 
 // this function will reallocate memory to the array and its map.
+// the reallocation with this function INCREASES size of the arayeh.
 int _extendSize(arayeh *self, size_t extendSize);
 
 // this function will free the array and reset its parameters.
@@ -86,7 +87,7 @@ int _fillArayeh(arayeh *self, size_t startIndex, size_t step, size_t endIndex,
 // this function will merge a default C array (for example int a[4] = {1, 2, 3, 4};)
 // into arayeh, the starting index for merging is "startIndex" and the size of
 // C array determines the last index (in the example above the size of C array is 4).
-int _mergeToArayeh(arayeh *self, size_t startIndex, size_t listSize, void *array);
+int _mergeFromArray(arayeh *self, size_t startIndex, size_t listSize, void *array);
 
 // this function copies data in "index" cell of the array to the "destination" memory
 // location.

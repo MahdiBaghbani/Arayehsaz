@@ -69,7 +69,7 @@ void test_fill_all_empty_step_one(void)
 
     // check all slots.
     for (size_t i = 0; i < arayehSize; ++i) {
-        TEST_ASSERT_EQUAL_INT(element, testCase->_privateProperties.array.pInt[i]);
+        TEST_ASSERT_EQUAL_INT(element, testCase->_privateProperties.array.intPtr[i]);
         TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_privateProperties.map[i]);
     }
 
@@ -105,7 +105,7 @@ void test_fill_all_empty_step_two(void)
 
     // check for being filled.
     for (size_t i = 0; i < arayehSize; i += 2) {
-        TEST_ASSERT_EQUAL_INT(element, testCase->_privateProperties.array.pInt[i]);
+        TEST_ASSERT_EQUAL_INT(element, testCase->_privateProperties.array.intPtr[i]);
         TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_privateProperties.map[i]);
     }
 
@@ -149,7 +149,7 @@ void test_fill_existing_arayeh(void)
     // check for existing element before filling arayeh with new element.
     for (size_t i = 0; i < arayehSize; ++i) {
         TEST_ASSERT_EQUAL_INT(existingElement,
-                              testCase->_privateProperties.array.pInt[i]);
+                              testCase->_privateProperties.array.intPtr[i]);
     }
 
     // fill all of the empty arayeh with element.
@@ -160,7 +160,7 @@ void test_fill_existing_arayeh(void)
 
     // check for being filled.
     for (size_t i = 5; i < 10; ++i) {
-        TEST_ASSERT_EQUAL_INT(element, testCase->_privateProperties.array.pInt[i]);
+        TEST_ASSERT_EQUAL_INT(element, testCase->_privateProperties.array.intPtr[i]);
         TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_privateProperties.map[i]);
     }
 
@@ -204,7 +204,7 @@ void test_fill_extends_arayeh(void)
 
     // check all slots.
     for (size_t i = 0; i < endIndex; ++i) {
-        TEST_ASSERT_EQUAL_INT(element, testCase->_privateProperties.array.pInt[i]);
+        TEST_ASSERT_EQUAL_INT(element, testCase->_privateProperties.array.intPtr[i]);
         TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_privateProperties.map[i]);
     }
 
@@ -250,7 +250,7 @@ void test_fill_extends_arayeh_start_bigger_than_size(void)
 
     // check all slots.
     for (size_t i = startIndex; i < endIndex; ++i) {
-        TEST_ASSERT_EQUAL_INT(element, testCase->_privateProperties.array.pInt[i]);
+        TEST_ASSERT_EQUAL_INT(element, testCase->_privateProperties.array.intPtr[i]);
         TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_privateProperties.map[i]);
     }
 
@@ -302,7 +302,7 @@ void test_fill_extends_arayeh_add_insert_off_in_settings(void)
 
     // check all slots.
     for (size_t i = startIndex; i < endIndex; ++i) {
-        TEST_ASSERT_EQUAL_INT(element, testCase->_privateProperties.array.pInt[i]);
+        TEST_ASSERT_EQUAL_INT(element, testCase->_privateProperties.array.intPtr[i]);
         TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_privateProperties.map[i]);
     }
 

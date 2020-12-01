@@ -66,7 +66,7 @@ void test_insert(void)
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
 
     // assert element is inserted in index 0.
-    TEST_ASSERT_EQUAL_INT(element, testCase->_privateProperties.array.pInt[0]);
+    TEST_ASSERT_EQUAL_INT(element, testCase->_privateProperties.array.intPtr[0]);
     TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_privateProperties.map[0]);
     TEST_ASSERT_EQUAL_INT(1, testCase->_privateProperties.next);
 
@@ -77,7 +77,7 @@ void test_insert(void)
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
 
     // assert element is inserted in index 0.
-    TEST_ASSERT_EQUAL_INT(element, testCase->_privateProperties.array.pInt[5]);
+    TEST_ASSERT_EQUAL_INT(element, testCase->_privateProperties.array.intPtr[5]);
     TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_privateProperties.map[5]);
     TEST_ASSERT_EQUAL_INT(1, testCase->_privateProperties.next);
 
@@ -111,7 +111,7 @@ void test_insert_memory_extension(void)
     // assert arayeh size to be greater or equal to 1,000,000 and then assert the
     // element insertion.
     TEST_ASSERT_GREATER_THAN_size_t(index, testCase->_privateProperties.size);
-    TEST_ASSERT_EQUAL_INT(element, testCase->_privateProperties.array.pInt[index]);
+    TEST_ASSERT_EQUAL_INT(element, testCase->_privateProperties.array.intPtr[index]);
     TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_privateProperties.map[index]);
     TEST_ASSERT_EQUAL_INT(0, testCase->_privateProperties.next);
 

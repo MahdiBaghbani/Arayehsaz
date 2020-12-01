@@ -55,17 +55,17 @@ __BEGIN_DECLS
 
 // Initialize arayeh pointer.
 
-int _initTypeChar(arayeh *self, arayehType *array, size_t initialSize);
+int _initPtrTypeChar(arayeh *self, arayehType *array, size_t initialSize);
 
-int _initTypeSInt(arayeh *self, arayehType *array, size_t initialSize);
+int _initPtrTypeSInt(arayeh *self, arayehType *array, size_t initialSize);
 
-int _initTypeInt(arayeh *self, arayehType *array, size_t initialSize);
+int _initPtrTypeInt(arayeh *self, arayehType *array, size_t initialSize);
 
-int _initTypeLInt(arayeh *self, arayehType *array, size_t initialSize);
+int _initPtrTypeLInt(arayeh *self, arayehType *array, size_t initialSize);
 
-int _initTypeFloat(arayeh *self, arayehType *array, size_t initialSize);
+int _initPtrTypeFloat(arayeh *self, arayehType *array, size_t initialSize);
 
-int _initTypeDouble(arayeh *self, arayehType *array, size_t initialSize);
+int _initPtrTypeDouble(arayeh *self, arayehType *array, size_t initialSize);
 
 // Allocate memory for arayeh.
 
@@ -111,17 +111,17 @@ void _freeTypeDouble(arayeh *self);
 
 // Assign the initialized pointer of an array to the arayeh structs pointer.
 
-void _setMemoryPointerTypeChar(arayeh *self, arayehType *array);
+void _setMemPtrTypeChar(arayeh *self, arayehType *array);
 
-void _setMemoryPointerTypeSInt(arayeh *self, arayehType *array);
+void _setMemPtrTypeSInt(arayeh *self, arayehType *array);
 
-void _setMemoryPointerTypeInt(arayeh *self, arayehType *array);
+void _setMemPtrTypeInt(arayeh *self, arayehType *array);
 
-void _setMemoryPointerTypeLInt(arayeh *self, arayehType *array);
+void _setMemPtrTypeLInt(arayeh *self, arayehType *array);
 
-void _setMemoryPointerTypeFloat(arayeh *self, arayehType *array);
+void _setMemPtrTypeFloat(arayeh *self, arayehType *array);
 
-void _setMemoryPointerTypeDouble(arayeh *self, arayehType *array);
+void _setMemPtrTypeDouble(arayeh *self, arayehType *array);
 
 // Add an element of a specific type to the arayeh.
 
@@ -139,17 +139,17 @@ void _addTypeDouble(arayeh *self, size_t index, void *element);
 
 // Merge a C standard array of a specific type into the arayeh.
 
-int _mergeListTypeChar(arayeh *self, size_t startIndex, size_t listSize, void *list);
+int _mergeArrayTypeChar(arayeh *self, size_t startIndex, size_t listSize, void *list);
 
-int _mergeListTypeSInt(arayeh *self, size_t startIndex, size_t listSize, void *list);
+int _mergeArrayTypeSInt(arayeh *self, size_t startIndex, size_t listSize, void *list);
 
-int _mergeListTypeInt(arayeh *self, size_t startIndex, size_t listSize, void *list);
+int _mergeArrayTypeInt(arayeh *self, size_t startIndex, size_t listSize, void *list);
 
-int _mergeListTypeLInt(arayeh *self, size_t startIndex, size_t listSize, void *list);
+int _mergeArrayTypeLInt(arayeh *self, size_t startIndex, size_t listSize, void *list);
 
-int _mergeListTypeFloat(arayeh *self, size_t startIndex, size_t listSize, void *list);
+int _mergeArrayTypeFloat(arayeh *self, size_t startIndex, size_t listSize, void *list);
 
-int _mergeListTypeDouble(arayeh *self, size_t startIndex, size_t listSize, void *list);
+int _mergeArrayTypeDouble(arayeh *self, size_t startIndex, size_t listSize, void *list);
 
 // Get an element from arayeh.
 
