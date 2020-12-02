@@ -75,12 +75,12 @@ int _extendSize(arayeh *self, size_t extendSize)
     }
 
     // initialize variables for allocating memory.
-    char *mapPointer = NULL;
-    arayehType arrayPointer;
+    char *mapPtr = NULL;
+    arayehType arayehPtr;
 
     // this function identifies the right pointer for arayeh type and sets it to
     // point to NULL and also checks for possible overflow in size_t newSize.
-    state = (privateMethods->initArayeh)(self, &arrayPointer, newSize);
+    state = privateMethods->initArayeh(self, &arayehPtr, newSize);
 
     // protection for possible overflow in size_t.
     if (state == AA_ARAYEH_FAILURE) {
@@ -89,14 +89,14 @@ int _extendSize(arayeh *self, size_t extendSize)
     }
 
     // reallocate memory to map and arayeh.
-    mapPointer = (char *) realloc(privateProperties->map, sizeof *mapPointer * newSize);
-    state      = (privateMethods->reallocArayeh)(self, &arrayPointer, newSize);
+    mapPtr = (char *) realloc(privateProperties->map, sizeof *mapPtr * newSize);
+    state  = privateMethods->reallocArayeh(self, &arayehPtr, newSize);
 
     // check if memory re-allocated or not.
-    if (state == AA_ARAYEH_FAILURE || mapPointer == NULL) {
+    if (state == AA_ARAYEH_FAILURE || mapPtr == NULL) {
         // free map and arayeh pointers.
-        free(mapPointer);
-        (privateMethods->freeArayeh)(self);
+        free(mapPtr);
+        privateMethods->freeArayeh(self);
 
         // write to stderr and return error code.
         WARN_REALLOC("_extendSize()", debug);
@@ -105,12 +105,12 @@ int _extendSize(arayeh *self, size_t extendSize)
 
     // set new map elements to '0' [AA_ARAYEH_OFF].
     for (size_t i = privateProperties->size; i < newSize; ++i) {
-        mapPointer[i] = AA_ARAYEH_OFF;
+        mapPtr[i] = AA_ARAYEH_OFF;
     }
 
     // set pointers to memory locations.
-    (privateMethods->setMemoryPointer)(self, &arrayPointer);
-    privateProperties->map = mapPointer;
+    privateMethods->setMemoryPointer(self, &arayehPtr);
+    privateProperties->map = mapPtr;
 
     // update arayeh parameters.
     privateProperties->size = newSize;
@@ -149,7 +149,7 @@ int _freeMemory(arayeh **self)
     privateProperties->size = 0;
 
     // free the arayeh's internal array pointer.
-    (privateMethods->freeArayeh)(*self);
+    privateMethods->freeArayeh(*self);
 
     // free map array pointer and nullify the pointer.
     free(privateProperties->map);
@@ -257,7 +257,7 @@ int _addToArayeh(arayeh *self, void *element)
     }
 
     // add element.
-    (privateMethods->addToArayeh)(self, privateProperties->next, element);
+    privateMethods->addToArayeh(self, privateProperties->next, element);
 
     // update "map".
     privateProperties->map[privateProperties->next] = AA_ARAYEH_ON;
@@ -378,7 +378,7 @@ int _insertToArayeh(arayeh *self, size_t index, void *element)
         // if it was uninitialized, update map and "used" counter.
 
         // assign element.
-        (privateMethods->addToArayeh)(self, index, element);
+        privateMethods->addToArayeh(self, index, element);
 
         // update "map" if it isn't already counted for this index
         // and increase "used" counter.
@@ -648,9 +648,8 @@ int _mergeFromArray(arayeh *self, size_t startIndex, size_t arraySize, void *arr
     }
 
     // insert C array elements into arayeh.
-    state = (privateMethods->mergeFromArray)(self, startIndex, arraySize, array);
-
-    // TODO How should I update size and used parameters?
+    // updating arayeh parameters is delegated to "insert" method.
+    state = privateMethods->mergeFromArray(self, startIndex, arraySize, array);
 
     // return error state code.
     return state;
@@ -684,7 +683,7 @@ int _getFromArayeh(arayeh *self, size_t index, void *destination)
     }
 
     // copy data to destination memory location.
-    (privateMethods->getFromArayeh)(self, index, destination);
+    privateMethods->getFromArayeh(self, index, destination);
 
     // return success code.
     return AA_ARAYEH_SUCCESS;
@@ -786,7 +785,7 @@ void _setGrowthFactorFunction(arayeh *self, size_t (*growthFactor)(arayeh *array
     // shorten names for god's sake.
     struct privateMethods *privateMethods = &self->_privateMethods;
 
-    (privateMethods->growthFactor) = growthFactor;
+    privateMethods->growthFactor = growthFactor;
 }
 
 int _calculateAndExtendSize(arayeh *self)
@@ -811,7 +810,7 @@ int _calculateAndExtendSize(arayeh *self)
     int state;
 
     // calculate the extension memory size using growth factor function.
-    size_t extension_size = (privateMethods->growthFactor)(self);
+    size_t extension_size = privateMethods->growthFactor(self);
 
     // extend arayeh size.
     state = (self->extendSize)(self, extension_size);

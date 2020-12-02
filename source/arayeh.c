@@ -64,6 +64,10 @@ arayeh *newArayeh(size_t type, size_t initialSize)
     // initialize a pointer and allocate memory.
     arayeh *self = (arayeh *) malloc(sizeof *self);
 
+    // shorten names for god's sake.
+    struct privateMethods *privateMethods       = &self->_privateMethods;
+    struct privateProperties *privateProperties = &self->_privateProperties;
+
     // assign public methods.
     _setPublicMethods(self);
 
@@ -71,8 +75,8 @@ arayeh *newArayeh(size_t type, size_t initialSize)
     _setPrivateMethods(self, type);
 
     // initialize variables for allocating memory.
-    char *mapPointer = NULL;
-    arayehType arrayPointer;
+    char *mapPtr = NULL;
+    arayehType arrayPtr;
 
     /* Overflow happens when the arayeh initial size is bigger than the
      * max allowed size (defined as MAX_SIZE in size_type) divided by the
@@ -89,7 +93,7 @@ arayeh *newArayeh(size_t type, size_t initialSize)
 
     // this function identifies the right pointer for array type and sets it to point
     // to NULL and also checks for possible overflow in size_t initialSize.
-    int state = (self->_privateMethods.initArayeh)(self, &arrayPointer, initialSize);
+    int state = privateMethods->initArayeh(self, &arrayPtr, initialSize);
 
     // check for possible size_t overflow.
     if (state == AA_ARAYEH_FAILURE) {
@@ -100,36 +104,36 @@ arayeh *newArayeh(size_t type, size_t initialSize)
     }
 
     // allocate memory to map and array.
-    mapPointer = (char *) malloc(sizeof *mapPointer * initialSize);
-    state      = (self->_privateMethods.mallocArayeh)(self, &arrayPointer, initialSize);
+    mapPtr = (char *) malloc(sizeof *mapPtr * initialSize);
+    state  = privateMethods->mallocArayeh(self, &arrayPtr, initialSize);
 
     // check if memory allocated or not.
-    if (state == AA_ARAYEH_FAILURE || mapPointer == NULL) {
+    if (state == AA_ARAYEH_FAILURE || mapPtr == NULL) {
         // free map, array and self pointers.
-        free(mapPointer);
-        (self->_privateMethods.freeArayeh)(self);
+        free(mapPtr);
+        privateMethods->freeArayeh(self);
         free(self);
         return NULL;
     }
 
     // set all map elements to '0' [AA_ARAYEH_OFF].
     for (size_t i = 0; i < initialSize; ++i) {
-        mapPointer[i] = AA_ARAYEH_OFF;
+        mapPtr[i] = AA_ARAYEH_OFF;
     }
 
     // set pointers to memory locations.
-    (self->_privateMethods.setMemoryPointer)(self, &arrayPointer);
-    self->_privateProperties.map = mapPointer;
+    privateMethods->setMemoryPointer(self, &arrayPtr);
+    privateProperties->map = mapPtr;
 
     // set array parameters.
-    self->type                    = type;
-    self->next                    = 0;
-    self->used                    = 0;
-    self->size                    = initialSize;
-    self->_privateProperties.type = type;
-    self->_privateProperties.next = 0;
-    self->_privateProperties.used = 0;
-    self->_privateProperties.size = initialSize;
+    self->type              = type;
+    self->next              = 0;
+    self->used              = 0;
+    self->size              = initialSize;
+    privateProperties->type = type;
+    privateProperties->next = 0;
+    privateProperties->used = 0;
+    privateProperties->size = initialSize;
 
     // create array default setting holder.
     arayehSettings *defaultSettings = (arayehSettings *) malloc(sizeof *defaultSettings);
@@ -138,7 +142,7 @@ arayeh *newArayeh(size_t type, size_t initialSize)
     defaultSettings->debugMessages = AA_ARAYEH_OFF;
     defaultSettings->extendSize    = AA_ARAYEH_ON;
 
-    self->_privateProperties.settings = defaultSettings;
+    privateProperties->settings = defaultSettings;
 
     arayehSizeSettings *defaultExtendSizeSettings =
         (arayehSizeSettings *) malloc(sizeof *defaultExtendSizeSettings);
@@ -148,7 +152,7 @@ arayeh *newArayeh(size_t type, size_t initialSize)
     defaultExtendSizeSettings->extendFill       = AA_ARAYEH_ON;
     defaultExtendSizeSettings->extendMergeArray = AA_ARAYEH_ON;
 
-    self->_privateProperties.extendSizeSettings = defaultExtendSizeSettings;
+    privateProperties->extendSizeSettings = defaultExtendSizeSettings;
 
     return self;
 }
