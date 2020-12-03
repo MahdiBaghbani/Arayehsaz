@@ -40,15 +40,14 @@
 #include "../include/fatal.h"
 #include "../include/functions.h"
 
-int _extendSize(arayeh *self, size_t extendSize)
+int _resizeMemory(arayeh *self, size_t newSize)
 {
     /*
      * This function will reallocate memory to the arayeh and its map.
-     * The reallocation with this function increases size of the arayeh.
      *
      * ARGUMENTS:
      * self         pointer to the arayeh object.
-     * extendSize   size increment.
+     * newSize      size increment.
      *
      * RETURN:
      * state        a code that indicates successful operation
@@ -67,17 +66,6 @@ int _extendSize(arayeh *self, size_t extendSize)
     // track error state in the function.
     int state;
 
-    // calculate new size for arayeh.
-    size_t newSize = privateProperties->size + extendSize;
-
-    // size_t overflow protection.
-    if (newSize < privateProperties->size) {
-        // wrong new size detected.
-        // write to stderr and return error code.
-        WARN_NEW_SIZE("_extendSize()", debug);
-        return AA_ARAYEH_WRONG_NEW_SIZE;
-    }
-
     // initialize variables for allocating memory.
     char *mapPtr = NULL;
     arayehType arayehPtr;
@@ -88,7 +76,7 @@ int _extendSize(arayeh *self, size_t extendSize)
 
     // protection for possible overflow in size_t.
     if (state == AA_ARAYEH_FAILURE) {
-        WARN_T_OVERFLOW("_extendSize()", debug);
+        WARN_T_OVERFLOW("_resizeMemory()", debug);
         return AA_ARAYEH_OVERFLOW;
     }
 
@@ -103,13 +91,8 @@ int _extendSize(arayeh *self, size_t extendSize)
         privateMethods->freeArayeh(self);
 
         // write to stderr and return error code.
-        WARN_REALLOC("_extendSize()", debug);
+        WARN_REALLOC("_resizeMemory()", debug);
         return AA_ARAYEH_REALLOC_DENIED;
-    }
-
-    // set new map elements to '0' [AA_ARAYEH_OFF].
-    for (size_t i = privateProperties->size; i < newSize; ++i) {
-        mapPtr[i] = AA_ARAYEH_OFF;
     }
 
     // set pointers to memory locations.
@@ -119,6 +102,65 @@ int _extendSize(arayeh *self, size_t extendSize)
     // update arayeh parameters.
     privateProperties->size = newSize;
     self->size              = newSize;
+
+    // return success code.
+    return AA_ARAYEH_SUCCESS;
+}
+
+int _extendSize(arayeh *self, size_t extendSize)
+{
+    /*
+     * This function will reallocate memory to the arayeh and its map.
+     * The reallocation with this function increases size of the arayeh.
+     *
+     * ARGUMENTS:
+     * self         pointer to the arayeh object.
+     * extendSize   size increment.
+     *
+     * RETURN:
+     * state        a code that indicates successful operation
+     *              or an error code defined in configuration.h .
+     *
+     */
+
+    // shorten names for god's sake.
+    struct privateProperties *privateProperties = &self->_privateProperties;
+    char debugMessages = privateProperties->settings->debugMessages;
+
+    // set debug flag.
+    int debug = debugMessages == AA_ARAYEH_ON ? TRUE : FALSE;
+
+    // track error state in the function.
+    int state;
+
+    // store current size as old size for future use.
+    size_t oldSize = privateProperties->size;
+
+    // calculate new size for arayeh.
+    size_t newSize = oldSize + extendSize;
+
+    // size_t overflow protection.
+    if (newSize < oldSize) {
+        // wrong new size detected.
+        // write to stderr and return error code.
+        WARN_NEW_SIZE("_extendSize()", debug);
+        return AA_ARAYEH_WRONG_NEW_SIZE;
+    }
+
+    // resize memory.
+    state = self->resizeMemory(self, newSize);
+
+    // in case of unsuccessful size increase,
+    // abort and return error state code.
+    if (state != AA_ARAYEH_SUCCESS) {
+        return state;
+    }
+
+    // set new map elements to '0' [AA_ARAYEH_OFF].
+    // new elements determined from difference in old size and new size.
+    for (size_t i = oldSize; i < newSize; ++i) {
+        privateProperties->map[i] = AA_ARAYEH_OFF;
+    }
 
     // return success code.
     return AA_ARAYEH_SUCCESS;

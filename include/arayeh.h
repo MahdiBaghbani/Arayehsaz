@@ -99,6 +99,7 @@ typedef struct arayehStruct arayeh;
 
 // Supported arayeh types.
 typedef union arayehTypeUnion {
+
     // pointer to the array of type char.
     char *charPtr;
 
@@ -119,6 +120,7 @@ typedef union arayehTypeUnion {
 } arayehType;
 
 typedef struct arayehSizeSettingsStruct {
+
     // allow extending arayeh size when using add method.
     char extendAdd;
 
@@ -134,6 +136,7 @@ typedef struct arayehSizeSettingsStruct {
 
 // Arayeh settings.
 typedef struct arayehSettingsStruct {
+
     // allow debug messages to be printed on stdout and stderr.
     char debugMessages;
 
@@ -149,6 +152,7 @@ typedef struct arayehStruct {
 
     // Public properties of arayeh.
     struct {
+
         // holds type of arayeh.
         size_t type;
 
@@ -168,6 +172,7 @@ typedef struct arayehStruct {
 
     // Private properties of arayeh.
     struct privateProperties {
+
         // holds type of arayeh.
         size_t type;
 
@@ -195,6 +200,10 @@ typedef struct arayehStruct {
 
     // Public methods of arayehs, accessible for everyone.
     struct {
+
+        // this function will reallocate memory to the arayeh and its map.
+        int (*resizeMemory)(arayeh *self, size_t newSize);
+
         // this function will reallocate memory to the arayeh and its map.
         // the reallocation with this function increases size of the arayeh.
         int (*extendSize)(arayeh *self, size_t extendSize);

@@ -54,6 +54,9 @@
 __BEGIN_DECLS
 
 // this function will reallocate memory to the array and its map.
+int _resizeMemory(arayeh *self, size_t newSize);
+
+// this function will reallocate memory to the array and its map.
 // the reallocation with this function increases size of the arayeh.
 int _extendSize(arayeh *self, size_t extendSize);
 

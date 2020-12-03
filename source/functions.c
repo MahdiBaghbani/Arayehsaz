@@ -66,7 +66,7 @@ int extendMemory(arayeh *self)
     size_t extension_size = privateMethods->growthFactor(self);
 
     // extend arayeh size.
-    state = (self->extendSize)(self, extension_size);
+    state = self->extendSize(self, extension_size);
 
     // return error state.
     return state;
@@ -85,6 +85,7 @@ void setPublicMethods(arayeh *self)
      *
      */
 
+    self->resizeMemory    = _resizeMemory;
     self->extendSize      = _extendSize;
     self->freeArayeh      = _freeMemory;
     self->add             = _addToArayeh;
