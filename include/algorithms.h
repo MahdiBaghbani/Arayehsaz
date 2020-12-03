@@ -1,4 +1,4 @@
-/** include/methods.h
+/** include/algorithms.h
  *
  * This file is a part of:
  * Azadeh Afzar - Arayehsaz (AA-A).
@@ -34,8 +34,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef __AA_A_METHODS_H__
-#define __AA_A_METHODS_H__
+#ifndef __AA_A_ALGORITHMS_H__
+#define __AA_A_ALGORITHMS_H__
 
 #include "arayeh.h"
 
@@ -53,44 +53,13 @@
 
 __BEGIN_DECLS
 
-// this function will reallocate memory to the array and its map.
-// the reallocation with this function increases size of the arayeh.
-int _extendSize(arayeh *self, size_t extendSize);
+// this function will calculate the extension size of memory.
+size_t growthFactorPython(arayeh *arayeh);
 
-// this function will free the array and reset its parameters.
-int _freeMemory(arayeh **self);
-
-// this function will insert an "element" into array at
-// index = self->_privateProperties.next.
-int _addToArayeh(arayeh *self, void *element);
-
-// this function will insert an "element" into array at "index".
-int _insertToArayeh(arayeh *self, size_t index, void *element);
-
-// this function will fill array with an element from index (inclusive)
-// "startIndex" to index (exclusive) "endIndex" with step size "step".
-int _fillArayeh(arayeh *self, size_t startIndex, size_t step, size_t endIndex,
-                void *element);
-
-// this function will merge a default C array (for example int a[4] = {1, 2, 3, 4};)
-// into arayeh, the starting index for merging is "startIndex" and the size of
-// C array determines the last index (in the example above the size of C array is 4).
-int _mergeFromArray(arayeh *self, size_t startIndex, size_t arraySize, void *array);
-
-// this function copies data in "index" cell of the array to the "destination" memory
-// location.
-int _getFromArayeh(arayeh *self, size_t index, void *destination);
-
-// this function will override arayeh default settings with new one.
-void _setSettings(arayeh *self, arayehSettings *newSettings);
-
-// this function will override arayeh extend size default settings with new one.
-void _setSizeSettings(arayeh *self, arayehSizeSettings *newSettings);
-
-// this function will override the arayehs default growth factor function
-// with a new function provided by user.
-void _setGrowthFactor(arayeh *self, size_t (*growthFactor)(arayeh *arayeh));
+// This function purpose is to update array.next variable to point to next
+// empty [available] slot in the array.
+void updateNextIndex(arayeh *self);
 
 __END_DECLS
 
-#endif    //__AA_A_METHODS_H__
+#endif    //__AA_A_ALGORITHMS_H__

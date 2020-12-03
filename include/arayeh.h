@@ -196,11 +196,6 @@ typedef struct arayehStruct {
         // this function will free the arayeh and reset its parameters.
         int (*freeArayeh)(arayeh **self);
 
-        // this function will override the arayehs default growth factor function
-        // with a new function provided by user.
-        void (*setGrowthFactorFunction)(arayeh *self,
-                                        size_t (*growthFactor)(arayeh *self));
-
         // this function will insert an "element" into arayeh at the next empty
         // location in the arayeh. if arayeh is full, it will extend arayeh size.
         int (*add)(arayeh *self, void *element);
@@ -228,6 +223,10 @@ typedef struct arayehStruct {
 
         // this function will override arayeh extend size default settings.
         void (*setSizeSettings)(arayeh *self, arayehSizeSettings *settings);
+
+        // this function will override the arayehs default growth factor function
+        // with a new function provided by user.
+        void (*setGrowthFactor)(arayeh *self, size_t (*growthFactor)(arayeh *self));
     };
 
     // Private methods of arayeh, should not be used by users.
@@ -258,7 +257,7 @@ typedef struct arayehStruct {
 
         // this function merges a C standard array of a specific type into the
         // arayeh of the same type.
-        int (*mergeFromArray)(arayeh *self, size_t startIndex, size_t listSize,
+        int (*mergeFromArray)(arayeh *self, size_t startIndex, size_t arraySize,
                               void *array);
         // this function gets an element from arayeh and places it into a destination
         // memory location provided by caller.

@@ -4,8 +4,10 @@ cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
 # create array shared library.
 add_library(arayehsaz
         arayeh.c
+        types.c
         methods.c
-        types.c)
+        functions.c
+        algorithms.c)
 
 # set library version, so symlink version and public header.
 set_target_properties(arayehsaz

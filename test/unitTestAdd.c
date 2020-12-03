@@ -128,7 +128,7 @@ void test_add_extend_alternate_growth_function(void)
     arayeh *testCase = newArayeh(AA_ARAYEH_TYPE_INT, arayehSize);
 
     // change growth factor.
-    (testCase->setGrowthFactorFunction)(testCase, growthFactorFunction);
+    (testCase->setGrowthFactor)(testCase, growthFactorFunction);
 
     // test adding to arayeh for large amount of additions and see how it
     // dynamically extends memory space.

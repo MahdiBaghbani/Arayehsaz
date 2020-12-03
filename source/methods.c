@@ -36,6 +36,10 @@
 
 #include "../include/methods.h"
 
+#include "../include/algorithms.h"
+#include "../include/fatal.h"
+#include "../include/functions.h"
+
 int _extendSize(arayeh *self, size_t extendSize)
 {
     /*
@@ -214,7 +218,7 @@ int _addToArayeh(arayeh *self, void *element)
         switch (extendSize) {
         case AA_ARAYEH_ON:
             // extend arayeh size.
-            state = _calculateAndExtendSize(self);
+            state = extendMemory(self);
             // stop function and return error value if extending arayeh size failed.
             if (state != AA_ARAYEH_SUCCESS) {
                 return state;
@@ -231,7 +235,7 @@ int _addToArayeh(arayeh *self, void *element)
             switch (extendAdd) {
             case AA_ARAYEH_ON:
                 // extend arayeh size.
-                state = _calculateAndExtendSize(self);
+                state = extendMemory(self);
                 // stop function and return error value if extending arayeh size
                 // failed.
                 if (state != AA_ARAYEH_SUCCESS) {
@@ -267,7 +271,7 @@ int _addToArayeh(arayeh *self, void *element)
     self->used = privateProperties->used;
 
     // update "next" pointer.
-    _UpdateNextLocationPointer(self);
+    updateNextIndex(self);
 
     // return success code.
     return AA_ARAYEH_SUCCESS;
@@ -317,7 +321,7 @@ int _insertToArayeh(arayeh *self, size_t index, void *element)
         case AA_ARAYEH_ON:
             // extend arayeh size until "index" is less than the arayeh size.
             do {
-                state = _calculateAndExtendSize(self);
+                state = extendMemory(self);
                 // stop function and return error value if extending arayeh size
                 // failed.
                 if (state != AA_ARAYEH_SUCCESS) {
@@ -338,7 +342,7 @@ int _insertToArayeh(arayeh *self, size_t index, void *element)
             case AA_ARAYEH_ON:
                 // extend arayeh size until "index" is less than the arayeh size.
                 do {
-                    state = _calculateAndExtendSize(self);
+                    state = extendMemory(self);
                     // stop function and return error value if extending arayeh size
                     // failed.
                     if (state != AA_ARAYEH_SUCCESS) {
@@ -457,7 +461,7 @@ int _fillArayeh(arayeh *self, size_t startIndex, size_t step, size_t endIndex,
             // extend arayeh size until startIndex and endIndex indexes are less than
             // the arayeh size.
             do {
-                state = _calculateAndExtendSize(self);
+                state = extendMemory(self);
                 // stop function and return error value if extending arayeh size
                 // failed.
                 if (state != AA_ARAYEH_SUCCESS) {
@@ -480,7 +484,7 @@ int _fillArayeh(arayeh *self, size_t startIndex, size_t step, size_t endIndex,
                 // extend arayeh size until startIndex and endIndex indexes are less
                 // than the arayeh size.
                 do {
-                    state = _calculateAndExtendSize(self);
+                    state = extendMemory(self);
                     // stop function and return error value if extending arayeh size
                     // failed.
                     if (state != AA_ARAYEH_SUCCESS) {
@@ -566,7 +570,7 @@ int _mergeFromArray(arayeh *self, size_t startIndex, size_t arraySize, void *arr
             // extend arayeh size until startIndex and endIndex indexes are less than
             // the arayeh size.
             do {
-                state = _calculateAndExtendSize(self);
+                state = extendMemory(self);
                 // stop function and return error value if extending arayeh size
                 // failed.
                 if (state != AA_ARAYEH_SUCCESS) {
@@ -604,7 +608,7 @@ int _mergeFromArray(arayeh *self, size_t startIndex, size_t arraySize, void *arr
                 // extend arayeh size until startIndex and endIndex indexes are less
                 // than the arayeh size.
                 do {
-                    state = _calculateAndExtendSize(self);
+                    state = extendMemory(self);
                     // stop function and return error value if extending arayeh size
                     // failed.
                     if (state != AA_ARAYEH_SUCCESS) {
@@ -735,40 +739,7 @@ void _setSizeSettings(arayeh *self, arayehSizeSettings *newSettings)
     settings->extendMergeArray = newSettings->extendMergeArray;
 }
 
-size_t _defaultGrowthFactor(arayeh *arayeh)
-{
-    /*
-     * This function will calculate the extension size of memory.
-     *
-     * This is the default function to calculate memory growth size,
-     * users can use their appropriate functions and ignore this.
-     *
-     * ARGUMENTS:
-     * self             pointer to the arayeh object.
-     *
-     * RETURN:
-     * extension_size   the size of extra memory space to be
-     *                  added to the current memory space.
-     *
-     */
-
-    // shorten names for god's sake.
-    struct privateProperties *privateProperties = &arayeh->_privateProperties;
-
-    // derived from python source code.
-    // calculate the extension size of memory.
-    // This over-allocates proportional to the ARAYEH size,
-    // making room for additional growth. The over-allocation is mild,
-    // but is enough to give linear-time amortized behavior over a long
-    // sequence of adding elements to arayeh in the presence of
-    // a poorly-performing system realloc().
-    // The growth pattern is:  0, 4, 8, 16, 25, 35, 46, 58, 72, 88, ...
-    size_t current_size   = privateProperties->size;
-    size_t extension_size = (current_size >> 3) + (current_size < 9 ? 3 : 6);
-    return extension_size;
-}
-
-void _setGrowthFactorFunction(arayeh *self, size_t (*growthFactor)(arayeh *array))
+void _setGrowthFactor(arayeh *self, size_t (*growthFactor)(arayeh *array))
 {
     /*
      * This function will override the arayehs default growth factor function
@@ -786,170 +757,4 @@ void _setGrowthFactorFunction(arayeh *self, size_t (*growthFactor)(arayeh *array
     struct privateMethods *privateMethods = &self->_privateMethods;
 
     privateMethods->growthFactor = growthFactor;
-}
-
-int _calculateAndExtendSize(arayeh *self)
-{
-    /*
-     * This function will calculate the extension size of memory and extends arayeh
-     * size.
-     *
-     * ARGUMENTS:
-     * self             pointer to the arayeh object.
-     *
-     * RETURN:
-     * state        a code that indicates successful operation
-     *              or an error code defined in configuration.h .
-     *
-     */
-
-    // shorten names for god's sake.
-    struct privateMethods *privateMethods = &self->_privateMethods;
-
-    // track error state in the function.
-    int state;
-
-    // calculate the extension memory size using growth factor function.
-    size_t extension_size = privateMethods->growthFactor(self);
-
-    // extend arayeh size.
-    state = (self->extendSize)(self, extension_size);
-
-    // return error state.
-    return state;
-}
-
-void _setPublicMethods(arayeh *self)
-{
-    /*
-     * This function assigns pointers to public functions of an arayeh instance.
-     *
-     * ARGUMENTS:
-     * self         pointer to the arayeh object.
-     *
-     */
-
-    self->extendSize              = _extendSize;
-    self->freeArayeh              = _freeMemory;
-    self->add                     = _addToArayeh;
-    self->insert                  = _insertToArayeh;
-    self->fill                    = _fillArayeh;
-    self->mergeArray              = _mergeFromArray;
-    self->get                     = _getFromArayeh;
-    self->setSettings             = _setSettings;
-    self->setSizeSettings         = _setSizeSettings;
-    self->setGrowthFactorFunction = _setGrowthFactorFunction;
-}
-
-void _setPrivateMethods(arayeh *self, size_t type)
-{
-    /*
-     * This function assigns pointers to public functions of an arayeh instance.
-     *
-     * ARGUMENTS:
-     * self         pointer to the arayeh object.
-     * type         type of arayeh elements.
-     *
-     */
-
-    // shorten names for god's sake.
-    struct privateMethods *privateMethods = &self->_privateMethods;
-
-    // set memory space growth factor function to default.
-    privateMethods->growthFactor = _defaultGrowthFactor;
-
-    // assign based on the arayeh type.
-    switch (type) {
-    case AA_ARAYEH_TYPE_CHAR:
-        privateMethods->initArayeh       = _initPtrTypeChar;
-        privateMethods->mallocArayeh     = _mallocTypeChar;
-        privateMethods->reallocArayeh    = _reallocTypeChar;
-        privateMethods->freeArayeh       = _freeTypeChar;
-        privateMethods->setMemoryPointer = _setMemPtrTypeChar;
-        privateMethods->addToArayeh      = _addTypeChar;
-        privateMethods->mergeFromArray   = _mergeArrayTypeChar;
-        privateMethods->getFromArayeh    = _getTypeChar;
-        break;
-
-    case AA_ARAYEH_TYPE_SINT:
-        privateMethods->initArayeh       = _initPtrTypeSInt;
-        privateMethods->mallocArayeh     = _mallocTypeSInt;
-        privateMethods->reallocArayeh    = _reallocTypeSInt;
-        privateMethods->freeArayeh       = _freeTypeSInt;
-        privateMethods->setMemoryPointer = _setMemPtrTypeSInt;
-        privateMethods->addToArayeh      = _addTypeSInt;
-        privateMethods->mergeFromArray   = _mergeArrayTypeSInt;
-        privateMethods->getFromArayeh    = _getTypeSInt;
-        break;
-
-    case AA_ARAYEH_TYPE_INT:
-        privateMethods->initArayeh       = _initPtrTypeInt;
-        privateMethods->mallocArayeh     = _mallocTypeInt;
-        privateMethods->reallocArayeh    = _reallocTypeInt;
-        privateMethods->freeArayeh       = _freeTypeInt;
-        privateMethods->setMemoryPointer = _setMemPtrTypeInt;
-        privateMethods->addToArayeh      = _addTypeInt;
-        privateMethods->mergeFromArray   = _mergeArrayTypeInt;
-        privateMethods->getFromArayeh    = _getTypeInt;
-        break;
-
-    case AA_ARAYEH_TYPE_LINT:
-        privateMethods->initArayeh       = _initPtrTypeLInt;
-        privateMethods->mallocArayeh     = _mallocTypeLInt;
-        privateMethods->reallocArayeh    = _reallocTypeLInt;
-        privateMethods->freeArayeh       = _freeTypeLInt;
-        privateMethods->setMemoryPointer = _setMemPtrTypeLInt;
-        privateMethods->addToArayeh      = _addTypeLInt;
-        privateMethods->mergeFromArray   = _mergeArrayTypeLInt;
-        privateMethods->getFromArayeh    = _getTypeLInt;
-        break;
-
-    case AA_ARAYEH_TYPE_FLOAT:
-        privateMethods->initArayeh       = _initPtrTypeFloat;
-        privateMethods->mallocArayeh     = _mallocTypeFloat;
-        privateMethods->reallocArayeh    = _reallocTypeFloat;
-        privateMethods->freeArayeh       = _freeTypeFloat;
-        privateMethods->setMemoryPointer = _setMemPtrTypeFloat;
-        privateMethods->addToArayeh      = _addTypeFloat;
-        privateMethods->mergeFromArray   = _mergeArrayTypeFloat;
-        privateMethods->getFromArayeh    = _getTypeFloat;
-        break;
-
-    case AA_ARAYEH_TYPE_DOUBLE:
-        privateMethods->initArayeh       = _initPtrTypeDouble;
-        privateMethods->mallocArayeh     = _mallocTypeDouble;
-        privateMethods->reallocArayeh    = _reallocTypeDouble;
-        privateMethods->freeArayeh       = _freeTypeDouble;
-        privateMethods->setMemoryPointer = _setMemPtrTypeDouble;
-        privateMethods->addToArayeh      = _addTypeDouble;
-        privateMethods->mergeFromArray   = _mergeArrayTypeDouble;
-        privateMethods->getFromArayeh    = _getTypeDouble;
-        break;
-    default:
-        // TODO Error Handler
-        break;
-    }
-}
-
-void _UpdateNextLocationPointer(arayeh *self)
-{
-    /*
-     * This function purpose is to update
-     * array.next variable to point to next empty [available]
-     * slot in the arayeh.
-     *
-     * ARGUMENTS:
-     * self         pointer to the arayeh object.
-     */
-
-    // shorten names for god's sake.
-    struct privateProperties *privateProperties = &self->_privateProperties;
-
-    while (privateProperties->next < privateProperties->size &&
-           privateProperties->map[privateProperties->next] == AA_ARAYEH_ON) {
-        privateProperties->next++;
-    }
-
-    // update public next property.
-    self->next = privateProperties->next;
 }

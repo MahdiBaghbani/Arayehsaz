@@ -41,9 +41,6 @@
 #ifndef __AA_A_FATAL_H__
 #define __AA_A_FATAL_H__
 
-// this macro will be used to turn off warnings during tests.
-#define ALLOW_PRINT 1
-
 // macros for extracting line number from error code.
 #define STRINGIFYX(x) #x
 #define STRINGIFY(x)  STRINGIFYX(x)
@@ -96,6 +93,8 @@
     WARN("low memory? realloc() failed in " what, allow_print)
 #define WARN_STRDUP(what, allow_print) \
     WARN("low memory? strdup() failed in " what, allow_print)
+#define WARN_WRONG_TYPE(what, allow_print) \
+    WARN("wrong arayeh type? failed in " what, allow_print)
 #define WARN_T_OVERFLOW(what, allow_print) \
     WARN("possible size_t overflow, failed in " what, allow_print)
 #define WARN_NEW_SIZE(what, allow_print) \
@@ -104,4 +103,4 @@
 #define WARN_WRONG_STEP(what, allow_print)         WARN("failed in " what, allow_print)
 #define WARN_EXCEED_ARAYEH_SIZE(what, allow_print) WARN("failed in " what, allow_print)
 
-#endif //__AA_A_FATAL_H__
+#endif    //__AA_A_FATAL_H__

@@ -35,7 +35,9 @@
  */
 
 #include "../include/arayeh.h"
-#include "../include/methods.h"
+
+#include "../include/fatal.h"
+#include "../include/functions.h"
 
 arayeh *newArayeh(size_t type, size_t initialSize)
 {
@@ -69,10 +71,10 @@ arayeh *newArayeh(size_t type, size_t initialSize)
     struct privateProperties *privateProperties = &self->_privateProperties;
 
     // assign public methods.
-    _setPublicMethods(self);
+    setPublicMethods(self);
 
     // assign private methods based on array type.
-    _setPrivateMethods(self, type);
+    setPrivateMethods(self, type);
 
     // initialize variables for allocating memory.
     char *mapPtr = NULL;
