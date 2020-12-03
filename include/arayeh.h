@@ -80,9 +80,9 @@
 #define AA_ARAYEH_WRONG_STEP       8
 
 // map characters.
-#define AA_ARAYEH_OFF             '0'
-#define AA_ARAYEH_ON              '1'
-#define AA_ARAYEH_MANUAL_SETTINGS '3'
+#define AA_ARAYEH_OFF    '0'
+#define AA_ARAYEH_ON     '1'
+#define AA_ARAYEH_MANUAL '3'
 
 // arayeh types.
 #define AA_ARAYEH_TYPE_CHAR   1

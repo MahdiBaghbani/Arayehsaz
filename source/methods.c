@@ -277,7 +277,7 @@ int _addToArayeh(arayeh *self, void *element)
             return AA_ARAYEH_NOT_ENOUGH_SPACE;
             break;
         // if manual is enabled, check against the correct extend size rule.
-        case AA_ARAYEH_MANUAL_SETTINGS:
+        case AA_ARAYEH_MANUAL:
             switch (extendAdd) {
             case AA_ARAYEH_ON:
                 // extend arayeh size.
@@ -383,7 +383,7 @@ int _insertToArayeh(arayeh *self, size_t index, void *element)
             return AA_ARAYEH_WRONG_INDEX;
             break;
             // if manual is enabled, check against the correct extend size rule.
-        case AA_ARAYEH_MANUAL_SETTINGS:
+        case AA_ARAYEH_MANUAL:
             switch (extendInsert) {
             case AA_ARAYEH_ON:
                 // extend arayeh size until "index" is less than the arayeh size.
@@ -524,7 +524,7 @@ int _fillArayeh(arayeh *self, size_t startIndex, size_t step, size_t endIndex,
             return AA_ARAYEH_WRONG_INDEX;
             break;
             // if manual is enabled, check against the correct extend size rule.
-        case AA_ARAYEH_MANUAL_SETTINGS:
+        case AA_ARAYEH_MANUAL:
             switch (extendFill) {
             case AA_ARAYEH_ON:
                 // extend arayeh size until startIndex and endIndex indexes are less
@@ -648,7 +648,7 @@ int _mergeFromArray(arayeh *self, size_t startIndex, size_t arraySize, void *arr
             }
             break;
             // if manual is enabled, check against the correct extend size rule.
-        case AA_ARAYEH_MANUAL_SETTINGS:
+        case AA_ARAYEH_MANUAL:
             switch (extendMergeArray) {
             case AA_ARAYEH_ON:
                 // extend arayeh size until startIndex and endIndex indexes are less
