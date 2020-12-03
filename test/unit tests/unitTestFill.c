@@ -59,7 +59,7 @@ void test_fill_all_empty_step_one(void)
     int element = 5;
 
     // create new arayeh.
-    arayeh *testCase = newArayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+    arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
 
     // fill all of the empty arayeh with element.
     state = (testCase->fill)(testCase, 0, 1, arayehSize, &element);
@@ -95,7 +95,7 @@ void test_fill_all_empty_step_two(void)
     int element = 5;
 
     // create new arayeh.
-    arayeh *testCase = newArayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+    arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
 
     // fill all of the empty arayeh with element.
     state = (testCase->fill)(testCase, 0, 2, arayehSize, &element);
@@ -137,7 +137,7 @@ void test_fill_existing_arayeh(void)
     int element         = 5;
 
     // create new arayeh.
-    arayeh *testCase = newArayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+    arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
 
     // add pre-filling arayeh with data.
     for (size_t i = 0; i < arayehSize; ++i) {
@@ -191,7 +191,7 @@ void test_fill_extends_arayeh(void)
     int element = 5;
 
     // create new arayeh.
-    arayeh *testCase = newArayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+    arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
 
     // fill all of the empty arayeh with element.
     state = (testCase->fill)(testCase, 0, 1, endIndex, &element);
@@ -237,7 +237,7 @@ void test_fill_extends_arayeh_start_bigger_than_size(void)
     int element = 5;
 
     // create new arayeh.
-    arayeh *testCase = newArayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+    arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
 
     // fill all of the empty arayeh with element.
     state = (testCase->fill)(testCase, startIndex, 1, endIndex, &element);
@@ -286,7 +286,7 @@ void test_fill_extends_arayeh_add_insert_off_in_settings(void)
     arayehSettings newSetting = {AA_ARAYEH_OFF, AA_ARAYEH_OFF};
 
     // create new arayeh.
-    arayeh *testCase = newArayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+    arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
 
     // set new settings.
     (testCase->setSettings)(testCase, &newSetting);
@@ -334,7 +334,7 @@ void test_fill_new_settings_no_extend(void)
     arayehSettings newSetting = {AA_ARAYEH_OFF, AA_ARAYEH_OFF};
 
     // create new arayeh.
-    arayeh *testCase = newArayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+    arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
 
     // set new settings.
     (testCase->setSettings)(testCase, &newSetting);
@@ -364,7 +364,7 @@ void test_fill_error_bad_starting_point(void)
     int element = 5;
 
     // create new arayeh.
-    arayeh *testCase = newArayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+    arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
 
     // fill with negative starting point.
     state = (testCase->fill)(testCase, -5, 1, 5, &element);
@@ -396,7 +396,7 @@ void test_fill_error_wrong_step(void)
     int element = 5;
 
     // create new arayeh.
-    arayeh *testCase = newArayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+    arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
 
     // fill all of the empty arayeh with element.
     state = (testCase->fill)(testCase, 0, 0, arayehSize, &element);

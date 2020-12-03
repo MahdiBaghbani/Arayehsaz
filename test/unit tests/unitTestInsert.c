@@ -57,7 +57,7 @@ void test_insert(void)
     int element       = 5;
 
     // create new arayeh.
-    arayeh *testCase = newArayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+    arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
 
     // insert element.
     state = (testCase->insert)(testCase, 0, &element);
@@ -99,7 +99,7 @@ void test_insert_memory_extension(void)
     size_t index      = 1000000;
 
     // create new arayeh.
-    arayeh *testCase = newArayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+    arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
 
     // insert element at index 1,000,000. arayeh should be extended to the size of 1
     // million or bigger to do this insertion.
@@ -141,7 +141,7 @@ void test_insert_setting_extension_off_error_out_of_range_index(void)
     arayehSettings newSetting = {AA_ARAYEH_OFF, AA_ARAYEH_OFF};
 
     // create new arayeh.
-    arayeh *testCase = newArayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+    arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
 
     // set new settings.
     (testCase->setSettings)(testCase, &newSetting);

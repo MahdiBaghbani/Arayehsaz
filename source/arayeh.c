@@ -39,7 +39,7 @@
 #include "../include/fatal.h"
 #include "../include/functions.h"
 
-arayeh *newArayeh(size_t type, size_t initialSize)
+arayeh *Arayeh(size_t type, size_t initialSize)
 {
     /*
      * This function will create an array of type "type"
@@ -60,7 +60,7 @@ arayeh *newArayeh(size_t type, size_t initialSize)
     // check array type.
     if (type < AA_ARAYEH_TYPE_CHAR || AA_ARAYEH_TYPE_DOUBLE < type) {
         // wrong array type.
-        FATAL_WRONG_TYPE("newArayeh", TRUE);
+        FATAL_WRONG_TYPE("Arayeh()", TRUE);
     }
 
     // initialize a pointer and allocate memory.
@@ -102,7 +102,7 @@ arayeh *newArayeh(size_t type, size_t initialSize)
         // free self.
         free(self);
         // overflow detected.
-        FATAL_OVERFLOW("newArayeh", TRUE);
+        FATAL_OVERFLOW("Arayeh()", TRUE);
     }
 
     // allocate memory to map and array.

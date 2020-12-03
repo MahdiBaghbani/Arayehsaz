@@ -51,12 +51,12 @@ void test_init_free(void)
     size_t arayehSize = 100;
 
     // create new arayehs.
-    arayeh *typeChar   = newArayeh(AA_ARAYEH_TYPE_CHAR, arayehSize);
-    arayeh *typeSInt   = newArayeh(AA_ARAYEH_TYPE_SINT, arayehSize);
-    arayeh *typeInt    = newArayeh(AA_ARAYEH_TYPE_INT, arayehSize);
-    arayeh *typeLInt   = newArayeh(AA_ARAYEH_TYPE_LINT, arayehSize);
-    arayeh *typeFloat  = newArayeh(AA_ARAYEH_TYPE_FLOAT, arayehSize);
-    arayeh *typeDouble = newArayeh(AA_ARAYEH_TYPE_DOUBLE, arayehSize);
+    arayeh *typeChar   = Arayeh(AA_ARAYEH_TYPE_CHAR, arayehSize);
+    arayeh *typeSInt   = Arayeh(AA_ARAYEH_TYPE_SINT, arayehSize);
+    arayeh *typeInt    = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+    arayeh *typeLInt   = Arayeh(AA_ARAYEH_TYPE_LINT, arayehSize);
+    arayeh *typeFloat  = Arayeh(AA_ARAYEH_TYPE_FLOAT, arayehSize);
+    arayeh *typeDouble = Arayeh(AA_ARAYEH_TYPE_DOUBLE, arayehSize);
 
     // test arayeh pointers aren't null.
     TEST_ASSERT_NOT_NULL(typeChar)
