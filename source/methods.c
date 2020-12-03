@@ -759,7 +759,6 @@ void _setSettings(arayeh *self, arayehSettings *newSettings)
     // override new settings.
     settings->debugMessages = newSettings->debugMessages;
     settings->extendSize    = newSettings->extendSize;
-    settings->methodSize    = newSettings->methodSize;
 }
 
 void _setSizeSettings(arayeh *self, arayehSizeSettings *newSettings)
