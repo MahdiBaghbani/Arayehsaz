@@ -284,17 +284,17 @@ typedef struct arayehStruct {
 
 arayeh *Arayeh(size_t type, size_t initialSize);
 /*
- * This function will create an array of type "type"
+ * This function will create an arayeh of type "type"
  * (one the supported types defined in configuration.h)
  * and size of "initialSize" if it's possible
  * (you have enough memory and right to allocate that memory).
  *
  * ARGUMENTS:
- * initialSize  size of array.
- * type         type of array elements.
+ * initialSize  size of arayeh.
+ * type         type of arayeh elements.
  *
  * RETURN:
- * A pointer to the initialized array.
+ * A pointer to the initialized arayeh.
  * or
  * return NULL in case of error.
  */

@@ -42,24 +42,24 @@
 arayeh *Arayeh(size_t type, size_t initialSize)
 {
     /*
-     * This function will create an array of type "type"
+     * This function will create an arayeh of type "type"
      * (one the supported types defined in configuration.h)
      * and size of "initialSize" if it's possible
      * (you have enough memory and right to allocate that memory).
      *
      * ARGUMENTS:
-     * initialSize  size of array.
-     * type         type of array elements.
+     * initialSize  size of arayeh.
+     * type         type of arayeh elements.
      *
      * RETURN:
-     * A pointer to the initialized array.
+     * A pointer to the initialized arayeh.
      * or
      * return NULL in case of error.
      */
 
-    // check array type.
+    // check arayeh type.
     if (type < AA_ARAYEH_TYPE_CHAR || AA_ARAYEH_TYPE_DOUBLE < type) {
-        // wrong array type.
+        // wrong arayeh type.
         FATAL_WRONG_TYPE("Arayeh()", TRUE);
     }
 
@@ -73,7 +73,7 @@ arayeh *Arayeh(size_t type, size_t initialSize)
     // assign public methods.
     setPublicMethods(self);
 
-    // assign private methods based on array type.
+    // assign private methods based on arayeh type.
     setPrivateMethods(self, type);
 
     // initialize variables for allocating memory.
@@ -85,7 +85,7 @@ arayeh *Arayeh(size_t type, size_t initialSize)
      * length of desired data type.
      *
      * for example MAX_SIZE in my machine is 18446744073709551615 and length of
-     * an int data type is 4, so if array initial size is bigger than
+     * an int data type is 4, so if arayeh initial size is bigger than
      * 18446744073709551615 / 4 = 4611686018427387904, then an overflow occurs.
      *
      * the formula to determine if overflow happens or not is defined below:
@@ -93,7 +93,7 @@ arayeh *Arayeh(size_t type, size_t initialSize)
      *
      */
 
-    // this function identifies the right pointer for array type and sets it to point
+    // this function identifies the right pointer for arayeh type and sets it to point
     // to NULL and also checks for possible overflow in size_t initialSize.
     int state = privateMethods->initArayeh(self, &arrayPtr, initialSize);
 
@@ -127,7 +127,7 @@ arayeh *Arayeh(size_t type, size_t initialSize)
     privateMethods->setMemoryPointer(self, &arrayPtr);
     privateProperties->map = mapPtr;
 
-    // set array parameters.
+    // set arayeh parameters.
     self->type              = type;
     self->next              = 0;
     self->used              = 0;
@@ -137,7 +137,7 @@ arayeh *Arayeh(size_t type, size_t initialSize)
     privateProperties->used = 0;
     privateProperties->size = initialSize;
 
-    // create array default setting holder.
+    // create arayeh default setting holder.
     arayehSettings *defaultSettings = (arayehSettings *) malloc(sizeof *defaultSettings);
 
     // set default setting.
