@@ -34,8 +34,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include "../include/arayeh.h"
-#include "unity test framework/unity.h"
+#include "../../include/arayeh.h"
+#include "unity.h"
 
 void setUp(void)
 {
