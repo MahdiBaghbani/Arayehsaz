@@ -47,7 +47,7 @@ void tearDown(void)
 
 void test_add(void)
 {
-    // This Test is here to ensure that test works as expected.
+    // Test that add method works as expected.
 
     // define error state variable.
     int state;
@@ -77,10 +77,11 @@ void test_add(void)
     testCase->freeArayeh(&testCase);
 }
 
-void test_add_extend_size(void)
+void test_default_settings_add_extends_size(void)
 {
-    // Ensure arayeh extends its memory space
-    // when it lacks memory to add new item.
+    // Test arayeh extends its memory space
+    // when it lacks memory to add new item
+    // with default settings.
 
     // define error state variable.
     int state;
@@ -121,7 +122,7 @@ size_t growthFactorFunction(arayeh *array)
 
 void test_add_extend_size_alternate_growth_function(void)
 {
-    // Testing using of an alternative growth function instead of default one.
+    // Test usage of an alternative growth function instead of default one.
 
     // define error state variable.
     int state;
@@ -162,7 +163,7 @@ void test_add_extend_size_alternate_growth_function(void)
 
 void test_general_size_extension_OFF(void)
 {
-    // Ensure arayeh doesn't extend its memory space
+    // Test arayeh doesn't extend its memory space
     // when general memory extension is set to OFF.
 
     // define error state variable.
@@ -200,7 +201,7 @@ void test_general_size_extension_OFF(void)
 
 void test_general_size_extension_MANUAL(void)
 {
-    // Ensure arayeh extend its memory space
+    // Test arayeh extend its memory space
     // when general memory extension is set to MANUAL
     // and arayeh will refer to method specific rules
     // for extending its memory size and the default
@@ -241,7 +242,7 @@ void test_general_size_extension_MANUAL(void)
 
 void test_general_ON_method_specific_add_extension_OFF(void)
 {
-    // Ensure arayeh extend its memory space
+    // Test arayeh extend its memory space
     // when general extension rule is set to ON and
     // the method specific rule for add is set to OFF
     // in settings, this means that general rule has
@@ -284,7 +285,7 @@ void test_general_ON_method_specific_add_extension_OFF(void)
 
 void test_general_MANUAL_method_specific_add_extension_OFF(void)
 {
-    // Ensure arayeh doesn't extend its memory space
+    // Test arayeh doesn't extend its memory space
     // when general extension rule is set to MANUAL and
     // the method specific rule for add is set to OFF.
 
@@ -335,7 +336,7 @@ int main(void)
     UnityBegin("unitTest_4_Add.c");
 
     RUN_TEST(test_add);
-    RUN_TEST(test_add_extend_size);
+    RUN_TEST(test_default_settings_add_extends_size);
     RUN_TEST(test_add_extend_size_alternate_growth_function);
     RUN_TEST(test_general_size_extension_OFF);
     RUN_TEST(test_general_size_extension_MANUAL);
