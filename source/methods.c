@@ -431,7 +431,7 @@ int _fillArayeh(arayeh *self, size_t startIndex, size_t step, size_t endIndex,
     // shorten names for god's sake.
     struct privateProperties *privateProperties = &self->_privateProperties;
     char debugMessages = privateProperties->settings->debugMessages;
-    char extendSize    = self->_privateProperties.settings->extendSize;
+    char extendSize    = privateProperties->settings->extendSize;
     char extendFill    = privateProperties->settings->methodSize->extendFill;
 
     // set debug flag.
@@ -554,7 +554,7 @@ int _mergeFromArray(arayeh *self, size_t startIndex, size_t arraySize, void *arr
     struct privateMethods *privateMethods       = &self->_privateMethods;
     struct privateProperties *privateProperties = &self->_privateProperties;
     char debugMessages    = privateProperties->settings->debugMessages;
-    char extendSize       = self->_privateProperties.settings->extendSize;
+    char extendSize       = privateProperties->settings->extendSize;
     char extendMergeArray = privateProperties->settings->methodSize->extendMergeArray;
 
     // set debug flag.
