@@ -159,13 +159,17 @@ int _freeMemory(arayeh **self)
     free(privateProperties->map);
     privateProperties->map = NULL;
 
-    // free arayeh settings.
-    free(privateProperties->settings);
-    free(privateProperties->extendSizeSettings);
+    // free arayeh method specific size settings.
+    free(privateProperties->settings->methodSize);
 
     // nullify the pointer.
-    privateProperties->settings           = NULL;
-    privateProperties->extendSizeSettings = NULL;
+    privateProperties->settings->methodSize = NULL;
+
+    // free arayeh settings.
+    free(privateProperties->settings);
+
+    // nullify the pointer.
+    privateProperties->settings = NULL;
 
     // free arayeh pointer and nullify the arayeh pointer.
     free(*self);
@@ -204,7 +208,7 @@ int _addToArayeh(arayeh *self, void *element)
     struct privateProperties *privateProperties = &self->_privateProperties;
     char debugMessages = privateProperties->settings->debugMessages;
     char extendSize    = privateProperties->settings->extendSize;
-    char extendAdd     = privateProperties->extendSizeSettings->extendAdd;
+    char extendAdd     = privateProperties->settings->methodSize->extendAdd;
 
     // set debug flag.
     int debug = debugMessages == AA_ARAYEH_ON ? TRUE : FALSE;
@@ -306,7 +310,7 @@ int _insertToArayeh(arayeh *self, size_t index, void *element)
     struct privateProperties *privateProperties = &self->_privateProperties;
     char debugMessages = privateProperties->settings->debugMessages;
     char extendSize    = privateProperties->settings->extendSize;
-    char extendInsert  = privateProperties->extendSizeSettings->extendInsert;
+    char extendInsert  = privateProperties->settings->methodSize->extendInsert;
 
     // set debug flag.
     int debug = debugMessages == AA_ARAYEH_ON ? TRUE : FALSE;
@@ -428,7 +432,7 @@ int _fillArayeh(arayeh *self, size_t startIndex, size_t step, size_t endIndex,
     struct privateProperties *privateProperties = &self->_privateProperties;
     char debugMessages = privateProperties->settings->debugMessages;
     char extendSize    = self->_privateProperties.settings->extendSize;
-    char extendFill    = self->_privateProperties.extendSizeSettings->extendFill;
+    char extendFill    = privateProperties->settings->methodSize->extendFill;
 
     // set debug flag.
     int debug = debugMessages == AA_ARAYEH_ON ? TRUE : FALSE;
@@ -551,7 +555,7 @@ int _mergeFromArray(arayeh *self, size_t startIndex, size_t arraySize, void *arr
     struct privateProperties *privateProperties = &self->_privateProperties;
     char debugMessages    = privateProperties->settings->debugMessages;
     char extendSize       = self->_privateProperties.settings->extendSize;
-    char extendMergeArray = self->_privateProperties.extendSizeSettings->extendMergeArray;
+    char extendMergeArray = privateProperties->settings->methodSize->extendMergeArray;
 
     // set debug flag.
     int debug = debugMessages == AA_ARAYEH_ON ? TRUE : FALSE;
@@ -730,7 +734,7 @@ void _setSizeSettings(arayeh *self, arayehSizeSettings *newSettings)
      */
 
     // shorten names for god's sake.
-    arayehSizeSettings *settings = self->_privateProperties.extendSizeSettings;
+    arayehSizeSettings *settings = self->_privateProperties.settings->methodSize;
 
     // override new settings.
     settings->extendAdd        = newSettings->extendAdd;

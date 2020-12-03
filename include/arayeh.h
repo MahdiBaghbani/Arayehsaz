@@ -101,36 +101,48 @@ typedef struct arayehStruct arayeh;
 typedef union arayehTypeUnion {
     // pointer to the array of type char.
     char *charPtr;
+
     // pointer to the array of type short int.
     short int *shortIntPtr;
+
     // pointer to the array of type int.
     int *intPtr;
+
     // pointer to the array of type long int.
     long int *longIntPtr;
+
     // pointer to the array of type float.
     float *floatPtr;
+
     // pointer to the array of type double.
     double *doublePtr;
 } arayehType;
+
+typedef struct arayehSizeSettingsStruct {
+    // allow extending arayeh size when using add method.
+    char extendAdd;
+
+    // allow extending arayeh size when using insert method.
+    char extendInsert;
+
+    // allow extending arayeh size when using fill method.
+    char extendFill;
+
+    // allow extending arayeh size when using merge list method.
+    char extendMergeArray;
+} arayehSizeSettings;
 
 // Arayeh settings.
 typedef struct arayehSettingsStruct {
     // allow debug messages to be printed on stdout and stderr.
     char debugMessages;
+
     // allow extending arayeh size whenever needed.
     char extendSize;
-} arayehSettings;
 
-typedef struct arayehSizeSettingsStruct {
-    // allow extending arayeh size when using add method.
-    char extendAdd;
-    // allow extending arayeh size when using insert method.
-    char extendInsert;
-    // allow extending arayeh size when using fill method.
-    char extendFill;
-    // allow extending arayeh size when using merge list method.
-    char extendMergeArray;
-} arayehSizeSettings;
+    // holds method specific size extension settings.
+    arayehSizeSettings *methodSize;
+} arayehSettings;
 
 // Arayeh definition.
 typedef struct arayehStruct {
@@ -152,9 +164,6 @@ typedef struct arayehStruct {
 
         // hold settings for arayeh.
         arayehSettings *settings;
-
-        // hold setting for extending size of arayeh.
-        arayehSizeSettings *extendSizeSettings;
     };
 
     // Private properties of arayeh.
@@ -181,9 +190,6 @@ typedef struct arayehStruct {
 
         // hold settings for arayeh.
         arayehSettings *settings;
-
-        // hold setting for extending size of arayeh.
-        arayehSizeSettings *extendSizeSettings;
 
     } _privateProperties;
 

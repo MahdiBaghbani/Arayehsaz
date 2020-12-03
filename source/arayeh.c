@@ -143,18 +143,22 @@ arayeh *newArayeh(size_t type, size_t initialSize)
     // set default setting.
     defaultSettings->debugMessages = AA_ARAYEH_OFF;
     defaultSettings->extendSize    = AA_ARAYEH_ON;
+    defaultSettings->methodSize    = NULL;
 
+    // assign setting pointer to the arayeh private properties.
     privateProperties->settings = defaultSettings;
 
-    arayehSizeSettings *defaultExtendSizeSettings =
-        (arayehSizeSettings *) malloc(sizeof *defaultExtendSizeSettings);
+    // create arayeh default method specific size extension setting holder.
+    arayehSizeSettings *methodSize = (arayehSizeSettings *) malloc(sizeof *methodSize);
 
-    defaultExtendSizeSettings->extendAdd        = AA_ARAYEH_ON;
-    defaultExtendSizeSettings->extendInsert     = AA_ARAYEH_ON;
-    defaultExtendSizeSettings->extendFill       = AA_ARAYEH_ON;
-    defaultExtendSizeSettings->extendMergeArray = AA_ARAYEH_ON;
+    // set default settings.
+    methodSize->extendAdd        = AA_ARAYEH_ON;
+    methodSize->extendInsert     = AA_ARAYEH_ON;
+    methodSize->extendFill       = AA_ARAYEH_ON;
+    methodSize->extendMergeArray = AA_ARAYEH_ON;
 
-    privateProperties->extendSizeSettings = defaultExtendSizeSettings;
+    // assign setting pointer to the arayeh private properties.
+    privateProperties->settings->methodSize = methodSize;
 
     return self;
 }
