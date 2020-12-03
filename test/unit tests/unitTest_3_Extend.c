@@ -1,4 +1,4 @@
-/** test/unitTest_2_Extend.c
+/** test/unitTest_3_Extend.c
  *
  * This file is a part of:
  * Azadeh Afzar - Arayehsaz (AA-A).
@@ -63,7 +63,7 @@ void test_extend(void)
     TEST_ASSERT_EQUAL_INT(arayehSize, testCase->_privateProperties.size);
 
     // extend size.
-    state = (testCase->extendSize)(testCase, extendSize);
+    state = testCase->extendSize(testCase, extendSize);
 
     // assert successful extension.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
@@ -72,12 +72,12 @@ void test_extend(void)
     TEST_ASSERT_EQUAL_INT(arayehSize + extendSize, testCase->_privateProperties.size);
 
     // free arayeh.
-    (testCase->freeArayeh)(&testCase);
+    testCase->freeArayeh(&testCase);
 }
 
 int main(void)
 {
-    UnityBegin("unitTestExtend.c");
+    UnityBegin("unitTest_3_Extend.c");
 
     RUN_TEST(test_extend);
 

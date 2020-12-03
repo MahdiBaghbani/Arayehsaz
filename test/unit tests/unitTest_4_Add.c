@@ -1,4 +1,4 @@
-/** test/unitTest_3_Add.c
+/** test/unitTest_4_Add.c
  *
  * This file is a part of:
  * Azadeh Afzar - Arayehsaz (AA-A).
@@ -332,7 +332,7 @@ void test_general_MANUAL_method_specific_add_extension_OFF(void)
 
 int main(void)
 {
-    UnityBegin("unitTestAdd.c");
+    UnityBegin("unitTest_4_Add.c");
 
     RUN_TEST(test_add);
     RUN_TEST(test_add_extend_size);

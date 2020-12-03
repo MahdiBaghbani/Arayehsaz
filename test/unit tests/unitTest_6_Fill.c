@@ -1,4 +1,4 @@
-/** test/unitTest_5_Fill.c
+/** test/unitTest_6_Fill.c
  *
  * This file is a part of:
  * Azadeh Afzar - Arayehsaz (AA-A).
@@ -410,7 +410,7 @@ void test_fill_error_wrong_step(void)
 
 int main(void)
 {
-    UnityBegin("unitTestFill.c");
+    UnityBegin("unitTest_6_Fill.c");
 
     RUN_TEST(test_fill_all_empty_step_one);
     RUN_TEST(test_fill_all_empty_step_two);

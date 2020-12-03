@@ -107,12 +107,12 @@ void test_init_free(void)
     TEST_ASSERT_EQUAL_size_t(0, typeDouble->_privateProperties.next);
 
     // test if free returns success.
-    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, (typeChar->freeArayeh)(&typeChar));
-    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, (typeSInt->freeArayeh)(&typeSInt));
-    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, (typeInt->freeArayeh)(&typeInt));
-    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, (typeLInt->freeArayeh)(&typeLInt));
-    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, (typeFloat->freeArayeh)(&typeFloat));
-    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, (typeDouble->freeArayeh)(&typeDouble));
+    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, typeChar->freeArayeh(&typeChar));
+    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, typeSInt->freeArayeh(&typeSInt));
+    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, typeInt->freeArayeh(&typeInt));
+    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, typeLInt->freeArayeh(&typeLInt));
+    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, typeFloat->freeArayeh(&typeFloat));
+    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, typeDouble->freeArayeh(&typeDouble));
 
     // test if pointers are nullified after being freed.
     TEST_ASSERT_NULL(typeChar)
@@ -125,7 +125,7 @@ void test_init_free(void)
 
 int main(void)
 {
-    UnityBegin("unitTestInitFree.c");
+    UnityBegin("unitTest_1_InitFree.c");
 
     RUN_TEST(test_init_free);
 

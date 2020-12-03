@@ -1,4 +1,4 @@
-/** test/unitTest_4_Insert.c
+/** test/unitTest_5_Insert.c
  *
  * This file is a part of:
  * Azadeh Afzar - Arayehsaz (AA-A).
@@ -174,7 +174,7 @@ void test_insert_setting_extension_off_error_out_of_range_index(void)
 
 int main(void)
 {
-    UnityBegin("unitTestInsert.c");
+    UnityBegin("unitTest_5_Insert.c");
 
     RUN_TEST(test_insert);
     RUN_TEST(test_insert_memory_extension);
