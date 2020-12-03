@@ -298,11 +298,12 @@ int _addToArayeh(arayeh *self, void *element)
             default:
                 FATAL_WRONG_SETTINGS("_addToArayeh() function, extendAdd "
                                      "value is not correct.",
-                                     debug);
+                                     TRUE);
             }
+            break;
         default:
             FATAL_WRONG_SETTINGS(
-                "_addToArayeh() function, extendSize value is not correct.", debug);
+                "_addToArayeh() function, extendSize value is not correct.", TRUE);
         }
     }
 
@@ -408,6 +409,7 @@ int _insertToArayeh(arayeh *self, size_t index, void *element)
                                      "value is not correct.",
                                      debug);
             }
+            break;
         default:
             FATAL_WRONG_SETTINGS(
                 "_insertToArayeh() function, extendSize value is not correct.", debug);
@@ -551,6 +553,7 @@ int _fillArayeh(arayeh *self, size_t startIndex, size_t step, size_t endIndex,
                                      "value is not correct.",
                                      debug);
             }
+            break;
         default:
             FATAL_WRONG_SETTINGS(
                 "_fillArayeh() function, extendSize value is not correct.", debug);
@@ -691,6 +694,7 @@ int _mergeFromArray(arayeh *self, size_t startIndex, size_t arraySize, void *arr
                                      "value is not correct.",
                                      debug);
             }
+            break;
         default:
             FATAL_WRONG_SETTINGS(
                 "_fillArayeh() function, extendSize value is not correct.", debug);
