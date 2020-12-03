@@ -1,4 +1,4 @@
-/** test/unitTestInitFree.c
+/** test/unitTest_1_InitFree.c
  *
  * This file is a part of:
  * Azadeh Afzar - Arayehsaz (AA-A).

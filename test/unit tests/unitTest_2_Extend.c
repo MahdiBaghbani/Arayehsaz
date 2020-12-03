@@ -1,4 +1,4 @@
-/** test/unitTestExtend.c
+/** test/unitTest_2_Extend.c
  *
  * This file is a part of:
  * Azadeh Afzar - Arayehsaz (AA-A).
