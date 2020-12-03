@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
 set(files
         "unitTestInitFree.c"
         "unitTestExtend.c"
-        "unitTestAdd.c"
+        "unitTest_3_Add.c"
         "unitTestInsert.c"
         "unitTestFill.c")
 
@@ -13,7 +13,7 @@ foreach (file ${files})
 
     get_filename_component(file_basename ${file} NAME_WE)
 
-    string(REGEX REPLACE "unitTest([^$]+)" "test\\1" testCase ${file_basename})
+    string(REGEX REPLACE "unitTest([^$]+)" "utest\\1" testCase ${file_basename})
 
     add_executable(${testCase} ${file})
 
