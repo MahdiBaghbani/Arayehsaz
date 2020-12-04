@@ -59,6 +59,9 @@ void test_insert(void)
     // create new arayeh.
     arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
 
+    // shorten names for god's sake.
+    struct privateProperties *privateProperties = &testCase->_privateProperties;
+
     // insert element.
     state = testCase->insert(testCase, 0, &element);
 
@@ -66,9 +69,9 @@ void test_insert(void)
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
 
     // assert element is inserted in index 0.
-    TEST_ASSERT_EQUAL_INT(element, testCase->_privateProperties.array.intPtr[0]);
-    TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_privateProperties.map[0]);
-    TEST_ASSERT_EQUAL_INT(1, testCase->_privateProperties.next);
+    TEST_ASSERT_EQUAL_INT(element, privateProperties->array.intPtr[0]);
+    TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, privateProperties->map[0]);
+    TEST_ASSERT_EQUAL_INT(1, privateProperties->next);
 
     // insert element.
     state = testCase->insert(testCase, 5, &element);
@@ -77,9 +80,9 @@ void test_insert(void)
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
 
     // assert element is inserted in index 0.
-    TEST_ASSERT_EQUAL_INT(element, testCase->_privateProperties.array.intPtr[5]);
-    TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_privateProperties.map[5]);
-    TEST_ASSERT_EQUAL_INT(1, testCase->_privateProperties.next);
+    TEST_ASSERT_EQUAL_INT(element, privateProperties->array.intPtr[5]);
+    TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, privateProperties->map[5]);
+    TEST_ASSERT_EQUAL_INT(1, privateProperties->next);
 
     // free arayeh.
     testCase->freeArayeh(&testCase);
@@ -102,6 +105,9 @@ void test_default_settings_insert_extends_size(void)
     // create new arayeh.
     arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
 
+    // shorten names for god's sake.
+    struct privateProperties *privateProperties = &testCase->_privateProperties;
+
     // insert element at index 1,000,000. arayeh should be extended to the size of 1
     // million or bigger to do this insertion.
     state = testCase->insert(testCase, index, &element);
@@ -111,10 +117,10 @@ void test_default_settings_insert_extends_size(void)
 
     // assert arayeh size to be greater or equal to 1,000,000 and then assert the
     // element insertion.
-    TEST_ASSERT_GREATER_THAN_size_t(index, testCase->_privateProperties.size);
-    TEST_ASSERT_EQUAL_INT(element, testCase->_privateProperties.array.intPtr[index]);
-    TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_privateProperties.map[index]);
-    TEST_ASSERT_EQUAL_INT(0, testCase->_privateProperties.next);
+    TEST_ASSERT_GREATER_THAN_size_t(index, privateProperties->size);
+    TEST_ASSERT_EQUAL_INT(element, privateProperties->array.intPtr[index]);
+    TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, privateProperties->map[index]);
+    TEST_ASSERT_EQUAL_INT(0, privateProperties->next);
 
     // free arayeh.
     testCase->freeArayeh(&testCase);
@@ -144,6 +150,9 @@ void test_general_size_extension_OFF(void)
     // create new arayeh.
     arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
 
+    // shorten names for god's sake.
+    struct privateProperties *privateProperties = &testCase->_privateProperties;
+
     // define new settings.
     arayehSettings newSetting = {.debugMessages = AA_ARAYEH_OFF,
                                  .extendSize    = AA_ARAYEH_OFF};
@@ -159,7 +168,7 @@ void test_general_size_extension_OFF(void)
 
     // ensure arayeh is not affected.
     for (size_t i = 0; i < arayehSize; i++) {
-        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_OFF, testCase->_privateProperties.map[i]);
+        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_OFF, privateProperties->map[i]);
     }
 
     // test a negative index number.
@@ -170,7 +179,7 @@ void test_general_size_extension_OFF(void)
 
     // ensure arayeh is not affected.
     for (size_t i = 0; i < arayehSize; i++) {
-        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_OFF, testCase->_privateProperties.map[i]);
+        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_OFF, privateProperties->map[i]);
     }
 
     // free arayeh.
@@ -196,6 +205,9 @@ void test_general_size_extension_MANUAL(void)
     // create new arayeh.
     arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
 
+    // shorten names for god's sake.
+    struct privateProperties *privateProperties = &testCase->_privateProperties;
+
     // define new settings.
     arayehSettings newSetting = {.debugMessages = AA_ARAYEH_OFF,
                                  .extendSize    = AA_ARAYEH_MANUAL};
@@ -212,10 +224,10 @@ void test_general_size_extension_MANUAL(void)
 
     // assert arayeh size to be greater or equal to 1,000,000 and then assert the
     // element insertion.
-    TEST_ASSERT_GREATER_THAN_size_t(index, testCase->_privateProperties.size);
-    TEST_ASSERT_EQUAL_INT(element, testCase->_privateProperties.array.intPtr[index]);
-    TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_privateProperties.map[index]);
-    TEST_ASSERT_EQUAL_INT(0, testCase->_privateProperties.next);
+    TEST_ASSERT_GREATER_THAN_size_t(index, privateProperties->size);
+    TEST_ASSERT_EQUAL_INT(element, privateProperties->array.intPtr[index]);
+    TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, privateProperties->map[index]);
+    TEST_ASSERT_EQUAL_INT(0, privateProperties->next);
 
     // free arayeh.
     testCase->freeArayeh(&testCase);
@@ -240,6 +252,9 @@ void test_general_ON_method_specific_add_extension_OFF(void)
     // create new arayeh.
     arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
 
+    // shorten names for god's sake.
+    struct privateProperties *privateProperties = &testCase->_privateProperties;
+
     // define new size settings.
     arayehSizeSettings newSizeSettings = {.extendAdd        = AA_ARAYEH_ON,
                                           .extendInsert     = AA_ARAYEH_OFF,
@@ -257,10 +272,10 @@ void test_general_ON_method_specific_add_extension_OFF(void)
 
     // assert arayeh size to be greater or equal to 1,000,000 and then assert the
     // element insertion.
-    TEST_ASSERT_GREATER_THAN_size_t(index, testCase->_privateProperties.size);
-    TEST_ASSERT_EQUAL_INT(element, testCase->_privateProperties.array.intPtr[index]);
-    TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_privateProperties.map[index]);
-    TEST_ASSERT_EQUAL_INT(0, testCase->_privateProperties.next);
+    TEST_ASSERT_GREATER_THAN_size_t(index, privateProperties->size);
+    TEST_ASSERT_EQUAL_INT(element, privateProperties->array.intPtr[index]);
+    TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, privateProperties->map[index]);
+    TEST_ASSERT_EQUAL_INT(0, privateProperties->next);
 
     // free arayeh.
     testCase->freeArayeh(&testCase);
@@ -291,6 +306,9 @@ void test_general_MANUAL_method_specific_add_extension_OFF(void)
     // create new arayeh.
     arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
 
+    // shorten names for god's sake.
+    struct privateProperties *privateProperties = &testCase->_privateProperties;
+
     // define new settings.
     arayehSettings newSetting = {.debugMessages = AA_ARAYEH_OFF,
                                  .extendSize    = AA_ARAYEH_MANUAL};
@@ -315,7 +333,7 @@ void test_general_MANUAL_method_specific_add_extension_OFF(void)
 
     // ensure arayeh is not affected.
     for (size_t i = 0; i < arayehSize; i++) {
-        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_OFF, testCase->_privateProperties.map[i]);
+        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_OFF, privateProperties->map[i]);
     }
 
     // test a negative index number.
@@ -326,7 +344,7 @@ void test_general_MANUAL_method_specific_add_extension_OFF(void)
 
     // ensure arayeh is not affected.
     for (size_t i = 0; i < arayehSize; i++) {
-        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_OFF, testCase->_privateProperties.map[i]);
+        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_OFF, privateProperties->map[i]);
     }
 
     // free arayeh.
