@@ -120,7 +120,7 @@ size_t growthFactorFunction(arayeh *array)
     return array->size;
 }
 
-void test_add_extend_size_alternate_growth_function(void)
+void test_add_extends_size_alternate_growth_function(void)
 {
     // Test usage of an alternative growth function instead of default one.
 
@@ -337,7 +337,7 @@ int main(void)
 
     RUN_TEST(test_add);
     RUN_TEST(test_default_settings_add_extends_size);
-    RUN_TEST(test_add_extend_size_alternate_growth_function);
+    RUN_TEST(test_add_extends_size_alternate_growth_function);
     RUN_TEST(test_general_size_extension_OFF);
     RUN_TEST(test_general_size_extension_MANUAL);
     RUN_TEST(test_general_ON_method_specific_add_extension_OFF);
