@@ -233,7 +233,7 @@ void test_general_size_extension_MANUAL(void)
     testCase->freeArayeh(&testCase);
 }
 
-void test_general_ON_method_specific_add_extension_OFF(void)
+void test_general_ON_method_specific_insert_extension_OFF(void)
 {
     // Test arayeh extend its memory space
     // when general extension rule is set to ON and
@@ -281,7 +281,7 @@ void test_general_ON_method_specific_add_extension_OFF(void)
     testCase->freeArayeh(&testCase);
 }
 
-void test_general_MANUAL_method_specific_add_extension_OFF(void)
+void test_general_MANUAL_method_specific_insert_extension_OFF(void)
 {
     // Test arayeh doesn't extend its memory space
     // when general extension rule is set to MANUAL and
@@ -359,8 +359,8 @@ int main(void)
     RUN_TEST(test_default_settings_insert_extends_size);
     RUN_TEST(test_general_size_extension_OFF);
     RUN_TEST(test_general_size_extension_MANUAL);
-    RUN_TEST(test_general_ON_method_specific_add_extension_OFF);
-    RUN_TEST(test_general_MANUAL_method_specific_add_extension_OFF);
+    RUN_TEST(test_general_ON_method_specific_insert_extension_OFF);
+    RUN_TEST(test_general_MANUAL_method_specific_insert_extension_OFF);
 
     return UnityEnd();
 }
