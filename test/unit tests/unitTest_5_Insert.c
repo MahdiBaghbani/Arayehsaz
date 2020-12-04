@@ -47,7 +47,7 @@ void tearDown(void)
 
 void test_insert(void)
 {
-    // This Test is here to ensure that insert works as expected.
+    // Test that insert method works as expected.
 
     // define error state variable.
     int state;
@@ -60,7 +60,7 @@ void test_insert(void)
     arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
 
     // insert element.
-    state = (testCase->insert)(testCase, 0, &element);
+    state = testCase->insert(testCase, 0, &element);
 
     // assert successful insertion.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
@@ -71,7 +71,7 @@ void test_insert(void)
     TEST_ASSERT_EQUAL_INT(1, testCase->_privateProperties.next);
 
     // insert element.
-    state = (testCase->insert)(testCase, 5, &element);
+    state = testCase->insert(testCase, 5, &element);
 
     // assert successful insertion.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
@@ -82,13 +82,14 @@ void test_insert(void)
     TEST_ASSERT_EQUAL_INT(1, testCase->_privateProperties.next);
 
     // free arayeh.
-    (testCase->freeArayeh)(&testCase);
+    testCase->freeArayeh(&testCase);
 }
 
-void test_insert_memory_extension(void)
+void test_default_settings_insert_extends_size(void)
 {
-    // This Test is here to ensure that insert will extend memory space when the
-    // index for insertion is bigger than teh arayeh size.
+    // Test that insert will extend memory space when the
+    // index for insertion is bigger than the arayeh size
+    // with default settings.
 
     // define error state variable.
     int state;
@@ -103,7 +104,7 @@ void test_insert_memory_extension(void)
 
     // insert element at index 1,000,000. arayeh should be extended to the size of 1
     // million or bigger to do this insertion.
-    state = (testCase->insert)(testCase, index, &element);
+    state = testCase->insert(testCase, index, &element);
 
     // assert successful insertion.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
@@ -116,12 +117,15 @@ void test_insert_memory_extension(void)
     TEST_ASSERT_EQUAL_INT(0, testCase->_privateProperties.next);
 
     // free arayeh.
-    (testCase->freeArayeh)(&testCase);
+    testCase->freeArayeh(&testCase);
 }
 
-void test_insert_setting_extension_off_error_out_of_range_index(void)
+void test_general_size_extension_OFF(void)
 {
-    // This test ensures that a error code will be returned by insert function
+    // Test arayeh doesn't extend its memory space
+    // when general memory extension is set to OFF.
+    //
+    // an error code will be returned by insert function
     // when the index is not in range of 0 to (arayeh size - 1) when memory extension
     // on insert is disabled, also because the index field of insert function is of
     // type size_t, any negative number in the function call will be converted to
@@ -137,17 +141,18 @@ void test_insert_setting_extension_off_error_out_of_range_index(void)
     size_t arayehSize = 10;
     int element       = 5;
 
-    // define new settings.
-    arayehSettings newSetting = {AA_ARAYEH_OFF, AA_ARAYEH_OFF};
-
     // create new arayeh.
     arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
 
+    // define new settings.
+    arayehSettings newSetting = {.debugMessages = AA_ARAYEH_OFF,
+                                 .extendSize    = AA_ARAYEH_OFF};
+
     // set new settings.
-    (testCase->setSettings)(testCase, &newSetting);
+    testCase->setSettings(testCase, &newSetting);
 
     // insert element in index 10 (maximum possible index is 9).
-    state = (testCase->insert)(testCase, 10, &element);
+    state = testCase->insert(testCase, 10, &element);
 
     // assert error code.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_WRONG_INDEX, state);
@@ -158,7 +163,7 @@ void test_insert_setting_extension_off_error_out_of_range_index(void)
     }
 
     // test a negative index number.
-    state = (testCase->insert)(testCase, -10, &element);
+    state = testCase->insert(testCase, -10, &element);
 
     // assert error code.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_WRONG_INDEX, state);
@@ -169,7 +174,163 @@ void test_insert_setting_extension_off_error_out_of_range_index(void)
     }
 
     // free arayeh.
-    (testCase->freeArayeh)(&testCase);
+    testCase->freeArayeh(&testCase);
+}
+
+void test_general_size_extension_MANUAL(void)
+{
+    // Test arayeh extend its memory space
+    // when general memory extension is set to MANUAL
+    // and arayeh will refer to method specific rules
+    // for extending its memory size and the default
+    // value for insert method is ON.
+
+    // define error state variable.
+    int state;
+
+    // define default arayeh size.
+    size_t arayehSize = 10;
+    int element       = 5;
+    size_t index      = 1000000;
+
+    // create new arayeh.
+    arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+
+    // define new settings.
+    arayehSettings newSetting = {.debugMessages = AA_ARAYEH_OFF,
+                                 .extendSize    = AA_ARAYEH_MANUAL};
+
+    // set new settings.
+    testCase->setSettings(testCase, &newSetting);
+
+    // insert element at index 1,000,000. arayeh should be extended to the size of 1
+    // million or bigger to do this insertion.
+    state = testCase->insert(testCase, index, &element);
+
+    // assert successful insertion.
+    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
+
+    // assert arayeh size to be greater or equal to 1,000,000 and then assert the
+    // element insertion.
+    TEST_ASSERT_GREATER_THAN_size_t(index, testCase->_privateProperties.size);
+    TEST_ASSERT_EQUAL_INT(element, testCase->_privateProperties.array.intPtr[index]);
+    TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_privateProperties.map[index]);
+    TEST_ASSERT_EQUAL_INT(0, testCase->_privateProperties.next);
+
+    // free arayeh.
+    testCase->freeArayeh(&testCase);
+}
+
+void test_general_ON_method_specific_add_extension_OFF(void)
+{
+    // Test arayeh extend its memory space
+    // when general extension rule is set to ON and
+    // the method specific rule for insert is set to OFF
+    // in settings, this means that general rule has
+    // higher priority than the method specific rule.
+
+    // define error state variable.
+    int state;
+
+    // define default arayeh size.
+    size_t arayehSize = 10;
+    size_t index      = 10;
+    int element       = 5;
+
+    // create new arayeh.
+    arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+
+    // define new size settings.
+    arayehSizeSettings newSizeSettings = {.extendAdd        = AA_ARAYEH_ON,
+                                          .extendInsert     = AA_ARAYEH_OFF,
+                                          .extendFill       = AA_ARAYEH_ON,
+                                          .extendMergeArray = AA_ARAYEH_ON};
+
+    // set new size settings.
+    testCase->setSizeSettings(testCase, &newSizeSettings);
+
+    // insert element in index 10 (maximum possible index is 9).
+    state = testCase->insert(testCase, index, &element);
+
+    // assert successful insertion.
+    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
+
+    // assert arayeh size to be greater or equal to 1,000,000 and then assert the
+    // element insertion.
+    TEST_ASSERT_GREATER_THAN_size_t(index, testCase->_privateProperties.size);
+    TEST_ASSERT_EQUAL_INT(element, testCase->_privateProperties.array.intPtr[index]);
+    TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, testCase->_privateProperties.map[index]);
+    TEST_ASSERT_EQUAL_INT(0, testCase->_privateProperties.next);
+
+    // free arayeh.
+    testCase->freeArayeh(&testCase);
+}
+
+void test_general_MANUAL_method_specific_add_extension_OFF(void)
+{
+    // Test arayeh doesn't extend its memory space
+    // when general extension rule is set to MANUAL and
+    // the method specific rule for insert is set to OFF.
+    //
+    // an error code will be returned by insert function
+    // when the index is not in range of 0 to (arayeh size - 1) when memory extension
+    // on insert is disabled, also because the index field of insert function is of
+    // type size_t, any negative number in the function call will be converted to
+    // unsigned and thus result in an overflow, most of time it will be a very big
+    // number that is possibly out of arayeh valid indexes range, but there is a
+    // chance that conversion would result in a number inside valid range and corrupt
+    // the data inside the arayeh.
+
+    // define error state variable.
+    int state;
+
+    // define default arayeh size.
+    size_t arayehSize = 10;
+    int element       = 5;
+
+    // create new arayeh.
+    arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+
+    // define new settings.
+    arayehSettings newSetting = {.debugMessages = AA_ARAYEH_OFF,
+                                 .extendSize    = AA_ARAYEH_MANUAL};
+
+    // set new settings.
+    testCase->setSettings(testCase, &newSetting);
+
+    // define new size settings.
+    arayehSizeSettings newSizeSettings = {.extendAdd        = AA_ARAYEH_ON,
+                                          .extendInsert     = AA_ARAYEH_OFF,
+                                          .extendFill       = AA_ARAYEH_ON,
+                                          .extendMergeArray = AA_ARAYEH_ON};
+
+    // set new size settings.
+    testCase->setSizeSettings(testCase, &newSizeSettings);
+
+    // insert element in index 10 (maximum possible index is 9).
+    state = testCase->insert(testCase, 10, &element);
+
+    // assert error code.
+    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_WRONG_INDEX, state);
+
+    // ensure arayeh is not affected.
+    for (size_t i = 0; i < arayehSize; i++) {
+        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_OFF, testCase->_privateProperties.map[i]);
+    }
+
+    // test a negative index number.
+    state = testCase->insert(testCase, -10, &element);
+
+    // assert error code.
+    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_WRONG_INDEX, state);
+
+    // ensure arayeh is not affected.
+    for (size_t i = 0; i < arayehSize; i++) {
+        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_OFF, testCase->_privateProperties.map[i]);
+    }
+
+    // free arayeh.
+    testCase->freeArayeh(&testCase);
 }
 
 int main(void)
@@ -177,8 +338,11 @@ int main(void)
     UnityBegin("unitTest_5_Insert.c");
 
     RUN_TEST(test_insert);
-    RUN_TEST(test_insert_memory_extension);
-    RUN_TEST(test_insert_setting_extension_off_error_out_of_range_index);
+    RUN_TEST(test_default_settings_insert_extends_size);
+    RUN_TEST(test_general_size_extension_OFF);
+    RUN_TEST(test_general_size_extension_MANUAL);
+    RUN_TEST(test_general_ON_method_specific_add_extension_OFF);
+    RUN_TEST(test_general_MANUAL_method_specific_add_extension_OFF);
 
     return UnityEnd();
 }
