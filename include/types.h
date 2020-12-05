@@ -139,17 +139,23 @@ void _addTypeDouble(arayeh *self, size_t index, void *element);
 
 // Merge a C standard array of a specific type into the arayeh.
 
-int _mergeArrayTypeChar(arayeh *self, size_t startIndex, size_t arraySize, void *array);
+int _mergeArrayTypeChar(arayeh *self, size_t startIndex, size_t step, size_t arraySize,
+                        void *array);
 
-int _mergeArrayTypeSInt(arayeh *self, size_t startIndex, size_t arraySize, void *array);
+int _mergeArrayTypeSInt(arayeh *self, size_t startIndex, size_t step, size_t arraySize,
+                        void *array);
 
-int _mergeArrayTypeInt(arayeh *self, size_t startIndex, size_t arraySize, void *array);
+int _mergeArrayTypeInt(arayeh *self, size_t startIndex, size_t step, size_t arraySize,
+                       void *array);
 
-int _mergeArrayTypeLInt(arayeh *self, size_t startIndex, size_t arraySize, void *array);
+int _mergeArrayTypeLInt(arayeh *self, size_t startIndex, size_t step, size_t arraySize,
+                        void *array);
 
-int _mergeArrayTypeFloat(arayeh *self, size_t startIndex, size_t arraySize, void *array);
+int _mergeArrayTypeFloat(arayeh *self, size_t startIndex, size_t step, size_t arraySize,
+                         void *array);
 
-int _mergeArrayTypeDouble(arayeh *self, size_t startIndex, size_t arraySize, void *array);
+int _mergeArrayTypeDouble(arayeh *self, size_t startIndex, size_t step, size_t arraySize,
+                          void *array);
 
 // Get an element from arayeh.
 

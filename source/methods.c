@@ -572,13 +572,14 @@ int _fillArayeh(arayeh *self, size_t startIndex, size_t step, size_t endIndex,
     return state;
 }
 
-int _mergeFromArray(arayeh *self, size_t startIndex, size_t arraySize, void *array)
+int _mergeFromArray(arayeh *self, size_t startIndex, size_t step, size_t arraySize,
+                    void *array)
 {
     /*
      * This function will merge a default C array
-     * (for example int a[4] = {1, 2, 3, 4};) into the arayeh, the starting index
-     * for merging is "startIndex" and the size of C array determines the last index
-     * (in the example above the size of C arayeh is 4).
+     * (for example int a[4] = {1, 2, 3, 4};) into the arayeh with step, the starting
+     * index for merging is "startIndex" and the size of C array and step determines
+     * the last index (in the example above the size of C arayeh is 4 with step 1).
      *
      * it will update "map" and "used" parameters.
      * it may update "size" and "next" parameter.
@@ -586,6 +587,7 @@ int _mergeFromArray(arayeh *self, size_t startIndex, size_t arraySize, void *arr
      * ARGUMENTS:
      * self         pointer to the arayeh object.
      * startIndex   starting index in the arayeh arayeh.
+     * step         step size.
      * arraySize    size of the C arayeh.
      * array        the C array to be merged into the arayeh.
      *
@@ -608,8 +610,33 @@ int _mergeFromArray(arayeh *self, size_t startIndex, size_t arraySize, void *arr
     // track error state in the function.
     int state = AA_ARAYEH_SUCCESS;
 
+    // check step size.
+    if (step <= 0) {
+        // write to stderr and return error code.
+        WARN_WRONG_STEP(
+            "_mergeFromArray() function, step should be bigger or equal to 1!", debug);
+        return AA_ARAYEH_WRONG_STEP;
+    }
+
+    // calculate the step size space overhead, imagine an array of size 5
+    // if you want to merge this array with step ize of 1, it needs 5 cells
+    // in arayeh, but how about step size 2 or more?
+    // see below:
+    //
+    // | - | - | - | - |
+    //
+    // the |'s represents array element and - shows the space between them
+    // while merging, for step 1 the space between each | would be 0, means
+    // they will be added next to each another, and for step 2 there will be
+    // 1 cell in between two array elements, so the size of cells between
+    // elements can be written like this (step - 1), the number of -'s are
+    // always one less than numbers of |'s and can be defined by (arraySize - 1).
+    // so the total number of empty cells between array elements can be
+    // found from (arraySize - 1) * (step - 1) .
+    size_t stepOverhead = (arraySize - 1) * (step - 1);
+
     // calculate endIndex.
-    size_t endIndex = startIndex + arraySize;
+    size_t endIndex = startIndex + arraySize + stepOverhead;
 
     // check if startIndex or endIndex indexes are greater than arayeh size.
     if (privateProperties->size <= startIndex || privateProperties->size < endIndex) {
@@ -703,7 +730,7 @@ int _mergeFromArray(arayeh *self, size_t startIndex, size_t arraySize, void *arr
 
     // insert C array elements into arayeh.
     // updating arayeh parameters is delegated to "insert" method.
-    state = privateMethods->mergeFromArray(self, startIndex, arraySize, array);
+    state = privateMethods->mergeFromArray(self, startIndex, step, arraySize, array);
 
     // return error state code.
     return state;

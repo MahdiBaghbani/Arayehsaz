@@ -227,7 +227,8 @@ typedef struct arayehStruct {
         // (for example int a[4] = {1, 2, 3, 4};) into arayeh, the starting
         // index for merging is "startIndex" and the size of C array determines the
         // last index (in the example above the size of C array is 4).
-        int (*mergeArray)(arayeh *self, size_t startIndex, size_t arraySize, void *array);
+        int (*mergeArray)(arayeh *self, size_t startIndex, size_t step, size_t arraySize,
+                          void *array);
 
         // this function copies data in "index" cell of the arayeh to the
         // "destination" memory location.
@@ -272,8 +273,9 @@ typedef struct arayehStruct {
 
         // this function merges a C standard array of a specific type into the
         // arayeh of the same type.
-        int (*mergeFromArray)(arayeh *self, size_t startIndex, size_t arraySize,
-                              void *array);
+        int (*mergeFromArray)(arayeh *self, size_t startIndex, size_t step,
+                              size_t arraySize, void *array);
+
         // this function gets an element from arayeh and places it into a destination
         // memory location provided by caller.
         void (*getFromArayeh)(arayeh *self, size_t index, void *destination);

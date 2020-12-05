@@ -75,10 +75,12 @@ int _insertToArayeh(arayeh *self, size_t index, void *element);
 int _fillArayeh(arayeh *self, size_t startIndex, size_t step, size_t endIndex,
                 void *element);
 
-// this function will merge a default C array (for example int a[4] = {1, 2, 3, 4};)
-// into arayeh, the starting index for merging is "startIndex" and the size of
-// C array determines the last index (in the example above the size of C array is 4).
-int _mergeFromArray(arayeh *self, size_t startIndex, size_t arraySize, void *array);
+// this function will merge a default C array
+// (for example int a[4] = {1, 2, 3, 4};) into the arayeh with step, the starting
+// index for merging is "startIndex" and the size of C array and step determines
+// the last index (in the example above the size of C arayeh is 4 with step 1).
+int _mergeFromArray(arayeh *self, size_t startIndex, size_t step, size_t arraySize,
+                    void *array);
 
 // this function copies data in "index" cell of the array to the "destination" memory
 // location.

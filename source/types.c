@@ -285,12 +285,16 @@ void _addTypeDouble(arayeh *self, size_t index, void *element)
 
 // Merge a C standard array of a specific type into the arayeh.
 
-int _mergeArrayTypeChar(arayeh *self, size_t startIndex, size_t arraySize, void *array)
+int _mergeArrayTypeChar(arayeh *self, size_t startIndex, size_t step, size_t arraySize,
+                        void *array)
 {
     int state;
-    char *temp = (char *) array;
-    for (size_t i = 0; i < arraySize; ++i) {
-        state = (self->insert)(self, startIndex + i, temp + i);
+    char *arrayPtr = (char *) array;
+    char *elementPtr;
+    for (size_t arrayIndex = 0, arayehIndex = 0; arrayIndex < arraySize;
+         arrayIndex++, arayehIndex += step) {
+        elementPtr = arrayPtr + arrayIndex;
+        state = self->insert(self, startIndex + arayehIndex, elementPtr);
         if (state != AA_ARAYEH_SUCCESS) {
             break;
         }
@@ -298,12 +302,16 @@ int _mergeArrayTypeChar(arayeh *self, size_t startIndex, size_t arraySize, void 
     return state;
 }
 
-int _mergeArrayTypeSInt(arayeh *self, size_t startIndex, size_t arraySize, void *array)
+int _mergeArrayTypeSInt(arayeh *self, size_t startIndex, size_t step, size_t arraySize,
+                        void *array)
 {
     int state;
-    short int *temp = (short int *) array;
-    for (size_t i = 0; i < arraySize; ++i) {
-        state = (self->insert)(self, startIndex + i, temp + i);
+    short int *arrayPtr = (short int *) array;
+    short int *elementPtr;
+    for (size_t arrayIndex = 0, arayehIndex = 0; arrayIndex < arraySize;
+         arrayIndex++, arayehIndex += step) {
+        elementPtr = arrayPtr + arrayIndex;
+        state = self->insert(self, startIndex + arayehIndex, elementPtr);
         if (state != AA_ARAYEH_SUCCESS) {
             break;
         }
@@ -311,12 +319,16 @@ int _mergeArrayTypeSInt(arayeh *self, size_t startIndex, size_t arraySize, void 
     return state;
 }
 
-int _mergeArrayTypeInt(arayeh *self, size_t startIndex, size_t arraySize, void *array)
+int _mergeArrayTypeInt(arayeh *self, size_t startIndex, size_t step, size_t arraySize,
+                       void *array)
 {
     int state;
-    int *temp = (int *) array;
-    for (size_t i = 0; i < arraySize; ++i) {
-        state = (self->insert)(self, startIndex + i, temp + i);
+    int *arrayPtr = (int *) array;
+    int *elementPtr;
+    for (size_t arrayIndex = 0, arayehIndex = 0; arrayIndex < arraySize;
+         arrayIndex++, arayehIndex += step) {
+        elementPtr = arrayPtr + arrayIndex;
+        state = self->insert(self, startIndex + arayehIndex, elementPtr);
         if (state != AA_ARAYEH_SUCCESS) {
             break;
         }
@@ -324,12 +336,16 @@ int _mergeArrayTypeInt(arayeh *self, size_t startIndex, size_t arraySize, void *
     return state;
 }
 
-int _mergeArrayTypeLInt(arayeh *self, size_t startIndex, size_t arraySize, void *array)
+int _mergeArrayTypeLInt(arayeh *self, size_t startIndex, size_t step, size_t arraySize,
+                        void *array)
 {
     int state;
-    long int *temp = (long int *) array;
-    for (size_t i = 0; i < arraySize; ++i) {
-        state = (self->insert)(self, startIndex + i, temp + i);
+    long int *arrayPtr = (long int *) array;
+    long int *elementPtr;
+    for (size_t arrayIndex = 0, arayehIndex = 0; arrayIndex < arraySize;
+         arrayIndex++, arayehIndex += step) {
+        elementPtr = arrayPtr + arrayIndex;
+        state = self->insert(self, startIndex + arayehIndex, elementPtr);
         if (state != AA_ARAYEH_SUCCESS) {
             break;
         }
@@ -337,12 +353,16 @@ int _mergeArrayTypeLInt(arayeh *self, size_t startIndex, size_t arraySize, void 
     return state;
 }
 
-int _mergeArrayTypeFloat(arayeh *self, size_t startIndex, size_t arraySize, void *array)
+int _mergeArrayTypeFloat(arayeh *self, size_t startIndex, size_t step, size_t arraySize,
+                         void *array)
 {
     int state;
-    float *temp = (float *) array;
-    for (size_t i = 0; i < arraySize; ++i) {
-        state = (self->insert)(self, startIndex + i, temp + i);
+    float *arrayPtr = (float *) array;
+    float *elementPtr;
+    for (size_t arrayIndex = 0, arayehIndex = 0; arrayIndex < arraySize;
+         arrayIndex++, arayehIndex += step) {
+        elementPtr = arrayPtr + arrayIndex;
+        state = self->insert(self, startIndex + arayehIndex, elementPtr);
         if (state != AA_ARAYEH_SUCCESS) {
             break;
         }
@@ -350,12 +370,16 @@ int _mergeArrayTypeFloat(arayeh *self, size_t startIndex, size_t arraySize, void
     return state;
 }
 
-int _mergeArrayTypeDouble(arayeh *self, size_t startIndex, size_t arraySize, void *array)
+int _mergeArrayTypeDouble(arayeh *self, size_t startIndex, size_t step, size_t arraySize,
+                          void *array)
 {
     int state;
-    double *temp = (double *) array;
-    for (size_t i = 0; i < arraySize; ++i) {
-        state = (self->insert)(self, startIndex + i, temp + i);
+    double *arrayPtr = (double *) array;
+    double *elementPtr;
+    for (size_t arrayIndex = 0, arayehIndex = 0; arrayIndex < arraySize;
+         arrayIndex++, arayehIndex += step) {
+        elementPtr = arrayPtr + arrayIndex;
+        state = self->insert(self, startIndex + arayehIndex, elementPtr);
         if (state != AA_ARAYEH_SUCCESS) {
             break;
         }
