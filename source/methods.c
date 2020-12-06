@@ -363,56 +363,55 @@ int _insertToArayeh(arayeh *self, size_t index, void *element)
 
     // check if index is bigger or equal to size of arayeh.
     if (privateProperties->size <= index) {
+        // calculate memory growth size needed.
+        size_t growthSize = index - privateProperties->size + 1;
+
         // decide to extend arayeh size based on arayeh settings.
         switch (extendSize) {
         case AA_ARAYEH_ON:
-            // extend arayeh size until "index" is less than the arayeh size.
-            do {
-                state = extendMemory(self);
-                // stop function and return error value if extending arayeh size
-                // failed.
-                if (state != AA_ARAYEH_SUCCESS) {
-                    return state;
-                }
-            } while (privateProperties->size <= index);
+            // extend arayeh size.
+            state = self->extendSize(self, growthSize);
+
+            // check for unsuccessful size extension.
+            if (state != AA_ARAYEH_SUCCESS) {
+                return state;
+            }
             break;
         case AA_ARAYEH_OFF:
             // write to stderr and return error code.
             WARN_WRONG_INDEX("_insertToArayeh() function, index is equal or bigger "
                              "than arayeh size!",
                              debug);
-            return AA_ARAYEH_WRONG_INDEX;
+            return AA_ARAYEH_NOT_ENOUGH_SPACE;
             break;
             // if manual is enabled, check against the correct extend size rule.
         case AA_ARAYEH_MANUAL:
             switch (extendInsert) {
             case AA_ARAYEH_ON:
-                // extend arayeh size until "index" is less than the arayeh size.
-                do {
-                    state = extendMemory(self);
-                    // stop function and return error value if extending arayeh size
-                    // failed.
-                    if (state != AA_ARAYEH_SUCCESS) {
-                        return state;
-                    }
-                } while (privateProperties->size <= index);
+                // extend arayeh size.
+                state = self->extendSize(self, growthSize);
+
+                // check for unsuccessful size extension.
+                if (state != AA_ARAYEH_SUCCESS) {
+                    return state;
+                }
                 break;
             case AA_ARAYEH_OFF:
                 // write to stderr and return error code.
                 WARN_WRONG_INDEX("_insertToArayeh() function, index is equal or bigger "
                                  "than arayeh size!",
                                  debug);
-                return AA_ARAYEH_WRONG_INDEX;
+                return AA_ARAYEH_NOT_ENOUGH_SPACE;
                 break;
             default:
                 FATAL_WRONG_SETTINGS("_insertToArayeh() function, extendInsert "
                                      "value is not correct.",
-                                     debug);
+                                     TRUE);
             }
             break;
         default:
             FATAL_WRONG_SETTINGS(
-                "_insertToArayeh() function, extendSize value is not correct.", debug);
+                "_insertToArayeh() function, extendSize value is not correct.", TRUE);
         }
     }
 
@@ -463,6 +462,9 @@ int _fillArayeh(arayeh *self, size_t startIndex, size_t step, size_t endIndex,
      * self         pointer to the arayeh object.
      * startIndex   starting index (inclusive).
      * step         step size.
+     *      WARNING:
+     *          using negative number for step would result in
+     *          a very very big number because of type conversion to size_t.
      * endIndex     ending index (exclusive).
      * element      pointer to a variable that must fill the arayeh.
      *
@@ -501,62 +503,57 @@ int _fillArayeh(arayeh *self, size_t startIndex, size_t step, size_t endIndex,
         return AA_ARAYEH_WRONG_STEP;
     }
 
-    // check if startIndex or endIndex indexes are greater than arayeh size.
-    if (privateProperties->size <= startIndex || privateProperties->size < endIndex) {
+    // check if endIndex indexes is greater than arayeh size.
+    if (privateProperties->size < endIndex) {
+        // calculate memory growth size needed.
+        size_t growthSize = endIndex - privateProperties->size;
+
         // decide to extend arayeh size based on arayeh settings.
         switch (extendSize) {
         case AA_ARAYEH_ON:
-            // extend arayeh size until startIndex and endIndex indexes are less than
-            // the arayeh size.
-            do {
-                state = extendMemory(self);
-                // stop function and return error value if extending arayeh size
-                // failed.
-                if (state != AA_ARAYEH_SUCCESS) {
-                    return state;
-                }
-            } while (privateProperties->size <= startIndex ||
-                     privateProperties->size < endIndex);
+            // extend arayeh size.
+            state = self->extendSize(self, growthSize);
+
+            // check for unsuccessful size extension.
+            if (state != AA_ARAYEH_SUCCESS) {
+                return state;
+            }
             break;
         case AA_ARAYEH_OFF:
             // write to stderr and return error code.
             WARN_WRONG_INDEX("_fillArayeh() function, startIndex or endIndex is "
                              "greater than arayeh size!",
                              debug);
-            return AA_ARAYEH_WRONG_INDEX;
+            return AA_ARAYEH_NOT_ENOUGH_SPACE;
             break;
             // if manual is enabled, check against the correct extend size rule.
         case AA_ARAYEH_MANUAL:
             switch (extendFill) {
             case AA_ARAYEH_ON:
-                // extend arayeh size until startIndex and endIndex indexes are less
-                // than the arayeh size.
-                do {
-                    state = extendMemory(self);
-                    // stop function and return error value if extending arayeh size
-                    // failed.
-                    if (state != AA_ARAYEH_SUCCESS) {
-                        return state;
-                    }
-                } while (privateProperties->size <= startIndex ||
-                         privateProperties->size < endIndex);
+                // extend arayeh size.
+                state = self->extendSize(self, growthSize);
+
+                // check for unsuccessful size extension.
+                if (state != AA_ARAYEH_SUCCESS) {
+                    return state;
+                }
                 break;
             case AA_ARAYEH_OFF:
                 // write to stderr and return error code.
                 WARN_WRONG_INDEX("_fillArayeh() function, startIndex or endIndex is "
                                  "greater than arayeh size!",
                                  debug);
-                return AA_ARAYEH_WRONG_INDEX;
+                return AA_ARAYEH_NOT_ENOUGH_SPACE;
                 break;
             default:
                 FATAL_WRONG_SETTINGS("_fillArayeh() function, extendFill "
                                      "value is not correct.",
-                                     debug);
+                                     TRUE);
             }
             break;
         default:
             FATAL_WRONG_SETTINGS(
-                "_fillArayeh() function, extendSize value is not correct.", debug);
+                "_fillArayeh() function, extendSize value is not correct.", TRUE);
         }
     }
 
@@ -588,6 +585,9 @@ int _mergeFromArray(arayeh *self, size_t startIndex, size_t step, size_t arraySi
      * self         pointer to the arayeh object.
      * startIndex   starting index in the arayeh arayeh.
      * step         step size.
+     *      WARNING:
+     *          using negative number for step would result in
+     *          a very very big number because of type conversion to size_t.
      * arraySize    size of the C arayeh.
      * array        the C array to be merged into the arayeh.
      *
@@ -638,93 +638,55 @@ int _mergeFromArray(arayeh *self, size_t startIndex, size_t step, size_t arraySi
     // calculate endIndex.
     size_t endIndex = startIndex + arraySize + stepOverhead;
 
-    // check if startIndex or endIndex indexes are greater than arayeh size.
-    if (privateProperties->size <= startIndex || privateProperties->size < endIndex) {
+    // check if endIndex indexes is greater than arayeh size.
+    if (privateProperties->size < endIndex) {
+        // calculate memory growth size needed.
+        size_t growthSize = endIndex - privateProperties->size;
+
         // decide to extend arayeh size based on arayeh settings.
         switch (extendSize) {
         case AA_ARAYEH_ON:
-            // extend arayeh size until startIndex and endIndex indexes are less than
-            // the arayeh size.
-            do {
-                state = extendMemory(self);
-                // stop function and return error value if extending arayeh size
-                // failed.
-                if (state != AA_ARAYEH_SUCCESS) {
-                    return state;
-                }
-            } while (privateProperties->size <= startIndex ||
-                     privateProperties->size < endIndex);
+            // extend arayeh size.
+            state = self->extendSize(self, growthSize);
+
+            // check for unsuccessful size extension.
+            if (state != AA_ARAYEH_SUCCESS) {
+                return state;
+            }
             break;
         case AA_ARAYEH_OFF:
-            // check if startIndex is greater than the arayeh size.
-            if (privateProperties->size <= startIndex) {
-                // write to stderr and return error code.
-                WARN_WRONG_INDEX(
-                    "_mergeFromArray() function, start index is greater than "
-                    "the arayeh size!",
-                    debug);
-                return AA_ARAYEH_WRONG_INDEX;
-            }
-
-            // check if array size exceeds arayeh size if being started from
-            // startIndex.
-            if (privateProperties->size < endIndex) {
-                // write to stderr and return error code.
-                WARN_EXCEED_ARAYEH_SIZE(
-                    "_mergeFromArray() function, starting from the specified "
-                    "index, arayeh doesn't have enough space to merge this array.",
-                    debug);
-                return AA_ARAYEH_NOT_ENOUGH_SPACE;
-            }
+            // write to stderr and return error code.
+            WARN_WRONG_INDEX("_mergeFromArray() function, low memory space to merge!",
+                             debug);
+            return AA_ARAYEH_NOT_ENOUGH_SPACE;
             break;
             // if manual is enabled, check against the correct extend size rule.
         case AA_ARAYEH_MANUAL:
             switch (extendMergeArray) {
             case AA_ARAYEH_ON:
-                // extend arayeh size until startIndex and endIndex indexes are less
-                // than the arayeh size.
-                do {
-                    state = extendMemory(self);
-                    // stop function and return error value if extending arayeh size
-                    // failed.
-                    if (state != AA_ARAYEH_SUCCESS) {
-                        return state;
-                    }
-                } while (privateProperties->size <= startIndex ||
-                         privateProperties->size < endIndex);
+                // extend arayeh size.
+                state = self->extendSize(self, growthSize);
+
+                // check for unsuccessful size extension.
+                if (state != AA_ARAYEH_SUCCESS) {
+                    return state;
+                }
                 break;
             case AA_ARAYEH_OFF:
-                // check if startIndex is greater than the arayeh size.
-                if (privateProperties->size <= startIndex) {
-                    // write to stderr and return error code.
-                    WARN_WRONG_INDEX(
-                        "_mergeFromArray() function, start index is greater than "
-                        "the arayeh size!",
-                        debug);
-                    return AA_ARAYEH_WRONG_INDEX;
-                }
-
-                // check if array size exceeds arayeh size if being started from
-                // startIndex.
-                if (privateProperties->size < endIndex) {
-                    // write to stderr and return error code.
-                    WARN_EXCEED_ARAYEH_SIZE(
-                        "_mergeFromArray() function, starting from the specified "
-                        "index, arayeh doesn't have enough space to merge this "
-                        "array.",
-                        debug);
-                    return AA_ARAYEH_NOT_ENOUGH_SPACE;
-                }
+                // write to stderr and return error code.
+                WARN_WRONG_INDEX("_mergeFromArray() function, low memory space to merge",
+                                 debug);
+                return AA_ARAYEH_NOT_ENOUGH_SPACE;
                 break;
             default:
                 FATAL_WRONG_SETTINGS("_fillArayeh() function, extendMergeArray "
                                      "value is not correct.",
-                                     debug);
+                                     TRUE);
             }
             break;
         default:
             FATAL_WRONG_SETTINGS(
-                "_fillArayeh() function, extendSize value is not correct.", debug);
+                "_mergeFromArray() function, extendSize value is not correct.", TRUE);
         }
     }
 
