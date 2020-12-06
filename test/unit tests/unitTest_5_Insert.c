@@ -164,7 +164,7 @@ void test_general_size_extension_OFF(void)
     state = testCase->insert(testCase, 10, &element);
 
     // assert error code.
-    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_WRONG_INDEX, state);
+    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_NOT_ENOUGH_SPACE, state);
 
     // ensure arayeh is not affected.
     for (size_t i = 0; i < arayehSize; i++) {
@@ -175,7 +175,7 @@ void test_general_size_extension_OFF(void)
     state = testCase->insert(testCase, -10, &element);
 
     // assert error code.
-    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_WRONG_INDEX, state);
+    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_NOT_ENOUGH_SPACE, state);
 
     // ensure arayeh is not affected.
     for (size_t i = 0; i < arayehSize; i++) {
@@ -329,7 +329,7 @@ void test_general_MANUAL_method_specific_insert_extension_OFF(void)
     state = testCase->insert(testCase, 10, &element);
 
     // assert error code.
-    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_WRONG_INDEX, state);
+    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_NOT_ENOUGH_SPACE, state);
 
     // ensure arayeh is not affected.
     for (size_t i = 0; i < arayehSize; i++) {
@@ -340,7 +340,7 @@ void test_general_MANUAL_method_specific_insert_extension_OFF(void)
     state = testCase->insert(testCase, -10, &element);
 
     // assert error code.
-    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_WRONG_INDEX, state);
+    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_NOT_ENOUGH_SPACE, state);
 
     // ensure arayeh is not affected.
     for (size_t i = 0; i < arayehSize; i++) {

@@ -311,7 +311,7 @@ void test_general_size_extension_OFF(void)
     state = testCase->fill(testCase, startIndex, 1, endIndex, &element);
 
     // check fill was unsuccessful.
-    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_WRONG_INDEX, state);
+    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_NOT_ENOUGH_SPACE, state);
 
     // free arayeh.
     testCase->freeArayeh(&testCase);
@@ -472,7 +472,7 @@ void test_general_MANUAL_method_specific_fill_extension_OFF(void)
     state = testCase->fill(testCase, startIndex, 1, endIndex, &element);
 
     // check fill was unsuccessful.
-    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_WRONG_INDEX, state);
+    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_NOT_ENOUGH_SPACE, state);
 
     // free arayeh.
     testCase->freeArayeh(&testCase);
