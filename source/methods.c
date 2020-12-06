@@ -264,7 +264,7 @@ int _addToArayeh(arayeh *self, void *element)
         switch (extendSize) {
         case AA_ARAYEH_ON:
             // extend arayeh size.
-            state = extendMemory(self);
+            state = autoExtendMemory(self);
             // stop function and return error value if extending arayeh size failed.
             if (state != AA_ARAYEH_SUCCESS) {
                 return state;
@@ -281,7 +281,7 @@ int _addToArayeh(arayeh *self, void *element)
             switch (extendAdd) {
             case AA_ARAYEH_ON:
                 // extend arayeh size.
-                state = extendMemory(self);
+                state = autoExtendMemory(self);
                 // stop function and return error value if extending arayeh size
                 // failed.
                 if (state != AA_ARAYEH_SUCCESS) {

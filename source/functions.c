@@ -41,7 +41,7 @@
 #include "../include/methods.h"
 #include "../include/types.h"
 
-int extendMemory(arayeh *self)
+int autoExtendMemory(arayeh *self)
 {
     /*
      * This function will calculate the extension size of memory and extends arayeh

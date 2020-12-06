@@ -54,7 +54,7 @@
 __BEGIN_DECLS
 
 // This function will calculate the extension size of memory and extends arayeh size.
-int extendMemory(arayeh *self);
+int autoExtendMemory(arayeh *self);
 
 // this function assigns pointers to public functions of an arayeh instance.
 void setPublicMethods(arayeh *self);
