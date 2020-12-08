@@ -131,6 +131,9 @@ typedef struct arayehSizeSettingsStruct {
     char extendFill;
 
     // allow extending arayeh size when using merge list method.
+    char extendMergeArayeh;
+
+    // allow extending arayeh size when using merge list method.
     char extendMergeArray;
 } arayehSizeSettings;
 
@@ -223,6 +226,10 @@ typedef struct arayehStruct {
         int (*fill)(arayeh *self, size_t startIndex, size_t step, size_t endIndex,
                     void *element);
 
+        // this function will merge an arayeh (source) into current arayeh (self), with
+        // specified step from the specified start index of (self) arayeh.
+        int (*mergeArayeh)(arayeh *self, size_t startIndex, size_t step, arayeh *source);
+
         // this function will merge a default C array
         // (for example int a[4] = {1, 2, 3, 4};) into arayeh, the starting
         // index for merging is "startIndex" and the size of C array determines the
@@ -233,6 +240,11 @@ typedef struct arayehStruct {
         // this function copies data in "index" cell of the arayeh to the
         // "destination" memory location.
         int (*get)(arayeh *self, size_t index, void *destination);
+
+        // TODO: write methods -> duplicate, getArray, arayehSlice, arraySlice,
+        // TODO: reduceSize, compact, max, min, sum, multiply, changeType
+        // TODO: deleteItem, pop, contains, count,
+        // TODO: reorder, shuffle, reverse, sort,
 
         // this function will override arayeh default settings.
         void (*setSettings)(arayeh *self, arayehSettings *settings);
@@ -270,6 +282,10 @@ typedef struct arayehStruct {
 
         // this function adds an element of a specific type to the arayeh.
         void (*addToArayeh)(arayeh *self, size_t index, void *element);
+
+        // this function merges an arayeh of a specific type into another arayeh.
+        int (*mergeFromArayeh)(arayeh *self, size_t startIndex, size_t step,
+                               arayeh *source);
 
         // this function merges a C standard array of a specific type into the
         // arayeh of the same type.

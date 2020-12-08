@@ -283,6 +283,218 @@ void _addTypeDouble(arayeh *self, size_t index, void *element)
     self->_privateProperties.array.doublePtr[index] = *((double *) element);
 }
 
+// Merge an arayeh of a specific type into another arayeh.
+
+int _mergeArayehTypeChar(arayeh *self, size_t startIndex, size_t step, arayeh *source)
+{
+    // shorten names for god's sake.
+    struct privateProperties *privateProperties = &source->_privateProperties;
+
+    // track error state in the function.
+    int state;
+
+    // track index for insertion.
+    size_t insertIndex;
+
+    // pointers.
+    char *arrayPtr = privateProperties->array.charPtr;
+    char *elementPtr;
+
+    for (size_t arrayIndex = 0, arayehIndex = 0; arrayIndex < privateProperties->size;
+         arrayIndex++, arayehIndex += step) {
+
+        // calculate next element location.
+        elementPtr = arrayPtr + arrayIndex;
+
+        // calculate next index.
+        insertIndex = startIndex + arayehIndex;
+
+        // insert element into arayeh.
+        state = self->insert(self, insertIndex, elementPtr);
+
+        // in case of any error abort process and return error code.
+        if (state != AA_ARAYEH_SUCCESS) {
+            break;
+        }
+    }
+    return state;
+}
+
+int _mergeArayehTypeSInt(arayeh *self, size_t startIndex, size_t step, arayeh *source)
+{
+    // shorten names for god's sake.
+    struct privateProperties *privateProperties = &source->_privateProperties;
+
+    // track error state in the function.
+    int state;
+
+    // track index for insertion.
+    size_t insertIndex;
+
+    // pointers.
+    short int *arrayPtr = privateProperties->array.shortIntPtr;
+    short int *elementPtr;
+
+    for (size_t arrayIndex = 0, arayehIndex = 0; arrayIndex < privateProperties->size;
+         arrayIndex++, arayehIndex += step) {
+
+        // calculate next element location.
+        elementPtr = arrayPtr + arrayIndex;
+
+        // calculate next index.
+        insertIndex = startIndex + arayehIndex;
+
+        // insert element into arayeh.
+        state = self->insert(self, insertIndex, elementPtr);
+
+        // in case of any error abort process and return error code.
+        if (state != AA_ARAYEH_SUCCESS) {
+            break;
+        }
+    }
+    return state;
+}
+
+int _mergeArayehTypeInt(arayeh *self, size_t startIndex, size_t step, arayeh *source)
+{
+    // shorten names for god's sake.
+    struct privateProperties *privateProperties = &source->_privateProperties;
+
+    // track error state in the function.
+    int state;
+
+    // track index for insertion.
+    size_t insertIndex;
+
+    // pointers.
+    int *arrayPtr = privateProperties->array.intPtr;
+    int *elementPtr;
+
+    for (size_t arrayIndex = 0, arayehIndex = 0; arrayIndex < privateProperties->size;
+         arrayIndex++, arayehIndex += step) {
+
+        // calculate next element location.
+        elementPtr = arrayPtr + arrayIndex;
+
+        // calculate next index.
+        insertIndex = startIndex + arayehIndex;
+
+        // insert element into arayeh.
+        state = self->insert(self, insertIndex, elementPtr);
+
+        // in case of any error abort process and return error code.
+        if (state != AA_ARAYEH_SUCCESS) {
+            break;
+        }
+    }
+    return state;
+}
+
+int _mergeArayehTypeLInt(arayeh *self, size_t startIndex, size_t step, arayeh *source)
+{
+    // shorten names for god's sake.
+    struct privateProperties *privateProperties = &source->_privateProperties;
+
+    // track error state in the function.
+    int state;
+
+    // track index for insertion.
+    size_t insertIndex;
+
+    // pointers.
+    long int *arrayPtr = privateProperties->array.longIntPtr;
+    long int *elementPtr;
+
+    for (size_t arrayIndex = 0, arayehIndex = 0; arrayIndex < privateProperties->size;
+         arrayIndex++, arayehIndex += step) {
+
+        // calculate next element location.
+        elementPtr = arrayPtr + arrayIndex;
+
+        // calculate next index.
+        insertIndex = startIndex + arayehIndex;
+
+        // insert element into arayeh.
+        state = self->insert(self, insertIndex, elementPtr);
+
+        // in case of any error abort process and return error code.
+        if (state != AA_ARAYEH_SUCCESS) {
+            break;
+        }
+    }
+    return state;
+}
+
+int _mergeArayehTypeFloat(arayeh *self, size_t startIndex, size_t step, arayeh *source)
+{
+    // shorten names for god's sake.
+    struct privateProperties *privateProperties = &source->_privateProperties;
+
+    // track error state in the function.
+    int state;
+
+    // track index for insertion.
+    size_t insertIndex;
+
+    // pointers.
+    float *arrayPtr = privateProperties->array.floatPtr;
+    float *elementPtr;
+
+    for (size_t arrayIndex = 0, arayehIndex = 0; arrayIndex < privateProperties->size;
+         arrayIndex++, arayehIndex += step) {
+
+        // calculate next element location.
+        elementPtr = arrayPtr + arrayIndex;
+
+        // calculate next index.
+        insertIndex = startIndex + arayehIndex;
+
+        // insert element into arayeh.
+        state = self->insert(self, insertIndex, elementPtr);
+
+        // in case of any error abort process and return error code.
+        if (state != AA_ARAYEH_SUCCESS) {
+            break;
+        }
+    }
+    return state;
+}
+
+int _mergeArayehTypeDouble(arayeh *self, size_t startIndex, size_t step, arayeh *source)
+{
+    // shorten names for god's sake.
+    struct privateProperties *privateProperties = &source->_privateProperties;
+
+    // track error state in the function.
+    int state;
+
+    // track index for insertion.
+    size_t insertIndex;
+
+    // pointers.
+    double *arrayPtr = privateProperties->array.doublePtr;
+    double *elementPtr;
+
+    for (size_t arrayIndex = 0, arayehIndex = 0; arrayIndex < privateProperties->size;
+         arrayIndex++, arayehIndex += step) {
+
+        // calculate next element location.
+        elementPtr = arrayPtr + arrayIndex;
+
+        // calculate next index.
+        insertIndex = startIndex + arayehIndex;
+
+        // insert element into arayeh.
+        state = self->insert(self, insertIndex, elementPtr);
+
+        // in case of any error abort process and return error code.
+        if (state != AA_ARAYEH_SUCCESS) {
+            break;
+        }
+    }
+    return state;
+}
+
 // Merge a C standard array of a specific type into the arayeh.
 
 int _mergeArrayTypeChar(arayeh *self, size_t startIndex, size_t step, size_t arraySize,
@@ -294,7 +506,7 @@ int _mergeArrayTypeChar(arayeh *self, size_t startIndex, size_t step, size_t arr
     for (size_t arrayIndex = 0, arayehIndex = 0; arrayIndex < arraySize;
          arrayIndex++, arayehIndex += step) {
         elementPtr = arrayPtr + arrayIndex;
-        state = self->insert(self, startIndex + arayehIndex, elementPtr);
+        state      = self->insert(self, startIndex + arayehIndex, elementPtr);
         if (state != AA_ARAYEH_SUCCESS) {
             break;
         }
@@ -311,7 +523,7 @@ int _mergeArrayTypeSInt(arayeh *self, size_t startIndex, size_t step, size_t arr
     for (size_t arrayIndex = 0, arayehIndex = 0; arrayIndex < arraySize;
          arrayIndex++, arayehIndex += step) {
         elementPtr = arrayPtr + arrayIndex;
-        state = self->insert(self, startIndex + arayehIndex, elementPtr);
+        state      = self->insert(self, startIndex + arayehIndex, elementPtr);
         if (state != AA_ARAYEH_SUCCESS) {
             break;
         }
@@ -328,7 +540,7 @@ int _mergeArrayTypeInt(arayeh *self, size_t startIndex, size_t step, size_t arra
     for (size_t arrayIndex = 0, arayehIndex = 0; arrayIndex < arraySize;
          arrayIndex++, arayehIndex += step) {
         elementPtr = arrayPtr + arrayIndex;
-        state = self->insert(self, startIndex + arayehIndex, elementPtr);
+        state      = self->insert(self, startIndex + arayehIndex, elementPtr);
         if (state != AA_ARAYEH_SUCCESS) {
             break;
         }
@@ -345,7 +557,7 @@ int _mergeArrayTypeLInt(arayeh *self, size_t startIndex, size_t step, size_t arr
     for (size_t arrayIndex = 0, arayehIndex = 0; arrayIndex < arraySize;
          arrayIndex++, arayehIndex += step) {
         elementPtr = arrayPtr + arrayIndex;
-        state = self->insert(self, startIndex + arayehIndex, elementPtr);
+        state      = self->insert(self, startIndex + arayehIndex, elementPtr);
         if (state != AA_ARAYEH_SUCCESS) {
             break;
         }
@@ -362,7 +574,7 @@ int _mergeArrayTypeFloat(arayeh *self, size_t startIndex, size_t step, size_t ar
     for (size_t arrayIndex = 0, arayehIndex = 0; arrayIndex < arraySize;
          arrayIndex++, arayehIndex += step) {
         elementPtr = arrayPtr + arrayIndex;
-        state = self->insert(self, startIndex + arayehIndex, elementPtr);
+        state      = self->insert(self, startIndex + arayehIndex, elementPtr);
         if (state != AA_ARAYEH_SUCCESS) {
             break;
         }
@@ -379,7 +591,7 @@ int _mergeArrayTypeDouble(arayeh *self, size_t startIndex, size_t step, size_t a
     for (size_t arrayIndex = 0, arayehIndex = 0; arrayIndex < arraySize;
          arrayIndex++, arayehIndex += step) {
         elementPtr = arrayPtr + arrayIndex;
-        state = self->insert(self, startIndex + arayehIndex, elementPtr);
+        state      = self->insert(self, startIndex + arayehIndex, elementPtr);
         if (state != AA_ARAYEH_SUCCESS) {
             break;
         }

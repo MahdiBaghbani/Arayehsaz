@@ -75,6 +75,10 @@ int _insertToArayeh(arayeh *self, size_t index, void *element);
 int _fillArayeh(arayeh *self, size_t startIndex, size_t step, size_t endIndex,
                 void *element);
 
+// this function will merge an arayeh (source) into current arayeh (self), with
+// specified step from the specified start index of (self) arayeh.
+int _mergeFromArayeh(arayeh *self, size_t startIndex, size_t step, arayeh *source);
+
 // this function will merge a default C array
 // (for example int a[4] = {1, 2, 3, 4};) into the arayeh with step, the starting
 // index for merging is "startIndex" and the size of C array and step determines

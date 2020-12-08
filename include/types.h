@@ -137,6 +137,20 @@ void _addTypeFloat(arayeh *self, size_t index, void *element);
 
 void _addTypeDouble(arayeh *self, size_t index, void *element);
 
+// Merge an arayeh of a specific type into another arayeh.
+
+int _mergeArayehTypeChar(arayeh *self, size_t startIndex, size_t step, arayeh *source);
+
+int _mergeArayehTypeSInt(arayeh *self, size_t startIndex, size_t step, arayeh *source);
+
+int _mergeArayehTypeInt(arayeh *self, size_t startIndex, size_t step, arayeh *source);
+
+int _mergeArayehTypeLInt(arayeh *self, size_t startIndex, size_t step, arayeh *source);
+
+int _mergeArayehTypeFloat(arayeh *self, size_t startIndex, size_t step, arayeh *source);
+
+int _mergeArayehTypeDouble(arayeh *self, size_t startIndex, size_t step, arayeh *source);
+
 // Merge a C standard array of a specific type into the arayeh.
 
 int _mergeArrayTypeChar(arayeh *self, size_t startIndex, size_t step, size_t arraySize,

@@ -91,6 +91,7 @@ void setPublicMethods(arayeh *self)
     self->add             = _addToArayeh;
     self->insert          = _insertToArayeh;
     self->fill            = _fillArayeh;
+    self->mergeArayeh     = _mergeFromArayeh;
     self->mergeArray      = _mergeFromArray;
     self->get             = _getFromArayeh;
     self->setSettings     = _setSettings;
@@ -113,7 +114,6 @@ void setPrivateMethods(arayeh *self, size_t type)
      */
 
     // shorten names for god's sake.
-    // shorten names for god's sake.
     struct privateMethods *privateMethods = &self->_privateMethods;
 
     // set memory space growth factor function to default.
@@ -128,6 +128,7 @@ void setPrivateMethods(arayeh *self, size_t type)
         privateMethods->freeArayeh       = _freeTypeChar;
         privateMethods->setMemoryPointer = _setMemPtrTypeChar;
         privateMethods->addToArayeh      = _addTypeChar;
+        privateMethods->mergeFromArayeh  = _mergeArayehTypeChar;
         privateMethods->mergeFromArray   = _mergeArrayTypeChar;
         privateMethods->getFromArayeh    = _getTypeChar;
         break;
@@ -139,6 +140,7 @@ void setPrivateMethods(arayeh *self, size_t type)
         privateMethods->freeArayeh       = _freeTypeSInt;
         privateMethods->setMemoryPointer = _setMemPtrTypeSInt;
         privateMethods->addToArayeh      = _addTypeSInt;
+        privateMethods->mergeFromArayeh  = _mergeArayehTypeSInt;
         privateMethods->mergeFromArray   = _mergeArrayTypeSInt;
         privateMethods->getFromArayeh    = _getTypeSInt;
         break;
@@ -150,6 +152,7 @@ void setPrivateMethods(arayeh *self, size_t type)
         privateMethods->freeArayeh       = _freeTypeInt;
         privateMethods->setMemoryPointer = _setMemPtrTypeInt;
         privateMethods->addToArayeh      = _addTypeInt;
+        privateMethods->mergeFromArayeh  = _mergeArayehTypeInt;
         privateMethods->mergeFromArray   = _mergeArrayTypeInt;
         privateMethods->getFromArayeh    = _getTypeInt;
         break;
@@ -161,6 +164,7 @@ void setPrivateMethods(arayeh *self, size_t type)
         privateMethods->freeArayeh       = _freeTypeLInt;
         privateMethods->setMemoryPointer = _setMemPtrTypeLInt;
         privateMethods->addToArayeh      = _addTypeLInt;
+        privateMethods->mergeFromArayeh  = _mergeArayehTypeLInt;
         privateMethods->mergeFromArray   = _mergeArrayTypeLInt;
         privateMethods->getFromArayeh    = _getTypeLInt;
         break;
@@ -172,6 +176,7 @@ void setPrivateMethods(arayeh *self, size_t type)
         privateMethods->freeArayeh       = _freeTypeFloat;
         privateMethods->setMemoryPointer = _setMemPtrTypeFloat;
         privateMethods->addToArayeh      = _addTypeFloat;
+        privateMethods->mergeFromArayeh  = _mergeArayehTypeFloat;
         privateMethods->mergeFromArray   = _mergeArrayTypeFloat;
         privateMethods->getFromArayeh    = _getTypeFloat;
         break;
@@ -183,10 +188,11 @@ void setPrivateMethods(arayeh *self, size_t type)
         privateMethods->freeArayeh       = _freeTypeDouble;
         privateMethods->setMemoryPointer = _setMemPtrTypeDouble;
         privateMethods->addToArayeh      = _addTypeDouble;
+        privateMethods->mergeFromArayeh  = _mergeArayehTypeDouble;
         privateMethods->mergeFromArray   = _mergeArrayTypeDouble;
         privateMethods->getFromArayeh    = _getTypeDouble;
         break;
     default:
-        WARN_WRONG_TYPE("setPrivateMethods", TRUE);
+        FATAL_WRONG_TYPE("setPrivateMethods", TRUE);
     }
 }
