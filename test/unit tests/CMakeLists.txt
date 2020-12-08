@@ -9,7 +9,7 @@ set(files
         "unitTest_4_Add.c"
         "unitTest_5_Insert.c"
         "unitTest_6_Fill.c"
-        "unitTest_7_mergeArray.c")
+        "unitTest_7_MergeArray.c")
 
 foreach (file ${files})
 
