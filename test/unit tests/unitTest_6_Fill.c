@@ -186,9 +186,9 @@ void test_fill_existing_arayeh(void)
 
 void test_default_settings_fill_extends_size(void)
 {
-    // Test dynamic memory space extension.
-    // this test is done when starting point is less than the arayeh size and
-    // end index is greater than arayeh size.
+    // Test fill method dynamic memory space extension with default settings.
+    // starting point is within arayeh size but the end index is big
+    // enough to force arayeh to extend its memory space.
 
     // define error state variable.
     int state;
@@ -377,7 +377,7 @@ void test_general_ON_method_specific_fill_extension_OFF(void)
 {
     // Test arayeh extend its memory space
     // when general extension rule is set to ON and
-    // the method specific rule for insert is set to OFF
+    // the method specific rule for fill is set to OFF
     // in settings, this means that general rule has
     // higher priority than the method specific rule.
 
