@@ -317,6 +317,8 @@ int _mergeArayehTypeChar(arayeh *self, size_t startIndex, size_t step, arayeh *s
             break;
         }
     }
+
+    // return error state code.
     return state;
 }
 
@@ -352,6 +354,8 @@ int _mergeArayehTypeSInt(arayeh *self, size_t startIndex, size_t step, arayeh *s
             break;
         }
     }
+
+    // return error state code.
     return state;
 }
 
@@ -387,6 +391,8 @@ int _mergeArayehTypeInt(arayeh *self, size_t startIndex, size_t step, arayeh *so
             break;
         }
     }
+
+    // return error state code.
     return state;
 }
 
@@ -422,6 +428,8 @@ int _mergeArayehTypeLInt(arayeh *self, size_t startIndex, size_t step, arayeh *s
             break;
         }
     }
+
+    // return error state code.
     return state;
 }
 
@@ -457,6 +465,8 @@ int _mergeArayehTypeFloat(arayeh *self, size_t startIndex, size_t step, arayeh *
             break;
         }
     }
+
+    // return error state code.
     return state;
 }
 
@@ -492,6 +502,8 @@ int _mergeArayehTypeDouble(arayeh *self, size_t startIndex, size_t step, arayeh 
             break;
         }
     }
+
+    // return error state code.
     return state;
 }
 
@@ -500,102 +512,204 @@ int _mergeArayehTypeDouble(arayeh *self, size_t startIndex, size_t step, arayeh 
 int _mergeArrayTypeChar(arayeh *self, size_t startIndex, size_t step, size_t arraySize,
                         void *array)
 {
+    // track error state in the function.
     int state;
+
+    // track index for insertion.
+    size_t insertIndex;
+
+    // pointers.
     char *arrayPtr = (char *) array;
     char *elementPtr;
+
     for (size_t arrayIndex = 0, arayehIndex = 0; arrayIndex < arraySize;
          arrayIndex++, arayehIndex += step) {
+
+        // calculate next element location.
         elementPtr = arrayPtr + arrayIndex;
-        state      = self->insert(self, startIndex + arayehIndex, elementPtr);
+
+        // calculate next index.
+        insertIndex = startIndex + arayehIndex;
+
+        state = self->insert(self, insertIndex, elementPtr);
+
+        // in case of any error abort process and return error code.
         if (state != AA_ARAYEH_SUCCESS) {
             break;
         }
     }
+
+    // return error state code.
     return state;
 }
 
 int _mergeArrayTypeSInt(arayeh *self, size_t startIndex, size_t step, size_t arraySize,
                         void *array)
 {
+    // track error state in the function.
     int state;
+
+    // track index for insertion.
+    size_t insertIndex;
+
+    // pointers.
     short int *arrayPtr = (short int *) array;
     short int *elementPtr;
+
     for (size_t arrayIndex = 0, arayehIndex = 0; arrayIndex < arraySize;
          arrayIndex++, arayehIndex += step) {
+
+        // calculate next element location.
         elementPtr = arrayPtr + arrayIndex;
-        state      = self->insert(self, startIndex + arayehIndex, elementPtr);
+
+        // calculate next index.
+        insertIndex = startIndex + arayehIndex;
+
+        state = self->insert(self, insertIndex, elementPtr);
+
+        // in case of any error abort process and return error code.
         if (state != AA_ARAYEH_SUCCESS) {
             break;
         }
     }
+
+    // return error state code.
     return state;
 }
 
 int _mergeArrayTypeInt(arayeh *self, size_t startIndex, size_t step, size_t arraySize,
                        void *array)
 {
+    // track error state in the function.
     int state;
+
+    // track index for insertion.
+    size_t insertIndex;
+
+    // pointers.
     int *arrayPtr = (int *) array;
     int *elementPtr;
+
     for (size_t arrayIndex = 0, arayehIndex = 0; arrayIndex < arraySize;
          arrayIndex++, arayehIndex += step) {
+
+        // calculate next element location.
         elementPtr = arrayPtr + arrayIndex;
-        state      = self->insert(self, startIndex + arayehIndex, elementPtr);
+
+        // calculate next index.
+        insertIndex = startIndex + arayehIndex;
+
+        state = self->insert(self, insertIndex, elementPtr);
+
+        // in case of any error abort process and return error code.
         if (state != AA_ARAYEH_SUCCESS) {
             break;
         }
     }
+
+    // return error state code.
     return state;
 }
 
 int _mergeArrayTypeLInt(arayeh *self, size_t startIndex, size_t step, size_t arraySize,
                         void *array)
 {
+    // track error state in the function.
     int state;
+
+    // track index for insertion.
+    size_t insertIndex;
+
+    // pointers.
     long int *arrayPtr = (long int *) array;
     long int *elementPtr;
+
     for (size_t arrayIndex = 0, arayehIndex = 0; arrayIndex < arraySize;
          arrayIndex++, arayehIndex += step) {
+
+        // calculate next element location.
         elementPtr = arrayPtr + arrayIndex;
-        state      = self->insert(self, startIndex + arayehIndex, elementPtr);
+
+        // calculate next index.
+        insertIndex = startIndex + arayehIndex;
+
+        state = self->insert(self, insertIndex, elementPtr);
+
+        // in case of any error abort process and return error code.
         if (state != AA_ARAYEH_SUCCESS) {
             break;
         }
     }
+
+    // return error state code.
     return state;
 }
 
 int _mergeArrayTypeFloat(arayeh *self, size_t startIndex, size_t step, size_t arraySize,
                          void *array)
 {
+    // track error state in the function.
     int state;
+
+    // track index for insertion.
+    size_t insertIndex;
+
+    // pointers.
     float *arrayPtr = (float *) array;
     float *elementPtr;
+
     for (size_t arrayIndex = 0, arayehIndex = 0; arrayIndex < arraySize;
          arrayIndex++, arayehIndex += step) {
+
+        // calculate next element location.
         elementPtr = arrayPtr + arrayIndex;
-        state      = self->insert(self, startIndex + arayehIndex, elementPtr);
+
+        // calculate next index.
+        insertIndex = startIndex + arayehIndex;
+
+        state = self->insert(self, insertIndex, elementPtr);
+
+        // in case of any error abort process and return error code.
         if (state != AA_ARAYEH_SUCCESS) {
             break;
         }
     }
+
+    // return error state code.
     return state;
 }
 
 int _mergeArrayTypeDouble(arayeh *self, size_t startIndex, size_t step, size_t arraySize,
                           void *array)
 {
+    // track error state in the function.
     int state;
+
+    // track index for insertion.
+    size_t insertIndex;
+
+    // pointers.
     double *arrayPtr = (double *) array;
     double *elementPtr;
+
     for (size_t arrayIndex = 0, arayehIndex = 0; arrayIndex < arraySize;
          arrayIndex++, arayehIndex += step) {
+
+        // calculate next element location.
         elementPtr = arrayPtr + arrayIndex;
-        state      = self->insert(self, startIndex + arayehIndex, elementPtr);
+
+        // calculate next index.
+        insertIndex = startIndex + arayehIndex;
+
+        state = self->insert(self, insertIndex, elementPtr);
+
+        // in case of any error abort process and return error code.
         if (state != AA_ARAYEH_SUCCESS) {
             break;
         }
     }
+
+    // return error state code.
     return state;
 }
 
