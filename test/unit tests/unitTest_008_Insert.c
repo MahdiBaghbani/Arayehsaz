@@ -256,10 +256,11 @@ void test_general_ON_method_specific_insert_extension_OFF(void)
     struct privateProperties *privateProperties = &testCase->_privateProperties;
 
     // define new size settings.
-    arayehSizeSettings newSizeSettings = {.extendAdd        = AA_ARAYEH_ON,
-                                          .extendInsert     = AA_ARAYEH_OFF,
-                                          .extendFill       = AA_ARAYEH_ON,
-                                          .extendMergeArray = AA_ARAYEH_ON};
+    arayehSizeSettings newSizeSettings = {.extendAdd         = AA_ARAYEH_ON,
+                                          .extendInsert      = AA_ARAYEH_OFF,
+                                          .extendFill        = AA_ARAYEH_ON,
+                                          .extendMergeArayeh = AA_ARAYEH_ON,
+                                          .extendMergeArray  = AA_ARAYEH_ON};
 
     // set new size settings.
     testCase->setSizeSettings(testCase, &newSizeSettings);
@@ -317,10 +318,11 @@ void test_general_MANUAL_method_specific_insert_extension_OFF(void)
     testCase->setSettings(testCase, &newSetting);
 
     // define new size settings.
-    arayehSizeSettings newSizeSettings = {.extendAdd        = AA_ARAYEH_ON,
-                                          .extendInsert     = AA_ARAYEH_OFF,
-                                          .extendFill       = AA_ARAYEH_ON,
-                                          .extendMergeArray = AA_ARAYEH_ON};
+    arayehSizeSettings newSizeSettings = {.extendAdd         = AA_ARAYEH_ON,
+                                          .extendInsert      = AA_ARAYEH_OFF,
+                                          .extendFill        = AA_ARAYEH_ON,
+                                          .extendMergeArayeh = AA_ARAYEH_ON,
+                                          .extendMergeArray  = AA_ARAYEH_ON};
 
     // set new size settings.
     testCase->setSizeSettings(testCase, &newSizeSettings);
@@ -353,7 +355,7 @@ void test_general_MANUAL_method_specific_insert_extension_OFF(void)
 
 int main(void)
 {
-    UnityBegin("unitTest_5_Insert.c");
+    UnityBegin("unitTest_008_Insert.c");
 
     RUN_TEST(test_insert);
     RUN_TEST(test_default_settings_insert_extends_size);

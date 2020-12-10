@@ -697,7 +697,7 @@ int _mergeFromArayeh(arayeh *self, size_t startIndex, size_t step, arayeh *sourc
                 return AA_ARAYEH_NOT_ENOUGH_SPACE;
                 break;
             default:
-                FATAL_WRONG_SETTINGS("_fillArayeh() method, extendMergeArayeh "
+                FATAL_WRONG_SETTINGS("_mergeFromArayeh() method, extendMergeArayeh "
                                      "value is not correct.",
                                      TRUE);
             }
@@ -711,6 +711,9 @@ int _mergeFromArayeh(arayeh *self, size_t startIndex, size_t step, arayeh *sourc
     // insert source arayeh elements into self arayeh.
     // updating arayeh parameters is delegated to "insert" method.
     state = selfPrivateMethods->mergeFromArayeh(self, startIndex, step, source);
+
+    // update next index pointer.
+    updateNextIndex(self);
 
     // return error state code.
     return state;
@@ -828,7 +831,7 @@ int _mergeFromArray(arayeh *self, size_t startIndex, size_t step, size_t arraySi
                 return AA_ARAYEH_NOT_ENOUGH_SPACE;
                 break;
             default:
-                FATAL_WRONG_SETTINGS("_fillArayeh() method, extendMergeArray "
+                FATAL_WRONG_SETTINGS("_mergeFromArray() method, extendMergeArray "
                                      "value is not correct.",
                                      TRUE);
             }

@@ -152,10 +152,11 @@ arayeh *Arayeh(size_t type, size_t initialSize)
     arayehSizeSettings *methodSize = (arayehSizeSettings *) malloc(sizeof *methodSize);
 
     // set default settings.
-    methodSize->extendAdd        = AA_ARAYEH_ON;
-    methodSize->extendInsert     = AA_ARAYEH_ON;
-    methodSize->extendFill       = AA_ARAYEH_ON;
-    methodSize->extendMergeArray = AA_ARAYEH_ON;
+    methodSize->extendAdd         = AA_ARAYEH_ON;
+    methodSize->extendInsert      = AA_ARAYEH_ON;
+    methodSize->extendFill        = AA_ARAYEH_ON;
+    methodSize->extendMergeArayeh = AA_ARAYEH_ON;
+    methodSize->extendMergeArray  = AA_ARAYEH_ON;
 
     // assign setting pointer to the arayeh private properties.
     privateProperties->settings->methodSize = methodSize;

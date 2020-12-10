@@ -3,14 +3,15 @@ cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
 
 # create tests for each unit test file.
 set(files
-        "unitTest_1_InitFree.c"
-        "unitTest_2_ResizeMemory.c"
-        "unitTest_3_Extend.c"
-        "unitTest_4_Add.c"
-        "unitTest_5_Insert.c"
-        "unitTest_6_Fill.c"
-        "unitTest_7_MergeArray.c"
-        "unitTest_8_Get.c")
+        "unitTest_001_InitFree.c"
+        "unitTest_002_ResizeMemory.c"
+        "unitTest_003_Extend.c"
+        "unitTest_007_Add.c"
+        "unitTest_008_Insert.c"
+        "unitTest_009_Fill.c"
+        "unitTest_010_MergeArayeh.c"
+        "unitTest_011_MergeArray.c"
+        "unitTest_012_Get.c")
 
 foreach (file ${files})
 

@@ -259,10 +259,11 @@ void test_general_ON_method_specific_add_extension_OFF(void)
     arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
 
     // define new size settings.
-    arayehSizeSettings newSizeSettings = {.extendAdd        = AA_ARAYEH_OFF,
-                                          .extendInsert     = AA_ARAYEH_ON,
-                                          .extendFill       = AA_ARAYEH_ON,
-                                          .extendMergeArray = AA_ARAYEH_ON};
+    arayehSizeSettings newSizeSettings = {.extendAdd         = AA_ARAYEH_OFF,
+                                          .extendInsert      = AA_ARAYEH_ON,
+                                          .extendFill        = AA_ARAYEH_ON,
+                                          .extendMergeArayeh = AA_ARAYEH_ON,
+                                          .extendMergeArray  = AA_ARAYEH_ON};
 
     // set new size settings.
     testCase->setSizeSettings(testCase, &newSizeSettings);
@@ -307,10 +308,11 @@ void test_general_MANUAL_method_specific_add_extension_OFF(void)
     testCase->setSettings(testCase, &newSetting);
 
     // define new size settings.
-    arayehSizeSettings newSizeSettings = {.extendAdd        = AA_ARAYEH_OFF,
-                                          .extendInsert     = AA_ARAYEH_ON,
-                                          .extendFill       = AA_ARAYEH_ON,
-                                          .extendMergeArray = AA_ARAYEH_ON};
+    arayehSizeSettings newSizeSettings = {.extendAdd         = AA_ARAYEH_OFF,
+                                          .extendInsert      = AA_ARAYEH_ON,
+                                          .extendFill        = AA_ARAYEH_ON,
+                                          .extendMergeArayeh = AA_ARAYEH_ON,
+                                          .extendMergeArray  = AA_ARAYEH_ON};
 
     // set new size settings.
     testCase->setSizeSettings(testCase, &newSizeSettings);
@@ -333,7 +335,7 @@ void test_general_MANUAL_method_specific_add_extension_OFF(void)
 
 int main(void)
 {
-    UnityBegin("unitTest_4_Add.c");
+    UnityBegin("unitTest_007_Add.c");
 
     RUN_TEST(test_add);
     RUN_TEST(test_default_settings_add_extends_size);

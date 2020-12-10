@@ -288,7 +288,8 @@ void _addTypeDouble(arayeh *self, size_t index, void *element)
 int _mergeArayehTypeChar(arayeh *self, size_t startIndex, size_t step, arayeh *source)
 {
     // shorten names for god's sake.
-    struct privateProperties *privateProperties = &source->_privateProperties;
+    struct privateProperties *selfPrivateProperties = &self->_privateProperties;
+    struct privateProperties *srcPrivateProperties  = &source->_privateProperties;
 
     // track error state in the function.
     int state;
@@ -297,10 +298,13 @@ int _mergeArayehTypeChar(arayeh *self, size_t startIndex, size_t step, arayeh *s
     size_t insertIndex;
 
     // pointers.
-    char *arrayPtr = privateProperties->array.charPtr;
+    char *arrayPtr = srcPrivateProperties->array.charPtr;
     char *elementPtr;
 
-    for (size_t arrayIndex = 0, arayehIndex = 0; arrayIndex < privateProperties->size;
+    // temporary variable to hold map value.
+    char map;
+
+    for (size_t arrayIndex = 0, arayehIndex = 0; arrayIndex < srcPrivateProperties->size;
          arrayIndex++, arayehIndex += step) {
 
         // calculate next element location.
@@ -308,6 +312,15 @@ int _mergeArayehTypeChar(arayeh *self, size_t startIndex, size_t step, arayeh *s
 
         // calculate next index.
         insertIndex = startIndex + arayehIndex;
+
+        // hold src map value.
+        map = srcPrivateProperties->map[arrayIndex];
+
+        // do not insert element if its empty.
+        if (map == AA_ARAYEH_OFF) {
+            // go to next loop cycle.
+            continue;
+        }
 
         // insert element into arayeh.
         state = self->insert(self, insertIndex, elementPtr);
@@ -325,7 +338,8 @@ int _mergeArayehTypeChar(arayeh *self, size_t startIndex, size_t step, arayeh *s
 int _mergeArayehTypeSInt(arayeh *self, size_t startIndex, size_t step, arayeh *source)
 {
     // shorten names for god's sake.
-    struct privateProperties *privateProperties = &source->_privateProperties;
+    struct privateProperties *selfPrivateProperties = &self->_privateProperties;
+    struct privateProperties *srcPrivateProperties  = &source->_privateProperties;
 
     // track error state in the function.
     int state;
@@ -334,10 +348,13 @@ int _mergeArayehTypeSInt(arayeh *self, size_t startIndex, size_t step, arayeh *s
     size_t insertIndex;
 
     // pointers.
-    short int *arrayPtr = privateProperties->array.shortIntPtr;
+    short int *arrayPtr = srcPrivateProperties->array.shortIntPtr;
     short int *elementPtr;
 
-    for (size_t arrayIndex = 0, arayehIndex = 0; arrayIndex < privateProperties->size;
+    // temporary variable to hold map value.
+    char map;
+
+    for (size_t arrayIndex = 0, arayehIndex = 0; arrayIndex < srcPrivateProperties->size;
          arrayIndex++, arayehIndex += step) {
 
         // calculate next element location.
@@ -345,6 +362,15 @@ int _mergeArayehTypeSInt(arayeh *self, size_t startIndex, size_t step, arayeh *s
 
         // calculate next index.
         insertIndex = startIndex + arayehIndex;
+
+        // hold src map value.
+        map = srcPrivateProperties->map[arrayIndex];
+
+        // do not insert element if its empty.
+        if (map == AA_ARAYEH_OFF) {
+            // go to next loop cycle.
+            continue;
+        }
 
         // insert element into arayeh.
         state = self->insert(self, insertIndex, elementPtr);
@@ -362,7 +388,8 @@ int _mergeArayehTypeSInt(arayeh *self, size_t startIndex, size_t step, arayeh *s
 int _mergeArayehTypeInt(arayeh *self, size_t startIndex, size_t step, arayeh *source)
 {
     // shorten names for god's sake.
-    struct privateProperties *privateProperties = &source->_privateProperties;
+    struct privateProperties *selfPrivateProperties = &self->_privateProperties;
+    struct privateProperties *srcPrivateProperties  = &source->_privateProperties;
 
     // track error state in the function.
     int state;
@@ -371,10 +398,13 @@ int _mergeArayehTypeInt(arayeh *self, size_t startIndex, size_t step, arayeh *so
     size_t insertIndex;
 
     // pointers.
-    int *arrayPtr = privateProperties->array.intPtr;
+    int *arrayPtr = srcPrivateProperties->array.intPtr;
     int *elementPtr;
 
-    for (size_t arrayIndex = 0, arayehIndex = 0; arrayIndex < privateProperties->size;
+    // temporary variable to hold map value.
+    char map;
+
+    for (size_t arrayIndex = 0, arayehIndex = 0; arrayIndex < srcPrivateProperties->size;
          arrayIndex++, arayehIndex += step) {
 
         // calculate next element location.
@@ -382,6 +412,15 @@ int _mergeArayehTypeInt(arayeh *self, size_t startIndex, size_t step, arayeh *so
 
         // calculate next index.
         insertIndex = startIndex + arayehIndex;
+
+        // hold src map value.
+        map = srcPrivateProperties->map[arrayIndex];
+
+        // do not insert element if its empty.
+        if (map == AA_ARAYEH_OFF) {
+            // go to next loop cycle.
+            continue;
+        }
 
         // insert element into arayeh.
         state = self->insert(self, insertIndex, elementPtr);
@@ -399,7 +438,8 @@ int _mergeArayehTypeInt(arayeh *self, size_t startIndex, size_t step, arayeh *so
 int _mergeArayehTypeLInt(arayeh *self, size_t startIndex, size_t step, arayeh *source)
 {
     // shorten names for god's sake.
-    struct privateProperties *privateProperties = &source->_privateProperties;
+    struct privateProperties *selfPrivateProperties = &self->_privateProperties;
+    struct privateProperties *srcPrivateProperties  = &source->_privateProperties;
 
     // track error state in the function.
     int state;
@@ -408,10 +448,13 @@ int _mergeArayehTypeLInt(arayeh *self, size_t startIndex, size_t step, arayeh *s
     size_t insertIndex;
 
     // pointers.
-    long int *arrayPtr = privateProperties->array.longIntPtr;
+    long int *arrayPtr = srcPrivateProperties->array.longIntPtr;
     long int *elementPtr;
 
-    for (size_t arrayIndex = 0, arayehIndex = 0; arrayIndex < privateProperties->size;
+    // temporary variable to hold map value.
+    char map;
+
+    for (size_t arrayIndex = 0, arayehIndex = 0; arrayIndex < srcPrivateProperties->size;
          arrayIndex++, arayehIndex += step) {
 
         // calculate next element location.
@@ -419,6 +462,15 @@ int _mergeArayehTypeLInt(arayeh *self, size_t startIndex, size_t step, arayeh *s
 
         // calculate next index.
         insertIndex = startIndex + arayehIndex;
+
+        // hold src map value.
+        map = srcPrivateProperties->map[arrayIndex];
+
+        // do not insert element if its empty.
+        if (map == AA_ARAYEH_OFF) {
+            // go to next loop cycle.
+            continue;
+        }
 
         // insert element into arayeh.
         state = self->insert(self, insertIndex, elementPtr);
@@ -436,7 +488,8 @@ int _mergeArayehTypeLInt(arayeh *self, size_t startIndex, size_t step, arayeh *s
 int _mergeArayehTypeFloat(arayeh *self, size_t startIndex, size_t step, arayeh *source)
 {
     // shorten names for god's sake.
-    struct privateProperties *privateProperties = &source->_privateProperties;
+    struct privateProperties *selfPrivateProperties = &self->_privateProperties;
+    struct privateProperties *srcPrivateProperties  = &source->_privateProperties;
 
     // track error state in the function.
     int state;
@@ -445,10 +498,13 @@ int _mergeArayehTypeFloat(arayeh *self, size_t startIndex, size_t step, arayeh *
     size_t insertIndex;
 
     // pointers.
-    float *arrayPtr = privateProperties->array.floatPtr;
+    float *arrayPtr = srcPrivateProperties->array.floatPtr;
     float *elementPtr;
 
-    for (size_t arrayIndex = 0, arayehIndex = 0; arrayIndex < privateProperties->size;
+    // temporary variable to hold map value.
+    char map;
+
+    for (size_t arrayIndex = 0, arayehIndex = 0; arrayIndex < srcPrivateProperties->size;
          arrayIndex++, arayehIndex += step) {
 
         // calculate next element location.
@@ -456,6 +512,15 @@ int _mergeArayehTypeFloat(arayeh *self, size_t startIndex, size_t step, arayeh *
 
         // calculate next index.
         insertIndex = startIndex + arayehIndex;
+
+        // hold src map value.
+        map = srcPrivateProperties->map[arrayIndex];
+
+        // do not insert element if its empty.
+        if (map == AA_ARAYEH_OFF) {
+            // go to next loop cycle.
+            continue;
+        }
 
         // insert element into arayeh.
         state = self->insert(self, insertIndex, elementPtr);
@@ -473,7 +538,8 @@ int _mergeArayehTypeFloat(arayeh *self, size_t startIndex, size_t step, arayeh *
 int _mergeArayehTypeDouble(arayeh *self, size_t startIndex, size_t step, arayeh *source)
 {
     // shorten names for god's sake.
-    struct privateProperties *privateProperties = &source->_privateProperties;
+    struct privateProperties *selfPrivateProperties = &self->_privateProperties;
+    struct privateProperties *srcPrivateProperties  = &source->_privateProperties;
 
     // track error state in the function.
     int state;
@@ -482,10 +548,13 @@ int _mergeArayehTypeDouble(arayeh *self, size_t startIndex, size_t step, arayeh 
     size_t insertIndex;
 
     // pointers.
-    double *arrayPtr = privateProperties->array.doublePtr;
+    double *arrayPtr = srcPrivateProperties->array.doublePtr;
     double *elementPtr;
 
-    for (size_t arrayIndex = 0, arayehIndex = 0; arrayIndex < privateProperties->size;
+    // temporary variable to hold map value.
+    char map;
+
+    for (size_t arrayIndex = 0, arayehIndex = 0; arrayIndex < srcPrivateProperties->size;
          arrayIndex++, arayehIndex += step) {
 
         // calculate next element location.
@@ -493,6 +562,15 @@ int _mergeArayehTypeDouble(arayeh *self, size_t startIndex, size_t step, arayeh 
 
         // calculate next index.
         insertIndex = startIndex + arayehIndex;
+
+        // hold src map value.
+        map = srcPrivateProperties->map[arrayIndex];
+
+        // do not insert element if its empty.
+        if (map == AA_ARAYEH_OFF) {
+            // go to next loop cycle.
+            continue;
+        }
 
         // insert element into arayeh.
         state = self->insert(self, insertIndex, elementPtr);

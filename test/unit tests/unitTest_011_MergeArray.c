@@ -343,10 +343,11 @@ void test_general_ON_method_specific_merge_array_extension_OFF(void)
     struct privateProperties *privateProperties = &testCase->_privateProperties;
 
     // define new size settings.
-    arayehSizeSettings newSizeSettings = {.extendAdd        = AA_ARAYEH_ON,
-                                          .extendInsert     = AA_ARAYEH_ON,
-                                          .extendFill       = AA_ARAYEH_ON,
-                                          .extendMergeArray = AA_ARAYEH_OFF};
+    arayehSizeSettings newSizeSettings = {.extendAdd         = AA_ARAYEH_ON,
+                                          .extendInsert      = AA_ARAYEH_ON,
+                                          .extendFill        = AA_ARAYEH_ON,
+                                          .extendMergeArayeh = AA_ARAYEH_ON,
+                                          .extendMergeArray  = AA_ARAYEH_OFF};
 
     // set new size settings.
     testCase->setSizeSettings(testCase, &newSizeSettings);
@@ -401,10 +402,11 @@ void test_general_MANUAL_method_specific_merge_array_extension_OFF(void)
     testCase->setSettings(testCase, &newSetting);
 
     // define new size settings.
-    arayehSizeSettings newSizeSettings = {.extendAdd        = AA_ARAYEH_ON,
-                                          .extendInsert     = AA_ARAYEH_ON,
-                                          .extendFill       = AA_ARAYEH_ON,
-                                          .extendMergeArray = AA_ARAYEH_OFF};
+    arayehSizeSettings newSizeSettings = {.extendAdd         = AA_ARAYEH_ON,
+                                          .extendInsert      = AA_ARAYEH_ON,
+                                          .extendFill        = AA_ARAYEH_ON,
+                                          .extendMergeArayeh = AA_ARAYEH_ON,
+                                          .extendMergeArray  = AA_ARAYEH_OFF};
 
     // set new size settings.
     testCase->setSizeSettings(testCase, &newSizeSettings);
@@ -481,7 +483,7 @@ void test_merge_array_error_wrong_step(void)
 
 int main(void)
 {
-    UnityBegin("unitTest_7_mergeArray.c");
+    UnityBegin("unitTest_011_MergeArray.c");
 
     RUN_TEST(test_merge_array_empty_arayeh_step_1);
     RUN_TEST(test_merge_array_empty_arayeh_step_5);

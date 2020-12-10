@@ -125,7 +125,7 @@ void test_init_free(void)
 
 int main(void)
 {
-    UnityBegin("unitTest_1_InitFree.c");
+    UnityBegin("unitTest_001_InitFree.c");
 
     RUN_TEST(test_init_free);
 

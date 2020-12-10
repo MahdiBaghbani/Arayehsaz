@@ -98,7 +98,7 @@ __BEGIN_DECLS
 typedef struct arayehStruct arayeh;
 
 // Supported arayeh types.
-typedef union arayehTypeUnion {
+typedef union {
 
     // pointer to the array of type char.
     char *charPtr;
@@ -119,7 +119,7 @@ typedef union arayehTypeUnion {
     double *doublePtr;
 } arayehType;
 
-typedef struct arayehSizeSettingsStruct {
+typedef struct {
 
     // allow extending arayeh size when using add method.
     char extendAdd;
@@ -138,7 +138,7 @@ typedef struct arayehSizeSettingsStruct {
 } arayehSizeSettings;
 
 // Arayeh settings.
-typedef struct arayehSettingsStruct {
+typedef struct {
 
     // allow debug messages to be printed on stdout and stderr.
     char debugMessages;
@@ -243,8 +243,8 @@ typedef struct arayehStruct {
 
         // TODO: write methods -> duplicate, getArray, arayehSlice, arraySlice,
         // TODO: reduceSize, compact, max, min, sum, multiply, changeType
-        // TODO: deleteItem, pop, contains, count,
-        // TODO: reorder, shuffle, reverse, sort,
+        // TODO: deleteItem, deleteSlice, pop, popArayeh, popArraySlice,
+        // TODO: contains, count, reorder, shuffle, reverse, sort,
 
         // this function will override arayeh default settings.
         void (*setSettings)(arayeh *self, arayehSettings *settings);

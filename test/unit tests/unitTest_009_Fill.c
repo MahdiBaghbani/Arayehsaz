@@ -400,10 +400,11 @@ void test_general_ON_method_specific_fill_extension_OFF(void)
     struct privateProperties *privateProperties = &testCase->_privateProperties;
 
     // define new size settings.
-    arayehSizeSettings newSizeSettings = {.extendAdd        = AA_ARAYEH_ON,
-                                          .extendInsert     = AA_ARAYEH_ON,
-                                          .extendFill       = AA_ARAYEH_OFF,
-                                          .extendMergeArray = AA_ARAYEH_ON};
+    arayehSizeSettings newSizeSettings = {.extendAdd         = AA_ARAYEH_ON,
+                                          .extendInsert      = AA_ARAYEH_ON,
+                                          .extendFill        = AA_ARAYEH_OFF,
+                                          .extendMergeArayeh = AA_ARAYEH_ON,
+                                          .extendMergeArray  = AA_ARAYEH_ON};
 
     // set new size settings.
     testCase->setSizeSettings(testCase, &newSizeSettings);
@@ -460,10 +461,11 @@ void test_general_MANUAL_method_specific_fill_extension_OFF(void)
     testCase->setSettings(testCase, &newSetting);
 
     // define new size settings.
-    arayehSizeSettings newSizeSettings = {.extendAdd        = AA_ARAYEH_ON,
-                                          .extendInsert     = AA_ARAYEH_ON,
-                                          .extendFill       = AA_ARAYEH_OFF,
-                                          .extendMergeArray = AA_ARAYEH_ON};
+    arayehSizeSettings newSizeSettings = {.extendAdd         = AA_ARAYEH_ON,
+                                          .extendInsert      = AA_ARAYEH_ON,
+                                          .extendFill        = AA_ARAYEH_OFF,
+                                          .extendMergeArayeh = AA_ARAYEH_ON,
+                                          .extendMergeArray  = AA_ARAYEH_ON};
 
     // set new size settings.
     testCase->setSizeSettings(testCase, &newSizeSettings);
@@ -511,10 +513,11 @@ void test_general_size_extension_MANUAL_add_insert_OFF_fill_ON(void)
     testCase->setSettings(testCase, &newSetting);
 
     // define new size settings.
-    arayehSizeSettings newSizeSettings = {.extendAdd        = AA_ARAYEH_OFF,
-                                          .extendInsert     = AA_ARAYEH_OFF,
-                                          .extendFill       = AA_ARAYEH_ON,
-                                          .extendMergeArray = AA_ARAYEH_ON};
+    arayehSizeSettings newSizeSettings = {.extendAdd         = AA_ARAYEH_OFF,
+                                          .extendInsert      = AA_ARAYEH_OFF,
+                                          .extendFill        = AA_ARAYEH_ON,
+                                          .extendMergeArayeh = AA_ARAYEH_ON,
+                                          .extendMergeArray  = AA_ARAYEH_ON};
 
     // set new size settings.
     testCase->setSizeSettings(testCase, &newSizeSettings);
@@ -603,7 +606,7 @@ void test_fill_error_wrong_step(void)
 
 int main(void)
 {
-    UnityBegin("unitTest_6_Fill.c");
+    UnityBegin("unitTest_009_Fill.c");
 
     RUN_TEST(test_fill_all_empty_step_one);
     RUN_TEST(test_fill_all_empty_step_two);

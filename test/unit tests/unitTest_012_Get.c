@@ -1,4 +1,4 @@
-/** test/unitTest_3_Extend.c
+/** test/unitTest_8_Get
  *
  * This file is a part of:
  * Azadeh Afzar - Arayehsaz (AA-A).
@@ -45,31 +45,37 @@ void tearDown(void)
 {
 }
 
-void test_extend(void)
+void test_get(void)
 {
-    // This Test is here to ensure that extend works as expected.
+    // Test that insert method works as expected.
 
     // define error state variable.
     int state;
 
     // define default arayeh size.
-    size_t arayehSize = 20;
-    size_t extendSize = 34;
+    size_t arayehSize = 5;
+    size_t startIndex = 0;
+    size_t step       = 1;
+    int element;
 
     // create new arayeh.
     arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
 
-    // test current size.
-    TEST_ASSERT_EQUAL_INT(arayehSize, testCase->_privateProperties.size);
+    // define a c array with size 5.
+    int cArray[5] = {1, 0, 6, 4, 7};
 
-    // extend size.
-    state = testCase->extendSize(testCase, extendSize);
+    // merge array.
+    state = testCase->mergeArray(testCase, startIndex, step, 5, &cArray);
 
-    // assert successful extension.
-    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
+    if (state != AA_ARAYEH_SUCCESS) {
+        exit(1);
+    }
 
-    // test new size.
-    TEST_ASSERT_EQUAL_INT(arayehSize + extendSize, testCase->_privateProperties.size);
+    // get elements from arayeh.
+    for (size_t index = startIndex; index < arayehSize; index += step) {
+        testCase->get(testCase, index, &element);
+        TEST_ASSERT_EQUAL_INT(cArray[index], element);
+    }
 
     // free arayeh.
     testCase->freeArayeh(&testCase);
@@ -77,9 +83,9 @@ void test_extend(void)
 
 int main(void)
 {
-    UnityBegin("unitTest_3_Extend.c");
+    UnityBegin("unitTest_012_Get.c");
 
-    RUN_TEST(test_extend);
+    RUN_TEST(test_get);
 
     return UnityEnd();
 }

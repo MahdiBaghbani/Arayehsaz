@@ -107,7 +107,7 @@ void test_decrease_size(void)
 
 int main(void)
 {
-    UnityBegin("unitTest_2_ResizeMemory.c");
+    UnityBegin("unitTest_002_ResizeMemory.c");
 
     RUN_TEST(test_increase_size);
     RUN_TEST(test_decrease_size);
