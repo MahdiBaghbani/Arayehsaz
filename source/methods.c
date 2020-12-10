@@ -225,6 +225,57 @@ int _freeMemory(arayeh **self)
     return AA_ARAYEH_SUCCESS;
 }
 
+arayeh *_duplicateArayeh(arayeh *self)
+{
+    /*
+     * This function will create an exact copy of "self" arayeh.
+     *
+     * ARGUMENTS:
+     * self         pointer to the arayeh object.
+     *
+     * RETURN:
+     * A pointer to the initialized arayeh.
+     * or
+     * return NULL in case of error.
+     */
+
+    // shorten names for god's sake.
+    struct privateProperties *privateProperties = &self->_privateProperties;
+
+    // shorten setting names.
+    char debugMessages = privateProperties->settings->debugMessages;
+
+    // set debug flag.
+    int debug = debugMessages == AA_ARAYEH_ON ? TRUE : FALSE;
+
+    // track error state in the function.
+    int state;
+
+    // create new arayeh with "self" properties.
+    arayeh *duplicate = Arayeh(privateProperties->type, privateProperties->size);
+
+    // check errors.
+    if (duplicate == NULL) {
+        WARN_INIT_FAIL("_duplicateArayeh() method, can not create new arayeh.", debug);
+        return NULL;
+    }
+
+    // apply self settings to new arayeh.
+    duplicate->setSettings(duplicate, privateProperties->settings);
+    duplicate->setSizeSettings(duplicate, privateProperties->settings->methodSize);
+
+    // copy "self" arayeh into "duplicate" arayeh.
+    state = duplicate->mergeArayeh(duplicate, 0, 1, self);
+
+    // check errors.
+    if (state != AA_ARAYEH_SUCCESS) {
+        WARN_INIT_FAIL("_duplicateArayeh() method, merge arayeh method failed.", debug);
+    }
+
+    // return pointer to the duplicated arayeh.
+    return duplicate;
+}
+
 int _addToArayeh(arayeh *self, void *element)
 {
     /*

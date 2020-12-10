@@ -88,6 +88,7 @@ void setPublicMethods(arayeh *self)
     self->resizeMemory    = _resizeMemory;
     self->extendSize      = _extendSize;
     self->freeArayeh      = _freeMemory;
+    self->duplicate       = _duplicateArayeh;
     self->add             = _addToArayeh;
     self->insert          = _insertToArayeh;
     self->fill            = _fillArayeh;

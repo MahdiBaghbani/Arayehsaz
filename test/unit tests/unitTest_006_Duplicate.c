@@ -1,4 +1,4 @@
-/** test/unitTest_012_Get.c
+/** test/unitTest_006_Duplicate.c
  *
  * This file is a part of:
  * Azadeh Afzar - Arayehsaz (AA-A).
@@ -59,30 +59,60 @@ void test_get(void)
     int element;
 
     // create new arayeh.
-    arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+    arayeh *sourceCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
 
     // define a c array with size 5.
     int cArray[5] = {1, 0, 6, 4, 7};
 
     // merge array.
-    state = testCase->mergeArray(testCase, startIndex, step, 5, &cArray);
+    state = sourceCase->mergeArray(sourceCase, startIndex, step, 5, &cArray);
 
     // assert successful merge.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
 
+    // duplicate arayeh.
+    arayeh *duplicateCase = sourceCase->duplicate(sourceCase);
+
+    // shorten names.
+    struct privateProperties *sPrivateProperties = &sourceCase->_privateProperties;
+    struct privateProperties *dPrivateProperties = &duplicateCase->_privateProperties;
+
     // get elements from arayeh.
     for (size_t index = startIndex; index < arayehSize; index += step) {
-        testCase->get(testCase, index, &element);
+        duplicateCase->get(duplicateCase, index, &element);
         TEST_ASSERT_EQUAL_INT(cArray[index], element);
     }
 
+    // check for same properties.
+    TEST_ASSERT_EQUAL_INT(sPrivateProperties->next, dPrivateProperties->next);
+    TEST_ASSERT_EQUAL_INT(sPrivateProperties->used, dPrivateProperties->used);
+    TEST_ASSERT_EQUAL_INT(sPrivateProperties->size, dPrivateProperties->size);
+
+    // check for same settings.
+    TEST_ASSERT_EQUAL_CHAR(sPrivateProperties->settings->debugMessages,
+                           dPrivateProperties->settings->debugMessages);
+    TEST_ASSERT_EQUAL_CHAR(sPrivateProperties->settings->extendSize,
+                           dPrivateProperties->settings->extendSize);
+
+    // check for same size settings.
+    TEST_ASSERT_EQUAL_CHAR(sPrivateProperties->settings->methodSize->extendAdd,
+                           dPrivateProperties->settings->methodSize->extendAdd);
+    TEST_ASSERT_EQUAL_CHAR(sPrivateProperties->settings->methodSize->extendInsert,
+                           dPrivateProperties->settings->methodSize->extendInsert);
+    TEST_ASSERT_EQUAL_CHAR(sPrivateProperties->settings->methodSize->extendFill,
+                           dPrivateProperties->settings->methodSize->extendFill);
+    TEST_ASSERT_EQUAL_CHAR(sPrivateProperties->settings->methodSize->extendMergeArayeh,
+                           dPrivateProperties->settings->methodSize->extendMergeArayeh);
+    TEST_ASSERT_EQUAL_CHAR(sPrivateProperties->settings->methodSize->extendMergeArray,
+                           dPrivateProperties->settings->methodSize->extendMergeArray);
     // free arayeh.
-    testCase->freeArayeh(&testCase);
+    sourceCase->freeArayeh(&sourceCase);
+    duplicateCase->freeArayeh(&duplicateCase);
 }
 
 int main(void)
 {
-    UnityBegin("unitTest_012_Get.c");
+    UnityBegin("unitTest_006_Duplicate.c");
 
     RUN_TEST(test_get);
 

@@ -91,6 +91,8 @@
     WARN("low memory? calloc() failed in " what, allow_print)
 #define WARN_REALLOC(what, allow_print) \
     WARN("low memory? realloc() failed in " what, allow_print)
+#define WARN_INIT_FAIL(what, allow_print) \
+    WARN("arayeh initialization error, failed in " what, allow_print)
 #define WARN_STRDUP(what, allow_print) \
     WARN("low memory? strdup() failed in " what, allow_print)
 #define WARN_WRONG_TYPE(what, allow_print) \

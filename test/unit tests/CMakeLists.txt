@@ -6,6 +6,7 @@ set(files
         "unitTest_001_InitFree.c"
         "unitTest_002_ResizeMemory.c"
         "unitTest_003_Extend.c"
+        "unitTest_006_Duplicate.c"
         "unitTest_007_Add.c"
         "unitTest_008_Insert.c"
         "unitTest_009_Fill.c"

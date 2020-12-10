@@ -168,9 +168,6 @@ typedef struct arayehStruct {
 
         // holds current size of arayeh.
         size_t size;
-
-        // hold settings for arayeh.
-        arayehSettings *settings;
     };
 
     // Private properties of arayeh.
@@ -214,6 +211,9 @@ typedef struct arayehStruct {
         // this function will free the arayeh and reset its parameters.
         int (*freeArayeh)(arayeh **self);
 
+        // this function will create an exact copy of "self" arayeh.
+        arayeh *(*duplicate)(arayeh *self);
+
         // this function will insert an "element" into arayeh at the next empty
         // location in the arayeh. if arayeh is full, it will extend arayeh size.
         int (*add)(arayeh *self, void *element);
@@ -241,10 +241,11 @@ typedef struct arayehStruct {
         // "destination" memory location.
         int (*get)(arayeh *self, size_t index, void *destination);
 
-        // TODO: write methods -> duplicate, getArray, arayehSlice, arraySlice,
+        // TODO: write methods -> getArray, arayehSlice, arraySlice,
         // TODO: reduceSize, compact, max, min, sum, multiply, changeType
         // TODO: deleteItem, deleteSlice, pop, popArayeh, popArraySlice,
-        // TODO: contains, count, reorder, shuffle, reverse, sort,
+        // TODO: contains, count, reorder, shuffle, reverse, sort, isEmpty, showSettings
+        // TODO: complete error tracing.
 
         // this function will override arayeh default settings.
         void (*setSettings)(arayeh *self, arayehSettings *settings);

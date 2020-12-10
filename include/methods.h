@@ -63,6 +63,9 @@ int _extendSize(arayeh *self, size_t extendSize);
 // this function will free the array and reset its parameters.
 int _freeMemory(arayeh **self);
 
+// this function will create an exact copy of "self" arayeh.
+arayeh *_duplicateArayeh(arayeh *self);
+
 // this function will insert an "element" into array at
 // index = self->_privateProperties.next.
 int _addToArayeh(arayeh *self, void *element);
