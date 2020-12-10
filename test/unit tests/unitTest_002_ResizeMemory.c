@@ -1,4 +1,4 @@
-/** test/unitTest_2_ResizeMemory.c
+/** test/unitTest_002_ResizeMemory.c
  *
  * This file is a part of:
  * Azadeh Afzar - Arayehsaz (AA-A).

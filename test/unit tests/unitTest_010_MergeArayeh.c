@@ -1,4 +1,4 @@
-/** test/unitTest_7_mergeArray.c
+/** test/unitTest_010_mergeArayeh.c
  *
  * This file is a part of:
  * Azadeh Afzar - Arayehsaz (AA-A).
