@@ -3,7 +3,8 @@
  * This file is a part of:
  * Azadeh Afzar - Arayehsaz (AA-A).
  *
- * Copyright (C) 2020 Mohammad Mahdi Baghbani Pourvahid.
+ * Copyright (C) 2020 - 2021 Azadeh Afzar.
+ * Copyright (C) 2020 - 2021 Mohammad Mahdi Baghbani Pourvahid.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -41,7 +42,7 @@
 #include "../include/methods.h"
 #include "../include/types.h"
 
-int autoExtendMemory(arayeh *self)
+int auto_extend_memory(arayeh *self)
 {
     /*
      * This function will calculate the extension size of memory and extends arayeh
@@ -57,22 +58,22 @@ int autoExtendMemory(arayeh *self)
      */
 
     // shorten names for god's sake.
-    struct privateMethods *privateMethods = &self->_privateMethods;
+    struct private_methods *private_methods = &self->_private_methods;
 
     // track error state in the function.
     int state;
 
     // calculate the extension memory size using growth factor function.
-    size_t extension_size = privateMethods->growthFactor(self);
+    size_t extension_size = private_methods->growth_factor(self);
 
     // extend arayeh size.
-    state = self->extendSize(self, extension_size);
+    state = self->extend_size(self, extension_size);
 
     // return error state.
     return state;
 }
 
-void setPublicMethods(arayeh *self)
+void set_public_methods(arayeh *self)
 {
     /*
      * This function assigns pointers to public functions of an arayeh instance.
@@ -85,22 +86,22 @@ void setPublicMethods(arayeh *self)
      *
      */
 
-    self->resizeMemory    = _resizeMemory;
-    self->extendSize      = _extendSize;
-    self->freeArayeh      = _freeMemory;
-    self->duplicate       = _duplicateArayeh;
-    self->add             = _addToArayeh;
-    self->insert          = _insertToArayeh;
-    self->fill            = _fillArayeh;
-    self->mergeArayeh     = _mergeFromArayeh;
-    self->mergeArray      = _mergeFromArray;
-    self->get             = _getFromArayeh;
-    self->setSettings     = _setSettings;
-    self->setSizeSettings = _setSizeSettings;
-    self->setGrowthFactor = _setGrowthFactor;
+    self->resize_memory     = _resize_memory;
+    self->extend_size       = _extend_size;
+    self->free_arayeh       = _free_memory;
+    self->duplicate         = _duplicate_arayeh;
+    self->add               = _add_to_arayeh;
+    self->insert            = _insert_to_arayeh;
+    self->fill              = _fill_arayeh;
+    self->merge_arayeh      = _merge_from_arayeh;
+    self->merge_array       = _merge_from_array;
+    self->get               = _get_from_arayeh;
+    self->set_settings      = _set_settings;
+    self->set_size_settings = _set_size_settings;
+    self->set_growth_factor = _set_growth_factor;
 }
 
-void setPrivateMethods(arayeh *self, size_t type)
+void set_private_methods(arayeh *self, size_t type)
 {
     /*
      * This function assigns pointers to private functions of an arayeh instance.
@@ -115,85 +116,85 @@ void setPrivateMethods(arayeh *self, size_t type)
      */
 
     // shorten names for god's sake.
-    struct privateMethods *privateMethods = &self->_privateMethods;
+    struct private_methods *private_methods = &self->_private_methods;
 
     // set memory space growth factor function to default.
-    privateMethods->growthFactor = growthFactorPython;
+    private_methods->growth_factor = growth_factor_python;
 
     // assign based on the arayeh type.
     switch (type) {
     case AA_ARAYEH_TYPE_CHAR:
-        privateMethods->initArayeh       = _initPtrTypeChar;
-        privateMethods->mallocArayeh     = _mallocTypeChar;
-        privateMethods->reallocArayeh    = _reallocTypeChar;
-        privateMethods->freeArayeh       = _freeTypeChar;
-        privateMethods->setMemoryPointer = _setMemPtrTypeChar;
-        privateMethods->addToArayeh      = _addTypeChar;
-        privateMethods->mergeFromArayeh  = _mergeArayehTypeChar;
-        privateMethods->mergeFromArray   = _mergeArrayTypeChar;
-        privateMethods->getFromArayeh    = _getTypeChar;
+        private_methods->init_arayeh        = _init_pointer_type_char;
+        private_methods->malloc_arayeh      = _malloc_type_char;
+        private_methods->realloc_arayeh     = _realloc_type_char;
+        private_methods->free_arayeh        = _free_type_char;
+        private_methods->set_memory_pointer = _set_memory_pointer_type_char;
+        private_methods->add_to_arayeh      = _add_type_char;
+        private_methods->merge_from_arayeh  = _merge_arayeh_type_char;
+        private_methods->merge_from_array   = _merge_array_type_char;
+        private_methods->get_from_arayeh    = _get_type_char;
         break;
 
     case AA_ARAYEH_TYPE_SINT:
-        privateMethods->initArayeh       = _initPtrTypeSInt;
-        privateMethods->mallocArayeh     = _mallocTypeSInt;
-        privateMethods->reallocArayeh    = _reallocTypeSInt;
-        privateMethods->freeArayeh       = _freeTypeSInt;
-        privateMethods->setMemoryPointer = _setMemPtrTypeSInt;
-        privateMethods->addToArayeh      = _addTypeSInt;
-        privateMethods->mergeFromArayeh  = _mergeArayehTypeSInt;
-        privateMethods->mergeFromArray   = _mergeArrayTypeSInt;
-        privateMethods->getFromArayeh    = _getTypeSInt;
+        private_methods->init_arayeh        = _init_pointer_type_short_int;
+        private_methods->malloc_arayeh      = _malloc_type_short_int;
+        private_methods->realloc_arayeh     = _realloc_type_short_int;
+        private_methods->free_arayeh        = _free_type_short_int;
+        private_methods->set_memory_pointer = _set_memory_pointer_type_short_int;
+        private_methods->add_to_arayeh      = _add_type_short_int;
+        private_methods->merge_from_arayeh  = _merge_arayeh_type_short_int;
+        private_methods->merge_from_array   = _merge_array_type_short_int;
+        private_methods->get_from_arayeh    = _get_type_short_int;
         break;
 
     case AA_ARAYEH_TYPE_INT:
-        privateMethods->initArayeh       = _initPtrTypeInt;
-        privateMethods->mallocArayeh     = _mallocTypeInt;
-        privateMethods->reallocArayeh    = _reallocTypeInt;
-        privateMethods->freeArayeh       = _freeTypeInt;
-        privateMethods->setMemoryPointer = _setMemPtrTypeInt;
-        privateMethods->addToArayeh      = _addTypeInt;
-        privateMethods->mergeFromArayeh  = _mergeArayehTypeInt;
-        privateMethods->mergeFromArray   = _mergeArrayTypeInt;
-        privateMethods->getFromArayeh    = _getTypeInt;
+        private_methods->init_arayeh        = _init_pointer_type_int;
+        private_methods->malloc_arayeh      = _malloc_type_int;
+        private_methods->realloc_arayeh     = _realloc_type_int;
+        private_methods->free_arayeh        = _free_type_int;
+        private_methods->set_memory_pointer = _set_memory_pointer_type_int;
+        private_methods->add_to_arayeh      = _add_type_int;
+        private_methods->merge_from_arayeh  = _merge_arayeh_type_int;
+        private_methods->merge_from_array   = _merge_array_type_int;
+        private_methods->get_from_arayeh    = _get_type_int;
         break;
 
     case AA_ARAYEH_TYPE_LINT:
-        privateMethods->initArayeh       = _initPtrTypeLInt;
-        privateMethods->mallocArayeh     = _mallocTypeLInt;
-        privateMethods->reallocArayeh    = _reallocTypeLInt;
-        privateMethods->freeArayeh       = _freeTypeLInt;
-        privateMethods->setMemoryPointer = _setMemPtrTypeLInt;
-        privateMethods->addToArayeh      = _addTypeLInt;
-        privateMethods->mergeFromArayeh  = _mergeArayehTypeLInt;
-        privateMethods->mergeFromArray   = _mergeArrayTypeLInt;
-        privateMethods->getFromArayeh    = _getTypeLInt;
+        private_methods->init_arayeh        = _init_pointer_type_long_int;
+        private_methods->malloc_arayeh      = _malloc_type_long_int;
+        private_methods->realloc_arayeh     = _realloc_type_long_int;
+        private_methods->free_arayeh        = _free_type_long_int;
+        private_methods->set_memory_pointer = _set_memory_pointer_type_long_int;
+        private_methods->add_to_arayeh      = _add_type_long_int;
+        private_methods->merge_from_arayeh  = _merge_arayeh_type_long_int;
+        private_methods->merge_from_array   = _merge_array_type_long_int;
+        private_methods->get_from_arayeh    = _get_type_long_int;
         break;
 
     case AA_ARAYEH_TYPE_FLOAT:
-        privateMethods->initArayeh       = _initPtrTypeFloat;
-        privateMethods->mallocArayeh     = _mallocTypeFloat;
-        privateMethods->reallocArayeh    = _reallocTypeFloat;
-        privateMethods->freeArayeh       = _freeTypeFloat;
-        privateMethods->setMemoryPointer = _setMemPtrTypeFloat;
-        privateMethods->addToArayeh      = _addTypeFloat;
-        privateMethods->mergeFromArayeh  = _mergeArayehTypeFloat;
-        privateMethods->mergeFromArray   = _mergeArrayTypeFloat;
-        privateMethods->getFromArayeh    = _getTypeFloat;
+        private_methods->init_arayeh        = _init_pointer_type_float;
+        private_methods->malloc_arayeh      = _malloc_type_float;
+        private_methods->realloc_arayeh     = _realloc_type_float;
+        private_methods->free_arayeh        = _free_type_float;
+        private_methods->set_memory_pointer = _set_memory_pointer_type_float;
+        private_methods->add_to_arayeh      = _add_type_float;
+        private_methods->merge_from_arayeh  = _merge_arayeh_type_float;
+        private_methods->merge_from_array   = _merge_array_type_float;
+        private_methods->get_from_arayeh    = _get_type_float;
         break;
 
     case AA_ARAYEH_TYPE_DOUBLE:
-        privateMethods->initArayeh       = _initPtrTypeDouble;
-        privateMethods->mallocArayeh     = _mallocTypeDouble;
-        privateMethods->reallocArayeh    = _reallocTypeDouble;
-        privateMethods->freeArayeh       = _freeTypeDouble;
-        privateMethods->setMemoryPointer = _setMemPtrTypeDouble;
-        privateMethods->addToArayeh      = _addTypeDouble;
-        privateMethods->mergeFromArayeh  = _mergeArayehTypeDouble;
-        privateMethods->mergeFromArray   = _mergeArrayTypeDouble;
-        privateMethods->getFromArayeh    = _getTypeDouble;
+        private_methods->init_arayeh        = _init_pointer_type_double;
+        private_methods->malloc_arayeh      = _malloc_type_double;
+        private_methods->realloc_arayeh     = _realloc_type_double;
+        private_methods->free_arayeh        = _free_type_double;
+        private_methods->set_memory_pointer = _set_memory_pointer_type_double;
+        private_methods->add_to_arayeh      = _add_type_double;
+        private_methods->merge_from_arayeh  = _merge_arayeh_type_double;
+        private_methods->merge_from_array   = _merge_array_type_double;
+        private_methods->get_from_arayeh    = _get_type_double;
         break;
     default:
-        FATAL_WRONG_TYPE("setPrivateMethods", TRUE);
+        FATAL_WRONG_TYPE("set_private_methods", AA_ARAYEH_TRUE);
     }
 }

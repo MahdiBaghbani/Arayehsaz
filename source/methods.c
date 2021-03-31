@@ -3,7 +3,8 @@
  * This file is a part of:
  * Azadeh Afzar - Arayehsaz (AA-A).
  *
- * Copyright (C) 2020 Mohammad Mahdi Baghbani Pourvahid.
+ * Copyright (C) 2020 - 2021 Azadeh Afzar.
+ * Copyright (C) 2020 - 2021 Mohammad Mahdi Baghbani Pourvahid.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -40,14 +41,14 @@
 #include "../include/fatal.h"
 #include "../include/functions.h"
 
-int _resizeMemory(arayeh *self, size_t newSize)
+int _resize_memory(arayeh *self, size_t new_size)
 {
     /*
      * This function will reallocate memory to the arayeh and its map.
      *
      * ARGUMENTS:
-     * self         pointer to the arayeh object.
-     * newSize      size increment.
+     * self          pointer to the arayeh object.
+     * new_size      size increment.
      *
      * RETURN:
      * state        a code that indicates successful operation
@@ -56,68 +57,69 @@ int _resizeMemory(arayeh *self, size_t newSize)
      */
 
     // shorten names for god's sake.
-    struct privateMethods *privateMethods       = &self->_privateMethods;
-    struct privateProperties *privateProperties = &self->_privateProperties;
+    struct private_methods *private_methods       = &self->_private_methods;
+    struct private_properties *private_properties = &self->_private_properties;
 
     // shorten setting names.
-    char debugMessages = privateProperties->settings->debugMessages;
+    char debug_messages = private_properties->settings->debug_messages;
 
     // set debug flag.
-    int debug = debugMessages == AA_ARAYEH_ON ? TRUE : FALSE;
+    int debug = debug_messages == AA_ARAYEH_ON ? AA_ARAYEH_TRUE : AA_ARAYEH_FALSE;
 
     // track error state in the function.
     int state;
 
     // initialize variables for allocating memory.
-    char *mapPtr = NULL;
-    arayehType arayehPtr;
+    char *map_pointer = NULL;
+    arayeh_types arayeh_pointer;
 
     // this function identifies the right pointer for arayeh type and sets it to
-    // point to NULL and also checks for possible overflow in size_t newSize.
-    state = privateMethods->initArayeh(self, &arayehPtr, newSize);
+    // point to NULL and also checks for possible overflow in size_t new_size.
+    state = private_methods->init_arayeh(self, &arayeh_pointer, new_size);
 
     // protection for possible overflow in size_t.
     if (state == AA_ARAYEH_FAILURE) {
-        WARN_T_OVERFLOW("_resizeMemory()", debug);
+        WARN_T_OVERFLOW("_resize_memory()", debug);
         return AA_ARAYEH_OVERFLOW;
     }
 
     // reallocate memory to map and arayeh.
-    mapPtr = (char *) realloc(privateProperties->map, sizeof *mapPtr * newSize);
-    state  = privateMethods->reallocArayeh(self, &arayehPtr, newSize);
+    map_pointer =
+        (char *) realloc(private_properties->map, sizeof *map_pointer * new_size);
+    state = private_methods->realloc_arayeh(self, &arayeh_pointer, new_size);
 
     // check if memory re-allocated or not.
-    if (state == AA_ARAYEH_FAILURE || mapPtr == NULL) {
+    if (state == AA_ARAYEH_FAILURE || map_pointer == NULL) {
         // free map and arayeh pointers.
-        free(mapPtr);
-        privateMethods->freeArayeh(self);
+        free(map_pointer);
+        private_methods->free_arayeh(self);
 
         // write to stderr and return error code.
-        WARN_REALLOC("_resizeMemory()", debug);
+        WARN_REALLOC("_resize_memory()", debug);
         return AA_ARAYEH_REALLOC_DENIED;
     }
 
     // set pointers to memory locations.
-    privateMethods->setMemoryPointer(self, &arayehPtr);
-    privateProperties->map = mapPtr;
+    private_methods->set_memory_pointer(self, &arayeh_pointer);
+    private_properties->map = map_pointer;
 
     // update arayeh parameters.
-    privateProperties->size = newSize;
-    self->size              = newSize;
+    private_properties->size = new_size;
+    self->size               = new_size;
 
     // return success code.
     return AA_ARAYEH_SUCCESS;
 }
 
-int _extendSize(arayeh *self, size_t extendSize)
+int _extend_size(arayeh *self, size_t extend_size)
 {
     /*
      * This function will reallocate memory to the arayeh and its map.
      * The reallocation with this function increases size of the arayeh.
      *
      * ARGUMENTS:
-     * self         pointer to the arayeh object.
-     * extendSize   size increment.
+     * self          pointer to the arayeh object.
+     * extend_size   size increment.
      *
      * RETURN:
      * state        a code that indicates successful operation
@@ -126,33 +128,33 @@ int _extendSize(arayeh *self, size_t extendSize)
      */
 
     // shorten names for god's sake.
-    struct privateProperties *privateProperties = &self->_privateProperties;
+    struct private_properties *private_properties = &self->_private_properties;
 
     // shorten setting names.
-    char debugMessages = privateProperties->settings->debugMessages;
+    char debug_messages = private_properties->settings->debug_messages;
 
     // set debug flag.
-    int debug = debugMessages == AA_ARAYEH_ON ? TRUE : FALSE;
+    int debug = debug_messages == AA_ARAYEH_ON ? AA_ARAYEH_TRUE : AA_ARAYEH_FALSE;
 
     // track error state in the function.
     int state;
 
     // store current size as old size for future use.
-    size_t oldSize = privateProperties->size;
+    size_t old_size = private_properties->size;
 
     // calculate new size for arayeh.
-    size_t newSize = oldSize + extendSize;
+    size_t new_size = old_size + extend_size;
 
     // size_t overflow protection.
-    if (newSize < oldSize) {
+    if (new_size < old_size) {
         // wrong new size detected.
         // write to stderr and return error code.
-        WARN_NEW_SIZE("_extendSize()", debug);
+        WARN_NEW_SIZE("_extend_size()", debug);
         return AA_ARAYEH_WRONG_NEW_SIZE;
     }
 
     // resize memory.
-    state = self->resizeMemory(self, newSize);
+    state = self->resize_memory(self, new_size);
 
     // in case of unsuccessful size increase,
     // abort and return error state code.
@@ -162,15 +164,15 @@ int _extendSize(arayeh *self, size_t extendSize)
 
     // set new map elements to '0' [AA_ARAYEH_OFF].
     // new elements determined from difference in old size and new size.
-    for (size_t index = oldSize; index < newSize; index++) {
-        privateProperties->map[index] = AA_ARAYEH_OFF;
+    for (size_t index = old_size; index < new_size; index++) {
+        private_properties->map[index] = AA_ARAYEH_OFF;
     }
 
     // return success code.
     return AA_ARAYEH_SUCCESS;
 }
 
-int _freeMemory(arayeh **self)
+int _free_memory(arayeh **self)
 {
     /*
      * This function will free the arayeh and reset its parameters.
@@ -184,38 +186,38 @@ int _freeMemory(arayeh **self)
      */
 
     // shorten names for god's sake.
-    arayeh *toBeFreed                           = (*self);
-    struct privateMethods *privateMethods       = &toBeFreed->_privateMethods;
-    struct privateProperties *privateProperties = &toBeFreed->_privateProperties;
+    arayeh *to_be_freed                           = (*self);
+    struct private_methods *private_methods       = &to_be_freed->_private_methods;
+    struct private_properties *private_properties = &to_be_freed->_private_properties;
 
     // reset arayeh parameters.
-    toBeFreed->type         = 0;
-    toBeFreed->next         = 0;
-    toBeFreed->used         = 0;
-    toBeFreed->size         = 0;
-    privateProperties->type = 0;
-    privateProperties->next = 0;
-    privateProperties->used = 0;
-    privateProperties->size = 0;
+    to_be_freed->type        = 0;
+    to_be_freed->next        = 0;
+    to_be_freed->used        = 0;
+    to_be_freed->size        = 0;
+    private_properties->type = 0;
+    private_properties->next = 0;
+    private_properties->used = 0;
+    private_properties->size = 0;
 
     // free the arayeh's internal array pointer.
-    privateMethods->freeArayeh(*self);
+    private_methods->free_arayeh(*self);
 
     // free map array pointer and nullify the pointer.
-    free(privateProperties->map);
-    privateProperties->map = NULL;
+    free(private_properties->map);
+    private_properties->map = NULL;
 
     // free arayeh method specific size settings.
-    free(privateProperties->settings->methodSize);
+    free(private_properties->settings->method_size);
 
     // nullify the pointer.
-    privateProperties->settings->methodSize = NULL;
+    private_properties->settings->method_size = NULL;
 
     // free arayeh settings.
-    free(privateProperties->settings);
+    free(private_properties->settings);
 
     // nullify the pointer.
-    privateProperties->settings = NULL;
+    private_properties->settings = NULL;
 
     // free arayeh pointer and nullify the arayeh pointer.
     free(*self);
@@ -225,7 +227,7 @@ int _freeMemory(arayeh **self)
     return AA_ARAYEH_SUCCESS;
 }
 
-arayeh *_duplicateArayeh(arayeh *self)
+arayeh *_duplicate_arayeh(arayeh *self)
 {
     /*
      * This function will create an exact copy of "self" arayeh.
@@ -240,55 +242,55 @@ arayeh *_duplicateArayeh(arayeh *self)
      */
 
     // shorten names for god's sake.
-    struct privateProperties *privateProperties = &self->_privateProperties;
+    struct private_properties *private_properties = &self->_private_properties;
 
     // shorten setting names.
-    char debugMessages = privateProperties->settings->debugMessages;
+    char debug_messages = private_properties->settings->debug_messages;
 
     // set debug flag.
-    int debug = debugMessages == AA_ARAYEH_ON ? TRUE : FALSE;
+    int debug = debug_messages == AA_ARAYEH_ON ? AA_ARAYEH_TRUE : AA_ARAYEH_FALSE;
 
     // track error state in the function.
     int state;
 
     // create new arayeh with "self" properties.
-    arayeh *duplicate = Arayeh(privateProperties->type, privateProperties->size);
+    arayeh *duplicate = Arayeh(private_properties->type, private_properties->size);
 
     // check errors.
     if (duplicate == NULL) {
-        WARN_INIT_FAIL("_duplicateArayeh() method, can not create new arayeh.", debug);
+        WARN_INIT_FAIL("_duplicate_arayeh() method, can not create new arayeh.", debug);
         return NULL;
     }
 
     // apply self settings to new arayeh.
-    duplicate->setSettings(duplicate, privateProperties->settings);
-    duplicate->setSizeSettings(duplicate, privateProperties->settings->methodSize);
+    duplicate->set_settings(duplicate, private_properties->settings);
+    duplicate->set_size_settings(duplicate, private_properties->settings->method_size);
 
     // copy "self" arayeh into "duplicate" arayeh.
-    state = duplicate->mergeArayeh(duplicate, 0, 1, self);
+    state = duplicate->merge_arayeh(duplicate, 0, 1, self);
 
     // check errors.
     if (state != AA_ARAYEH_SUCCESS) {
-        WARN_INIT_FAIL("_duplicateArayeh() method, merge arayeh method failed.", debug);
+        WARN_INIT_FAIL("_duplicate_arayeh() method, merge arayeh method failed.", debug);
     }
 
     // return pointer to the duplicated arayeh.
     return duplicate;
 }
 
-int _addToArayeh(arayeh *self, void *element)
+int _add_to_arayeh(arayeh *self, void *element)
 {
     /*
      * This function will insert an "element" into arayeh at
-     * index = self->_privateProperties.next.
+     * index = self->_private_properties.next.
      *
      * function will extend size of arayeh in case of
-     * self->_privateProperties.size == self->_privateProperties.used.
+     * self->_private_properties.size == self->_private_properties.used.
      *
      * it will update "map" and "used" and "next" parameters.
      * it may update "size" parameter (based on the user specified settings).
      *
-     * self->_privateProperties.next will be updated in a way that it points to
+     * self->_private_properties.next will be updated in a way that it points to
      * the next EMPTY slot in the arayeh.
      *
      * ARGUMENTS:
@@ -301,27 +303,27 @@ int _addToArayeh(arayeh *self, void *element)
      */
 
     // shorten names for god's sake.
-    struct privateMethods *privateMethods       = &self->_privateMethods;
-    struct privateProperties *privateProperties = &self->_privateProperties;
+    struct private_methods *private_methods       = &self->_private_methods;
+    struct private_properties *private_properties = &self->_private_properties;
 
     // shorten setting names.
-    char debugMessages = privateProperties->settings->debugMessages;
-    char extendSize    = privateProperties->settings->extendSize;
-    char extendAdd     = privateProperties->settings->methodSize->extendAdd;
+    char debug_messages = private_properties->settings->debug_messages;
+    char extend_size    = private_properties->settings->extend_size;
+    char extend_add     = private_properties->settings->method_size->extend_add;
 
     // set debug flag.
-    int debug = debugMessages == AA_ARAYEH_ON ? TRUE : FALSE;
+    int debug = debug_messages == AA_ARAYEH_ON ? AA_ARAYEH_TRUE : AA_ARAYEH_FALSE;
 
     // track error state in the function.
     int state;
 
     // check if arayeh is full.
-    if (privateProperties->used == privateProperties->size) {
+    if (private_properties->used == private_properties->size) {
         // decide to extend arayeh size based on arayeh settings.
-        switch (extendSize) {
+        switch (extend_size) {
         case AA_ARAYEH_ON:
             // extend arayeh size.
-            state = autoExtendMemory(self);
+            state = auto_extend_memory(self);
             // stop function and return error value if extending arayeh size failed.
             if (state != AA_ARAYEH_SUCCESS) {
                 return state;
@@ -330,15 +332,14 @@ int _addToArayeh(arayeh *self, void *element)
         case AA_ARAYEH_OFF:
             // write to stderr and return error code.
             WARN_WRONG_INDEX(
-                "_addToArayeh() method, not enough space left in the arayeh.", debug);
+                "_add_to_arayeh() method, not enough space left in the arayeh.", debug);
             return AA_ARAYEH_NOT_ENOUGH_SPACE;
-            break;
         // if manual is enabled, check against the correct extend size rule.
         case AA_ARAYEH_MANUAL:
-            switch (extendAdd) {
+            switch (extend_add) {
             case AA_ARAYEH_ON:
                 // extend arayeh size.
-                state = autoExtendMemory(self);
+                state = auto_extend_memory(self);
                 // stop function and return error value if extending arayeh size
                 // failed.
                 if (state != AA_ARAYEH_SUCCESS) {
@@ -348,39 +349,40 @@ int _addToArayeh(arayeh *self, void *element)
             case AA_ARAYEH_OFF:
                 // write to stderr and return error code.
                 WARN_WRONG_INDEX(
-                    "_addToArayeh() method, not enough space left in the arayeh.", debug);
+                    "_add_to_arayeh() method, not enough space left in the arayeh.",
+                    debug);
                 return AA_ARAYEH_NOT_ENOUGH_SPACE;
-                break;
             default:
-                FATAL_WRONG_SETTINGS("_addToArayeh() method, extendAdd "
+                FATAL_WRONG_SETTINGS("_add_to_arayeh() method, extend_add "
                                      "value is not correct.",
-                                     TRUE);
+                                     AA_ARAYEH_TRUE);
             }
             break;
         default:
             FATAL_WRONG_SETTINGS(
-                "_addToArayeh() method, extendSize value is not correct.", TRUE);
+                "_add_to_arayeh() method, extend_size value is not correct.",
+                AA_ARAYEH_TRUE);
         }
     }
 
     // add element.
-    privateMethods->addToArayeh(self, privateProperties->next, element);
+    private_methods->add_to_arayeh(self, private_properties->next, element);
 
     // update "map".
-    privateProperties->map[privateProperties->next] = AA_ARAYEH_ON;
+    private_properties->map[private_properties->next] = AA_ARAYEH_ON;
 
     // update both public and private "used" counter.
-    privateProperties->used++;
-    self->used = privateProperties->used;
+    private_properties->used++;
+    self->used = private_properties->used;
 
     // update "next" pointer.
-    updateNextIndex(self);
+    update_next_index(self);
 
     // return success code.
     return AA_ARAYEH_SUCCESS;
 }
 
-int _insertToArayeh(arayeh *self, size_t index, void *element)
+int _insert_to_arayeh(arayeh *self, size_t index, void *element)
 {
     /*
      * This function will insert an "element" into arayeh at "index".
@@ -405,30 +407,30 @@ int _insertToArayeh(arayeh *self, size_t index, void *element)
      */
 
     // shorten names for god's sake.
-    struct privateMethods *privateMethods       = &self->_privateMethods;
-    struct privateProperties *privateProperties = &self->_privateProperties;
+    struct private_methods *private_methods       = &self->_private_methods;
+    struct private_properties *private_properties = &self->_private_properties;
 
     // shorten setting names.
-    char debugMessages = privateProperties->settings->debugMessages;
-    char extendSize    = privateProperties->settings->extendSize;
-    char extendInsert  = privateProperties->settings->methodSize->extendInsert;
+    char debug_messages = private_properties->settings->debug_messages;
+    char extend_size    = private_properties->settings->extend_size;
+    char extend_insert  = private_properties->settings->method_size->extend_insert;
 
     // set debug flag.
-    int debug = debugMessages == AA_ARAYEH_ON ? TRUE : FALSE;
+    int debug = debug_messages == AA_ARAYEH_ON ? AA_ARAYEH_TRUE : AA_ARAYEH_FALSE;
 
     // track error state in the function.
     int state = AA_ARAYEH_SUCCESS;
 
     // check if index is bigger or equal to size of arayeh.
-    if (privateProperties->size <= index) {
+    if (private_properties->size <= index) {
         // calculate memory growth size needed.
-        size_t growthSize = index - privateProperties->size + 1;
+        size_t growth_size = index - private_properties->size + 1;
 
         // decide to extend arayeh size based on arayeh settings.
-        switch (extendSize) {
+        switch (extend_size) {
         case AA_ARAYEH_ON:
             // extend arayeh size.
-            state = self->extendSize(self, growthSize);
+            state = self->extend_size(self, growth_size);
 
             // check for unsuccessful size extension.
             if (state != AA_ARAYEH_SUCCESS) {
@@ -437,17 +439,16 @@ int _insertToArayeh(arayeh *self, size_t index, void *element)
             break;
         case AA_ARAYEH_OFF:
             // write to stderr and return error code.
-            WARN_WRONG_INDEX("_insertToArayeh() method, index is equal or bigger "
+            WARN_WRONG_INDEX("_insert_to_arayeh() method, index is equal or bigger "
                              "than arayeh size!",
                              debug);
             return AA_ARAYEH_NOT_ENOUGH_SPACE;
-            break;
             // if manual is enabled, check against the correct extend size rule.
         case AA_ARAYEH_MANUAL:
-            switch (extendInsert) {
+            switch (extend_insert) {
             case AA_ARAYEH_ON:
                 // extend arayeh size.
-                state = self->extendSize(self, growthSize);
+                state = self->extend_size(self, growth_size);
 
                 // check for unsuccessful size extension.
                 if (state != AA_ARAYEH_SUCCESS) {
@@ -456,25 +457,25 @@ int _insertToArayeh(arayeh *self, size_t index, void *element)
                 break;
             case AA_ARAYEH_OFF:
                 // write to stderr and return error code.
-                WARN_WRONG_INDEX("_insertToArayeh() method, index is equal or bigger "
+                WARN_WRONG_INDEX("_insert_to_arayeh() method, index is equal or bigger "
                                  "than arayeh size!",
                                  debug);
                 return AA_ARAYEH_NOT_ENOUGH_SPACE;
-                break;
             default:
-                FATAL_WRONG_SETTINGS("_insertToArayeh() method, extendInsert "
+                FATAL_WRONG_SETTINGS("_insert_to_arayeh() method, extend_insert "
                                      "value is not correct.",
-                                     TRUE);
+                                     AA_ARAYEH_TRUE);
             }
             break;
         default:
             FATAL_WRONG_SETTINGS(
-                "_insertToArayeh() method, extendSize value is not correct.", TRUE);
+                "_insert_to_arayeh() method, extend_size value is not correct.",
+                AA_ARAYEH_TRUE);
         }
     }
 
     // insert element.
-    if (index == privateProperties->next) {
+    if (index == private_properties->next) {
         // use arayeh.add for insertion if the index is same as next empty
         // slot in the arayeh.
         // this function will automatically update next pointer.
@@ -487,17 +488,17 @@ int _insertToArayeh(arayeh *self, size_t index, void *element)
         // if it was uninitialized, update map and "used" counter.
 
         // assign element.
-        privateMethods->addToArayeh(self, index, element);
+        private_methods->add_to_arayeh(self, index, element);
 
         // update "map" if it isn't already counted for this index
         // and increase "used" counter.
-        if (privateProperties->map[index] == AA_ARAYEH_OFF) {
+        if (private_properties->map[index] == AA_ARAYEH_OFF) {
             // update map.
-            privateProperties->map[index] = AA_ARAYEH_ON;
+            private_properties->map[index] = AA_ARAYEH_ON;
 
             // update both public and private "used" counter.
-            privateProperties->used++;
-            self->used = privateProperties->used;
+            private_properties->used++;
+            self->used = private_properties->used;
         }
     }
 
@@ -505,26 +506,26 @@ int _insertToArayeh(arayeh *self, size_t index, void *element)
     return state;
 }
 
-int _fillArayeh(arayeh *self, size_t startIndex, size_t step, size_t endIndex,
-                void *element)
+int _fill_arayeh(arayeh *self, size_t start_index, size_t step, size_t end_index,
+                 void *element)
 {
     /*
      * This function will fill arayeh with an element
-     * from index (inclusive) "startIndex" to index (exclusive) "endIndex"
+     * from index (inclusive) "start_index" to index (exclusive) "end_index"
      * with step size "step".
      *
      * it will update "map" and "used" parameters.
      * it may update "size" and "next" parameter.
      *
      * ARGUMENTS:
-     * self         pointer to the arayeh object.
-     * startIndex   starting index (inclusive).
-     * step         step size.
+     * self          pointer to the arayeh object.
+     * start_index   starting index (inclusive).
+     * step          step size.
      *      WARNING:
      *          using negative number for step would result in
      *          a very very big number because of type conversion to size_t.
-     * endIndex     ending index (exclusive).
-     * element      pointer to a variable that must fill the arayeh.
+     * end_index     ending index (exclusive).
+     * element       pointer to a variable that must fill the arayeh.
      *
      * RETURN:
      * state        a code that indicates successful operation
@@ -533,24 +534,24 @@ int _fillArayeh(arayeh *self, size_t startIndex, size_t step, size_t endIndex,
      */
 
     // shorten names for god's sake.
-    struct privateProperties *privateProperties = &self->_privateProperties;
+    struct private_properties *private_properties = &self->_private_properties;
 
     // shorten setting names.
-    char debugMessages = privateProperties->settings->debugMessages;
-    char extendSize    = privateProperties->settings->extendSize;
-    char extendFill    = privateProperties->settings->methodSize->extendFill;
+    char debug_messages = private_properties->settings->debug_messages;
+    char extend_size    = private_properties->settings->extend_size;
+    char extend_fill    = private_properties->settings->method_size->extend_fill;
 
     // set debug flag.
-    int debug = debugMessages == AA_ARAYEH_ON ? TRUE : FALSE;
+    int debug = debug_messages == AA_ARAYEH_ON ? AA_ARAYEH_TRUE : AA_ARAYEH_FALSE;
 
     // track error state in the function.
     int state = AA_ARAYEH_SUCCESS;
 
     // check if starting index being greater than the ending index.
-    if (endIndex < startIndex) {
+    if (end_index < start_index) {
         // write to stderr and return error code.
-        WARN_WRONG_INDEX("_fillArayeh() method, startIndex index is greater than "
-                         "endIndex index!",
+        WARN_WRONG_INDEX("_fill_arayeh() method, start_index index is greater than "
+                         "end_index index!",
                          debug);
         return AA_ARAYEH_WRONG_INDEX;
     }
@@ -558,21 +559,21 @@ int _fillArayeh(arayeh *self, size_t startIndex, size_t step, size_t endIndex,
     // check step size.
     if (step <= 0) {
         // write to stderr and return error code.
-        WARN_WRONG_STEP("_fillArayeh() method, step should be bigger or equal to 1!",
+        WARN_WRONG_STEP("_fill_arayeh() method, step should be bigger or equal to 1!",
                         debug);
         return AA_ARAYEH_WRONG_STEP;
     }
 
-    // check if endIndex indexes is greater than arayeh size.
-    if (privateProperties->size < endIndex) {
+    // check if end_index indexes is greater than arayeh size.
+    if (private_properties->size < end_index) {
         // calculate memory growth size needed.
-        size_t growthSize = endIndex - privateProperties->size;
+        size_t growthSize = end_index - private_properties->size;
 
         // decide to extend arayeh size based on arayeh settings.
-        switch (extendSize) {
+        switch (extend_size) {
         case AA_ARAYEH_ON:
             // extend arayeh size.
-            state = self->extendSize(self, growthSize);
+            state = self->extend_size(self, growthSize);
 
             // check for unsuccessful size extension.
             if (state != AA_ARAYEH_SUCCESS) {
@@ -581,17 +582,16 @@ int _fillArayeh(arayeh *self, size_t startIndex, size_t step, size_t endIndex,
             break;
         case AA_ARAYEH_OFF:
             // write to stderr and return error code.
-            WARN_WRONG_INDEX("_fillArayeh() method, startIndex or endIndex is "
+            WARN_WRONG_INDEX("_fill_arayeh() method, start_index or end_index is "
                              "greater than arayeh size!",
                              debug);
             return AA_ARAYEH_NOT_ENOUGH_SPACE;
-            break;
             // if manual is enabled, check against the correct extend size rule.
         case AA_ARAYEH_MANUAL:
-            switch (extendFill) {
+            switch (extend_fill) {
             case AA_ARAYEH_ON:
                 // extend arayeh size.
-                state = self->extendSize(self, growthSize);
+                state = self->extend_size(self, growthSize);
 
                 // check for unsuccessful size extension.
                 if (state != AA_ARAYEH_SUCCESS) {
@@ -600,25 +600,25 @@ int _fillArayeh(arayeh *self, size_t startIndex, size_t step, size_t endIndex,
                 break;
             case AA_ARAYEH_OFF:
                 // write to stderr and return error code.
-                WARN_WRONG_INDEX("_fillArayeh() method, startIndex or endIndex is "
+                WARN_WRONG_INDEX("_fill_arayeh() method, start_index or end_index is "
                                  "greater than arayeh size!",
                                  debug);
                 return AA_ARAYEH_NOT_ENOUGH_SPACE;
-                break;
             default:
-                FATAL_WRONG_SETTINGS("_fillArayeh() method, extendFill "
+                FATAL_WRONG_SETTINGS("_fill_arayeh() method, extend_fill "
                                      "value is not correct.",
-                                     TRUE);
+                                     AA_ARAYEH_TRUE);
             }
             break;
         default:
-            FATAL_WRONG_SETTINGS("_fillArayeh() method, extendSize value is not correct.",
-                                 TRUE);
+            FATAL_WRONG_SETTINGS(
+                "_fill_arayeh() method, extend_size value is not correct.",
+                AA_ARAYEH_TRUE);
         }
     }
 
     // fill the arayeh using a sequence of insert method.
-    for (size_t index = startIndex; index < endIndex; index += step) {
+    for (size_t index = start_index; index < end_index; index += step) {
         state = (self->insert)(self, index, element);
         if (state != AA_ARAYEH_SUCCESS) {
             break;
@@ -629,7 +629,7 @@ int _fillArayeh(arayeh *self, size_t startIndex, size_t step, size_t endIndex,
     return state;
 }
 
-int _mergeFromArayeh(arayeh *self, size_t startIndex, size_t step, arayeh *source)
+int _merge_from_arayeh(arayeh *self, size_t start_index, size_t step, arayeh *source)
 {
     /*
      * This function will merge an arayeh (source) into current arayeh (self), with
@@ -639,9 +639,9 @@ int _mergeFromArayeh(arayeh *self, size_t startIndex, size_t step, arayeh *sourc
      * it may update "size" and "next" parameter.
      *
      * ARGUMENTS:
-     * self         pointer to the arayeh object.
-     * startIndex   starting index in the arayeh self.
-     * step         step size.
+     * self          pointer to the arayeh object.
+     * start_index   starting index in the arayeh self.
+     * step          step size.
      *      WARNING:
      *          using negative number for step would result in
      *          a very very big number because of type conversion to size_t.
@@ -654,35 +654,34 @@ int _mergeFromArayeh(arayeh *self, size_t startIndex, size_t step, arayeh *sourc
      */
 
     // shorten names for god's sake.
-    struct privateMethods *selfPrivateMethods         = &self->_privateMethods;
-    struct privateMethods *sourcePrivateMethods       = &source->_privateMethods;
-    struct privateProperties *selfPrivateProperties   = &self->_privateProperties;
-    struct privateProperties *sourcePrivateProperties = &source->_privateProperties;
+    struct private_methods *self_private_methods         = &self->_private_methods;
+    struct private_properties *self_private_properties   = &self->_private_properties;
+    struct private_properties *source_private_properties = &source->_private_properties;
 
     // shorten setting names.
-    char debugMessages = selfPrivateProperties->settings->debugMessages;
-    char extendSize    = selfPrivateProperties->settings->extendSize;
-    char extendMergeArayeh =
-        selfPrivateProperties->settings->methodSize->extendMergeArayeh;
+    char debug_messages = self_private_properties->settings->debug_messages;
+    char extend_size    = self_private_properties->settings->extend_size;
+    char extend_merge_arayeh =
+        self_private_properties->settings->method_size->extend_merge_arayeh;
 
     // set debug flag.
-    int debug = debugMessages == AA_ARAYEH_ON ? TRUE : FALSE;
+    int debug = debug_messages == AA_ARAYEH_ON ? AA_ARAYEH_TRUE : AA_ARAYEH_FALSE;
 
     // track error state in the function.
     int state = AA_ARAYEH_SUCCESS;
 
     // check that both arayehs have same type.
-    if (selfPrivateProperties->type != sourcePrivateProperties->type) {
-        WARN_WRONG_TYPE("_mergeFromArayeh() method, self and source type doesn't match.",
-                        debug);
+    if (self_private_properties->type != source_private_properties->type) {
+        WARN_WRONG_TYPE(
+            "_merge_from_arayeh() method, self and source type doesn't match.", debug);
         return AA_ARAYEH_WRONG_TYPE;
     }
 
     // check step size.
     if (step <= 0) {
         // write to stderr and return error code.
-        WARN_WRONG_STEP("_mergeFromArayeh() method, step should be bigger or equal to 1!",
-                        debug);
+        WARN_WRONG_STEP(
+            "_merge_from_arayeh() method, step should be bigger or equal to 1!", debug);
         return AA_ARAYEH_WRONG_STEP;
     }
 
@@ -701,22 +700,22 @@ int _mergeFromArayeh(arayeh *self, size_t startIndex, size_t step, arayeh *sourc
     // always one less than numbers of |'s and can be defined by (sourceArayehSize - 1).
     // so the total number of empty cells between source arayeh elements can be
     // found from (sourceArayehSize - 1) * (step - 1) .
-    size_t sourceArayehSize = sourcePrivateProperties->size;
+    size_t sourceArayehSize = source_private_properties->size;
     size_t stepOverhead     = (sourceArayehSize - 1) * (step - 1);
 
     // calculate endIndex.
-    size_t endIndex = startIndex + sourceArayehSize + stepOverhead;
+    size_t endIndex = start_index + sourceArayehSize + stepOverhead;
 
     // check if endIndex indexes is greater than arayeh size.
-    if (selfPrivateProperties->size < endIndex) {
+    if (self_private_properties->size < endIndex) {
         // calculate memory growth size needed.
-        size_t growthSize = endIndex - selfPrivateProperties->size;
+        size_t growthSize = endIndex - self_private_properties->size;
 
         // decide to extend arayeh size based on arayeh settings.
-        switch (extendSize) {
+        switch (extend_size) {
         case AA_ARAYEH_ON:
             // extend arayeh size.
-            state = self->extendSize(self, growthSize);
+            state = self->extend_size(self, growthSize);
 
             // check for unsuccessful size extension.
             if (state != AA_ARAYEH_SUCCESS) {
@@ -725,16 +724,15 @@ int _mergeFromArayeh(arayeh *self, size_t startIndex, size_t step, arayeh *sourc
             break;
         case AA_ARAYEH_OFF:
             // write to stderr and return error code.
-            WARN_WRONG_INDEX("_mergeFromArayeh() method, low memory space to merge!",
+            WARN_WRONG_INDEX("_merge_from_arayeh() method, low memory space to merge!",
                              debug);
             return AA_ARAYEH_NOT_ENOUGH_SPACE;
-            break;
             // if manual is enabled, check against the correct extend size rule.
         case AA_ARAYEH_MANUAL:
-            switch (extendMergeArayeh) {
+            switch (extend_merge_arayeh) {
             case AA_ARAYEH_ON:
                 // extend arayeh size.
-                state = self->extendSize(self, growthSize);
+                state = self->extend_size(self, growthSize);
 
                 // check for unsuccessful size extension.
                 if (state != AA_ARAYEH_SUCCESS) {
@@ -743,54 +741,54 @@ int _mergeFromArayeh(arayeh *self, size_t startIndex, size_t step, arayeh *sourc
                 break;
             case AA_ARAYEH_OFF:
                 // write to stderr and return error code.
-                WARN_WRONG_INDEX("_mergeFromArayeh() method, low memory space to merge",
+                WARN_WRONG_INDEX("_merge_from_arayeh() method, low memory space to merge",
                                  debug);
                 return AA_ARAYEH_NOT_ENOUGH_SPACE;
-                break;
             default:
-                FATAL_WRONG_SETTINGS("_mergeFromArayeh() method, extendMergeArayeh "
+                FATAL_WRONG_SETTINGS("_merge_from_arayeh() method, extend_merge_arayeh "
                                      "value is not correct.",
-                                     TRUE);
+                                     AA_ARAYEH_TRUE);
             }
             break;
         default:
             FATAL_WRONG_SETTINGS(
-                "_mergeFromArayeh() method, extendSize value is not correct.", TRUE);
+                "_merge_from_arayeh() method, extend_size value is not correct.",
+                AA_ARAYEH_TRUE);
         }
     }
 
     // insert source arayeh elements into self arayeh.
     // updating arayeh parameters is delegated to "insert" method.
-    state = selfPrivateMethods->mergeFromArayeh(self, startIndex, step, source);
+    state = self_private_methods->merge_from_arayeh(self, start_index, step, source);
 
     // update next index pointer.
-    updateNextIndex(self);
+    update_next_index(self);
 
     // return error state code.
     return state;
 }
 
-int _mergeFromArray(arayeh *self, size_t startIndex, size_t step, size_t arraySize,
-                    void *array)
+int _merge_from_array(arayeh *self, size_t start_index, size_t step, size_t array_size,
+                      void *array)
 {
     /*
      * This function will merge a default C array
      * (for example int a[4] = {1, 2, 3, 4};) into the arayeh with step, the starting
-     * index for merging is "startIndex" and the size of C array and step determines
+     * index for merging is "start_index" and the size of C array and step determines
      * the last index (in the example above the size of C arayeh is 4 with step 1).
      *
      * it will update "map" and "used" parameters.
      * it may update "size" and "next" parameter.
      *
      * ARGUMENTS:
-     * self         pointer to the arayeh object.
-     * startIndex   starting index in the arayeh self.
-     * step         step size.
+     * self          pointer to the arayeh object.
+     * start_index   starting index in the arayeh self.
+     * step          step size.
      *      WARNING:
      *          using negative number for step would result in
      *          a very very big number because of type conversion to size_t.
-     * arraySize    size of the C arayeh.
-     * array        the C array to be merged into the arayeh.
+     * array_size    size of the C arayeh.
+     * array         the C array to be merged into the arayeh.
      *
      * RETURN:
      * state        a code that indicates successful operation
@@ -799,16 +797,17 @@ int _mergeFromArray(arayeh *self, size_t startIndex, size_t step, size_t arraySi
      */
 
     // shorten names for god's sake.
-    struct privateMethods *privateMethods       = &self->_privateMethods;
-    struct privateProperties *privateProperties = &self->_privateProperties;
+    struct private_methods *private_methods       = &self->_private_methods;
+    struct private_properties *private_properties = &self->_private_properties;
 
     // shorten setting names.
-    char debugMessages    = privateProperties->settings->debugMessages;
-    char extendSize       = privateProperties->settings->extendSize;
-    char extendMergeArray = privateProperties->settings->methodSize->extendMergeArray;
+    char debug_messages = private_properties->settings->debug_messages;
+    char extend_size    = private_properties->settings->extend_size;
+    char extend_merge_array =
+        private_properties->settings->method_size->extend_merge_array;
 
     // set debug flag.
-    int debug = debugMessages == AA_ARAYEH_ON ? TRUE : FALSE;
+    int debug = debug_messages == AA_ARAYEH_ON ? AA_ARAYEH_TRUE : AA_ARAYEH_FALSE;
 
     // track error state in the function.
     int state = AA_ARAYEH_SUCCESS;
@@ -816,8 +815,8 @@ int _mergeFromArray(arayeh *self, size_t startIndex, size_t step, size_t arraySi
     // check step size.
     if (step <= 0) {
         // write to stderr and return error code.
-        WARN_WRONG_STEP("_mergeFromArray() method, step should be bigger or equal to 1!",
-                        debug);
+        WARN_WRONG_STEP(
+            "_merge_from_array() method, step should be bigger or equal to 1!", debug);
         return AA_ARAYEH_WRONG_STEP;
     }
 
@@ -833,24 +832,24 @@ int _mergeFromArray(arayeh *self, size_t startIndex, size_t step, size_t arraySi
     // they will be added next to each another, and for step 2 there will be
     // 1 cell in between two array elements, so the size of cells between
     // elements can be written like this (step - 1), the number of -'s are
-    // always one less than numbers of |'s and can be defined by (arraySize - 1).
+    // always one less than numbers of |'s and can be defined by (array_size - 1).
     // so the total number of empty cells between array elements can be
-    // found from (arraySize - 1) * (step - 1) .
-    size_t stepOverhead = (arraySize - 1) * (step - 1);
+    // found from (array_size - 1) * (step - 1) .
+    size_t step_overhead = (array_size - 1) * (step - 1);
 
-    // calculate endIndex.
-    size_t endIndex = startIndex + arraySize + stepOverhead;
+    // calculate end_index.
+    size_t end_index = start_index + array_size + step_overhead;
 
-    // check if endIndex indexes is greater than arayeh size.
-    if (privateProperties->size < endIndex) {
+    // check if end_index indexes is greater than arayeh size.
+    if (private_properties->size < end_index) {
         // calculate memory growth size needed.
-        size_t growthSize = endIndex - privateProperties->size;
+        size_t growthSize = end_index - private_properties->size;
 
         // decide to extend arayeh size based on arayeh settings.
-        switch (extendSize) {
+        switch (extend_size) {
         case AA_ARAYEH_ON:
             // extend arayeh size.
-            state = self->extendSize(self, growthSize);
+            state = self->extend_size(self, growthSize);
 
             // check for unsuccessful size extension.
             if (state != AA_ARAYEH_SUCCESS) {
@@ -859,16 +858,15 @@ int _mergeFromArray(arayeh *self, size_t startIndex, size_t step, size_t arraySi
             break;
         case AA_ARAYEH_OFF:
             // write to stderr and return error code.
-            WARN_WRONG_INDEX("_mergeFromArray() method, low memory space to merge!",
+            WARN_WRONG_INDEX("_merge_from_array() method, low memory space to merge!",
                              debug);
             return AA_ARAYEH_NOT_ENOUGH_SPACE;
-            break;
             // if manual is enabled, check against the correct extend size rule.
         case AA_ARAYEH_MANUAL:
-            switch (extendMergeArray) {
+            switch (extend_merge_array) {
             case AA_ARAYEH_ON:
                 // extend arayeh size.
-                state = self->extendSize(self, growthSize);
+                state = self->extend_size(self, growthSize);
 
                 // check for unsuccessful size extension.
                 if (state != AA_ARAYEH_SUCCESS) {
@@ -877,31 +875,31 @@ int _mergeFromArray(arayeh *self, size_t startIndex, size_t step, size_t arraySi
                 break;
             case AA_ARAYEH_OFF:
                 // write to stderr and return error code.
-                WARN_WRONG_INDEX("_mergeFromArray() method, low memory space to merge",
+                WARN_WRONG_INDEX("_merge_from_array() method, low memory space to merge",
                                  debug);
                 return AA_ARAYEH_NOT_ENOUGH_SPACE;
-                break;
             default:
-                FATAL_WRONG_SETTINGS("_mergeFromArray() method, extendMergeArray "
+                FATAL_WRONG_SETTINGS("_merge_from_array() method, extend_merge_array "
                                      "value is not correct.",
-                                     TRUE);
+                                     AA_ARAYEH_TRUE);
             }
             break;
         default:
             FATAL_WRONG_SETTINGS(
-                "_mergeFromArray() method, extendSize value is not correct.", TRUE);
+                "_merge_from_array() method, extend_size value is not correct.",
+                AA_ARAYEH_TRUE);
         }
     }
 
     // insert C array elements into arayeh.
     // updating arayeh parameters is delegated to "insert" method.
-    state = privateMethods->mergeFromArray(self, startIndex, step, arraySize, array);
+    state = private_methods->merge_from_array(self, start_index, step, array_size, array);
 
     // return error state code.
     return state;
 }
 
-int _getFromArayeh(arayeh *self, size_t index, void *destination)
+int _get_from_arayeh(arayeh *self, size_t index, void *destination)
 {
     /*
      * This function copies data in "index" cell of the arayeh to the "destination"
@@ -915,36 +913,36 @@ int _getFromArayeh(arayeh *self, size_t index, void *destination)
      */
 
     // shorten names for god's sake.
-    struct privateMethods *privateMethods       = &self->_privateMethods;
-    struct privateProperties *privateProperties = &self->_privateProperties;
+    struct private_methods *private_methods       = &self->_private_methods;
+    struct private_properties *private_properties = &self->_private_properties;
 
     // shorten setting names.
-    char debugMessages = privateProperties->settings->debugMessages;
+    char debug_messages = private_properties->settings->debug_messages;
 
     // set debug flag.
-    int debug = debugMessages == AA_ARAYEH_ON ? TRUE : FALSE;
+    int debug = debug_messages == AA_ARAYEH_ON ? AA_ARAYEH_TRUE : AA_ARAYEH_FALSE;
 
     // check arayeh bounds.
-    if (index >= privateProperties->size) {
-        WARN_WRONG_INDEX("_getFromArayeh()method, index out of range!", debug);
+    if (index >= private_properties->size) {
+        WARN_WRONG_INDEX("_get_from_arayeh()method, index out of range!", debug);
         return AA_ARAYEH_WRONG_INDEX;
     }
 
     // copy data to destination memory location.
-    privateMethods->getFromArayeh(self, index, destination);
+    private_methods->get_from_arayeh(self, index, destination);
 
     // return success code.
     return AA_ARAYEH_SUCCESS;
 }
 
-void _setSettings(arayeh *self, arayehSettings *newSettings)
+void _set_settings(arayeh *self, arayeh_settings *new_settings)
 {
     /*
      * This function will override arayeh default settings with new one.
      *
      * ARGUMENTS:
-     * self             pointer to the arayeh object.
-     * newSettings      new setting to apply to arayeh.
+     * self              pointer to the arayeh object.
+     * new_settings      new setting to apply to arayeh.
      *
      * RETURN:
      * no return, it's void dude.
@@ -952,21 +950,21 @@ void _setSettings(arayeh *self, arayehSettings *newSettings)
      */
 
     // shorten names for god's sake.
-    arayehSettings *settings = self->_privateProperties.settings;
+    arayeh_settings *settings = self->_private_properties.settings;
 
     // override new settings.
-    settings->debugMessages = newSettings->debugMessages;
-    settings->extendSize    = newSettings->extendSize;
+    settings->debug_messages = new_settings->debug_messages;
+    settings->extend_size    = new_settings->extend_size;
 }
 
-void _setSizeSettings(arayeh *self, arayehSizeSettings *newSettings)
+void _set_size_settings(arayeh *self, arayeh_size_settings *new_settings)
 {
     /*
      * This function will override arayeh default extend size settings with new one.
      *
      * ARGUMENTS:
-     * self             pointer to the arayeh object.
-     * newSettings      new setting to apply to arayeh.
+     * self              pointer to the arayeh object.
+     * new_settings      new setting to apply to arayeh.
      *
      * RETURN:
      * no return, it's void dude.
@@ -974,17 +972,17 @@ void _setSizeSettings(arayeh *self, arayehSizeSettings *newSettings)
      */
 
     // shorten names for god's sake.
-    arayehSizeSettings *settings = self->_privateProperties.settings->methodSize;
+    arayeh_size_settings *settings = self->_private_properties.settings->method_size;
 
     // override new settings.
-    settings->extendAdd         = newSettings->extendAdd;
-    settings->extendInsert      = newSettings->extendInsert;
-    settings->extendFill        = newSettings->extendFill;
-    settings->extendMergeArayeh = newSettings->extendMergeArayeh;
-    settings->extendMergeArray  = newSettings->extendMergeArray;
+    settings->extend_add          = new_settings->extend_add;
+    settings->extend_insert       = new_settings->extend_insert;
+    settings->extend_fill         = new_settings->extend_fill;
+    settings->extend_merge_arayeh = new_settings->extend_merge_arayeh;
+    settings->extend_merge_array  = new_settings->extend_merge_array;
 }
 
-void _setGrowthFactor(arayeh *self, size_t (*growthFactor)(arayeh *array))
+void _set_growth_factor(arayeh *self, size_t (*growth_factor)(arayeh *))
 {
     /*
      * This function will override the arayehs default growth factor function
@@ -999,7 +997,7 @@ void _setGrowthFactor(arayeh *self, size_t (*growthFactor)(arayeh *array))
      */
 
     // shorten names for god's sake.
-    struct privateMethods *privateMethods = &self->_privateMethods;
+    struct private_methods *private_methods = &self->_private_methods;
 
-    privateMethods->growthFactor = growthFactor;
+    private_methods->growth_factor = growth_factor;
 }

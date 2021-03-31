@@ -3,7 +3,8 @@
  * This file is a part of:
  * Azadeh Afzar - Arayehsaz (AA-A).
  *
- * Copyright (C) 2020 Mohammad Mahdi Baghbani Pourvahid.
+ * Copyright (C) 2020 - 2021 Azadeh Afzar.
+ * Copyright (C) 2020 - 2021 Mohammad Mahdi Baghbani Pourvahid.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -55,135 +56,140 @@ __BEGIN_DECLS
 
 // Initialize arayeh pointer.
 
-int _initPtrTypeChar(arayeh *self, arayehType *array, size_t initialSize);
+int _init_pointer_type_char(arayeh *self, arayeh_types *array, size_t initial_size);
 
-int _initPtrTypeSInt(arayeh *self, arayehType *array, size_t initialSize);
+int _init_pointer_type_short_int(arayeh *self, arayeh_types *array, size_t initial_size);
 
-int _initPtrTypeInt(arayeh *self, arayehType *array, size_t initialSize);
+int _init_pointer_type_int(arayeh *self, arayeh_types *array, size_t initial_size);
 
-int _initPtrTypeLInt(arayeh *self, arayehType *array, size_t initialSize);
+int _init_pointer_type_long_int(arayeh *self, arayeh_types *array, size_t initial_size);
 
-int _initPtrTypeFloat(arayeh *self, arayehType *array, size_t initialSize);
+int _init_pointer_type_float(arayeh *self, arayeh_types *array, size_t initial_size);
 
-int _initPtrTypeDouble(arayeh *self, arayehType *array, size_t initialSize);
+int _init_pointer_type_double(arayeh *self, arayeh_types *array, size_t initial_size);
 
 // Allocate memory for arayeh.
 
-int _mallocTypeChar(arayeh *self, arayehType *array, size_t initialSize);
+int _malloc_type_char(arayeh *self, arayeh_types *array, size_t initial_size);
 
-int _mallocTypeSInt(arayeh *self, arayehType *array, size_t initialSize);
+int _malloc_type_short_int(arayeh *self, arayeh_types *array, size_t initial_size);
 
-int _mallocTypeInt(arayeh *self, arayehType *array, size_t initialSize);
+int _malloc_type_int(arayeh *self, arayeh_types *array, size_t initial_size);
 
-int _mallocTypeLInt(arayeh *self, arayehType *array, size_t initialSize);
+int _malloc_type_long_int(arayeh *self, arayeh_types *array, size_t initial_size);
 
-int _mallocTypeFloat(arayeh *self, arayehType *array, size_t initialSize);
+int _malloc_type_float(arayeh *self, arayeh_types *array, size_t initial_size);
 
-int _mallocTypeDouble(arayeh *self, arayehType *array, size_t initialSize);
+int _malloc_type_double(arayeh *self, arayeh_types *array, size_t initial_size);
 
 // Re-allocate memory for arayeh.
 
-int _reallocTypeChar(arayeh *self, arayehType *array, size_t newSize);
+int _realloc_type_char(arayeh *self, arayeh_types *array, size_t new_size);
 
-int _reallocTypeSInt(arayeh *self, arayehType *array, size_t newSize);
+int _realloc_type_short_int(arayeh *self, arayeh_types *array, size_t new_size);
 
-int _reallocTypeInt(arayeh *self, arayehType *array, size_t newSize);
+int _realloc_type_int(arayeh *self, arayeh_types *array, size_t new_size);
 
-int _reallocTypeLInt(arayeh *self, arayehType *array, size_t newSize);
+int _realloc_type_long_int(arayeh *self, arayeh_types *array, size_t new_size);
 
-int _reallocTypeFloat(arayeh *self, arayehType *array, size_t newSize);
+int _realloc_type_float(arayeh *self, arayeh_types *array, size_t new_size);
 
-int _reallocTypeDouble(arayeh *self, arayehType *array, size_t newSize);
+int _realloc_type_double(arayeh *self, arayeh_types *array, size_t new_size);
 
 // Free arayeh memory.
 
-void _freeTypeChar(arayeh *self);
+void _free_type_char(arayeh *self);
 
-void _freeTypeSInt(arayeh *self);
+void _free_type_short_int(arayeh *self);
 
-void _freeTypeInt(arayeh *self);
+void _free_type_int(arayeh *self);
 
-void _freeTypeLInt(arayeh *self);
+void _free_type_long_int(arayeh *self);
 
-void _freeTypeFloat(arayeh *self);
+void _free_type_float(arayeh *self);
 
-void _freeTypeDouble(arayeh *self);
+void _free_type_double(arayeh *self);
 
 // Assign the initialized pointer of an array to the arayeh structs pointer.
 
-void _setMemPtrTypeChar(arayeh *self, arayehType *array);
+void _set_memory_pointer_type_char(arayeh *self, arayeh_types *array);
 
-void _setMemPtrTypeSInt(arayeh *self, arayehType *array);
+void _set_memory_pointer_type_short_int(arayeh *self, arayeh_types *array);
 
-void _setMemPtrTypeInt(arayeh *self, arayehType *array);
+void _set_memory_pointer_type_int(arayeh *self, arayeh_types *array);
 
-void _setMemPtrTypeLInt(arayeh *self, arayehType *array);
+void _set_memory_pointer_type_long_int(arayeh *self, arayeh_types *array);
 
-void _setMemPtrTypeFloat(arayeh *self, arayehType *array);
+void _set_memory_pointer_type_float(arayeh *self, arayeh_types *array);
 
-void _setMemPtrTypeDouble(arayeh *self, arayehType *array);
+void _set_memory_pointer_type_double(arayeh *self, arayeh_types *array);
 
 // Add an element of a specific type to the arayeh.
 
-void _addTypeChar(arayeh *self, size_t index, void *element);
+void _add_type_char(arayeh *self, size_t index, void *element);
 
-void _addTypeSInt(arayeh *self, size_t index, void *element);
+void _add_type_short_int(arayeh *self, size_t index, void *element);
 
-void _addTypeInt(arayeh *self, size_t index, void *element);
+void _add_type_int(arayeh *self, size_t index, void *element);
 
-void _addTypeLInt(arayeh *self, size_t index, void *element);
+void _add_type_long_int(arayeh *self, size_t index, void *element);
 
-void _addTypeFloat(arayeh *self, size_t index, void *element);
+void _add_type_float(arayeh *self, size_t index, void *element);
 
-void _addTypeDouble(arayeh *self, size_t index, void *element);
+void _add_type_double(arayeh *self, size_t index, void *element);
 
 // Merge an arayeh of a specific type into another arayeh.
 
-int _mergeArayehTypeChar(arayeh *self, size_t startIndex, size_t step, arayeh *source);
+int _merge_arayeh_type_char(arayeh *self, size_t start_index, size_t step,
+                            arayeh *source);
 
-int _mergeArayehTypeSInt(arayeh *self, size_t startIndex, size_t step, arayeh *source);
+int _merge_arayeh_type_short_int(arayeh *self, size_t start_index, size_t step,
+                                 arayeh *source);
 
-int _mergeArayehTypeInt(arayeh *self, size_t startIndex, size_t step, arayeh *source);
+int _merge_arayeh_type_int(arayeh *self, size_t start_index, size_t step, arayeh *source);
 
-int _mergeArayehTypeLInt(arayeh *self, size_t startIndex, size_t step, arayeh *source);
+int _merge_arayeh_type_long_int(arayeh *self, size_t start_index, size_t step,
+                                arayeh *source);
 
-int _mergeArayehTypeFloat(arayeh *self, size_t startIndex, size_t step, arayeh *source);
+int _merge_arayeh_type_float(arayeh *self, size_t start_index, size_t step,
+                             arayeh *source);
 
-int _mergeArayehTypeDouble(arayeh *self, size_t startIndex, size_t step, arayeh *source);
+int _merge_arayeh_type_double(arayeh *self, size_t start_index, size_t step,
+                              arayeh *source);
 
 // Merge a C standard array of a specific type into the arayeh.
 
-int _mergeArrayTypeChar(arayeh *self, size_t startIndex, size_t step, size_t arraySize,
-                        void *array);
+int _merge_array_type_char(arayeh *self, size_t start_index, size_t step,
+                           size_t array_size, void *array);
 
-int _mergeArrayTypeSInt(arayeh *self, size_t startIndex, size_t step, size_t arraySize,
-                        void *array);
+int _merge_array_type_short_int(arayeh *self, size_t start_index, size_t step,
+                                size_t array_size, void *array);
 
-int _mergeArrayTypeInt(arayeh *self, size_t startIndex, size_t step, size_t arraySize,
-                       void *array);
+int _merge_array_type_int(arayeh *self, size_t start_index, size_t step,
+                          size_t array_size, void *array);
 
-int _mergeArrayTypeLInt(arayeh *self, size_t startIndex, size_t step, size_t arraySize,
-                        void *array);
+int _merge_array_type_long_int(arayeh *self, size_t start_index, size_t step,
+                               size_t array_size, void *array);
 
-int _mergeArrayTypeFloat(arayeh *self, size_t startIndex, size_t step, size_t arraySize,
-                         void *array);
+int _merge_array_type_float(arayeh *self, size_t start_index, size_t step,
+                            size_t array_size, void *array);
 
-int _mergeArrayTypeDouble(arayeh *self, size_t startIndex, size_t step, size_t arraySize,
-                          void *array);
+int _merge_array_type_double(arayeh *self, size_t start_index, size_t step,
+                             size_t array_size, void *array);
 
 // Get an element from arayeh.
 
-void _getTypeChar(arayeh *self, size_t index, void *element);
+void _get_type_char(arayeh *self, size_t index, void *element);
 
-void _getTypeSInt(arayeh *self, size_t index, void *element);
+void _get_type_short_int(arayeh *self, size_t index, void *element);
 
-void _getTypeInt(arayeh *self, size_t index, void *element);
+void _get_type_int(arayeh *self, size_t index, void *element);
 
-void _getTypeLInt(arayeh *self, size_t index, void *element);
+void _get_type_long_int(arayeh *self, size_t index, void *element);
 
-void _getTypeFloat(arayeh *self, size_t index, void *element);
+void _get_type_float(arayeh *self, size_t index, void *element);
 
-void _getTypeDouble(arayeh *self, size_t index, void *element);
+void _get_type_double(arayeh *self, size_t index, void *element);
 
 __END_DECLS
 

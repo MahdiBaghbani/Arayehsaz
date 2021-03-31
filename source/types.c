@@ -3,7 +3,8 @@
  * This file is a part of:
  * Azadeh Afzar - Arayehsaz (AA-A).
  *
- * Copyright (C) 2020 Mohammad Mahdi Baghbani Pourvahid.
+ * Copyright (C) 2020 - 2021 Azadeh Afzar.
+ * Copyright (C) 2020 - 2021 Mohammad Mahdi Baghbani Pourvahid.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -45,276 +46,282 @@
  * 18446744073709551615 / 4 = 4611686018427387904, then an overflow occurs.
  *
  * the formula to determine if overflow happens or not is defined below:
- * (initialSize > (size_t) SIZE_MAX / sizeof datatype)
+ * (initial_size > (size_t) SIZE_MAX / sizeof datatype)
  *
  */
 
 // Initialize arayeh pointer.
 
-int _initPtrTypeChar(arayeh *self, arayehType *array, size_t initialSize)
+int _init_pointer_type_char(arayeh *self, arayeh_types *array, size_t initial_size)
 {
-    array->charPtr = NULL;
-    return (initialSize > (size_t) SIZE_MAX / sizeof *(array->charPtr))
+    array->char_pointer = NULL;
+    return (initial_size > (size_t) SIZE_MAX / sizeof *(array->char_pointer))
                ? AA_ARAYEH_FAILURE
                : AA_ARAYEH_SUCCESS;
 }
 
-int _initPtrTypeSInt(arayeh *self, arayehType *array, size_t initialSize)
+int _init_pointer_type_short_int(arayeh *self, arayeh_types *array, size_t initial_size)
 {
-    array->shortIntPtr = NULL;
-    return (initialSize > (size_t) SIZE_MAX / sizeof *(array->shortIntPtr))
+    array->short_int_pointer = NULL;
+    return (initial_size > (size_t) SIZE_MAX / sizeof *(array->short_int_pointer))
                ? AA_ARAYEH_FAILURE
                : AA_ARAYEH_SUCCESS;
 }
 
-int _initPtrTypeInt(arayeh *self, arayehType *array, size_t initialSize)
+int _init_pointer_type_int(arayeh *self, arayeh_types *array, size_t initial_size)
 {
-    array->intPtr = NULL;
-    return (initialSize > (size_t) SIZE_MAX / sizeof *(array->intPtr))
+    array->int_pointer = NULL;
+    return (initial_size > (size_t) SIZE_MAX / sizeof *(array->int_pointer))
                ? AA_ARAYEH_FAILURE
                : AA_ARAYEH_SUCCESS;
 }
 
-int _initPtrTypeLInt(arayeh *self, arayehType *array, size_t initialSize)
+int _init_pointer_type_long_int(arayeh *self, arayeh_types *array, size_t initial_size)
 {
-    array->longIntPtr = NULL;
-    return (initialSize > (size_t) SIZE_MAX / sizeof *(array->longIntPtr))
+    array->long_int_pointer = NULL;
+    return (initial_size > (size_t) SIZE_MAX / sizeof *(array->long_int_pointer))
                ? AA_ARAYEH_FAILURE
                : AA_ARAYEH_SUCCESS;
 }
 
-int _initPtrTypeFloat(arayeh *self, arayehType *array, size_t initialSize)
+int _init_pointer_type_float(arayeh *self, arayeh_types *array, size_t initial_size)
 {
-    array->floatPtr = NULL;
-    return (initialSize > (size_t) SIZE_MAX / sizeof *(array->floatPtr))
+    array->float_pointer = NULL;
+    return (initial_size > (size_t) SIZE_MAX / sizeof *(array->float_pointer))
                ? AA_ARAYEH_FAILURE
                : AA_ARAYEH_SUCCESS;
 }
 
-int _initPtrTypeDouble(arayeh *self, arayehType *array, size_t initialSize)
+int _init_pointer_type_double(arayeh *self, arayeh_types *array, size_t initial_size)
 {
-    array->doublePtr = NULL;
-    return (initialSize > (size_t) SIZE_MAX / sizeof *(array->doublePtr))
+    array->double_pointer = NULL;
+    return (initial_size > (size_t) SIZE_MAX / sizeof *(array->double_pointer))
                ? AA_ARAYEH_FAILURE
                : AA_ARAYEH_SUCCESS;
 }
 
 // Allocate memory for arayeh.
 
-int _mallocTypeChar(arayeh *self, arayehType *array, size_t initialSize)
+int _malloc_type_char(arayeh *self, arayeh_types *array, size_t initial_size)
 {
-    array->charPtr = (char *) malloc(sizeof *array->charPtr * initialSize);
-    return (array->charPtr == NULL) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
+    array->char_pointer = (char *) malloc(sizeof *array->char_pointer * initial_size);
+    return (array->char_pointer == NULL) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
 }
 
-int _mallocTypeSInt(arayeh *self, arayehType *array, size_t initialSize)
+int _malloc_type_short_int(arayeh *self, arayeh_types *array, size_t initial_size)
 {
-    array->shortIntPtr = (short int *) malloc(sizeof *array->shortIntPtr * initialSize);
-    return (array->shortIntPtr == NULL) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
+    array->short_int_pointer =
+        (short int *) malloc(sizeof *array->short_int_pointer * initial_size);
+    return (array->short_int_pointer == NULL) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
 }
 
-int _mallocTypeInt(arayeh *self, arayehType *array, size_t initialSize)
+int _malloc_type_int(arayeh *self, arayeh_types *array, size_t initial_size)
 {
-    array->intPtr = (int *) malloc(sizeof *array->intPtr * initialSize);
-    return (array->intPtr == NULL) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
+    array->int_pointer = (int *) malloc(sizeof *array->int_pointer * initial_size);
+    return (array->int_pointer == NULL) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
 }
 
-int _mallocTypeLInt(arayeh *self, arayehType *array, size_t initialSize)
+int _malloc_type_long_int(arayeh *self, arayeh_types *array, size_t initial_size)
 {
-    array->longIntPtr = (long int *) malloc(sizeof *array->longIntPtr * initialSize);
-    return (array->longIntPtr == NULL) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
+    array->long_int_pointer =
+        (long int *) malloc(sizeof *array->long_int_pointer * initial_size);
+    return (array->long_int_pointer == NULL) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
 }
 
-int _mallocTypeFloat(arayeh *self, arayehType *array, size_t initialSize)
+int _malloc_type_float(arayeh *self, arayeh_types *array, size_t initial_size)
 {
-    array->floatPtr = (float *) malloc(sizeof *array->floatPtr * initialSize);
-    return (array->floatPtr == NULL) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
+    array->float_pointer = (float *) malloc(sizeof *array->float_pointer * initial_size);
+    return (array->float_pointer == NULL) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
 }
 
-int _mallocTypeDouble(arayeh *self, arayehType *array, size_t initialSize)
+int _malloc_type_double(arayeh *self, arayeh_types *array, size_t initial_size)
 {
-    array->doublePtr = (double *) malloc(sizeof *array->doublePtr * initialSize);
-    return (array->doublePtr == NULL) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
+    array->double_pointer =
+        (double *) malloc(sizeof *array->double_pointer * initial_size);
+    return (array->double_pointer == NULL) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
 }
 
 // Re-allocate memory for arayeh.
 
-int _reallocTypeChar(arayeh *self, arayehType *array, size_t newSize)
+int _realloc_type_char(arayeh *self, arayeh_types *array, size_t new_size)
 {
-    array->charPtr = (char *) realloc(self->_privateProperties.array.charPtr,
-                                      sizeof *array->charPtr * newSize);
-    return (array->charPtr == NULL) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
+    array->char_pointer = (char *) realloc(self->_private_properties.array.char_pointer,
+                                           sizeof *array->char_pointer * new_size);
+    return (array->char_pointer == NULL) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
 }
 
-int _reallocTypeSInt(arayeh *self, arayehType *array, size_t newSize)
+int _realloc_type_short_int(arayeh *self, arayeh_types *array, size_t new_size)
 {
-    array->shortIntPtr = (short int *) realloc(self->_privateProperties.array.shortIntPtr,
-                                               sizeof *array->shortIntPtr * newSize);
-    return (array->shortIntPtr == NULL) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
+    array->short_int_pointer =
+        (short int *) realloc(self->_private_properties.array.short_int_pointer,
+                              sizeof *array->short_int_pointer * new_size);
+    return (array->short_int_pointer == NULL) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
 }
 
-int _reallocTypeInt(arayeh *self, arayehType *array, size_t newSize)
+int _realloc_type_int(arayeh *self, arayeh_types *array, size_t new_size)
 {
-    array->intPtr = (int *) realloc(self->_privateProperties.array.intPtr,
-                                    sizeof *array->intPtr * newSize);
-    return (array->intPtr == NULL) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
+    array->int_pointer = (int *) realloc(self->_private_properties.array.int_pointer,
+                                         sizeof *array->int_pointer * new_size);
+    return (array->int_pointer == NULL) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
 }
 
-int _reallocTypeLInt(arayeh *self, arayehType *array, size_t newSize)
+int _realloc_type_long_int(arayeh *self, arayeh_types *array, size_t new_size)
 {
-    array->longIntPtr = (long int *) realloc(self->_privateProperties.array.longIntPtr,
-                                             sizeof *array->longIntPtr * newSize);
-    return (array->longIntPtr == NULL) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
+    array->long_int_pointer =
+        (long int *) realloc(self->_private_properties.array.long_int_pointer,
+                             sizeof *array->long_int_pointer * new_size);
+    return (array->long_int_pointer == NULL) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
 }
 
-int _reallocTypeFloat(arayeh *self, arayehType *array, size_t newSize)
+int _realloc_type_float(arayeh *self, arayeh_types *array, size_t new_size)
 {
-    array->floatPtr = (float *) realloc(self->_privateProperties.array.floatPtr,
-                                        sizeof *array->floatPtr * newSize);
-    return (array->floatPtr == NULL) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
+    array->float_pointer =
+        (float *) realloc(self->_private_properties.array.float_pointer,
+                          sizeof *array->float_pointer * new_size);
+    return (array->float_pointer == NULL) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
 }
 
-int _reallocTypeDouble(arayeh *self, arayehType *array, size_t newSize)
+int _realloc_type_double(arayeh *self, arayeh_types *array, size_t new_size)
 {
-    array->doublePtr = (double *) realloc(self->_privateProperties.array.doublePtr,
-                                          sizeof *array->doublePtr * newSize);
-    return (array->doublePtr == NULL) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
+    array->double_pointer =
+        (double *) realloc(self->_private_properties.array.double_pointer,
+                           sizeof *array->double_pointer * new_size);
+    return (array->double_pointer == NULL) ? AA_ARAYEH_FAILURE : AA_ARAYEH_SUCCESS;
 }
 
 // Free arayeh memory.
 
-void _freeTypeChar(arayeh *self)
+void _free_type_char(arayeh *self)
 {
-    free(self->_privateProperties.array.charPtr);
-    self->_privateProperties.array.charPtr = NULL;
+    free(self->_private_properties.array.char_pointer);
+    self->_private_properties.array.char_pointer = NULL;
 }
 
-void _freeTypeSInt(arayeh *self)
+void _free_type_short_int(arayeh *self)
 {
-    free(self->_privateProperties.array.shortIntPtr);
-    self->_privateProperties.array.shortIntPtr = NULL;
+    free(self->_private_properties.array.short_int_pointer);
+    self->_private_properties.array.short_int_pointer = NULL;
 }
 
-void _freeTypeInt(arayeh *self)
+void _free_type_int(arayeh *self)
 {
-    free(self->_privateProperties.array.intPtr);
-    self->_privateProperties.array.intPtr = NULL;
+    free(self->_private_properties.array.int_pointer);
+    self->_private_properties.array.int_pointer = NULL;
 }
 
-void _freeTypeLInt(arayeh *self)
+void _free_type_long_int(arayeh *self)
 {
-    free(self->_privateProperties.array.longIntPtr);
-    self->_privateProperties.array.longIntPtr = NULL;
+    free(self->_private_properties.array.long_int_pointer);
+    self->_private_properties.array.long_int_pointer = NULL;
 }
 
-void _freeTypeFloat(arayeh *self)
+void _free_type_float(arayeh *self)
 {
-    free(self->_privateProperties.array.floatPtr);
-    self->_privateProperties.array.floatPtr = NULL;
+    free(self->_private_properties.array.float_pointer);
+    self->_private_properties.array.float_pointer = NULL;
 }
 
-void _freeTypeDouble(arayeh *self)
+void _free_type_double(arayeh *self)
 {
-    free(self->_privateProperties.array.doublePtr);
-    self->_privateProperties.array.doublePtr = NULL;
+    free(self->_private_properties.array.double_pointer);
+    self->_private_properties.array.double_pointer = NULL;
 }
 
 // Assign the initialized pointer of an array to the arayeh structs pointer.
 
-void _setMemPtrTypeChar(arayeh *self, arayehType *array)
+void _set_memory_pointer_type_char(arayeh *self, arayeh_types *array)
 {
-    self->_privateProperties.array.charPtr = array->charPtr;
+    self->_private_properties.array.char_pointer = array->char_pointer;
 }
 
-void _setMemPtrTypeSInt(arayeh *self, arayehType *array)
+void _set_memory_pointer_type_short_int(arayeh *self, arayeh_types *array)
 {
-    self->_privateProperties.array.shortIntPtr = array->shortIntPtr;
+    self->_private_properties.array.short_int_pointer = array->short_int_pointer;
 }
 
-void _setMemPtrTypeInt(arayeh *self, arayehType *array)
+void _set_memory_pointer_type_int(arayeh *self, arayeh_types *array)
 {
-    self->_privateProperties.array.intPtr = array->intPtr;
+    self->_private_properties.array.int_pointer = array->int_pointer;
 }
 
-void _setMemPtrTypeLInt(arayeh *self, arayehType *array)
+void _set_memory_pointer_type_long_int(arayeh *self, arayeh_types *array)
 {
-    self->_privateProperties.array.longIntPtr = array->longIntPtr;
+    self->_private_properties.array.long_int_pointer = array->long_int_pointer;
 }
 
-void _setMemPtrTypeFloat(arayeh *self, arayehType *array)
+void _set_memory_pointer_type_float(arayeh *self, arayeh_types *array)
 {
-    self->_privateProperties.array.floatPtr = array->floatPtr;
+    self->_private_properties.array.float_pointer = array->float_pointer;
 }
 
-void _setMemPtrTypeDouble(arayeh *self, arayehType *array)
+void _set_memory_pointer_type_double(arayeh *self, arayeh_types *array)
 {
-    self->_privateProperties.array.doublePtr = array->doublePtr;
+    self->_private_properties.array.double_pointer = array->double_pointer;
 }
 
 // Add an element of a specific type to the arayeh.
 
-void _addTypeChar(arayeh *self, size_t index, void *element)
+void _add_type_char(arayeh *self, size_t index, void *element)
 {
-    self->_privateProperties.array.charPtr[index] = *((char *) element);
+    self->_private_properties.array.char_pointer[index] = *((char *) element);
 }
 
-void _addTypeSInt(arayeh *self, size_t index, void *element)
+void _add_type_short_int(arayeh *self, size_t index, void *element)
 {
-    self->_privateProperties.array.shortIntPtr[index] = *((short int *) element);
+    self->_private_properties.array.short_int_pointer[index] = *((short int *) element);
 }
 
-void _addTypeInt(arayeh *self, size_t index, void *element)
+void _add_type_int(arayeh *self, size_t index, void *element)
 {
-    self->_privateProperties.array.intPtr[index] = *((int *) element);
+    self->_private_properties.array.int_pointer[index] = *((int *) element);
 }
 
-void _addTypeLInt(arayeh *self, size_t index, void *element)
+void _add_type_long_int(arayeh *self, size_t index, void *element)
 {
-    self->_privateProperties.array.longIntPtr[index] = *((long int *) element);
+    self->_private_properties.array.long_int_pointer[index] = *((long int *) element);
 }
 
-void _addTypeFloat(arayeh *self, size_t index, void *element)
+void _add_type_float(arayeh *self, size_t index, void *element)
 {
-    self->_privateProperties.array.floatPtr[index] = *((float *) element);
+    self->_private_properties.array.float_pointer[index] = *((float *) element);
 }
 
-void _addTypeDouble(arayeh *self, size_t index, void *element)
+void _add_type_double(arayeh *self, size_t index, void *element)
 {
-    self->_privateProperties.array.doublePtr[index] = *((double *) element);
+    self->_private_properties.array.double_pointer[index] = *((double *) element);
 }
 
 // Merge an arayeh of a specific type into another arayeh.
 
-int _mergeArayehTypeChar(arayeh *self, size_t startIndex, size_t step, arayeh *source)
+int _merge_arayeh_type_char(arayeh *self, size_t start_index, size_t step, arayeh *source)
 {
     // shorten names for god's sake.
-    struct privateProperties *selfPrivateProperties = &self->_privateProperties;
-    struct privateProperties *srcPrivateProperties  = &source->_privateProperties;
+    struct private_properties *src_private_properties = &source->_private_properties;
 
     // track error state in the function.
     int state;
 
     // track index for insertion.
-    size_t insertIndex;
+    size_t insert_index;
 
     // pointers.
-    char *arrayPtr = srcPrivateProperties->array.charPtr;
-    char *elementPtr;
+    char *array_pointer = src_private_properties->array.char_pointer;
+    char *element_pointer;
 
     // temporary variable to hold map value.
     char map;
 
-    for (size_t arrayIndex = 0, arayehIndex = 0; arrayIndex < srcPrivateProperties->size;
-         arrayIndex++, arayehIndex += step) {
+    for (size_t array_index = 0, arayeh_index = 0;
+         array_index < src_private_properties->size; array_index++, arayeh_index += step) {
 
         // calculate next element location.
-        elementPtr = arrayPtr + arrayIndex;
+        element_pointer = array_pointer + array_index;
 
         // calculate next index.
-        insertIndex = startIndex + arayehIndex;
+        insert_index = start_index + arayeh_index;
 
         // hold src map value.
-        map = srcPrivateProperties->map[arrayIndex];
+        map = src_private_properties->map[array_index];
 
         // do not insert element if its empty.
         if (map == AA_ARAYEH_OFF) {
@@ -323,7 +330,7 @@ int _mergeArayehTypeChar(arayeh *self, size_t startIndex, size_t step, arayeh *s
         }
 
         // insert element into arayeh.
-        state = self->insert(self, insertIndex, elementPtr);
+        state = self->insert(self, insert_index, element_pointer);
 
         // in case of any error abort process and return error code.
         if (state != AA_ARAYEH_SUCCESS) {
@@ -335,36 +342,36 @@ int _mergeArayehTypeChar(arayeh *self, size_t startIndex, size_t step, arayeh *s
     return state;
 }
 
-int _mergeArayehTypeSInt(arayeh *self, size_t startIndex, size_t step, arayeh *source)
+int _merge_arayeh_type_short_int(arayeh *self, size_t start_index, size_t step,
+                                 arayeh *source)
 {
     // shorten names for god's sake.
-    struct privateProperties *selfPrivateProperties = &self->_privateProperties;
-    struct privateProperties *srcPrivateProperties  = &source->_privateProperties;
+    struct private_properties *src_private_properties = &source->_private_properties;
 
     // track error state in the function.
     int state;
 
     // track index for insertion.
-    size_t insertIndex;
+    size_t insert_index;
 
     // pointers.
-    short int *arrayPtr = srcPrivateProperties->array.shortIntPtr;
-    short int *elementPtr;
+    short int *array_pointer = src_private_properties->array.short_int_pointer;
+    short int *element_pointer;
 
     // temporary variable to hold map value.
     char map;
 
-    for (size_t arrayIndex = 0, arayehIndex = 0; arrayIndex < srcPrivateProperties->size;
-         arrayIndex++, arayehIndex += step) {
+    for (size_t array_index = 0, arayeh_index = 0;
+         array_index < src_private_properties->size; array_index++, arayeh_index += step) {
 
         // calculate next element location.
-        elementPtr = arrayPtr + arrayIndex;
+        element_pointer = array_pointer + array_index;
 
         // calculate next index.
-        insertIndex = startIndex + arayehIndex;
+        insert_index = start_index + arayeh_index;
 
         // hold src map value.
-        map = srcPrivateProperties->map[arrayIndex];
+        map = src_private_properties->map[array_index];
 
         // do not insert element if its empty.
         if (map == AA_ARAYEH_OFF) {
@@ -373,7 +380,7 @@ int _mergeArayehTypeSInt(arayeh *self, size_t startIndex, size_t step, arayeh *s
         }
 
         // insert element into arayeh.
-        state = self->insert(self, insertIndex, elementPtr);
+        state = self->insert(self, insert_index, element_pointer);
 
         // in case of any error abort process and return error code.
         if (state != AA_ARAYEH_SUCCESS) {
@@ -385,36 +392,35 @@ int _mergeArayehTypeSInt(arayeh *self, size_t startIndex, size_t step, arayeh *s
     return state;
 }
 
-int _mergeArayehTypeInt(arayeh *self, size_t startIndex, size_t step, arayeh *source)
+int _merge_arayeh_type_int(arayeh *self, size_t start_index, size_t step, arayeh *source)
 {
     // shorten names for god's sake.
-    struct privateProperties *selfPrivateProperties = &self->_privateProperties;
-    struct privateProperties *srcPrivateProperties  = &source->_privateProperties;
+    struct private_properties *src_private_properties = &source->_private_properties;
 
     // track error state in the function.
     int state;
 
     // track index for insertion.
-    size_t insertIndex;
+    size_t insert_index;
 
     // pointers.
-    int *arrayPtr = srcPrivateProperties->array.intPtr;
-    int *elementPtr;
+    int *array_pointer = src_private_properties->array.int_pointer;
+    int *element_pointer;
 
     // temporary variable to hold map value.
     char map;
 
-    for (size_t arrayIndex = 0, arayehIndex = 0; arrayIndex < srcPrivateProperties->size;
-         arrayIndex++, arayehIndex += step) {
+    for (size_t array_index = 0, arayeh_index = 0;
+         array_index < src_private_properties->size; array_index++, arayeh_index += step) {
 
         // calculate next element location.
-        elementPtr = arrayPtr + arrayIndex;
+        element_pointer = array_pointer + array_index;
 
         // calculate next index.
-        insertIndex = startIndex + arayehIndex;
+        insert_index = start_index + arayeh_index;
 
         // hold src map value.
-        map = srcPrivateProperties->map[arrayIndex];
+        map = src_private_properties->map[array_index];
 
         // do not insert element if its empty.
         if (map == AA_ARAYEH_OFF) {
@@ -423,7 +429,7 @@ int _mergeArayehTypeInt(arayeh *self, size_t startIndex, size_t step, arayeh *so
         }
 
         // insert element into arayeh.
-        state = self->insert(self, insertIndex, elementPtr);
+        state = self->insert(self, insert_index, element_pointer);
 
         // in case of any error abort process and return error code.
         if (state != AA_ARAYEH_SUCCESS) {
@@ -435,36 +441,36 @@ int _mergeArayehTypeInt(arayeh *self, size_t startIndex, size_t step, arayeh *so
     return state;
 }
 
-int _mergeArayehTypeLInt(arayeh *self, size_t startIndex, size_t step, arayeh *source)
+int _merge_arayeh_type_long_int(arayeh *self, size_t start_index, size_t step,
+                                arayeh *source)
 {
     // shorten names for god's sake.
-    struct privateProperties *selfPrivateProperties = &self->_privateProperties;
-    struct privateProperties *srcPrivateProperties  = &source->_privateProperties;
+    struct private_properties *src_private_properties = &source->_private_properties;
 
     // track error state in the function.
     int state;
 
     // track index for insertion.
-    size_t insertIndex;
+    size_t insert_index;
 
     // pointers.
-    long int *arrayPtr = srcPrivateProperties->array.longIntPtr;
-    long int *elementPtr;
+    long int *array_pointer = src_private_properties->array.long_int_pointer;
+    long int *element_pointer;
 
     // temporary variable to hold map value.
     char map;
 
-    for (size_t arrayIndex = 0, arayehIndex = 0; arrayIndex < srcPrivateProperties->size;
-         arrayIndex++, arayehIndex += step) {
+    for (size_t array_index = 0, arayeh_index = 0;
+         array_index < src_private_properties->size; array_index++, arayeh_index += step) {
 
         // calculate next element location.
-        elementPtr = arrayPtr + arrayIndex;
+        element_pointer = array_pointer + array_index;
 
         // calculate next index.
-        insertIndex = startIndex + arayehIndex;
+        insert_index = start_index + arayeh_index;
 
         // hold src map value.
-        map = srcPrivateProperties->map[arrayIndex];
+        map = src_private_properties->map[array_index];
 
         // do not insert element if its empty.
         if (map == AA_ARAYEH_OFF) {
@@ -473,7 +479,7 @@ int _mergeArayehTypeLInt(arayeh *self, size_t startIndex, size_t step, arayeh *s
         }
 
         // insert element into arayeh.
-        state = self->insert(self, insertIndex, elementPtr);
+        state = self->insert(self, insert_index, element_pointer);
 
         // in case of any error abort process and return error code.
         if (state != AA_ARAYEH_SUCCESS) {
@@ -485,36 +491,36 @@ int _mergeArayehTypeLInt(arayeh *self, size_t startIndex, size_t step, arayeh *s
     return state;
 }
 
-int _mergeArayehTypeFloat(arayeh *self, size_t startIndex, size_t step, arayeh *source)
+int _merge_arayeh_type_float(arayeh *self, size_t start_index, size_t step,
+                             arayeh *source)
 {
     // shorten names for god's sake.
-    struct privateProperties *selfPrivateProperties = &self->_privateProperties;
-    struct privateProperties *srcPrivateProperties  = &source->_privateProperties;
+    struct private_properties *src_private_properties = &source->_private_properties;
 
     // track error state in the function.
     int state;
 
     // track index for insertion.
-    size_t insertIndex;
+    size_t insert_index;
 
     // pointers.
-    float *arrayPtr = srcPrivateProperties->array.floatPtr;
-    float *elementPtr;
+    float *array_pointer = src_private_properties->array.float_pointer;
+    float *element_pointer;
 
     // temporary variable to hold map value.
     char map;
 
-    for (size_t arrayIndex = 0, arayehIndex = 0; arrayIndex < srcPrivateProperties->size;
-         arrayIndex++, arayehIndex += step) {
+    for (size_t array_index = 0, arayeh_index = 0;
+         array_index < src_private_properties->size; array_index++, arayeh_index += step) {
 
         // calculate next element location.
-        elementPtr = arrayPtr + arrayIndex;
+        element_pointer = array_pointer + array_index;
 
         // calculate next index.
-        insertIndex = startIndex + arayehIndex;
+        insert_index = start_index + arayeh_index;
 
         // hold src map value.
-        map = srcPrivateProperties->map[arrayIndex];
+        map = src_private_properties->map[array_index];
 
         // do not insert element if its empty.
         if (map == AA_ARAYEH_OFF) {
@@ -523,7 +529,7 @@ int _mergeArayehTypeFloat(arayeh *self, size_t startIndex, size_t step, arayeh *
         }
 
         // insert element into arayeh.
-        state = self->insert(self, insertIndex, elementPtr);
+        state = self->insert(self, insert_index, element_pointer);
 
         // in case of any error abort process and return error code.
         if (state != AA_ARAYEH_SUCCESS) {
@@ -535,36 +541,36 @@ int _mergeArayehTypeFloat(arayeh *self, size_t startIndex, size_t step, arayeh *
     return state;
 }
 
-int _mergeArayehTypeDouble(arayeh *self, size_t startIndex, size_t step, arayeh *source)
+int _merge_arayeh_type_double(arayeh *self, size_t start_index, size_t step,
+                              arayeh *source)
 {
     // shorten names for god's sake.
-    struct privateProperties *selfPrivateProperties = &self->_privateProperties;
-    struct privateProperties *srcPrivateProperties  = &source->_privateProperties;
+    struct private_properties *src_private_properties = &source->_private_properties;
 
     // track error state in the function.
     int state;
 
     // track index for insertion.
-    size_t insertIndex;
+    size_t insert_index;
 
     // pointers.
-    double *arrayPtr = srcPrivateProperties->array.doublePtr;
-    double *elementPtr;
+    double *array_pointer = src_private_properties->array.double_pointer;
+    double *element_pointer;
 
     // temporary variable to hold map value.
     char map;
 
-    for (size_t arrayIndex = 0, arayehIndex = 0; arrayIndex < srcPrivateProperties->size;
-         arrayIndex++, arayehIndex += step) {
+    for (size_t array_index = 0, arayeh_index = 0;
+         array_index < src_private_properties->size; array_index++, arayeh_index += step) {
 
         // calculate next element location.
-        elementPtr = arrayPtr + arrayIndex;
+        element_pointer = array_pointer + array_index;
 
         // calculate next index.
-        insertIndex = startIndex + arayehIndex;
+        insert_index = start_index + arayeh_index;
 
         // hold src map value.
-        map = srcPrivateProperties->map[arrayIndex];
+        map = src_private_properties->map[array_index];
 
         // do not insert element if its empty.
         if (map == AA_ARAYEH_OFF) {
@@ -573,7 +579,7 @@ int _mergeArayehTypeDouble(arayeh *self, size_t startIndex, size_t step, arayeh 
         }
 
         // insert element into arayeh.
-        state = self->insert(self, insertIndex, elementPtr);
+        state = self->insert(self, insert_index, element_pointer);
 
         // in case of any error abort process and return error code.
         if (state != AA_ARAYEH_SUCCESS) {
@@ -587,29 +593,29 @@ int _mergeArayehTypeDouble(arayeh *self, size_t startIndex, size_t step, arayeh 
 
 // Merge a C standard array of a specific type into the arayeh.
 
-int _mergeArrayTypeChar(arayeh *self, size_t startIndex, size_t step, size_t arraySize,
-                        void *array)
+int _merge_array_type_char(arayeh *self, size_t start_index, size_t step,
+                           size_t array_size, void *array)
 {
     // track error state in the function.
     int state;
 
     // track index for insertion.
-    size_t insertIndex;
+    size_t insert_index;
 
     // pointers.
-    char *arrayPtr = (char *) array;
-    char *elementPtr;
+    char *array_pointer = (char *) array;
+    char *element_pointer;
 
-    for (size_t arrayIndex = 0, arayehIndex = 0; arrayIndex < arraySize;
-         arrayIndex++, arayehIndex += step) {
+    for (size_t array_index = 0, arayeh_index = 0; array_index < array_size;
+         array_index++, arayeh_index += step) {
 
         // calculate next element location.
-        elementPtr = arrayPtr + arrayIndex;
+        element_pointer = array_pointer + array_index;
 
         // calculate next index.
-        insertIndex = startIndex + arayehIndex;
+        insert_index = start_index + arayeh_index;
 
-        state = self->insert(self, insertIndex, elementPtr);
+        state = self->insert(self, insert_index, element_pointer);
 
         // in case of any error abort process and return error code.
         if (state != AA_ARAYEH_SUCCESS) {
@@ -621,29 +627,29 @@ int _mergeArrayTypeChar(arayeh *self, size_t startIndex, size_t step, size_t arr
     return state;
 }
 
-int _mergeArrayTypeSInt(arayeh *self, size_t startIndex, size_t step, size_t arraySize,
-                        void *array)
+int _merge_array_type_short_int(arayeh *self, size_t start_index, size_t step,
+                                size_t array_size, void *array)
 {
     // track error state in the function.
     int state;
 
     // track index for insertion.
-    size_t insertIndex;
+    size_t insert_index;
 
     // pointers.
-    short int *arrayPtr = (short int *) array;
-    short int *elementPtr;
+    short int *array_pointer = (short int *) array;
+    short int *element_pointer;
 
-    for (size_t arrayIndex = 0, arayehIndex = 0; arrayIndex < arraySize;
-         arrayIndex++, arayehIndex += step) {
+    for (size_t array_index = 0, arayeh_index = 0; array_index < array_size;
+         array_index++, arayeh_index += step) {
 
         // calculate next element location.
-        elementPtr = arrayPtr + arrayIndex;
+        element_pointer = array_pointer + array_index;
 
         // calculate next index.
-        insertIndex = startIndex + arayehIndex;
+        insert_index = start_index + arayeh_index;
 
-        state = self->insert(self, insertIndex, elementPtr);
+        state = self->insert(self, insert_index, element_pointer);
 
         // in case of any error abort process and return error code.
         if (state != AA_ARAYEH_SUCCESS) {
@@ -655,29 +661,29 @@ int _mergeArrayTypeSInt(arayeh *self, size_t startIndex, size_t step, size_t arr
     return state;
 }
 
-int _mergeArrayTypeInt(arayeh *self, size_t startIndex, size_t step, size_t arraySize,
-                       void *array)
+int _merge_array_type_int(arayeh *self, size_t start_index, size_t step,
+                          size_t array_size, void *array)
 {
     // track error state in the function.
     int state;
 
     // track index for insertion.
-    size_t insertIndex;
+    size_t insert_index;
 
     // pointers.
-    int *arrayPtr = (int *) array;
-    int *elementPtr;
+    int *array_pointer = (int *) array;
+    int *element_pointer;
 
-    for (size_t arrayIndex = 0, arayehIndex = 0; arrayIndex < arraySize;
-         arrayIndex++, arayehIndex += step) {
+    for (size_t array_index = 0, arayeh_index = 0; array_index < array_size;
+         array_index++, arayeh_index += step) {
 
         // calculate next element location.
-        elementPtr = arrayPtr + arrayIndex;
+        element_pointer = array_pointer + array_index;
 
         // calculate next index.
-        insertIndex = startIndex + arayehIndex;
+        insert_index = start_index + arayeh_index;
 
-        state = self->insert(self, insertIndex, elementPtr);
+        state = self->insert(self, insert_index, element_pointer);
 
         // in case of any error abort process and return error code.
         if (state != AA_ARAYEH_SUCCESS) {
@@ -689,29 +695,29 @@ int _mergeArrayTypeInt(arayeh *self, size_t startIndex, size_t step, size_t arra
     return state;
 }
 
-int _mergeArrayTypeLInt(arayeh *self, size_t startIndex, size_t step, size_t arraySize,
-                        void *array)
+int _merge_array_type_long_int(arayeh *self, size_t start_index, size_t step,
+                               size_t array_size, void *array)
 {
     // track error state in the function.
     int state;
 
     // track index for insertion.
-    size_t insertIndex;
+    size_t insert_index;
 
     // pointers.
-    long int *arrayPtr = (long int *) array;
-    long int *elementPtr;
+    long int *array_pointer = (long int *) array;
+    long int *element_pointer;
 
-    for (size_t arrayIndex = 0, arayehIndex = 0; arrayIndex < arraySize;
-         arrayIndex++, arayehIndex += step) {
+    for (size_t array_index = 0, arayeh_index = 0; array_index < array_size;
+         array_index++, arayeh_index += step) {
 
         // calculate next element location.
-        elementPtr = arrayPtr + arrayIndex;
+        element_pointer = array_pointer + array_index;
 
         // calculate next index.
-        insertIndex = startIndex + arayehIndex;
+        insert_index = start_index + arayeh_index;
 
-        state = self->insert(self, insertIndex, elementPtr);
+        state = self->insert(self, insert_index, element_pointer);
 
         // in case of any error abort process and return error code.
         if (state != AA_ARAYEH_SUCCESS) {
@@ -723,29 +729,29 @@ int _mergeArrayTypeLInt(arayeh *self, size_t startIndex, size_t step, size_t arr
     return state;
 }
 
-int _mergeArrayTypeFloat(arayeh *self, size_t startIndex, size_t step, size_t arraySize,
-                         void *array)
+int _merge_array_type_float(arayeh *self, size_t start_index, size_t step,
+                            size_t array_size, void *array)
 {
     // track error state in the function.
     int state;
 
     // track index for insertion.
-    size_t insertIndex;
+    size_t insert_index;
 
     // pointers.
-    float *arrayPtr = (float *) array;
-    float *elementPtr;
+    float *array_pointer = (float *) array;
+    float *element_pointer;
 
-    for (size_t arrayIndex = 0, arayehIndex = 0; arrayIndex < arraySize;
-         arrayIndex++, arayehIndex += step) {
+    for (size_t array_index = 0, arayeh_index = 0; array_index < array_size;
+         array_index++, arayeh_index += step) {
 
         // calculate next element location.
-        elementPtr = arrayPtr + arrayIndex;
+        element_pointer = array_pointer + array_index;
 
         // calculate next index.
-        insertIndex = startIndex + arayehIndex;
+        insert_index = start_index + arayeh_index;
 
-        state = self->insert(self, insertIndex, elementPtr);
+        state = self->insert(self, insert_index, element_pointer);
 
         // in case of any error abort process and return error code.
         if (state != AA_ARAYEH_SUCCESS) {
@@ -757,29 +763,29 @@ int _mergeArrayTypeFloat(arayeh *self, size_t startIndex, size_t step, size_t ar
     return state;
 }
 
-int _mergeArrayTypeDouble(arayeh *self, size_t startIndex, size_t step, size_t arraySize,
-                          void *array)
+int _merge_array_type_double(arayeh *self, size_t start_index, size_t step,
+                             size_t array_size, void *array)
 {
     // track error state in the function.
     int state;
 
     // track index for insertion.
-    size_t insertIndex;
+    size_t insert_index;
 
     // pointers.
-    double *arrayPtr = (double *) array;
-    double *elementPtr;
+    double *array_pointer = (double *) array;
+    double *element_pointer;
 
-    for (size_t arrayIndex = 0, arayehIndex = 0; arrayIndex < arraySize;
-         arrayIndex++, arayehIndex += step) {
+    for (size_t array_index = 0, arayeh_index = 0; array_index < array_size;
+         array_index++, arayeh_index += step) {
 
         // calculate next element location.
-        elementPtr = arrayPtr + arrayIndex;
+        element_pointer = array_pointer + array_index;
 
         // calculate next index.
-        insertIndex = startIndex + arayehIndex;
+        insert_index = start_index + arayeh_index;
 
-        state = self->insert(self, insertIndex, elementPtr);
+        state = self->insert(self, insert_index, element_pointer);
 
         // in case of any error abort process and return error code.
         if (state != AA_ARAYEH_SUCCESS) {
@@ -793,38 +799,38 @@ int _mergeArrayTypeDouble(arayeh *self, size_t startIndex, size_t step, size_t a
 
 // Get an element from arayeh.
 
-void _getTypeChar(arayeh *self, size_t index, void *element)
+void _get_type_char(arayeh *self, size_t index, void *element)
 {
     char *ptr = (char *) element;
-    *ptr      = self->_privateProperties.array.charPtr[index];
+    *ptr      = self->_private_properties.array.char_pointer[index];
 }
 
-void _getTypeSInt(arayeh *self, size_t index, void *element)
+void _get_type_short_int(arayeh *self, size_t index, void *element)
 {
     short int *ptr = (short int *) element;
-    *ptr           = self->_privateProperties.array.shortIntPtr[index];
+    *ptr           = self->_private_properties.array.short_int_pointer[index];
 }
 
-void _getTypeInt(arayeh *self, size_t index, void *element)
+void _get_type_int(arayeh *self, size_t index, void *element)
 {
     int *ptr = (int *) element;
-    *ptr     = self->_privateProperties.array.intPtr[index];
+    *ptr     = self->_private_properties.array.int_pointer[index];
 }
 
-void _getTypeLInt(arayeh *self, size_t index, void *element)
+void _get_type_long_int(arayeh *self, size_t index, void *element)
 {
     long int *ptr = (long int *) element;
-    *ptr          = self->_privateProperties.array.longIntPtr[index];
+    *ptr          = self->_private_properties.array.long_int_pointer[index];
 }
 
-void _getTypeFloat(arayeh *self, size_t index, void *element)
+void _get_type_float(arayeh *self, size_t index, void *element)
 {
     float *ptr = (float *) element;
-    *ptr       = self->_privateProperties.array.floatPtr[index];
+    *ptr       = self->_private_properties.array.float_pointer[index];
 }
 
-void _getTypeDouble(arayeh *self, size_t index, void *element)
+void _get_type_double(arayeh *self, size_t index, void *element)
 {
     double *ptr = (double *) element;
-    *ptr        = self->_privateProperties.array.doublePtr[index];
+    *ptr        = self->_private_properties.array.double_pointer[index];
 }

@@ -3,7 +3,8 @@
  * This file is a part of:
  * Azadeh Afzar - Arayehsaz (AA-A).
  *
- * Copyright (C) 2020 Mohammad Mahdi Baghbani Pourvahid.
+ * Copyright (C) 2020 - 2021 Azadeh Afzar.
+ * Copyright (C) 2020 - 2021 Mohammad Mahdi Baghbani Pourvahid.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -54,54 +55,54 @@
 __BEGIN_DECLS
 
 // this function will reallocate memory to the array and its map.
-int _resizeMemory(arayeh *self, size_t newSize);
+int _resize_memory(arayeh *self, size_t new_size);
 
 // this function will reallocate memory to the array and its map.
 // the reallocation with this function increases size of the arayeh.
-int _extendSize(arayeh *self, size_t extendSize);
+int _extend_size(arayeh *self, size_t extend_size);
 
 // this function will free the array and reset its parameters.
-int _freeMemory(arayeh **self);
+int _free_memory(arayeh **self);
 
 // this function will create an exact copy of "self" arayeh.
-arayeh *_duplicateArayeh(arayeh *self);
+arayeh *_duplicate_arayeh(arayeh *self);
 
 // this function will insert an "element" into array at
-// index = self->_privateProperties.next.
-int _addToArayeh(arayeh *self, void *element);
+// index = self->_private_properties.next.
+int _add_to_arayeh(arayeh *self, void *element);
 
 // this function will insert an "element" into array at "index".
-int _insertToArayeh(arayeh *self, size_t index, void *element);
+int _insert_to_arayeh(arayeh *self, size_t index, void *element);
 
 // this function will fill array with an element from index (inclusive)
-// "startIndex" to index (exclusive) "endIndex" with step size "step".
-int _fillArayeh(arayeh *self, size_t startIndex, size_t step, size_t endIndex,
-                void *element);
+// "start_index" to index (exclusive) "end_index" with step size "step".
+int _fill_arayeh(arayeh *self, size_t start_index, size_t step, size_t end_index,
+                 void *element);
 
 // this function will merge an arayeh (source) into current arayeh (self), with
 // specified step from the specified start index of (self) arayeh.
-int _mergeFromArayeh(arayeh *self, size_t startIndex, size_t step, arayeh *source);
+int _merge_from_arayeh(arayeh *self, size_t start_index, size_t step, arayeh *source);
 
 // this function will merge a default C array
 // (for example int a[4] = {1, 2, 3, 4};) into the arayeh with step, the starting
-// index for merging is "startIndex" and the size of C array and step determines
+// index for merging is "start_index" and the size of C array and step determines
 // the last index (in the example above the size of C arayeh is 4 with step 1).
-int _mergeFromArray(arayeh *self, size_t startIndex, size_t step, size_t arraySize,
-                    void *array);
+int _merge_from_array(arayeh *self, size_t start_index, size_t step, size_t array_size,
+                      void *array);
 
 // this function copies data in "index" cell of the array to the "destination" memory
 // location.
-int _getFromArayeh(arayeh *self, size_t index, void *destination);
+int _get_from_arayeh(arayeh *self, size_t index, void *destination);
 
 // this function will override arayeh default settings with new one.
-void _setSettings(arayeh *self, arayehSettings *newSettings);
+void _set_settings(arayeh *self, arayeh_settings *new_settings);
 
 // this function will override arayeh extend size default settings with new one.
-void _setSizeSettings(arayeh *self, arayehSizeSettings *newSettings);
+void _set_size_settings(arayeh *self, arayeh_size_settings *new_settings);
 
 // this function will override the arayehs default growth factor function
 // with a new function provided by user.
-void _setGrowthFactor(arayeh *self, size_t (*growthFactor)(arayeh *arayeh));
+void _set_growth_factor(arayeh *self, size_t (*growth_factor)(arayeh *));
 
 __END_DECLS
 

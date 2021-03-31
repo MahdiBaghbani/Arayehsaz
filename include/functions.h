@@ -3,7 +3,8 @@
  * This file is a part of:
  * Azadeh Afzar - Arayehsaz (AA-A).
  *
- * Copyright (C) 2020 Mohammad Mahdi Baghbani Pourvahid.
+ * Copyright (C) 2020 - 2021 Azadeh Afzar.
+ * Copyright (C) 2020 - 2021 Mohammad Mahdi Baghbani Pourvahid.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -54,13 +55,13 @@
 __BEGIN_DECLS
 
 // This function will calculate the extension size of memory and extends arayeh size.
-int autoExtendMemory(arayeh *self);
+int auto_extend_memory(arayeh *self);
 
 // this function assigns pointers to public functions of an arayeh instance.
-void setPublicMethods(arayeh *self);
+void set_public_methods(arayeh *self);
 
 // this function assigns pointers to private functions of an arayeh instance.
-void setPrivateMethods(arayeh *self, size_t type);
+void set_private_methods(arayeh *self, size_t type);
 
 __END_DECLS
 

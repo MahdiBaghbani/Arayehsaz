@@ -7,7 +7,8 @@
  * Copyright (C) 2019 Christian W. Zuckschwerdt <zany@triq.net>
  *
  * Adopted by:
- * Copyright (C) 2020 Mohammad Mahdi Baghbani Pourvahid.
+ * Copyright (C) 2020 - 2021 Azadeh Afzar.
+ * Copyright (C) 2020 - 2021 Mohammad Mahdi Baghbani Pourvahid.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -40,6 +41,8 @@
 
 #ifndef __AA_A_FATAL_H__
 #define __AA_A_FATAL_H__
+
+#include <stdio.h>
 
 // macros for extracting line number from error code.
 #define STRINGIFYX(x) #x

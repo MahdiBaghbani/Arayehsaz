@@ -3,7 +3,8 @@
  * This file is a part of:
  * Azadeh Afzar - Arayehsaz (AA-A).
  *
- * Copyright (C) 2020 Mohammad Mahdi Baghbani Pourvahid.
+ * Copyright (C) 2020 - 2021 Azadeh Afzar.
+ * Copyright (C) 2020 - 2021 Mohammad Mahdi Baghbani Pourvahid.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -54,11 +55,11 @@
 __BEGIN_DECLS
 
 // this function will calculate the extension size of memory.
-size_t growthFactorPython(arayeh *arayeh);
+size_t growth_factor_python(arayeh *arayeh);
 
 // This function purpose is to update array.next variable to point to next
 // empty [available] slot in the array.
-void updateNextIndex(arayeh *self);
+void update_next_index(arayeh *self);
 
 __END_DECLS
 

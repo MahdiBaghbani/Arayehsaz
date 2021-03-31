@@ -3,7 +3,8 @@
  * This file is a part of:
  * Azadeh Afzar - Arayehsaz (AA-A).
  *
- * Copyright (C) 2020 Mohammad Mahdi Baghbani Pourvahid.
+ * Copyright (C) 2020 - 2021 Azadeh Afzar.
+ * Copyright (C) 2020 - 2021 Mohammad Mahdi Baghbani Pourvahid.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -36,7 +37,7 @@
 
 #include "../include/algorithms.h"
 
-size_t growthFactorPython(arayeh *arayeh)
+size_t growth_factor_python(arayeh *arayeh)
 {
     /*
      * This function will calculate the extension size of memory.
@@ -54,7 +55,7 @@ size_t growthFactorPython(arayeh *arayeh)
      */
 
     // shorten names for god's sake.
-    struct privateProperties *privateProperties = &arayeh->_privateProperties;
+    struct private_properties *private_properties = &arayeh->_private_properties;
 
     // derived from python source code.
     // calculate the extension size of memory.
@@ -64,12 +65,12 @@ size_t growthFactorPython(arayeh *arayeh)
     // sequence of adding elements to arayeh in the presence of
     // a poorly-performing system realloc().
     // The growth pattern is:  0, 4, 8, 16, 25, 35, 46, 58, 72, 88, ...
-    size_t current_size   = privateProperties->size;
+    size_t current_size   = private_properties->size;
     size_t extension_size = (current_size >> 3) + (current_size < 9 ? 3 : 6);
     return extension_size;
 }
 
-void updateNextIndex(arayeh *self)
+void update_next_index(arayeh *self)
 {
     /*
      * This function purpose is to update
@@ -85,13 +86,13 @@ void updateNextIndex(arayeh *self)
      */
 
     // shorten names for god's sake.
-    struct privateProperties *privateProperties = &self->_privateProperties;
+    struct private_properties *private_properties = &self->_private_properties;
 
-    while (privateProperties->next < privateProperties->size &&
-           privateProperties->map[privateProperties->next] == AA_ARAYEH_ON) {
-        privateProperties->next++;
+    while ((private_properties->next < private_properties->size) &&
+           (private_properties->map[private_properties->next] == AA_ARAYEH_ON)) {
+        private_properties->next++;
     }
 
     // update public next property.
-    self->next = privateProperties->next;
+    self->next = private_properties->next;
 }
