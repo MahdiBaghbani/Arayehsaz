@@ -6,11 +6,12 @@
 cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
 
 # Project name.
-project(arayehsaz
+project(
+        arayehsaz
         VERSION 0.1.0
         LANGUAGES C
         DESCRIPTION "Easy and almost safe dynamic arrays in C."
-        )
+)
 
 # Library type.
 set(BUILD_SHARED_LIBS YES)
@@ -64,7 +65,7 @@ endif (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 # include install default variables.
 include(GNUInstallDirs)
 
-# set the directory to install headers.
+# set the directory path to install headers in target system.
 set(INSTALL_INCLUDE_DIR ${CMAKE_INSTALL_INCLUDEDIR}/${CMAKE_PROJECT_NAME})
 
 # set path to header files.
@@ -106,8 +107,10 @@ configure_file(
         ${PROJECT_SOURCE_DIR}/cmake/cmake_uninstall.cmake.in
         ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake
         IMMEDIATE
-        @ONLY)
+        @ONLY
+)
 
-add_custom_target(uninstall
+add_custom_target(
+        uninstall
         ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake
-        )
+)
