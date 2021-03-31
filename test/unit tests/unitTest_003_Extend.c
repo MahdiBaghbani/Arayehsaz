@@ -3,7 +3,8 @@
  * This file is a part of:
  * Azadeh Afzar - Arayehsaz (AA-A).
  *
- * Copyright (C) 2020 Mohammad Mahdi Baghbani Pourvahid.
+ * Copyright (C) 2020 - 2021 Azadeh Afzar.
+ * Copyright (C) 2020 - 2021 Mohammad Mahdi Baghbani Pourvahid.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -53,26 +54,26 @@ void test_extend(void)
     int state;
 
     // define default arayeh size.
-    size_t arayehSize = 20;
-    size_t extendSize = 34;
+    size_t arayeh_size = 20;
+    size_t extend_size = 34;
 
     // create new arayeh.
-    arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+    arayeh *test_case = Arayeh(AA_ARAYEH_TYPE_INT, arayeh_size);
 
     // test current size.
-    TEST_ASSERT_EQUAL_INT(arayehSize, testCase->_privateProperties.size);
+    TEST_ASSERT_EQUAL_INT(arayeh_size, test_case->_private_properties.size);
 
     // extend size.
-    state = testCase->extendSize(testCase, extendSize);
+    state = test_case->extend_size(test_case, extend_size);
 
     // assert successful extension.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
 
     // test new size.
-    TEST_ASSERT_EQUAL_INT(arayehSize + extendSize, testCase->_privateProperties.size);
+    TEST_ASSERT_EQUAL_INT(arayeh_size + extend_size, test_case->_private_properties.size);
 
     // free arayeh.
-    testCase->freeArayeh(&testCase);
+    test_case->free_arayeh(&test_case);
 }
 
 int main(void)

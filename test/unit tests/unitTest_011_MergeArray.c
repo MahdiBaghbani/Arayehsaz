@@ -1,9 +1,10 @@
-/** test/unitTest_011_mergeArray.c
+/** test/unitTest_011_merge_array.c
  *
  * This file is a part of:
  * Azadeh Afzar - Arayehsaz (AA-A).
  *
- * Copyright (C) 2020 Mohammad Mahdi Baghbani Pourvahid.
+ * Copyright (C) 2020 - 2021 Azadeh Afzar.
+ * Copyright (C) 2020 - 2021 Mohammad Mahdi Baghbani Pourvahid.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -53,38 +54,39 @@ void test_merge_array_empty_arayeh_step_1(void)
     int state;
 
     // define default arayeh size.
-    size_t arayehSize = 5;
-    size_t startIndex = 0;
-    size_t step       = 1;
+    size_t arayeh_size = 5;
+    size_t start_index = 0;
+    size_t step        = 1;
 
     // define a c array with size 5.
-    int cArray[5] = {1, 0, 6, 4, 7};
+    int c_generic_array[5] = {1, 0, 6, 4, 7};
 
     // create new arayeh.
-    arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+    arayeh *test_case = Arayeh(AA_ARAYEH_TYPE_INT, arayeh_size);
 
     // shorten names for god's sake.
-    struct privateProperties *privateProperties = &testCase->_privateProperties;
+    struct private_properties *private_properties = &test_case->_private_properties;
 
     // merge array.
-    state = testCase->mergeArray(testCase, startIndex, step, 5, &cArray);
+    state = test_case->merge_array(test_case, start_index, step, 5, &c_generic_array);
 
     // assert successful merge.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
 
-    for (size_t index = startIndex; index < arayehSize; index += step) {
+    for (size_t index = start_index; index < arayeh_size; index += step) {
         // assert array is successfully merged into arayeh.
-        TEST_ASSERT_EQUAL_INT(cArray[index], privateProperties->array.intPtr[index]);
-        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, privateProperties->map[index]);
+        TEST_ASSERT_EQUAL_INT(c_generic_array[index],
+                              private_properties->array.int_pointer[index]);
+        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, private_properties->map[index]);
     }
 
     // assert arayeh properties.
-    TEST_ASSERT_EQUAL_INT(5, privateProperties->next);
-    TEST_ASSERT_EQUAL_INT(5, privateProperties->used);
-    TEST_ASSERT_EQUAL_INT(arayehSize, privateProperties->size);
+    TEST_ASSERT_EQUAL_INT(5, private_properties->next);
+    TEST_ASSERT_EQUAL_INT(5, private_properties->used);
+    TEST_ASSERT_EQUAL_INT(arayeh_size, private_properties->size);
 
     // free arayeh.
-    testCase->freeArayeh(&testCase);
+    test_case->free_arayeh(&test_case);
 }
 
 void test_merge_array_empty_arayeh_step_5(void)
@@ -95,46 +97,47 @@ void test_merge_array_empty_arayeh_step_5(void)
     int state;
 
     // define default arayeh size.
-    size_t arayehSize = 21;
-    size_t startIndex = 0;
-    size_t step       = 5;
+    size_t arayeh_size = 21;
+    size_t start_index = 0;
+    size_t step        = 5;
 
     // define a c array with size 5.
-    int cArray[5] = {1, 0, 6, 4, 7};
+    int c_generic_array[5] = {1, 0, 6, 4, 7};
 
     // create new arayeh.
-    arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+    arayeh *test_case = Arayeh(AA_ARAYEH_TYPE_INT, arayeh_size);
 
     // shorten names for god's sake.
-    struct privateProperties *privateProperties = &testCase->_privateProperties;
+    struct private_properties *private_properties = &test_case->_private_properties;
 
     // merge array.
-    state = testCase->mergeArray(testCase, startIndex, step, 5, &cArray);
+    state = test_case->merge_array(test_case, start_index, step, 5, &c_generic_array);
 
     // assert successful merge.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
 
-    for (size_t aIndex = startIndex, cIndex = 0; aIndex < arayehSize;
-         aIndex += step, cIndex++) {
+    for (size_t arayeh_index = start_index, c_array_index = 0; arayeh_index < arayeh_size;
+         arayeh_index += step, c_array_index++) {
         // assert array is successfully merged into arayeh.
-        TEST_ASSERT_EQUAL_INT(cArray[cIndex], privateProperties->array.intPtr[aIndex]);
-        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, privateProperties->map[aIndex]);
+        TEST_ASSERT_EQUAL_INT(c_generic_array[c_array_index],
+                              private_properties->array.int_pointer[arayeh_index]);
+        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, private_properties->map[arayeh_index]);
     }
 
-    for (size_t index = startIndex; index < arayehSize; index++) {
+    for (size_t index = start_index; index < arayeh_size; index++) {
         if (index % 5 != 0) {
             // assert that arayeh is empty in this cells.
-            TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_OFF, privateProperties->map[index]);
+            TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_OFF, private_properties->map[index]);
         }
     }
 
     // assert arayeh properties.
-    TEST_ASSERT_EQUAL_INT(1, privateProperties->next);
-    TEST_ASSERT_EQUAL_INT(5, privateProperties->used);
-    TEST_ASSERT_EQUAL_INT(arayehSize, privateProperties->size);
+    TEST_ASSERT_EQUAL_INT(1, private_properties->next);
+    TEST_ASSERT_EQUAL_INT(5, private_properties->used);
+    TEST_ASSERT_EQUAL_INT(arayeh_size, private_properties->size);
 
     // free arayeh.
-    testCase->freeArayeh(&testCase);
+    test_case->free_arayeh(&test_case);
 }
 
 void test_default_settings_merge_array_extends_size(void)
@@ -147,39 +150,40 @@ void test_default_settings_merge_array_extends_size(void)
     int state;
 
     // define default arayeh size.
-    size_t arayehSize = 5;
-    size_t startIndex = 4;
-    size_t step       = 1;
+    size_t arayeh_size = 5;
+    size_t start_index = 4;
+    size_t step        = 1;
 
     // define a c array with size 5.
-    int cArray[5] = {1, 0, 6, 4, 7};
+    int c_generic_array[5] = {1, 0, 6, 4, 7};
 
     // create new arayeh.
-    arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+    arayeh *test_case = Arayeh(AA_ARAYEH_TYPE_INT, arayeh_size);
 
     // shorten names for god's sake.
-    struct privateProperties *privateProperties = &testCase->_privateProperties;
+    struct private_properties *private_properties = &test_case->_private_properties;
 
     // merge array.
-    state = testCase->mergeArray(testCase, startIndex, step, 5, &cArray);
+    state = test_case->merge_array(test_case, start_index, step, 5, &c_generic_array);
 
     // assert successful merge.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
 
-    for (size_t aIndex = startIndex, cIndex = 0; aIndex < privateProperties->size;
-         aIndex += step, cIndex++) {
+    for (size_t arayeh_index = start_index, c_array_index = 0;
+         arayeh_index < private_properties->size; arayeh_index += step, c_array_index++) {
         // assert array is successfully merged into arayeh.
-        TEST_ASSERT_EQUAL_INT(cArray[cIndex], privateProperties->array.intPtr[aIndex]);
-        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, privateProperties->map[aIndex]);
+        TEST_ASSERT_EQUAL_INT(c_generic_array[c_array_index],
+                              private_properties->array.int_pointer[arayeh_index]);
+        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, private_properties->map[arayeh_index]);
     }
 
     // assert arayeh properties.
-    TEST_ASSERT_EQUAL_INT(0, privateProperties->next);
-    TEST_ASSERT_EQUAL_INT(5, privateProperties->used);
-    TEST_ASSERT_EQUAL_INT(9, privateProperties->size);
+    TEST_ASSERT_EQUAL_INT(0, private_properties->next);
+    TEST_ASSERT_EQUAL_INT(5, private_properties->used);
+    TEST_ASSERT_EQUAL_INT(9, private_properties->size);
 
     // free arayeh.
-    testCase->freeArayeh(&testCase);
+    test_case->free_arayeh(&test_case);
 }
 
 void test_default_settings_merge_array_extends_size_start_bigger_than_size(void)
@@ -192,39 +196,40 @@ void test_default_settings_merge_array_extends_size_start_bigger_than_size(void)
     int state;
 
     // define default arayeh size.
-    size_t arayehSize = 5;
-    size_t startIndex = 8;
-    size_t step       = 1;
+    size_t arayeh_size = 5;
+    size_t start_index = 8;
+    size_t step        = 1;
 
     // define a c array with size 5.
-    int cArray[5] = {1, 0, 6, 4, 7};
+    int c_generic_array[5] = {1, 0, 6, 4, 7};
 
     // create new arayeh.
-    arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+    arayeh *test_case = Arayeh(AA_ARAYEH_TYPE_INT, arayeh_size);
 
     // shorten names for god's sake.
-    struct privateProperties *privateProperties = &testCase->_privateProperties;
+    struct private_properties *private_properties = &test_case->_private_properties;
 
     // merge array.
-    state = testCase->mergeArray(testCase, startIndex, step, 5, &cArray);
+    state = test_case->merge_array(test_case, start_index, step, 5, &c_generic_array);
 
     // assert successful merge.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
 
-    for (size_t aIndex = startIndex, cIndex = 0; aIndex < privateProperties->size;
-         aIndex += step, cIndex++) {
+    for (size_t arayeh_index = start_index, c_array_index = 0;
+         arayeh_index < private_properties->size; arayeh_index += step, c_array_index++) {
         // assert array is successfully merged into arayeh.
-        TEST_ASSERT_EQUAL_INT(cArray[cIndex], privateProperties->array.intPtr[aIndex]);
-        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, privateProperties->map[aIndex]);
+        TEST_ASSERT_EQUAL_INT(c_generic_array[c_array_index],
+                              private_properties->array.int_pointer[arayeh_index]);
+        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, private_properties->map[arayeh_index]);
     }
 
     // assert arayeh properties.
-    TEST_ASSERT_EQUAL_INT(0, privateProperties->next);
-    TEST_ASSERT_EQUAL_INT(5, privateProperties->used);
-    TEST_ASSERT_EQUAL_INT(13, privateProperties->size);
+    TEST_ASSERT_EQUAL_INT(0, private_properties->next);
+    TEST_ASSERT_EQUAL_INT(5, private_properties->used);
+    TEST_ASSERT_EQUAL_INT(13, private_properties->size);
 
     // free arayeh.
-    testCase->freeArayeh(&testCase);
+    test_case->free_arayeh(&test_case);
 }
 
 void test_general_size_extension_OFF(void)
@@ -236,31 +241,31 @@ void test_general_size_extension_OFF(void)
     int state;
 
     // define default arayeh size.
-    size_t arayehSize = 5;
-    size_t startIndex = 4;
-    size_t step       = 1;
+    size_t arayeh_size = 5;
+    size_t start_index = 4;
+    size_t step        = 1;
 
     // define a c array with size 5.
-    int cArray[5] = {1, 0, 6, 4, 7};
+    int c_generic_array[5] = {1, 0, 6, 4, 7};
 
     // create new arayeh.
-    arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+    arayeh *test_case = Arayeh(AA_ARAYEH_TYPE_INT, arayeh_size);
 
     // define new settings.
-    arayehSettings newSetting = {.debugMessages = AA_ARAYEH_OFF,
-                                 .extendSize    = AA_ARAYEH_OFF};
+    arayeh_settings new_settings = {.debug_messages = AA_ARAYEH_OFF,
+                                    .extend_size    = AA_ARAYEH_OFF};
 
     // set new settings.
-    testCase->setSettings(testCase, &newSetting);
+    test_case->set_settings(test_case, &new_settings);
 
     // merge array.
-    state = testCase->mergeArray(testCase, startIndex, step, 5, &cArray);
+    state = test_case->merge_array(test_case, start_index, step, 5, &c_generic_array);
 
     // assert successful merge.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_NOT_ENOUGH_SPACE, state);
 
     // free arayeh.
-    testCase->freeArayeh(&testCase);
+    test_case->free_arayeh(&test_case);
 }
 
 void test_general_size_extension_MANUAL(void)
@@ -275,46 +280,47 @@ void test_general_size_extension_MANUAL(void)
     int state;
 
     // define default arayeh size.
-    size_t arayehSize = 5;
-    size_t startIndex = 4;
-    size_t step       = 1;
+    size_t arayeh_size = 5;
+    size_t start_index = 4;
+    size_t step        = 1;
 
     // define a c array with size 5.
-    int cArray[5] = {1, 0, 6, 4, 7};
+    int c_generic_array[5] = {1, 0, 6, 4, 7};
 
     // create new arayeh.
-    arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+    arayeh *test_case = Arayeh(AA_ARAYEH_TYPE_INT, arayeh_size);
 
     // shorten names for god's sake.
-    struct privateProperties *privateProperties = &testCase->_privateProperties;
+    struct private_properties *private_properties = &test_case->_private_properties;
 
     // define new settings.
-    arayehSettings newSetting = {.debugMessages = AA_ARAYEH_OFF,
-                                 .extendSize    = AA_ARAYEH_MANUAL};
+    arayeh_settings new_settings = {.debug_messages = AA_ARAYEH_OFF,
+                                    .extend_size    = AA_ARAYEH_MANUAL};
 
     // set new settings.
-    testCase->setSettings(testCase, &newSetting);
+    test_case->set_settings(test_case, &new_settings);
 
     // merge array.
-    state = testCase->mergeArray(testCase, startIndex, step, 5, &cArray);
+    state = test_case->merge_array(test_case, start_index, step, 5, &c_generic_array);
 
     // assert successful merge.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
 
-    for (size_t aIndex = startIndex, cIndex = 0; aIndex < privateProperties->size;
-         aIndex += step, cIndex++) {
+    for (size_t arayeh_index = start_index, c_array_index = 0;
+         arayeh_index < private_properties->size; arayeh_index += step, c_array_index++) {
         // assert array is successfully merged into arayeh.
-        TEST_ASSERT_EQUAL_INT(cArray[cIndex], privateProperties->array.intPtr[aIndex]);
-        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, privateProperties->map[aIndex]);
+        TEST_ASSERT_EQUAL_INT(c_generic_array[c_array_index],
+                              private_properties->array.int_pointer[arayeh_index]);
+        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, private_properties->map[arayeh_index]);
     }
 
     // assert arayeh properties.
-    TEST_ASSERT_EQUAL_INT(0, privateProperties->next);
-    TEST_ASSERT_EQUAL_INT(5, privateProperties->used);
-    TEST_ASSERT_EQUAL_INT(9, privateProperties->size);
+    TEST_ASSERT_EQUAL_INT(0, private_properties->next);
+    TEST_ASSERT_EQUAL_INT(5, private_properties->used);
+    TEST_ASSERT_EQUAL_INT(9, private_properties->size);
 
     // free arayeh.
-    testCase->freeArayeh(&testCase);
+    test_case->free_arayeh(&test_case);
 }
 
 void test_general_ON_method_specific_merge_array_extension_OFF(void)
@@ -329,49 +335,50 @@ void test_general_ON_method_specific_merge_array_extension_OFF(void)
     int state;
 
     // define default arayeh size.
-    size_t arayehSize = 5;
-    size_t startIndex = 4;
-    size_t step       = 1;
+    size_t arayeh_size = 5;
+    size_t start_index = 4;
+    size_t step        = 1;
 
     // define a c array with size 5.
-    int cArray[5] = {1, 0, 6, 4, 7};
+    int c_generic_array[5] = {1, 0, 6, 4, 7};
 
     // create new arayeh.
-    arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+    arayeh *test_case = Arayeh(AA_ARAYEH_TYPE_INT, arayeh_size);
 
     // shorten names for god's sake.
-    struct privateProperties *privateProperties = &testCase->_privateProperties;
+    struct private_properties *private_properties = &test_case->_private_properties;
 
     // define new size settings.
-    arayehSizeSettings newSizeSettings = {.extendAdd         = AA_ARAYEH_ON,
-                                          .extendInsert      = AA_ARAYEH_ON,
-                                          .extendFill        = AA_ARAYEH_ON,
-                                          .extendMergeArayeh = AA_ARAYEH_ON,
-                                          .extendMergeArray  = AA_ARAYEH_OFF};
+    arayeh_size_settings new_size_settings = {.extend_add          = AA_ARAYEH_ON,
+                                              .extend_insert       = AA_ARAYEH_ON,
+                                              .extend_fill         = AA_ARAYEH_ON,
+                                              .extend_merge_arayeh = AA_ARAYEH_ON,
+                                              .extend_merge_array  = AA_ARAYEH_OFF};
 
     // set new size settings.
-    testCase->setSizeSettings(testCase, &newSizeSettings);
+    test_case->set_size_settings(test_case, &new_size_settings);
 
     // merge array.
-    state = testCase->mergeArray(testCase, startIndex, step, 5, &cArray);
+    state = test_case->merge_array(test_case, start_index, step, 5, &c_generic_array);
 
     // assert successful merge.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
 
-    for (size_t aIndex = startIndex, cIndex = 0; aIndex < privateProperties->size;
-         aIndex += step, cIndex++) {
+    for (size_t arayeh_index = start_index, c_array_index = 0;
+         arayeh_index < private_properties->size; arayeh_index += step, c_array_index++) {
         // assert array is successfully merged into arayeh.
-        TEST_ASSERT_EQUAL_INT(cArray[cIndex], privateProperties->array.intPtr[aIndex]);
-        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, privateProperties->map[aIndex]);
+        TEST_ASSERT_EQUAL_INT(c_generic_array[c_array_index],
+                              private_properties->array.int_pointer[arayeh_index]);
+        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, private_properties->map[arayeh_index]);
     }
 
     // assert arayeh properties.
-    TEST_ASSERT_EQUAL_INT(0, privateProperties->next);
-    TEST_ASSERT_EQUAL_INT(5, privateProperties->used);
-    TEST_ASSERT_EQUAL_INT(9, privateProperties->size);
+    TEST_ASSERT_EQUAL_INT(0, private_properties->next);
+    TEST_ASSERT_EQUAL_INT(5, private_properties->used);
+    TEST_ASSERT_EQUAL_INT(9, private_properties->size);
 
     // free arayeh.
-    testCase->freeArayeh(&testCase);
+    test_case->free_arayeh(&test_case);
 }
 
 void test_general_MANUAL_method_specific_merge_array_extension_OFF(void)
@@ -384,41 +391,41 @@ void test_general_MANUAL_method_specific_merge_array_extension_OFF(void)
     int state;
 
     // define default arayeh size.
-    size_t arayehSize = 5;
-    size_t startIndex = 4;
-    size_t step       = 1;
+    size_t arayeh_size = 5;
+    size_t start_index = 4;
+    size_t step        = 1;
 
     // define a c array with size 5.
-    int cArray[5] = {1, 0, 6, 4, 7};
+    int c_generic_array[5] = {1, 0, 6, 4, 7};
 
     // create new arayeh.
-    arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+    arayeh *test_case = Arayeh(AA_ARAYEH_TYPE_INT, arayeh_size);
 
     // define new settings.
-    arayehSettings newSetting = {.debugMessages = AA_ARAYEH_OFF,
-                                 .extendSize    = AA_ARAYEH_MANUAL};
+    arayeh_settings new_settings = {.debug_messages = AA_ARAYEH_OFF,
+                                    .extend_size    = AA_ARAYEH_MANUAL};
 
     // set new settings.
-    testCase->setSettings(testCase, &newSetting);
+    test_case->set_settings(test_case, &new_settings);
 
     // define new size settings.
-    arayehSizeSettings newSizeSettings = {.extendAdd         = AA_ARAYEH_ON,
-                                          .extendInsert      = AA_ARAYEH_ON,
-                                          .extendFill        = AA_ARAYEH_ON,
-                                          .extendMergeArayeh = AA_ARAYEH_ON,
-                                          .extendMergeArray  = AA_ARAYEH_OFF};
+    arayeh_size_settings new_size_settings = {.extend_add          = AA_ARAYEH_ON,
+                                              .extend_insert       = AA_ARAYEH_ON,
+                                              .extend_fill         = AA_ARAYEH_ON,
+                                              .extend_merge_arayeh = AA_ARAYEH_ON,
+                                              .extend_merge_array  = AA_ARAYEH_OFF};
 
     // set new size settings.
-    testCase->setSizeSettings(testCase, &newSizeSettings);
+    test_case->set_size_settings(test_case, &new_size_settings);
 
     // merge array.
-    state = testCase->mergeArray(testCase, startIndex, step, 5, &cArray);
+    state = test_case->merge_array(test_case, start_index, step, 5, &c_generic_array);
 
     // assert successful merge.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_NOT_ENOUGH_SPACE, state);
 
     // free arayeh.
-    testCase->freeArayeh(&testCase);
+    test_case->free_arayeh(&test_case);
 }
 
 void test_merge_error_bad_starting_point(void)
@@ -431,22 +438,22 @@ void test_merge_error_bad_starting_point(void)
     int state;
 
     // define default arayeh size.
-    size_t arayehSize = 5;
+    size_t arayeh_size = 5;
 
     // define a c array with size 5.
-    int cArray[5] = {1, 0, 6, 4, 7};
+    int c_generic_array[5] = {1, 0, 6, 4, 7};
 
     // create new arayeh.
-    arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+    arayeh *test_case = Arayeh(AA_ARAYEH_TYPE_INT, arayeh_size);
 
     // merge array.
-    state = testCase->mergeArray(testCase, -5, 1, 5, &cArray);
+    state = test_case->merge_array(test_case, -5, 1, 5, &c_generic_array);
 
     // fill was successful.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_OVERFLOW, state);
 
     // free arayeh.
-    testCase->freeArayeh(&testCase);
+    test_case->free_arayeh(&test_case);
 }
 
 void test_merge_array_error_wrong_step(void)
@@ -457,28 +464,28 @@ void test_merge_array_error_wrong_step(void)
     int state;
 
     // define default arayeh size.
-    size_t arayehSize = 5;
+    size_t arayeh_size = 5;
 
     // define a c array with size 5.
-    int cArray[5] = {1, 0, 6, 4, 7};
+    int c_generic_array[5] = {1, 0, 6, 4, 7};
 
     // create new arayeh.
-    arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+    arayeh *test_case = Arayeh(AA_ARAYEH_TYPE_INT, arayeh_size);
 
     // merge array.
-    state = testCase->mergeArray(testCase, 0, 0, 5, &cArray);
+    state = test_case->merge_array(test_case, 0, 0, 5, &c_generic_array);
 
     // fill was successful.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_WRONG_STEP, state);
 
     // merge array.
-    state = testCase->mergeArray(testCase, 0, -5, 5, &cArray);
+    state = test_case->merge_array(test_case, 0, -5, 5, &c_generic_array);
 
     // fill was successful.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_OVERFLOW, state);
 
     // free arayeh.
-    testCase->freeArayeh(&testCase);
+    test_case->free_arayeh(&test_case);
 }
 
 int main(void)

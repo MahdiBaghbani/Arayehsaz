@@ -3,7 +3,8 @@
  * This file is a part of:
  * Azadeh Afzar - Arayehsaz (AA-A).
  *
- * Copyright (C) 2020 Mohammad Mahdi Baghbani Pourvahid.
+ * Copyright (C) 2020 - 2021 Azadeh Afzar.
+ * Copyright (C) 2020 - 2021 Mohammad Mahdi Baghbani Pourvahid.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -53,37 +54,37 @@ void test_fill_all_empty_step_one(void)
     int state;
 
     // define default arayeh size.
-    size_t start      = 0;
-    size_t step       = 1;
-    size_t arayehSize = 20;
+    size_t start       = 0;
+    size_t step        = 1;
+    size_t arayeh_size = 20;
 
     // element for filling.
     int element = 5;
 
     // create new arayeh.
-    arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+    arayeh *test_case = Arayeh(AA_ARAYEH_TYPE_INT, arayeh_size);
 
     // fill all of the empty arayeh with element.
-    state = testCase->fill(testCase, start, step, arayehSize, &element);
+    state = test_case->fill(test_case, start, step, arayeh_size, &element);
 
     // shorten names for god's sake.
-    struct privateProperties *privateProperties = &testCase->_privateProperties;
+    struct private_properties *private_properties = &test_case->_private_properties;
 
     // fill was successful.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
 
     // check all slots.
-    for (size_t i = start; i < arayehSize; i += step) {
-        TEST_ASSERT_EQUAL_INT(element, privateProperties->array.intPtr[i]);
-        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, privateProperties->map[i]);
+    for (size_t i = start; i < arayeh_size; i += step) {
+        TEST_ASSERT_EQUAL_INT(element, private_properties->array.int_pointer[i]);
+        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, private_properties->map[i]);
     }
 
     // assert "used" and "next" pointers.
-    TEST_ASSERT_EQUAL_INT(arayehSize, privateProperties->used);
-    TEST_ASSERT_EQUAL_INT(arayehSize, privateProperties->next);
+    TEST_ASSERT_EQUAL_INT(arayeh_size, private_properties->used);
+    TEST_ASSERT_EQUAL_INT(arayeh_size, private_properties->next);
 
     // free arayeh.
-    testCase->freeArayeh(&testCase);
+    test_case->free_arayeh(&test_case);
 }
 
 void test_fill_all_empty_step_two(void)
@@ -94,42 +95,42 @@ void test_fill_all_empty_step_two(void)
     int state;
 
     // define default arayeh size.
-    size_t start      = 0;
-    size_t step       = 2;
-    size_t arayehSize = 20;
+    size_t start       = 0;
+    size_t step        = 2;
+    size_t arayeh_size = 20;
 
     // element for filling.
     int element = 5;
 
     // create new arayeh.
-    arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+    arayeh *test_case = Arayeh(AA_ARAYEH_TYPE_INT, arayeh_size);
 
     // shorten names for god's sake.
-    struct privateProperties *privateProperties = &testCase->_privateProperties;
+    struct private_properties *private_properties = &test_case->_private_properties;
 
     // fill all of the empty arayeh with element.
-    state = testCase->fill(testCase, start, step, arayehSize, &element);
+    state = test_case->fill(test_case, start, step, arayeh_size, &element);
 
     // fill was successful.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
 
     // check for being filled.
-    for (size_t i = start; i < arayehSize; i += step) {
-        TEST_ASSERT_EQUAL_INT(element, privateProperties->array.intPtr[i]);
-        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, privateProperties->map[i]);
+    for (size_t i = start; i < arayeh_size; i += step) {
+        TEST_ASSERT_EQUAL_INT(element, private_properties->array.int_pointer[i]);
+        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, private_properties->map[i]);
     }
 
     // check for being empty.
-    for (size_t i = start + 1; i < arayehSize; i += step) {
-        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_OFF, privateProperties->map[i]);
+    for (size_t i = start + 1; i < arayeh_size; i += step) {
+        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_OFF, private_properties->map[i]);
     }
 
     // assert "used" and "next" pointers.
-    TEST_ASSERT_EQUAL_INT(10, privateProperties->used);
-    TEST_ASSERT_EQUAL_INT(1, privateProperties->next);
+    TEST_ASSERT_EQUAL_INT(10, private_properties->used);
+    TEST_ASSERT_EQUAL_INT(1, private_properties->next);
 
     // free arayeh.
-    testCase->freeArayeh(&testCase);
+    test_case->free_arayeh(&test_case);
 }
 
 void test_fill_existing_arayeh(void)
@@ -140,48 +141,48 @@ void test_fill_existing_arayeh(void)
     int state;
 
     // define default arayeh size.
-    size_t arayehSize = 20;
+    size_t arayeh_size = 20;
 
     // element for filling.
     int existingElement = 1;
     int element         = 5;
 
     // create new arayeh.
-    arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+    arayeh *test_case = Arayeh(AA_ARAYEH_TYPE_INT, arayeh_size);
 
     // shorten names for god's sake.
-    struct privateProperties *privateProperties = &testCase->_privateProperties;
+    struct private_properties *private_properties = &test_case->_private_properties;
 
     // fill arayeh with data.
-    for (size_t i = 0; i < arayehSize; ++i) {
-        state = testCase->add(testCase, &existingElement);
+    for (size_t i = 0; i < arayeh_size; ++i) {
+        state = test_case->add(test_case, &existingElement);
         // add was successful.
         TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
     }
 
     // check for existing element before filling arayeh with new element.
-    for (size_t i = 0; i < arayehSize; ++i) {
-        TEST_ASSERT_EQUAL_INT(existingElement, privateProperties->array.intPtr[i]);
+    for (size_t i = 0; i < arayeh_size; ++i) {
+        TEST_ASSERT_EQUAL_INT(existingElement, private_properties->array.int_pointer[i]);
     }
 
     // fill all of the empty arayeh with element.
-    state = testCase->fill(testCase, 5, 1, 10, &element);
+    state = test_case->fill(test_case, 5, 1, 10, &element);
 
     // fill was successful.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
 
     // check for being filled.
     for (size_t i = 5; i < 10; ++i) {
-        TEST_ASSERT_EQUAL_INT(element, privateProperties->array.intPtr[i]);
-        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, privateProperties->map[i]);
+        TEST_ASSERT_EQUAL_INT(element, private_properties->array.int_pointer[i]);
+        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, private_properties->map[i]);
     }
 
     // assert "used" and "next" pointers.
-    TEST_ASSERT_EQUAL_INT(arayehSize, privateProperties->used);
-    TEST_ASSERT_EQUAL_INT(arayehSize, privateProperties->next);
+    TEST_ASSERT_EQUAL_INT(arayeh_size, private_properties->used);
+    TEST_ASSERT_EQUAL_INT(arayeh_size, private_properties->next);
 
     // free arayeh.
-    testCase->freeArayeh(&testCase);
+    test_case->free_arayeh(&test_case);
 }
 
 void test_default_settings_fill_extends_size(void)
@@ -194,41 +195,41 @@ void test_default_settings_fill_extends_size(void)
     int state;
 
     // define default arayeh size.
-    size_t arayehSize = 20;
+    size_t arayeh_size = 20;
 
     // define end index.
-    size_t endIndex = 30;
+    size_t end_index = 30;
 
     // element for filling.
     int element = 5;
 
     // create new arayeh.
-    arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+    arayeh *test_case = Arayeh(AA_ARAYEH_TYPE_INT, arayeh_size);
 
     // shorten names for god's sake.
-    struct privateProperties *privateProperties = &testCase->_privateProperties;
+    struct private_properties *private_properties = &test_case->_private_properties;
 
     // fill all of the empty arayeh with element.
-    state = testCase->fill(testCase, 0, 1, endIndex, &element);
+    state = test_case->fill(test_case, 0, 1, end_index, &element);
 
     // check arayeh size increased.
-    TEST_ASSERT_GREATER_THAN_size_t(arayehSize, privateProperties->size);
+    TEST_ASSERT_GREATER_THAN_size_t(arayeh_size, private_properties->size);
 
     // check fill was successful.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
 
     // check all slots.
-    for (size_t i = 0; i < endIndex; ++i) {
-        TEST_ASSERT_EQUAL_INT(element, privateProperties->array.intPtr[i]);
-        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, privateProperties->map[i]);
+    for (size_t i = 0; i < end_index; ++i) {
+        TEST_ASSERT_EQUAL_INT(element, private_properties->array.int_pointer[i]);
+        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, private_properties->map[i]);
     }
 
     // assert "used" and "next" pointers.
-    TEST_ASSERT_EQUAL_INT(endIndex, privateProperties->used);
-    TEST_ASSERT_EQUAL_INT(endIndex, privateProperties->next);
+    TEST_ASSERT_EQUAL_INT(end_index, private_properties->used);
+    TEST_ASSERT_EQUAL_INT(end_index, private_properties->next);
 
     // free arayeh.
-    testCase->freeArayeh(&testCase);
+    test_case->free_arayeh(&test_case);
 }
 
 void test_default_settings_fill_extends_size_start_bigger_than_size(void)
@@ -242,42 +243,42 @@ void test_default_settings_fill_extends_size_start_bigger_than_size(void)
     int state;
 
     // define default arayeh size.
-    size_t arayehSize = 20;
+    size_t arayeh_size = 20;
 
     // define start index and end index.
-    size_t startIndex = 30;
-    size_t endIndex   = 50;
+    size_t start_index = 30;
+    size_t end_index    = 50;
 
     // element for filling.
     int element = 5;
 
     // create new arayeh.
-    arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+    arayeh *test_case = Arayeh(AA_ARAYEH_TYPE_INT, arayeh_size);
 
     // shorten names for god's sake.
-    struct privateProperties *privateProperties = &testCase->_privateProperties;
+    struct private_properties *private_properties = &test_case->_private_properties;
 
     // fill all of the empty arayeh with element.
-    state = testCase->fill(testCase, startIndex, 1, endIndex, &element);
+    state = test_case->fill(test_case, start_index, 1, end_index, &element);
 
     // check arayeh size increased.
-    TEST_ASSERT_GREATER_THAN_size_t(arayehSize, privateProperties->size);
+    TEST_ASSERT_GREATER_THAN_size_t(arayeh_size, private_properties->size);
 
     // check fill was successful.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
 
     // check all slots.
-    for (size_t i = startIndex; i < endIndex; ++i) {
-        TEST_ASSERT_EQUAL_INT(element, privateProperties->array.intPtr[i]);
-        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, privateProperties->map[i]);
+    for (size_t i = start_index; i < end_index; ++i) {
+        TEST_ASSERT_EQUAL_INT(element, private_properties->array.int_pointer[i]);
+        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, private_properties->map[i]);
     }
 
     // assert "used" and "next" pointers.
-    TEST_ASSERT_EQUAL_INT(endIndex - startIndex, privateProperties->used);
-    TEST_ASSERT_EQUAL_INT(0, privateProperties->next);
+    TEST_ASSERT_EQUAL_INT(end_index - start_index, private_properties->used);
+    TEST_ASSERT_EQUAL_INT(0, private_properties->next);
 
     // free arayeh.
-    testCase->freeArayeh(&testCase);
+    test_case->free_arayeh(&test_case);
 }
 
 void test_general_size_extension_OFF(void)
@@ -289,32 +290,32 @@ void test_general_size_extension_OFF(void)
     int state;
 
     // define default arayeh size.
-    size_t arayehSize = 20;
+    size_t arayeh_size = 20;
     // define start index and end index.
-    size_t startIndex = 0;
-    size_t endIndex   = 50;
+    size_t start_index = 0;
+    size_t end_index    = 50;
 
     // element for filling.
     int element = 5;
 
     // create new arayeh.
-    arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+    arayeh *test_case = Arayeh(AA_ARAYEH_TYPE_INT, arayeh_size);
 
     // define new settings.
-    arayehSettings newSetting = {.debugMessages = AA_ARAYEH_OFF,
-                                 .extendSize    = AA_ARAYEH_OFF};
+    arayeh_settings new_settings = {.debug_messages = AA_ARAYEH_OFF,
+                                    .extend_size    = AA_ARAYEH_OFF};
 
     // set new settings.
-    testCase->setSettings(testCase, &newSetting);
+    test_case->set_settings(test_case, &new_settings);
 
     // fill all of the empty arayeh with element.
-    state = testCase->fill(testCase, startIndex, 1, endIndex, &element);
+    state = test_case->fill(test_case, start_index, 1, end_index, &element);
 
     // check fill was unsuccessful.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_NOT_ENOUGH_SPACE, state);
 
     // free arayeh.
-    testCase->freeArayeh(&testCase);
+    test_case->free_arayeh(&test_case);
 }
 
 void test_general_size_extension_MANUAL(void)
@@ -329,48 +330,48 @@ void test_general_size_extension_MANUAL(void)
     int state;
 
     // define default arayeh size.
-    size_t arayehSize = 20;
+    size_t arayeh_size = 20;
 
     // define end index.
-    size_t endIndex = 30;
+    size_t end_index = 30;
 
     // element for filling.
     int element = 5;
 
     // create new arayeh.
-    arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+    arayeh *test_case = Arayeh(AA_ARAYEH_TYPE_INT, arayeh_size);
 
     // shorten names for god's sake.
-    struct privateProperties *privateProperties = &testCase->_privateProperties;
+    struct private_properties *private_properties = &test_case->_private_properties;
 
     // define new settings.
-    arayehSettings newSetting = {.debugMessages = AA_ARAYEH_OFF,
-                                 .extendSize    = AA_ARAYEH_MANUAL};
+    arayeh_settings new_settings = {.debug_messages = AA_ARAYEH_OFF,
+                                    .extend_size    = AA_ARAYEH_MANUAL};
 
     // set new settings.
-    testCase->setSettings(testCase, &newSetting);
+    test_case->set_settings(test_case, &new_settings);
 
     // fill all of the empty arayeh with element.
-    state = testCase->fill(testCase, 0, 1, endIndex, &element);
+    state = test_case->fill(test_case, 0, 1, end_index, &element);
 
     // check arayeh size increased.
-    TEST_ASSERT_GREATER_THAN_size_t(arayehSize, privateProperties->size);
+    TEST_ASSERT_GREATER_THAN_size_t(arayeh_size, private_properties->size);
 
     // check fill was successful.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
 
     // check all slots.
-    for (size_t i = 0; i < endIndex; ++i) {
-        TEST_ASSERT_EQUAL_INT(element, privateProperties->array.intPtr[i]);
-        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, privateProperties->map[i]);
+    for (size_t i = 0; i < end_index; ++i) {
+        TEST_ASSERT_EQUAL_INT(element, private_properties->array.int_pointer[i]);
+        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, private_properties->map[i]);
     }
 
     // assert "used" and "next" pointers.
-    TEST_ASSERT_EQUAL_INT(endIndex, privateProperties->used);
-    TEST_ASSERT_EQUAL_INT(endIndex, privateProperties->next);
+    TEST_ASSERT_EQUAL_INT(end_index, private_properties->used);
+    TEST_ASSERT_EQUAL_INT(end_index, private_properties->next);
 
     // free arayeh.
-    testCase->freeArayeh(&testCase);
+    test_case->free_arayeh(&test_case);
 }
 
 void test_general_ON_method_specific_fill_extension_OFF(void)
@@ -385,51 +386,51 @@ void test_general_ON_method_specific_fill_extension_OFF(void)
     int state;
 
     // define default arayeh size.
-    size_t arayehSize = 20;
+    size_t arayeh_size = 20;
 
     // define end index.
-    size_t endIndex = 30;
+    size_t end_index = 30;
 
     // element for filling.
     int element = 5;
 
     // create new arayeh.
-    arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+    arayeh *test_case = Arayeh(AA_ARAYEH_TYPE_INT, arayeh_size);
 
     // shorten names for god's sake.
-    struct privateProperties *privateProperties = &testCase->_privateProperties;
+    struct private_properties *private_properties = &test_case->_private_properties;
 
     // define new size settings.
-    arayehSizeSettings newSizeSettings = {.extendAdd         = AA_ARAYEH_ON,
-                                          .extendInsert      = AA_ARAYEH_ON,
-                                          .extendFill        = AA_ARAYEH_OFF,
-                                          .extendMergeArayeh = AA_ARAYEH_ON,
-                                          .extendMergeArray  = AA_ARAYEH_ON};
+    arayeh_size_settings new_size_settings = {.extend_add          = AA_ARAYEH_ON,
+                                              .extend_insert       = AA_ARAYEH_ON,
+                                              .extend_fill         = AA_ARAYEH_OFF,
+                                              .extend_merge_arayeh = AA_ARAYEH_ON,
+                                              .extend_merge_array  = AA_ARAYEH_ON};
 
     // set new size settings.
-    testCase->setSizeSettings(testCase, &newSizeSettings);
+    test_case->set_size_settings(test_case, &new_size_settings);
 
     // fill all of the empty arayeh with element.
-    state = testCase->fill(testCase, 0, 1, endIndex, &element);
+    state = test_case->fill(test_case, 0, 1, end_index, &element);
 
     // check arayeh size increased.
-    TEST_ASSERT_GREATER_THAN_size_t(arayehSize, privateProperties->size);
+    TEST_ASSERT_GREATER_THAN_size_t(arayeh_size, private_properties->size);
 
     // check fill was successful.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
 
     // check all slots.
-    for (size_t i = 0; i < endIndex; ++i) {
-        TEST_ASSERT_EQUAL_INT(element, privateProperties->array.intPtr[i]);
-        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, privateProperties->map[i]);
+    for (size_t i = 0; i < end_index; ++i) {
+        TEST_ASSERT_EQUAL_INT(element, private_properties->array.int_pointer[i]);
+        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, private_properties->map[i]);
     }
 
     // assert "used" and "next" pointers.
-    TEST_ASSERT_EQUAL_INT(endIndex, privateProperties->used);
-    TEST_ASSERT_EQUAL_INT(endIndex, privateProperties->next);
+    TEST_ASSERT_EQUAL_INT(end_index, private_properties->used);
+    TEST_ASSERT_EQUAL_INT(end_index, private_properties->next);
 
     // free arayeh.
-    testCase->freeArayeh(&testCase);
+    test_case->free_arayeh(&test_case);
 }
 
 void test_general_MANUAL_method_specific_fill_extension_OFF(void)
@@ -442,42 +443,42 @@ void test_general_MANUAL_method_specific_fill_extension_OFF(void)
     int state;
 
     // define default arayeh size.
-    size_t arayehSize = 20;
+    size_t arayeh_size = 20;
     // define start index and end index.
-    size_t startIndex = 0;
-    size_t endIndex   = 50;
+    size_t start_index = 0;
+    size_t end_index    = 50;
 
     // element for filling.
     int element = 5;
 
     // create new arayeh.
-    arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+    arayeh *test_case = Arayeh(AA_ARAYEH_TYPE_INT, arayeh_size);
 
     // define new settings.
-    arayehSettings newSetting = {.debugMessages = AA_ARAYEH_OFF,
-                                 .extendSize    = AA_ARAYEH_MANUAL};
+    arayeh_settings new_settings = {.debug_messages = AA_ARAYEH_OFF,
+                                    .extend_size    = AA_ARAYEH_MANUAL};
 
     // set new settings.
-    testCase->setSettings(testCase, &newSetting);
+    test_case->set_settings(test_case, &new_settings);
 
     // define new size settings.
-    arayehSizeSettings newSizeSettings = {.extendAdd         = AA_ARAYEH_ON,
-                                          .extendInsert      = AA_ARAYEH_ON,
-                                          .extendFill        = AA_ARAYEH_OFF,
-                                          .extendMergeArayeh = AA_ARAYEH_ON,
-                                          .extendMergeArray  = AA_ARAYEH_ON};
+    arayeh_size_settings new_size_settings = {.extend_add          = AA_ARAYEH_ON,
+                                              .extend_insert       = AA_ARAYEH_ON,
+                                              .extend_fill         = AA_ARAYEH_OFF,
+                                              .extend_merge_arayeh = AA_ARAYEH_ON,
+                                              .extend_merge_array  = AA_ARAYEH_ON};
 
     // set new size settings.
-    testCase->setSizeSettings(testCase, &newSizeSettings);
+    test_case->set_size_settings(test_case, &new_size_settings);
 
     // fill all of the empty arayeh with element.
-    state = testCase->fill(testCase, startIndex, 1, endIndex, &element);
+    state = test_case->fill(test_case, start_index, 1, end_index, &element);
 
     // check fill was unsuccessful.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_NOT_ENOUGH_SPACE, state);
 
     // free arayeh.
-    testCase->freeArayeh(&testCase);
+    test_case->free_arayeh(&test_case);
 }
 
 void test_general_size_extension_MANUAL_add_insert_OFF_fill_ON(void)
@@ -490,59 +491,59 @@ void test_general_size_extension_MANUAL_add_insert_OFF_fill_ON(void)
     int state;
 
     // define default arayeh size.
-    size_t arayehSize = 20;
+    size_t arayeh_size = 20;
 
     // define start index and end index.
-    size_t startIndex = 0;
-    size_t endIndex   = 50;
+    size_t start_index = 0;
+    size_t end_index    = 50;
 
     // element for filling.
     int element = 5;
 
     // create new arayeh.
-    arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+    arayeh *test_case = Arayeh(AA_ARAYEH_TYPE_INT, arayeh_size);
 
     // shorten names for god's sake.
-    struct privateProperties *privateProperties = &testCase->_privateProperties;
+    struct private_properties *private_properties = &test_case->_private_properties;
 
     // define new settings.
-    arayehSettings newSetting = {.debugMessages = AA_ARAYEH_OFF,
-                                 .extendSize    = AA_ARAYEH_MANUAL};
+    arayeh_settings new_settings = {.debug_messages = AA_ARAYEH_OFF,
+                                    .extend_size    = AA_ARAYEH_MANUAL};
 
     // set new settings.
-    testCase->setSettings(testCase, &newSetting);
+    test_case->set_settings(test_case, &new_settings);
 
     // define new size settings.
-    arayehSizeSettings newSizeSettings = {.extendAdd         = AA_ARAYEH_OFF,
-                                          .extendInsert      = AA_ARAYEH_OFF,
-                                          .extendFill        = AA_ARAYEH_ON,
-                                          .extendMergeArayeh = AA_ARAYEH_ON,
-                                          .extendMergeArray  = AA_ARAYEH_ON};
+    arayeh_size_settings new_size_settings = {.extend_add          = AA_ARAYEH_OFF,
+                                              .extend_insert       = AA_ARAYEH_OFF,
+                                              .extend_fill         = AA_ARAYEH_ON,
+                                              .extend_merge_arayeh = AA_ARAYEH_ON,
+                                              .extend_merge_array  = AA_ARAYEH_ON};
 
     // set new size settings.
-    testCase->setSizeSettings(testCase, &newSizeSettings);
+    test_case->set_size_settings(test_case, &new_size_settings);
 
     // fill all of the empty arayeh with element.
-    state = testCase->fill(testCase, startIndex, 1, endIndex, &element);
+    state = test_case->fill(test_case, start_index, 1, end_index, &element);
 
     // check arayeh size increased.
-    TEST_ASSERT_GREATER_THAN_size_t(arayehSize, privateProperties->size);
+    TEST_ASSERT_GREATER_THAN_size_t(arayeh_size, private_properties->size);
 
     // check fill was successful.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
 
     // check all slots.
-    for (size_t i = startIndex; i < endIndex; ++i) {
-        TEST_ASSERT_EQUAL_INT(element, privateProperties->array.intPtr[i]);
-        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, privateProperties->map[i]);
+    for (size_t i = start_index; i < end_index; ++i) {
+        TEST_ASSERT_EQUAL_INT(element, private_properties->array.int_pointer[i]);
+        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, private_properties->map[i]);
     }
 
     // assert "used" and "next" pointers.
-    TEST_ASSERT_EQUAL_INT(endIndex - startIndex, privateProperties->used);
-    TEST_ASSERT_EQUAL_INT(50, privateProperties->next);
+    TEST_ASSERT_EQUAL_INT(end_index - start_index, private_properties->used);
+    TEST_ASSERT_EQUAL_INT(50, private_properties->next);
 
     // free arayeh.
-    testCase->freeArayeh(&testCase);
+    test_case->free_arayeh(&test_case);
 }
 
 void test_fill_error_bad_starting_point(void)
@@ -554,28 +555,28 @@ void test_fill_error_bad_starting_point(void)
     int state;
 
     // define default arayeh size.
-    size_t arayehSize = 20;
+    size_t arayeh_size = 20;
 
     // element for filling.
     int element = 5;
 
     // create new arayeh.
-    arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+    arayeh *test_case = Arayeh(AA_ARAYEH_TYPE_INT, arayeh_size);
 
     // fill with negative starting point.
-    state = testCase->fill(testCase, -5, 1, 5, &element);
+    state = test_case->fill(test_case, -5, 1, 5, &element);
 
     // fill was successful.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_WRONG_INDEX, state);
 
     // fill with starting point bigger than ending point.
-    state = testCase->fill(testCase, 10, 1, 5, &element);
+    state = test_case->fill(test_case, 10, 1, 5, &element);
 
     // fill was successful.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_WRONG_INDEX, state);
 
     // free arayeh.
-    testCase->freeArayeh(&testCase);
+    test_case->free_arayeh(&test_case);
 }
 
 void test_fill_error_wrong_step(void)
@@ -586,22 +587,22 @@ void test_fill_error_wrong_step(void)
     int state;
 
     // define default arayeh size.
-    size_t arayehSize = 20;
+    size_t arayeh_size = 20;
 
     // element for filling.
     int element = 5;
 
     // create new arayeh.
-    arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+    arayeh *test_case = Arayeh(AA_ARAYEH_TYPE_INT, arayeh_size);
 
     // fill all of the empty arayeh with element.
-    state = testCase->fill(testCase, 0, 0, arayehSize, &element);
+    state = test_case->fill(test_case, 0, 0, arayeh_size, &element);
 
     // fill was successful.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_WRONG_STEP, state);
 
     // free arayeh.
-    testCase->freeArayeh(&testCase);
+    test_case->free_arayeh(&test_case);
 }
 
 int main(void)

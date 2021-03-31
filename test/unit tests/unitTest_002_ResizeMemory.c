@@ -3,7 +3,8 @@
  * This file is a part of:
  * Azadeh Afzar - Arayehsaz (AA-A).
  *
- * Copyright (C) 2020 Mohammad Mahdi Baghbani Pourvahid.
+ * Copyright (C) 2020 - 2021 Azadeh Afzar.
+ * Copyright (C) 2020 - 2021 Mohammad Mahdi Baghbani Pourvahid.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -53,26 +54,26 @@ void test_increase_size(void)
     int state;
 
     // define default arayeh size.
-    size_t arayehSize = 20;
-    size_t newSize    = 34;
+    size_t arayeh_size = 20;
+    size_t new_size    = 34;
 
     // create new arayeh.
-    arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+    arayeh *test_case = Arayeh(AA_ARAYEH_TYPE_INT, arayeh_size);
 
     // test current size.
-    TEST_ASSERT_EQUAL_INT(arayehSize, testCase->_privateProperties.size);
+    TEST_ASSERT_EQUAL_INT(arayeh_size, test_case->_private_properties.size);
 
     // increase size.
-    state = testCase->resizeMemory(testCase, newSize);
+    state = test_case->resize_memory(test_case, new_size);
 
     // assert successful extension.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
 
     // test new size.
-    TEST_ASSERT_EQUAL_INT(newSize, testCase->_privateProperties.size);
+    TEST_ASSERT_EQUAL_INT(new_size, test_case->_private_properties.size);
 
     // free arayeh.
-    testCase->freeArayeh(&testCase);
+    test_case->free_arayeh(&test_case);
 }
 
 void test_decrease_size(void)
@@ -83,26 +84,26 @@ void test_decrease_size(void)
     int state;
 
     // define default arayeh size.
-    size_t arayehSize = 50;
-    size_t newSize    = 34;
+    size_t arayeh_size = 50;
+    size_t new_size    = 34;
 
     // create new arayeh.
-    arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+    arayeh *test_case = Arayeh(AA_ARAYEH_TYPE_INT, arayeh_size);
 
     // test current size.
-    TEST_ASSERT_EQUAL_INT(arayehSize, testCase->_privateProperties.size);
+    TEST_ASSERT_EQUAL_INT(arayeh_size, test_case->_private_properties.size);
 
     // decrease size.
-    state = testCase->resizeMemory(testCase, newSize);
+    state = test_case->resize_memory(test_case, new_size);
 
     // assert successful extension.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
 
     // test new size.
-    TEST_ASSERT_EQUAL_INT(newSize, testCase->_privateProperties.size);
+    TEST_ASSERT_EQUAL_INT(new_size, test_case->_private_properties.size);
 
     // free arayeh.
-    testCase->freeArayeh(&testCase);
+    test_case->free_arayeh(&test_case);
 }
 
 int main(void)

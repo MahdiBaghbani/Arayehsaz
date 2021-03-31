@@ -3,7 +3,8 @@
  * This file is a part of:
  * Azadeh Afzar - Arayehsaz (AA-A).
  *
- * Copyright (C) 2020 Mohammad Mahdi Baghbani Pourvahid.
+ * Copyright (C) 2020 - 2021 Azadeh Afzar.
+ * Copyright (C) 2020 - 2021 Mohammad Mahdi Baghbani Pourvahid.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -53,28 +54,28 @@ void test_add(void)
     int state;
 
     // define default arayeh size.
-    size_t arayehSize = 10;
-    int element       = 5;
+    size_t arayeh_size = 10;
+    int element        = 5;
 
     // create new arayeh.
-    arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+    arayeh *test_case = Arayeh(AA_ARAYEH_TYPE_INT, arayeh_size);
 
     // shorten names for god's sake.
-    struct privateProperties *privateProperties = &testCase->_privateProperties;
+    struct private_properties *private_properties = &test_case->_private_properties;
 
     // add element.
-    state = testCase->add(testCase, &element);
+    state = test_case->add(test_case, &element);
 
     // assert successful adding.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
 
     // assert element is added.
-    TEST_ASSERT_EQUAL_INT(element, privateProperties->array.intPtr[0]);
-    TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, privateProperties->map[0]);
-    TEST_ASSERT_EQUAL_INT(1, privateProperties->next);
+    TEST_ASSERT_EQUAL_INT(element, private_properties->array.int_pointer[0]);
+    TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, private_properties->map[0]);
+    TEST_ASSERT_EQUAL_INT(1, private_properties->next);
 
     // free arayeh.
-    testCase->freeArayeh(&testCase);
+    test_case->free_arayeh(&test_case);
 }
 
 void test_default_settings_add_extends_size(void)
@@ -87,29 +88,29 @@ void test_default_settings_add_extends_size(void)
     int state;
 
     // define default arayeh size.
-    size_t arayehSize = 1;
-    int element       = 5;
+    size_t arayeh_size = 1;
+    int element        = 5;
 
     // create new arayeh.
-    arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+    arayeh *test_case = Arayeh(AA_ARAYEH_TYPE_INT, arayeh_size);
 
     // shorten names for god's sake.
-    struct privateProperties *privateProperties = &testCase->_privateProperties;
+    struct private_properties *private_properties = &test_case->_private_properties;
 
     // test adding to arayeh for large amount of additions and see how it
     // dynamically extends memory space.
     for (int i = 0; i < 100000; i++) {
         // add element to arayeh.
-        state = testCase->add(testCase, &element);
+        state = test_case->add(test_case, &element);
         // assert successful adding.
         TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
         // assert elements are added.
-        TEST_ASSERT_EQUAL_INT(element, privateProperties->array.intPtr[i]);
-        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, privateProperties->map[i]);
+        TEST_ASSERT_EQUAL_INT(element, private_properties->array.int_pointer[i]);
+        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, private_properties->map[i]);
     }
 
     // free arayeh.
-    testCase->freeArayeh(&testCase);
+    test_case->free_arayeh(&test_case);
 }
 
 // define custom growth function.
@@ -128,37 +129,37 @@ void test_add_extends_size_alternate_growth_function(void)
     int state;
 
     // define default arayeh size.
-    size_t arayehSize = 1;
-    int element       = 5;
+    size_t arayeh_size = 1;
+    int element        = 5;
 
     // create new arayeh.
-    arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+    arayeh *test_case = Arayeh(AA_ARAYEH_TYPE_INT, arayeh_size);
 
     // shorten names for god's sake.
-    struct privateProperties *privateProperties = &testCase->_privateProperties;
+    struct private_properties *private_properties = &test_case->_private_properties;
 
     // change growth factor.
-    testCase->setGrowthFactor(testCase, growthFactorFunction);
+    test_case->set_growth_factor(test_case, growthFactorFunction);
 
     // test adding to arayeh for large amount of additions and see how it
     // dynamically extends memory space.
     for (int i = 0; i < 100000; i++) {
         // add element to arayeh.
-        state = testCase->add(testCase, &element);
+        state = test_case->add(test_case, &element);
         // assert successful adding.
         TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
         // assert elements are added.
-        TEST_ASSERT_EQUAL_INT(element, privateProperties->array.intPtr[i]);
-        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, privateProperties->map[i]);
+        TEST_ASSERT_EQUAL_INT(element, private_properties->array.int_pointer[i]);
+        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, private_properties->map[i]);
     }
 
     // assert final size.
     // because size starts at 1 and multiplied by 2 to expand to 100,000 the final
     // size should be 1 * 2^x >= 100,000 which results in x == 17 .
-    TEST_ASSERT_EQUAL_INT((1 << 17), privateProperties->size);
+    TEST_ASSERT_EQUAL_INT((1 << 17), private_properties->size);
 
     // free arayeh.
-    testCase->freeArayeh(&testCase);
+    test_case->free_arayeh(&test_case);
 }
 
 void test_general_size_extension_OFF(void)
@@ -170,33 +171,33 @@ void test_general_size_extension_OFF(void)
     int state;
 
     // define default arayeh size.
-    size_t arayehSize = 1;
-    int element       = 5;
+    size_t arayeh_size = 1;
+    int element        = 5;
 
     // create new arayeh.
-    arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+    arayeh *test_case = Arayeh(AA_ARAYEH_TYPE_INT, arayeh_size);
 
     // define new settings.
-    arayehSettings newSetting = {.debugMessages = AA_ARAYEH_OFF,
-                                 .extendSize    = AA_ARAYEH_OFF};
+    arayeh_settings new_settings = {.debug_messages = AA_ARAYEH_OFF,
+                                    .extend_size    = AA_ARAYEH_OFF};
 
     // set new settings.
-    testCase->setSettings(testCase, &newSetting);
+    test_case->set_settings(test_case, &new_settings);
 
     // fill the only empty space.
-    state = testCase->add(testCase, &element);
+    state = test_case->add(test_case, &element);
 
     // assert successful addition.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
 
     // now fill again to see if the new settings prevents arayeh from extension.
-    state = testCase->add(testCase, &element);
+    state = test_case->add(test_case, &element);
 
     // assert not enough space error.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_NOT_ENOUGH_SPACE, state);
 
     // free arayeh.
-    testCase->freeArayeh(&testCase);
+    test_case->free_arayeh(&test_case);
 }
 
 void test_general_size_extension_MANUAL(void)
@@ -211,33 +212,33 @@ void test_general_size_extension_MANUAL(void)
     int state;
 
     // define default arayeh size.
-    size_t arayehSize = 1;
-    int element       = 5;
+    size_t arayeh_size = 1;
+    int element        = 5;
 
     // create new arayeh.
-    arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+    arayeh *test_case = Arayeh(AA_ARAYEH_TYPE_INT, arayeh_size);
 
     // define new settings.
-    arayehSettings newSetting = {.debugMessages = AA_ARAYEH_OFF,
-                                 .extendSize    = AA_ARAYEH_MANUAL};
+    arayeh_settings new_settings = {.debug_messages = AA_ARAYEH_OFF,
+                                    .extend_size    = AA_ARAYEH_MANUAL};
 
     // set new settings.
-    testCase->setSettings(testCase, &newSetting);
+    test_case->set_settings(test_case, &new_settings);
 
     // fill the only empty space.
-    state = testCase->add(testCase, &element);
+    state = test_case->add(test_case, &element);
 
     // assert successful addition.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
 
     // now fill again to see if the new settings allow arayeh to extend its size.
-    state = testCase->add(testCase, &element);
+    state = test_case->add(test_case, &element);
 
     // assert not enough space error.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
 
     // free arayeh.
-    testCase->freeArayeh(&testCase);
+    test_case->free_arayeh(&test_case);
 }
 
 void test_general_ON_method_specific_add_extension_OFF(void)
@@ -252,36 +253,36 @@ void test_general_ON_method_specific_add_extension_OFF(void)
     int state;
 
     // define default arayeh size.
-    size_t arayehSize = 1;
-    int element       = 5;
+    size_t arayeh_size = 1;
+    int element        = 5;
 
     // create new arayeh.
-    arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+    arayeh *test_case = Arayeh(AA_ARAYEH_TYPE_INT, arayeh_size);
 
     // define new size settings.
-    arayehSizeSettings newSizeSettings = {.extendAdd         = AA_ARAYEH_OFF,
-                                          .extendInsert      = AA_ARAYEH_ON,
-                                          .extendFill        = AA_ARAYEH_ON,
-                                          .extendMergeArayeh = AA_ARAYEH_ON,
-                                          .extendMergeArray  = AA_ARAYEH_ON};
+    arayeh_size_settings new_size_settings = {.extend_add          = AA_ARAYEH_OFF,
+                                              .extend_insert       = AA_ARAYEH_ON,
+                                              .extend_fill         = AA_ARAYEH_ON,
+                                              .extend_merge_arayeh = AA_ARAYEH_ON,
+                                              .extend_merge_array  = AA_ARAYEH_ON};
 
     // set new size settings.
-    testCase->setSizeSettings(testCase, &newSizeSettings);
+    test_case->set_size_settings(test_case, &new_size_settings);
 
     // fill the only empty space.
-    state = testCase->add(testCase, &element);
+    state = test_case->add(test_case, &element);
 
     // assert successful addition.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
 
     // now fill again to see if the new settings allow arayeh to extend its size.
-    state = testCase->add(testCase, &element);
+    state = test_case->add(test_case, &element);
 
     // assert not enough space error.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
 
     // free arayeh.
-    testCase->freeArayeh(&testCase);
+    test_case->free_arayeh(&test_case);
 }
 
 void test_general_MANUAL_method_specific_add_extension_OFF(void)
@@ -294,43 +295,43 @@ void test_general_MANUAL_method_specific_add_extension_OFF(void)
     int state;
 
     // define default arayeh size.
-    size_t arayehSize = 1;
-    int element       = 5;
+    size_t arayeh_size = 1;
+    int element        = 5;
 
     // create new arayeh.
-    arayeh *testCase = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
+    arayeh *test_case = Arayeh(AA_ARAYEH_TYPE_INT, arayeh_size);
 
     // define new settings.
-    arayehSettings newSetting = {.debugMessages = AA_ARAYEH_OFF,
-                                 .extendSize    = AA_ARAYEH_MANUAL};
+    arayeh_settings new_settings = {.debug_messages = AA_ARAYEH_OFF,
+                                    .extend_size    = AA_ARAYEH_MANUAL};
 
     // set new  settings.
-    testCase->setSettings(testCase, &newSetting);
+    test_case->set_settings(test_case, &new_settings);
 
     // define new size settings.
-    arayehSizeSettings newSizeSettings = {.extendAdd         = AA_ARAYEH_OFF,
-                                          .extendInsert      = AA_ARAYEH_ON,
-                                          .extendFill        = AA_ARAYEH_ON,
-                                          .extendMergeArayeh = AA_ARAYEH_ON,
-                                          .extendMergeArray  = AA_ARAYEH_ON};
+    arayeh_size_settings new_size_settings = {.extend_add          = AA_ARAYEH_OFF,
+                                              .extend_insert       = AA_ARAYEH_ON,
+                                              .extend_fill         = AA_ARAYEH_ON,
+                                              .extend_merge_arayeh = AA_ARAYEH_ON,
+                                              .extend_merge_array  = AA_ARAYEH_ON};
 
     // set new size settings.
-    testCase->setSizeSettings(testCase, &newSizeSettings);
+    test_case->set_size_settings(test_case, &new_size_settings);
 
     // fill the only empty space.
-    state = testCase->add(testCase, &element);
+    state = test_case->add(test_case, &element);
 
     // assert successful addition.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
 
     // now fill again to see if the new settings prevents arayeh from extending its size.
-    state = testCase->add(testCase, &element);
+    state = test_case->add(test_case, &element);
 
     // assert not enough space error.
     TEST_ASSERT_EQUAL_INT(AA_ARAYEH_NOT_ENOUGH_SPACE, state);
 
     // free arayeh.
-    testCase->freeArayeh(&testCase);
+    test_case->free_arayeh(&test_case);
 }
 
 int main(void)

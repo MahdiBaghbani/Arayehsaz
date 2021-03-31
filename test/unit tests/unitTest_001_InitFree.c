@@ -3,7 +3,8 @@
  * This file is a part of:
  * Azadeh Afzar - Arayehsaz (AA-A).
  *
- * Copyright (C) 2020 Mohammad Mahdi Baghbani Pourvahid.
+ * Copyright (C) 2020 - 2021 Azadeh Afzar.
+ * Copyright (C) 2020 - 2021 Mohammad Mahdi Baghbani Pourvahid.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -47,80 +48,82 @@ void tearDown(void)
 
 void test_init_free(void)
 {
+
     // define default arayeh size.
-    size_t arayehSize = 100;
+    size_t arayeh_size = 100;
 
     // create new arayehs.
-    arayeh *typeChar   = Arayeh(AA_ARAYEH_TYPE_CHAR, arayehSize);
-    arayeh *typeSInt   = Arayeh(AA_ARAYEH_TYPE_SINT, arayehSize);
-    arayeh *typeInt    = Arayeh(AA_ARAYEH_TYPE_INT, arayehSize);
-    arayeh *typeLInt   = Arayeh(AA_ARAYEH_TYPE_LINT, arayehSize);
-    arayeh *typeFloat  = Arayeh(AA_ARAYEH_TYPE_FLOAT, arayehSize);
-    arayeh *typeDouble = Arayeh(AA_ARAYEH_TYPE_DOUBLE, arayehSize);
+    arayeh *type_char      = Arayeh(AA_ARAYEH_TYPE_CHAR, arayeh_size);
+    arayeh *type_short_int = Arayeh(AA_ARAYEH_TYPE_SINT, arayeh_size);
+    arayeh *type_int       = Arayeh(AA_ARAYEH_TYPE_INT, arayeh_size);
+    arayeh *type_long_int  = Arayeh(AA_ARAYEH_TYPE_LINT, arayeh_size);
+    arayeh *type_float     = Arayeh(AA_ARAYEH_TYPE_FLOAT, arayeh_size);
+    arayeh *type_double    = Arayeh(AA_ARAYEH_TYPE_DOUBLE, arayeh_size);
 
     // test arayeh pointers aren't null.
-    TEST_ASSERT_NOT_NULL(typeChar)
-    TEST_ASSERT_NOT_NULL(typeSInt)
-    TEST_ASSERT_NOT_NULL(typeInt)
-    TEST_ASSERT_NOT_NULL(typeLInt)
-    TEST_ASSERT_NOT_NULL(typeFloat)
-    TEST_ASSERT_NOT_NULL(typeDouble)
+    TEST_ASSERT_NOT_NULL(type_char)
+    TEST_ASSERT_NOT_NULL(type_short_int)
+    TEST_ASSERT_NOT_NULL(type_int)
+    TEST_ASSERT_NOT_NULL(type_long_int)
+    TEST_ASSERT_NOT_NULL(type_float)
+    TEST_ASSERT_NOT_NULL(type_double)
 
     // test arayeh pointers.
-    TEST_ASSERT_NOT_NULL(typeChar->_privateProperties.array.charPtr)
-    TEST_ASSERT_NOT_NULL(typeSInt->_privateProperties.array.shortIntPtr)
-    TEST_ASSERT_NOT_NULL(typeInt->_privateProperties.array.intPtr)
-    TEST_ASSERT_NOT_NULL(typeLInt->_privateProperties.array.longIntPtr)
-    TEST_ASSERT_NOT_NULL(typeFloat->_privateProperties.array.floatPtr)
-    TEST_ASSERT_NOT_NULL(typeDouble->_privateProperties.array.doublePtr)
+    TEST_ASSERT_NOT_NULL(type_char->_private_properties.array.char_pointer)
+    TEST_ASSERT_NOT_NULL(type_short_int->_private_properties.array.short_int_pointer)
+    TEST_ASSERT_NOT_NULL(type_int->_private_properties.array.int_pointer)
+    TEST_ASSERT_NOT_NULL(type_long_int->_private_properties.array.long_int_pointer)
+    TEST_ASSERT_NOT_NULL(type_float->_private_properties.array.float_pointer)
+    TEST_ASSERT_NOT_NULL(type_double->_private_properties.array.double_pointer)
 
     // test map pointers.
-    TEST_ASSERT_NOT_NULL(typeChar->_privateProperties.map)
-    TEST_ASSERT_NOT_NULL(typeSInt->_privateProperties.map)
-    TEST_ASSERT_NOT_NULL(typeInt->_privateProperties.map)
-    TEST_ASSERT_NOT_NULL(typeLInt->_privateProperties.map)
-    TEST_ASSERT_NOT_NULL(typeFloat->_privateProperties.map)
-    TEST_ASSERT_NOT_NULL(typeDouble->_privateProperties.map)
+    TEST_ASSERT_NOT_NULL(type_char->_private_properties.map)
+    TEST_ASSERT_NOT_NULL(type_short_int->_private_properties.map)
+    TEST_ASSERT_NOT_NULL(type_int->_private_properties.map)
+    TEST_ASSERT_NOT_NULL(type_long_int->_private_properties.map)
+    TEST_ASSERT_NOT_NULL(type_float->_private_properties.map)
+    TEST_ASSERT_NOT_NULL(type_double->_private_properties.map)
 
     // test arayeh "size" attribute.
-    TEST_ASSERT_EQUAL_size_t(arayehSize, typeChar->_privateProperties.size);
-    TEST_ASSERT_EQUAL_size_t(arayehSize, typeSInt->_privateProperties.size);
-    TEST_ASSERT_EQUAL_size_t(arayehSize, typeInt->_privateProperties.size);
-    TEST_ASSERT_EQUAL_size_t(arayehSize, typeLInt->_privateProperties.size);
-    TEST_ASSERT_EQUAL_size_t(arayehSize, typeFloat->_privateProperties.size);
-    TEST_ASSERT_EQUAL_size_t(arayehSize, typeDouble->_privateProperties.size);
+    TEST_ASSERT_EQUAL_size_t(arayeh_size, type_char->_private_properties.size);
+    TEST_ASSERT_EQUAL_size_t(arayeh_size, type_short_int->_private_properties.size);
+    TEST_ASSERT_EQUAL_size_t(arayeh_size, type_int->_private_properties.size);
+    TEST_ASSERT_EQUAL_size_t(arayeh_size, type_long_int->_private_properties.size);
+    TEST_ASSERT_EQUAL_size_t(arayeh_size, type_float->_private_properties.size);
+    TEST_ASSERT_EQUAL_size_t(arayeh_size, type_double->_private_properties.size);
 
     // test arayeh "used" attribute.
-    TEST_ASSERT_EQUAL_size_t(0, typeChar->_privateProperties.used);
-    TEST_ASSERT_EQUAL_size_t(0, typeSInt->_privateProperties.used);
-    TEST_ASSERT_EQUAL_size_t(0, typeInt->_privateProperties.used);
-    TEST_ASSERT_EQUAL_size_t(0, typeLInt->_privateProperties.used);
-    TEST_ASSERT_EQUAL_size_t(0, typeFloat->_privateProperties.used);
-    TEST_ASSERT_EQUAL_size_t(0, typeDouble->_privateProperties.used);
+    TEST_ASSERT_EQUAL_size_t(0, type_char->_private_properties.used);
+    TEST_ASSERT_EQUAL_size_t(0, type_short_int->_private_properties.used);
+    TEST_ASSERT_EQUAL_size_t(0, type_int->_private_properties.used);
+    TEST_ASSERT_EQUAL_size_t(0, type_long_int->_private_properties.used);
+    TEST_ASSERT_EQUAL_size_t(0, type_float->_private_properties.used);
+    TEST_ASSERT_EQUAL_size_t(0, type_double->_private_properties.used);
 
     // test arayeh "next" attribute.
-    TEST_ASSERT_EQUAL_size_t(0, typeChar->_privateProperties.next);
-    TEST_ASSERT_EQUAL_size_t(0, typeSInt->_privateProperties.next);
-    TEST_ASSERT_EQUAL_size_t(0, typeInt->_privateProperties.next);
-    TEST_ASSERT_EQUAL_size_t(0, typeLInt->_privateProperties.next);
-    TEST_ASSERT_EQUAL_size_t(0, typeFloat->_privateProperties.next);
-    TEST_ASSERT_EQUAL_size_t(0, typeDouble->_privateProperties.next);
+    TEST_ASSERT_EQUAL_size_t(0, type_char->_private_properties.next);
+    TEST_ASSERT_EQUAL_size_t(0, type_short_int->_private_properties.next);
+    TEST_ASSERT_EQUAL_size_t(0, type_int->_private_properties.next);
+    TEST_ASSERT_EQUAL_size_t(0, type_long_int->_private_properties.next);
+    TEST_ASSERT_EQUAL_size_t(0, type_float->_private_properties.next);
+    TEST_ASSERT_EQUAL_size_t(0, type_double->_private_properties.next);
 
     // test if free returns success.
-    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, typeChar->freeArayeh(&typeChar));
-    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, typeSInt->freeArayeh(&typeSInt));
-    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, typeInt->freeArayeh(&typeInt));
-    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, typeLInt->freeArayeh(&typeLInt));
-    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, typeFloat->freeArayeh(&typeFloat));
-    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, typeDouble->freeArayeh(&typeDouble));
+    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, type_char->free_arayeh(&type_char));
+    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS,
+                          type_short_int->free_arayeh(&type_short_int));
+    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, type_int->free_arayeh(&type_int));
+    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, type_long_int->free_arayeh(&type_long_int));
+    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, type_float->free_arayeh(&type_float));
+    TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, type_double->free_arayeh(&type_double));
 
     // test if pointers are nullified after being freed.
-    TEST_ASSERT_NULL(typeChar)
-    TEST_ASSERT_NULL(typeSInt)
-    TEST_ASSERT_NULL(typeInt)
-    TEST_ASSERT_NULL(typeLInt)
-    TEST_ASSERT_NULL(typeFloat)
-    TEST_ASSERT_NULL(typeDouble)
+    TEST_ASSERT_NULL(type_char)
+    TEST_ASSERT_NULL(type_short_int)
+    TEST_ASSERT_NULL(type_int)
+    TEST_ASSERT_NULL(type_long_int)
+    TEST_ASSERT_NULL(type_float)
+    TEST_ASSERT_NULL(type_double)
 }
 
 int main(void)
