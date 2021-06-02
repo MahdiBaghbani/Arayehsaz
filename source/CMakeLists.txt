@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
 
 # create array shared library.
 add_library(
-        arayehsaz
+        ${CMAKE_PROJECT_NAME}
         arayeh.c
         types.c
         methods.c
@@ -13,7 +13,7 @@ add_library(
 
 # set library version, so symlink version and public header.
 set_target_properties(
-        arayehsaz
+        ${CMAKE_PROJECT_NAME}
         PROPERTIES
         VERSION ${PROJECT_VERSION}
         SOVERSION ${PROJECT_VERSION_MAJOR}
@@ -22,7 +22,7 @@ set_target_properties(
 
 # install lib.
 install(
-        TARGETS arayehsaz
+        TARGETS ${CMAKE_PROJECT_NAME}
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         CONFIGURATIONS Release
         # INSTALL_INCLUDE_DIR is defined in root cmake file.

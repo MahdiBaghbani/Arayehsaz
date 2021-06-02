@@ -198,3 +198,155 @@ void set_private_methods(arayeh *self, size_t type)
         FATAL_WRONG_TYPE("set_private_methods", AA_ARAYEH_TRUE);
     }
 }
+
+int malloc_arayeh_map(arayeh_map **map_pointer, size_t initial_size)
+{
+    // track error state in the function.
+    int state;
+
+    size_t map_bytes = initial_size % 8 == 0 ? initial_size / 8 : initial_size / 8 + 1;
+    *map_pointer     = (arayeh_map *) malloc(sizeof **map_pointer * map_bytes);
+
+    if (*map_pointer == NULL) {
+        free(*map_pointer);
+        state = AA_ARAYEH_FAILURE;
+    } else {
+        state = AA_ARAYEH_SUCCESS;
+    }
+
+    return state;
+}
+
+int realloc_arayeh_map(arayeh *self, arayeh_map **map_pointer, size_t new_size)
+{
+    // track error state in the function.
+    int state;
+
+    size_t map_bytes = new_size % 8 == 0 ? new_size / 8 : new_size / 8 + 1;
+    *map_pointer = (arayeh_map *) realloc(map_pointer, sizeof **map_pointer * map_bytes);
+
+    if (*map_pointer == NULL) {
+        free(*map_pointer);
+        state = AA_ARAYEH_FAILURE;
+    } else {
+        state = AA_ARAYEH_SUCCESS;
+    }
+
+    return state;
+}
+
+int is_arayeh_cell_filled(arayeh *self, size_t index)
+{
+    int is_filled;
+
+    size_t byte_select = index / 8;
+    size_t bit_select  = index % 8;
+
+    arayeh_map *map_pointer = self->_private_properties.map;
+    arayeh_map *map_byte    = (map_pointer + byte_select);
+
+    switch (bit_select) {
+    case 0:
+        is_filled = map_byte->bit_0;
+        break;
+    case 1:
+        is_filled = map_byte->bit_1;
+        break;
+    case 2:
+        is_filled = map_byte->bit_2;
+        break;
+    case 3:
+        is_filled = map_byte->bit_3;
+        break;
+    case 4:
+        is_filled = map_byte->bit_4;
+        break;
+    case 5:
+        is_filled = map_byte->bit_5;
+        break;
+    case 6:
+        is_filled = map_byte->bit_6;
+        break;
+    case 7:
+        is_filled = map_byte->bit_7;
+        break;
+    default:
+        FATAL_OVERFLOW("is_arayeh_cell_filled", AA_ARAYEH_TRUE);
+    }
+
+    return is_filled;
+}
+
+int is_arayeh_cell_empty(arayeh *self, size_t index)
+{
+    return !is_arayeh_cell_filled(self, index);
+}
+
+void insert_to_arayeh_map(arayeh *self, size_t index, char value)
+{
+    size_t byte_select = index / 8;
+    size_t bit_select  = index % 8;
+
+    arayeh_map *map_pointer = self->_private_properties.map;
+    arayeh_map *map_byte    = (map_pointer + byte_select);
+
+    switch (bit_select) {
+    case 0:
+        map_byte->bit_0 = value;
+        break;
+    case 1:
+        map_byte->bit_1 = value;
+        break;
+    case 2:
+        map_byte->bit_2 = value;
+        break;
+    case 3:
+        map_byte->bit_3 = value;
+        break;
+    case 4:
+        map_byte->bit_4 = value;
+        break;
+    case 5:
+        map_byte->bit_5 = value;
+        break;
+    case 6:
+        map_byte->bit_6 = value;
+        break;
+    case 7:
+        map_byte->bit_7 = value;
+        break;
+    default:
+        FATAL_OVERFLOW("insert_to_arayeh_map", AA_ARAYEH_TRUE);
+    }
+}
+
+void arayeh_map_cell_state_change_filled(arayeh *self, size_t index)
+{
+    insert_to_arayeh_map(self, index, 1);
+}
+
+void arayeh_map_cell_state_change_empty(arayeh *self, size_t index)
+{
+    insert_to_arayeh_map(self, index, 0);
+}
+
+void arayeh_map_cell_state_set_all_filled(arayeh *self)
+{
+    for (size_t i = 0; i < self->_private_properties.size; i++) {
+        arayeh_map_cell_state_change_filled(self, i);
+    }
+}
+
+void arayeh_map_cell_state_set_all_empty(arayeh *self)
+{
+    for (size_t i = 0; i < self->_private_properties.size; i++) {
+        arayeh_map_cell_state_change_empty(self, i);
+    }
+}
+
+void update_used_counter(arayeh *self, size_t change_size_number)
+{
+    // update both public and private "used" counter.
+    self->_private_properties.used += change_size_number;
+    self->used = self->_private_properties.used;
+}

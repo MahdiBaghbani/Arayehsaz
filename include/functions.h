@@ -63,6 +63,27 @@ void set_public_methods(arayeh *self);
 // this function assigns pointers to private functions of an arayeh instance.
 void set_private_methods(arayeh *self, size_t type);
 
+// this function creates new arayeh map array.
+int malloc_arayeh_map(arayeh_map **map_pointer, size_t initial_size);
+
+int realloc_arayeh_map(arayeh *self, arayeh_map **map_pointer, size_t new_size);
+
+int is_arayeh_cell_filled(arayeh *self, size_t index);
+
+int is_arayeh_cell_empty(arayeh *self, size_t index);
+
+void insert_to_arayeh_map(arayeh *self, size_t index, char value);
+
+void arayeh_map_cell_state_change_filled(arayeh *self, size_t index);
+
+void arayeh_map_cell_state_change_empty(arayeh *self, size_t index);
+
+void arayeh_map_cell_state_set_all_filled(arayeh *self);
+
+void arayeh_map_cell_state_set_all_empty(arayeh *self);
+
+void update_used_counter(arayeh *self, size_t change_size_number);
+
 __END_DECLS
 
 #endif    //__AA_A_FUNCTIONS_H__

@@ -70,7 +70,7 @@ int _resize_memory(arayeh *self, size_t new_size)
     int state;
 
     // initialize variables for allocating memory.
-    char *map_pointer = NULL;
+    arayeh_map *map_pointer = NULL;
     arayeh_types arayeh_pointer;
 
     // this function identifies the right pointer for arayeh type and sets it to
@@ -84,12 +84,11 @@ int _resize_memory(arayeh *self, size_t new_size)
     }
 
     // reallocate memory to map and arayeh.
-    map_pointer =
-        (char *) realloc(private_properties->map, sizeof *map_pointer * new_size);
-    state = private_methods->realloc_arayeh(self, &arayeh_pointer, new_size);
+    int map_state    = malloc_arayeh_map(&map_pointer, new_size);
+    int arayeh_state = private_methods->realloc_arayeh(self, &arayeh_pointer, new_size);
 
     // check if memory re-allocated or not.
-    if (state == AA_ARAYEH_FAILURE || map_pointer == NULL) {
+    if (arayeh_state == AA_ARAYEH_FAILURE || map_state == AA_ARAYEH_FAILURE) {
         // free map and arayeh pointers.
         free(map_pointer);
         private_methods->free_arayeh(self);
@@ -165,7 +164,7 @@ int _extend_size(arayeh *self, size_t extend_size)
     // set new map elements to '0' [AA_ARAYEH_OFF].
     // new elements determined from difference in old size and new size.
     for (size_t index = old_size; index < new_size; index++) {
-        private_properties->map[index] = AA_ARAYEH_OFF;
+        arayeh_map_cell_state_change_empty(self, index);
     }
 
     // return success code.
@@ -204,7 +203,8 @@ int _free_memory(arayeh **self)
     private_methods->free_arayeh(*self);
 
     // free map array pointer and nullify the pointer.
-    free(private_properties->map);
+    free((*self)->_private_properties.map) ;
+    //free(private_properties->map);
     private_properties->map = NULL;
 
     // free arayeh method specific size settings.
@@ -369,11 +369,10 @@ int _add_to_arayeh(arayeh *self, void *element)
     private_methods->add_to_arayeh(self, private_properties->next, element);
 
     // update "map".
-    private_properties->map[private_properties->next] = AA_ARAYEH_ON;
+    arayeh_map_cell_state_change_filled(self, private_properties->next);
 
     // update both public and private "used" counter.
-    private_properties->used++;
-    self->used = private_properties->used;
+    update_used_counter(self, 1);
 
     // update "next" pointer.
     update_next_index(self);
@@ -492,13 +491,12 @@ int _insert_to_arayeh(arayeh *self, size_t index, void *element)
 
         // update "map" if it isn't already counted for this index
         // and increase "used" counter.
-        if (private_properties->map[index] == AA_ARAYEH_OFF) {
+        if (is_arayeh_cell_empty(self, index)) {
             // update map.
-            private_properties->map[index] = AA_ARAYEH_ON;
+            arayeh_map_cell_state_change_filled(self, index);
 
             // update both public and private "used" counter.
-            private_properties->used++;
-            self->used = private_properties->used;
+            update_used_counter(self, 1);
         }
     }
 

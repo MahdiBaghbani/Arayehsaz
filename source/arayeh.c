@@ -1,5 +1,10 @@
-/** source/arayeh.c
- *
+/** @file       source/arayeh.c
+ *  @author     Mohammad Mahdi Baghbani Pourvahid
+ *  @date       2020-2021
+ *  @copyright  GNU AFFERO GENERAL PUBLIC LICENSE.
+ */
+
+/*
  * This file is a part of:
  * Azadeh Afzar - Arayehsaz (AA-A).
  *
@@ -42,21 +47,6 @@
 
 arayeh *Arayeh(size_t type, size_t initial_size)
 {
-    /*
-     * This function will create an arayeh of type "type"
-     * (one the supported types defined in configuration.h)
-     * and size of "initial_size" if it's possible
-     * (you have enough memory and right to allocate that memory).
-     *
-     * ARGUMENTS:
-     * initial_size  size of arayeh.
-     * type          type of arayeh elements.
-     *
-     * RETURN:
-     * A pointer to the initialized arayeh.
-     * or
-     * return NULL in case of error.
-     */
 
     // check arayeh type.
     if (type < AA_ARAYEH_TYPE_CHAR || AA_ARAYEH_TYPE_DOUBLE < type) {
@@ -78,7 +68,7 @@ arayeh *Arayeh(size_t type, size_t initial_size)
     set_private_methods(self, type);
 
     // initialize variables for allocating memory.
-    char *map_pointer = NULL;
+    arayeh_map *map_pointer = NULL;
     arayeh_types array_pointer;
 
     /* Overflow happens when the arayeh initial size is bigger than the
@@ -107,21 +97,16 @@ arayeh *Arayeh(size_t type, size_t initial_size)
     }
 
     // allocate memory to map and array.
-    map_pointer = (char *) malloc(sizeof *map_pointer * initial_size);
-    state       = private_methods->malloc_arayeh(self, &array_pointer, initial_size);
+    int map_state    = malloc_arayeh_map(&map_pointer, initial_size);
+    int arayeh_state = private_methods->malloc_arayeh(self, &array_pointer, initial_size);
 
     // check if memory allocated or not.
-    if (state == AA_ARAYEH_FAILURE || map_pointer == NULL) {
+    if (arayeh_state == AA_ARAYEH_FAILURE || map_state == AA_ARAYEH_FAILURE) {
         // free map, array and self pointers.
         free(map_pointer);
         private_methods->free_arayeh(self);
         free(self);
         return NULL;
-    }
-
-    // set all map elements to '0' [AA_ARAYEH_OFF].
-    for (size_t i = 0; i < initial_size; ++i) {
-        map_pointer[i] = AA_ARAYEH_OFF;
     }
 
     // set pointers to memory locations.
@@ -137,6 +122,9 @@ arayeh *Arayeh(size_t type, size_t initial_size)
     private_properties->next = 0;
     private_properties->used = 0;
     private_properties->size = initial_size;
+
+    // set all map cell states to empty.
+    arayeh_map_cell_state_set_all_empty(self);
 
     // create arayeh default setting holder.
     arayeh_settings *default_settings =

@@ -36,6 +36,7 @@
  */
 
 #include "../../include/arayeh.h"
+#include "../../include/functions.h"
 #include "unity.h"
 
 void setUp(void)
@@ -76,7 +77,7 @@ void test_fill_all_empty_step_one(void)
     // check all slots.
     for (size_t i = start; i < arayeh_size; i += step) {
         TEST_ASSERT_EQUAL_INT(element, private_properties->array.int_pointer[i]);
-        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, private_properties->map[i]);
+        TEST_ASSERT_EQUAL_CHAR(1, is_arayeh_cell_filled(test_case, i));
     }
 
     // assert "used" and "next" pointers.
@@ -117,12 +118,12 @@ void test_fill_all_empty_step_two(void)
     // check for being filled.
     for (size_t i = start; i < arayeh_size; i += step) {
         TEST_ASSERT_EQUAL_INT(element, private_properties->array.int_pointer[i]);
-        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, private_properties->map[i]);
+        TEST_ASSERT_EQUAL_CHAR(1, is_arayeh_cell_filled(test_case, i));
     }
 
     // check for being empty.
     for (size_t i = start + 1; i < arayeh_size; i += step) {
-        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_OFF, private_properties->map[i]);
+        TEST_ASSERT_EQUAL_CHAR(0, is_arayeh_cell_filled(test_case, i));
     }
 
     // assert "used" and "next" pointers.
@@ -174,7 +175,7 @@ void test_fill_existing_arayeh(void)
     // check for being filled.
     for (size_t i = 5; i < 10; ++i) {
         TEST_ASSERT_EQUAL_INT(element, private_properties->array.int_pointer[i]);
-        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, private_properties->map[i]);
+        TEST_ASSERT_EQUAL_CHAR(1, is_arayeh_cell_filled(test_case, i));
     }
 
     // assert "used" and "next" pointers.
@@ -221,7 +222,7 @@ void test_default_settings_fill_extends_size(void)
     // check all slots.
     for (size_t i = 0; i < end_index; ++i) {
         TEST_ASSERT_EQUAL_INT(element, private_properties->array.int_pointer[i]);
-        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, private_properties->map[i]);
+        TEST_ASSERT_EQUAL_CHAR(1, is_arayeh_cell_filled(test_case, i));
     }
 
     // assert "used" and "next" pointers.
@@ -247,7 +248,7 @@ void test_default_settings_fill_extends_size_start_bigger_than_size(void)
 
     // define start index and end index.
     size_t start_index = 30;
-    size_t end_index    = 50;
+    size_t end_index   = 50;
 
     // element for filling.
     int element = 5;
@@ -270,7 +271,7 @@ void test_default_settings_fill_extends_size_start_bigger_than_size(void)
     // check all slots.
     for (size_t i = start_index; i < end_index; ++i) {
         TEST_ASSERT_EQUAL_INT(element, private_properties->array.int_pointer[i]);
-        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, private_properties->map[i]);
+        TEST_ASSERT_EQUAL_CHAR(1, is_arayeh_cell_filled(test_case, i));
     }
 
     // assert "used" and "next" pointers.
@@ -293,7 +294,7 @@ void test_general_size_extension_OFF(void)
     size_t arayeh_size = 20;
     // define start index and end index.
     size_t start_index = 0;
-    size_t end_index    = 50;
+    size_t end_index   = 50;
 
     // element for filling.
     int element = 5;
@@ -363,7 +364,7 @@ void test_general_size_extension_MANUAL(void)
     // check all slots.
     for (size_t i = 0; i < end_index; ++i) {
         TEST_ASSERT_EQUAL_INT(element, private_properties->array.int_pointer[i]);
-        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, private_properties->map[i]);
+        TEST_ASSERT_EQUAL_CHAR(1, is_arayeh_cell_filled(test_case, i));
     }
 
     // assert "used" and "next" pointers.
@@ -422,7 +423,7 @@ void test_general_ON_method_specific_fill_extension_OFF(void)
     // check all slots.
     for (size_t i = 0; i < end_index; ++i) {
         TEST_ASSERT_EQUAL_INT(element, private_properties->array.int_pointer[i]);
-        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, private_properties->map[i]);
+        TEST_ASSERT_EQUAL_CHAR(1, is_arayeh_cell_filled(test_case, i));
     }
 
     // assert "used" and "next" pointers.
@@ -446,7 +447,7 @@ void test_general_MANUAL_method_specific_fill_extension_OFF(void)
     size_t arayeh_size = 20;
     // define start index and end index.
     size_t start_index = 0;
-    size_t end_index    = 50;
+    size_t end_index   = 50;
 
     // element for filling.
     int element = 5;
@@ -495,7 +496,7 @@ void test_general_size_extension_MANUAL_add_insert_OFF_fill_ON(void)
 
     // define start index and end index.
     size_t start_index = 0;
-    size_t end_index    = 50;
+    size_t end_index   = 50;
 
     // element for filling.
     int element = 5;
@@ -535,7 +536,7 @@ void test_general_size_extension_MANUAL_add_insert_OFF_fill_ON(void)
     // check all slots.
     for (size_t i = start_index; i < end_index; ++i) {
         TEST_ASSERT_EQUAL_INT(element, private_properties->array.int_pointer[i]);
-        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, private_properties->map[i]);
+        TEST_ASSERT_EQUAL_CHAR(1, is_arayeh_cell_filled(test_case, i));
     }
 
     // assert "used" and "next" pointers.

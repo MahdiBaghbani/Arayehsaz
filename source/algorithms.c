@@ -37,6 +37,8 @@
 
 #include "../include/algorithms.h"
 
+#include "../include/functions.h"
+
 size_t growth_factor_python(arayeh *arayeh)
 {
     /*
@@ -89,7 +91,7 @@ void update_next_index(arayeh *self)
     struct private_properties *private_properties = &self->_private_properties;
 
     while ((private_properties->next < private_properties->size) &&
-           (private_properties->map[private_properties->next] == AA_ARAYEH_ON)) {
+           is_arayeh_cell_filled(self, private_properties->next)) {
         private_properties->next++;
     }
 

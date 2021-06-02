@@ -37,6 +37,8 @@
 
 #include "../include/types.h"
 
+#include "../include/functions.h"
+
 /* Overflow happens when the arayeh initial size is bigger than the
  * max allowed size (defined as MAX_SIZE in size_type) divided by the
  * length of desired data type.
@@ -308,11 +310,9 @@ int _merge_arayeh_type_char(arayeh *self, size_t start_index, size_t step, araye
     char *array_pointer = src_private_properties->array.char_pointer;
     char *element_pointer;
 
-    // temporary variable to hold map value.
-    char map;
-
     for (size_t array_index = 0, arayeh_index = 0;
-         array_index < src_private_properties->size; array_index++, arayeh_index += step) {
+         array_index < src_private_properties->size;
+         array_index++, arayeh_index += step) {
 
         // calculate next element location.
         element_pointer = array_pointer + array_index;
@@ -320,11 +320,8 @@ int _merge_arayeh_type_char(arayeh *self, size_t start_index, size_t step, araye
         // calculate next index.
         insert_index = start_index + arayeh_index;
 
-        // hold src map value.
-        map = src_private_properties->map[array_index];
-
-        // do not insert element if its empty.
-        if (map == AA_ARAYEH_OFF) {
+        // do not insert element to self if its source is empty.
+        if (is_arayeh_cell_empty(source, array_index)) {
             // go to next loop cycle.
             continue;
         }
@@ -358,11 +355,9 @@ int _merge_arayeh_type_short_int(arayeh *self, size_t start_index, size_t step,
     short int *array_pointer = src_private_properties->array.short_int_pointer;
     short int *element_pointer;
 
-    // temporary variable to hold map value.
-    char map;
-
     for (size_t array_index = 0, arayeh_index = 0;
-         array_index < src_private_properties->size; array_index++, arayeh_index += step) {
+         array_index < src_private_properties->size;
+         array_index++, arayeh_index += step) {
 
         // calculate next element location.
         element_pointer = array_pointer + array_index;
@@ -370,11 +365,8 @@ int _merge_arayeh_type_short_int(arayeh *self, size_t start_index, size_t step,
         // calculate next index.
         insert_index = start_index + arayeh_index;
 
-        // hold src map value.
-        map = src_private_properties->map[array_index];
-
-        // do not insert element if its empty.
-        if (map == AA_ARAYEH_OFF) {
+        // do not insert element to self if its source is empty.
+        if (is_arayeh_cell_empty(source, array_index)) {
             // go to next loop cycle.
             continue;
         }
@@ -407,11 +399,9 @@ int _merge_arayeh_type_int(arayeh *self, size_t start_index, size_t step, arayeh
     int *array_pointer = src_private_properties->array.int_pointer;
     int *element_pointer;
 
-    // temporary variable to hold map value.
-    char map;
-
     for (size_t array_index = 0, arayeh_index = 0;
-         array_index < src_private_properties->size; array_index++, arayeh_index += step) {
+         array_index < src_private_properties->size;
+         array_index++, arayeh_index += step) {
 
         // calculate next element location.
         element_pointer = array_pointer + array_index;
@@ -419,11 +409,8 @@ int _merge_arayeh_type_int(arayeh *self, size_t start_index, size_t step, arayeh
         // calculate next index.
         insert_index = start_index + arayeh_index;
 
-        // hold src map value.
-        map = src_private_properties->map[array_index];
-
-        // do not insert element if its empty.
-        if (map == AA_ARAYEH_OFF) {
+        // do not insert element to self if its source is empty.
+        if (is_arayeh_cell_empty(source, array_index)) {
             // go to next loop cycle.
             continue;
         }
@@ -457,11 +444,9 @@ int _merge_arayeh_type_long_int(arayeh *self, size_t start_index, size_t step,
     long int *array_pointer = src_private_properties->array.long_int_pointer;
     long int *element_pointer;
 
-    // temporary variable to hold map value.
-    char map;
-
     for (size_t array_index = 0, arayeh_index = 0;
-         array_index < src_private_properties->size; array_index++, arayeh_index += step) {
+         array_index < src_private_properties->size;
+         array_index++, arayeh_index += step) {
 
         // calculate next element location.
         element_pointer = array_pointer + array_index;
@@ -469,11 +454,8 @@ int _merge_arayeh_type_long_int(arayeh *self, size_t start_index, size_t step,
         // calculate next index.
         insert_index = start_index + arayeh_index;
 
-        // hold src map value.
-        map = src_private_properties->map[array_index];
-
-        // do not insert element if its empty.
-        if (map == AA_ARAYEH_OFF) {
+        // do not insert element to self if its source is empty.
+        if (is_arayeh_cell_empty(source, array_index)) {
             // go to next loop cycle.
             continue;
         }
@@ -507,11 +489,9 @@ int _merge_arayeh_type_float(arayeh *self, size_t start_index, size_t step,
     float *array_pointer = src_private_properties->array.float_pointer;
     float *element_pointer;
 
-    // temporary variable to hold map value.
-    char map;
-
     for (size_t array_index = 0, arayeh_index = 0;
-         array_index < src_private_properties->size; array_index++, arayeh_index += step) {
+         array_index < src_private_properties->size;
+         array_index++, arayeh_index += step) {
 
         // calculate next element location.
         element_pointer = array_pointer + array_index;
@@ -519,11 +499,8 @@ int _merge_arayeh_type_float(arayeh *self, size_t start_index, size_t step,
         // calculate next index.
         insert_index = start_index + arayeh_index;
 
-        // hold src map value.
-        map = src_private_properties->map[array_index];
-
         // do not insert element if its empty.
-        if (map == AA_ARAYEH_OFF) {
+        if (is_arayeh_cell_empty(source, array_index)) {
             // go to next loop cycle.
             continue;
         }
@@ -557,11 +534,9 @@ int _merge_arayeh_type_double(arayeh *self, size_t start_index, size_t step,
     double *array_pointer = src_private_properties->array.double_pointer;
     double *element_pointer;
 
-    // temporary variable to hold map value.
-    char map;
-
     for (size_t array_index = 0, arayeh_index = 0;
-         array_index < src_private_properties->size; array_index++, arayeh_index += step) {
+         array_index < src_private_properties->size;
+         array_index++, arayeh_index += step) {
 
         // calculate next element location.
         element_pointer = array_pointer + array_index;
@@ -569,11 +544,8 @@ int _merge_arayeh_type_double(arayeh *self, size_t start_index, size_t step,
         // calculate next index.
         insert_index = start_index + arayeh_index;
 
-        // hold src map value.
-        map = src_private_properties->map[array_index];
-
-        // do not insert element if its empty.
-        if (map == AA_ARAYEH_OFF) {
+        // do not insert element to self if its source is empty.
+        if (is_arayeh_cell_empty(source, array_index)) {
             // go to next loop cycle.
             continue;
         }

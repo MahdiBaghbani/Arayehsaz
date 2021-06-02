@@ -1,5 +1,10 @@
-/** include/arayeh.h
- *
+/** @file       include/arayeh.h
+ *  @author     Mohammad Mahdi Baghbani Pourvahid
+ *  @date       2020-2021
+ *  @copyright  GNU AFFERO GENERAL PUBLIC LICENSE.
+ */
+
+/*
  * This file is a part of:
  * Azadeh Afzar - Arayehsaz (AA-A).
  *
@@ -93,29 +98,33 @@ __BEGIN_DECLS
 // Prototype of arayeh struct.
 typedef struct arayeh_struct arayeh;
 
-// Supported arayeh types.
+/**
+ * @brief A union to hold pointer to a supported array types.
+ *
+ * This union holds a pointer to an array of supported type, when initializing arayeh,
+ * depending on the type specified by user, one these pointers will be assigned to
+ * a memory location of the actual internal array.
+ *
+ */
 typedef union {
 
-    // pointer to the array of type char.
-    char *char_pointer;
+    char *char_pointer; /**< pointer to the array of type char */
 
-    // pointer to the array of type short int.
-    short int *short_int_pointer;
+    short int *short_int_pointer; /**< pointer to the array of type short int */
 
-    // pointer to the array of type int.
-    int *int_pointer;
+    int *int_pointer; /**< pointer to the array of type int */
 
-    // pointer to the array of type long int.
-    long int *long_int_pointer;
+    long int *long_int_pointer; /**< pointer to the array of type long int */
 
-    // pointer to the array of type float.
-    float *float_pointer;
+    float *float_pointer; /**< pointer to the array of type float */
 
-    // pointer to the array of type double.
-    double *double_pointer;
+    double *double_pointer; /**< pointer to the array of type double */
 
 } arayeh_types;
 
+/**
+ * @brief A Structure to hold arayeh size extension setting..
+ */
 typedef struct {
 
     // allow extending arayeh size when using add method.
@@ -135,7 +144,9 @@ typedef struct {
 
 } arayeh_size_settings;
 
-// Arayeh settings.
+/**
+ * @brief A structure to hold arayeh settings.
+ */
 typedef struct {
 
     // allow debug messages to be printed on stdout and stderr.
@@ -149,51 +160,84 @@ typedef struct {
 
 } arayeh_settings;
 
-// Arayeh definition.
+/**
+ * @brief A structure to hold arayeh map.
+ *
+ * This structure uses bitfields of size 1 bit in pack of 8 bits (1 byte)
+ * to store the state of each cell in an arayeh as defined below:
+ * bit 1: means cell is filled with data.
+ * bit 0: means cell is empty.
+ *
+ * This method is used to reduce the size of map to 1/8 as instead of using whole char's
+ * 8 bits to store state of only 1 cell, we can now store state of 8 cells.
+ */
+typedef struct {
+
+   unsigned char bit_0 : 1; /**< holds 1 bit of type char */
+
+    unsigned char bit_1 : 1; /**< holds 1 bit of type char */
+
+    unsigned char bit_2 : 1; /**< holds 1 bit of type char */
+
+    unsigned char bit_3 : 1; /**< holds 1 bit of type char */
+
+    unsigned char bit_4 : 1; /**< holds 1 bit of type char */
+
+    unsigned char bit_5 : 1; /**< holds 1 bit of type char */
+
+    unsigned char bit_6 : 1; /**< holds 1 bit of type char */
+
+    unsigned char bit_7 : 1; /**< holds 1 bit of type char */
+
+} arayeh_map;
+
+/**
+ * @brief Arayeh main data structure with public and private members.
+ */
 typedef struct arayeh_struct {
 
-    // Public properties of arayeh.
+    /**
+     * @brief Arayeh public properties structure.
+     *
+     * This structure holds arayeh public properties like type,
+     * size etc, which are mirror of arayeh private properties
+     * with same names, changing this structure member's value
+     * will no affect arayeh's internal functioning and will
+     * be updated (corrected) on next use of any method.
+     */
     struct {
 
-        // holds type of arayeh.
-        size_t type;
+        size_t type; /**< holds type of arayeh */
 
-        // holds next pointer, the pointer is pointing
-        // at the next empty cell in the arayeh.
-        size_t next;
+        size_t next; /**< holds next empty cell index */
 
-        // holds the number of filled cells.
-        size_t used;
+        size_t used; /**< holds number of used cells */
 
-        // holds current size of arayeh.
-        size_t size;
+        size_t size; /**< holds total cell size of arayeh */
     };
 
-    // Private properties of arayeh.
+    /**
+     * @brief Arayeh private properties structure.
+     *
+     * This structure holds arayeh properties properties like type,
+     * size etc, changing this structure member's value
+     * will corrupt arayeh logic and should be avoided.
+     */
     struct private_properties {
 
-        // holds type of arayeh.
-        size_t type;
+        size_t type; /**< holds type of arayeh */
 
-        // holds next pointer, the pointer is pointing
-        // at the next empty cell in the arayeh.
-        size_t next;
+        size_t next; /**< holds next empty cell index */
 
-        // holds the number of filled cells.
-        size_t used;
+        size_t used; /**< holds number of used cells */
 
-        // holds current size of arayeh.
-        size_t size;
+        size_t size; /**< holds total cell size of arayeh */
 
-        // holds actual array.
-        arayeh_types array;
+        arayeh_types array; /**< holds internal array pointer */
 
-        // holds a map of arayeh cells, indicates they are empty or filled.
-        // using type char for this is to minimize the impact of memory usage.
-        char *map;
+        arayeh_map *map; /**< holds a map of arayeh cells, indicates they are empty or used */
 
-        // hold settings for arayeh.
-        arayeh_settings *settings;
+        arayeh_settings *settings; /**< hold settings for arayeh */
 
     } _private_properties;
 
@@ -241,7 +285,16 @@ typedef struct arayeh_struct {
         // "destination" memory location.
         int (*get)(arayeh *self, size_t index, void *destination);
 
-        // TODO: write methods -> getArray, arayehSlice, arraySlice,
+        // this function copies data in "index" cell of the arayeh to the
+        // "destination" memory location.
+        int (*get_arayeh)(arayeh *self, size_t start_index, size_t step, size_t end_index,
+                          arayeh *destination);    // TODO
+
+        // this function copies data in "index" cell of the arayeh to the
+        // "destination" memory location.
+        int (*get_array)(arayeh *self, size_t start_index, size_t step, size_t end_index,
+                         void *destination);    // TODO
+
         // TODO: reduceSize, compact, max, min, sum, multiply, changeType
         // TODO: deleteItem, deleteSlice, pop, popArayeh, popArraySlice,
         // TODO: contains, count, reorder, shuffle, reverse, sort, isEmpty, showSettings
@@ -301,22 +354,21 @@ typedef struct arayeh_struct {
 
 } arayeh;
 
-arayeh *Arayeh(size_t type, size_t initial_size);
-/*
+/**
+ * \brief Creates an arayeh with specified type and size.
+ *
  * This function will create an arayeh of type "type"
  * (one the supported types defined in configuration.h)
  * and size of "initialSize" if it's possible
  * (you have enough memory and right to allocate that memory).
  *
- * ARGUMENTS:
- * initial_size  size of arayeh.
- * type          type of arayeh elements.
+ * @param initial_size[out]  size of arayeh.
+ * @param type[in]           type of arayeh elements.
  *
- * RETURN:
- * A pointer to the initialized arayeh.
- * or
- * return NULL in case of error.
+ * @return A pointer to the initialized arayeh or NULL in case of any error.
  */
+
+arayeh *Arayeh(size_t type, size_t initial_size);
 
 __END_DECLS
 

@@ -36,6 +36,7 @@
  */
 
 #include "../../include/arayeh.h"
+#include "../../include/functions.h"
 #include "unity.h"
 
 void setUp(void)
@@ -84,7 +85,7 @@ void test_merge_arayeh_empty_arayeh_step_1(void)
         // assert array is successfully merged into arayeh.
         TEST_ASSERT_EQUAL_INT(cArray[index],
                               private_properties->array.int_pointer[index]);
-        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, private_properties->map[index]);
+        TEST_ASSERT_EQUAL_CHAR(1, is_arayeh_cell_filled(test_case, index));
     }
 
     // assert arayeh properties.
@@ -136,13 +137,13 @@ void test_merge_arayeh_empty_arayeh_step_5(void)
         // assert array is successfully merged into arayeh.
         TEST_ASSERT_EQUAL_INT(cArray[c_array_index],
                               private_properties->array.int_pointer[arayeh_index]);
-        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, private_properties->map[arayeh_index]);
+        TEST_ASSERT_EQUAL_CHAR(1, is_arayeh_cell_filled(test_case, arayeh_index));
     }
 
     for (size_t index = start_index; index < arayeh_size; index++) {
         if (index % 5 != 0) {
             // assert that arayeh is empty in this cells.
-            TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_OFF, private_properties->map[index]);
+            TEST_ASSERT_EQUAL_CHAR(0, is_arayeh_cell_filled(test_case, index));
         }
     }
 
@@ -197,7 +198,7 @@ void test_default_settings_merge_arayeh_extends_size(void)
         // assert array is successfully merged into arayeh.
         TEST_ASSERT_EQUAL_INT(cArray[c_array_index],
                               private_properties->array.int_pointer[arayeh_index]);
-        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, private_properties->map[arayeh_index]);
+        TEST_ASSERT_EQUAL_CHAR(1, is_arayeh_cell_filled(test_case, arayeh_index));
     }
 
     // assert arayeh properties.
@@ -251,7 +252,7 @@ void test_default_settings_merge_arayeh_extends_size_start_bigger_than_size(void
         // assert array is successfully merged into arayeh.
         TEST_ASSERT_EQUAL_INT(cArray[c_array_index],
                               private_properties->array.int_pointer[arayeh_index]);
-        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, private_properties->map[arayeh_index]);
+        TEST_ASSERT_EQUAL_CHAR(1, is_arayeh_cell_filled(test_case, arayeh_index));
     }
 
     // assert arayeh properties.
@@ -358,7 +359,7 @@ void test_general_size_extension_MANUAL(void)
         // assert array is successfully merged into arayeh.
         TEST_ASSERT_EQUAL_INT(cArray[c_array_index],
                               private_properties->array.int_pointer[arayeh_index]);
-        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, private_properties->map[arayeh_index]);
+        TEST_ASSERT_EQUAL_CHAR(1, is_arayeh_cell_filled(test_case, arayeh_index));
     }
 
     // assert arayeh properties.
@@ -424,7 +425,7 @@ void test_general_ON_method_specific_merge_arayeh_extension_OFF(void)
         // assert array is successfully merged into arayeh.
         TEST_ASSERT_EQUAL_INT(cArray[c_array_index],
                               private_properties->array.int_pointer[arayeh_index]);
-        TEST_ASSERT_EQUAL_CHAR(AA_ARAYEH_ON, private_properties->map[arayeh_index]);
+        TEST_ASSERT_EQUAL_CHAR(1, is_arayeh_cell_filled(test_case, arayeh_index));
     }
 
     // assert arayeh properties.
