@@ -46,28 +46,8 @@ void tearDown(void)
 {
 }
 
-struct test {
-    char m0 : 1;
-    char m1 : 1;
-    char m2 : 1;
-    char m3 : 1;
-    char m4 : 1;
-    char m5 : 1;
-    char m6 : 1;
-    char m7 : 1;
-};
-
 void test_init_free(void)
 {
-    struct test map[7];
-    printf("Size of type char is %lu bytes\n", sizeof(char));
-    printf("Size of struct is %lu bytes\n", sizeof(struct test));
-    printf("Size of map is %lu bytes\n", sizeof(map));
-    printf("Size of type arayeh is %lu bytes\n", sizeof(arayeh));
-    printf("Size of type arayeh is %lu bytes\n", sizeof(arayeh_map));
-    printf("Size of type arayeh is %lu bytes\n", sizeof(arayeh_settings));
-    printf("Size of type arayeh is %lu bytes\n", sizeof(arayeh_size_settings));
-
     // define default arayeh size.
     size_t arayeh_size = 100;
 
