@@ -5,6 +5,6 @@ cmake_minimum_required(VERSION 3.19 FATAL_ERROR)
 add_subdirectory("unity test framework")
 
 # add test category directories.
-add_subdirectory("unit tests")
-add_subdirectory("integration tests")
-add_subdirectory("performance tests")
+add_subdirectory("unit")
+add_subdirectory("integration")
+add_subdirectory("performance")
