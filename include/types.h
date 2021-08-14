@@ -1,5 +1,16 @@
-/** include/types.h
+/**
+ * @file       include/types.h
+ * @author     Mohammad Mahdi Baghbani Pourvahid
+ * @date       2020-2021
+ * @version    0.1.0
+ * @copyright  GNU Affero General Public License.
+ * @internal
  *
+ * @brief      Type management header file for Arayehsaz Library.
+ * @details    This header contains type specific Arayeh functions.
+ */
+
+/*
  * This file is a part of:
  * Azadeh Afzar - Arayehsaz (AA-A).
  *

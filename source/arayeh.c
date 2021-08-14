@@ -1,7 +1,13 @@
-/** @file       source/arayeh.c
- *  @author     Mohammad Mahdi Baghbani Pourvahid
- *  @date       2020-2021
- *  @copyright  GNU AFFERO GENERAL PUBLIC LICENSE.
+/**
+ * @file       source/arayeh.c
+ * @author     Mohammad Mahdi Baghbani Pourvahid
+ * @date       2020-2021
+ * @version    0.1.0
+ * @copyright  GNU Affero General Public License.
+ *
+ * @brief      Main source file for Arayehsaz Library.
+ * @details    This source contains the function to create Arayeh objects.
+ *
  */
 
 /*
@@ -47,7 +53,6 @@
 
 arayeh *Arayeh(size_t type, size_t initial_size)
 {
-
     // check arayeh type.
     if (type < AA_ARAYEH_TYPE_CHAR || AA_ARAYEH_TYPE_DOUBLE < type) {
         // wrong arayeh type.

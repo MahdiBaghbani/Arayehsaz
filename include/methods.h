@@ -1,6 +1,16 @@
-/** include/methods.h
+/**
+ * @file       include/methods.h
+ * @author     Mohammad Mahdi Baghbani Pourvahid
+ * @date       2020-2021
+ * @version    0.1.0
+ * @copyright  GNU Affero General Public License.
+ * @internal
  *
- * This file is a part of:
+ * @brief      Arayeh methods header file for Arayehsaz Library.
+ * @details    This header contains all the Arayeh public and private methods.
+ */
+
+/*
  * Azadeh Afzar - Arayehsaz (AA-A).
  *
  * Copyright (C) 2020 - 2021 Azadeh Afzar.

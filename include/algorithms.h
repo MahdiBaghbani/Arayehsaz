@@ -1,6 +1,16 @@
-/** include/algorithms.h
+/**
+ * @file       include/algorithms.h
+ * @author     Mohammad Mahdi Baghbani Pourvahid
+ * @date       2020-2021
+ * @version    0.1.0
+ * @copyright  GNU Affero General Public License.
+ * @internal
  *
- * This file is a part of:
+ * @brief      Algorithms header file for Arayehsaz Library.
+ * @details    This header contains algorithmic functions for the Arayehsaz library.
+ */
+
+/*
  * Azadeh Afzar - Arayehsaz (AA-A).
  *
  * Copyright (C) 2020 - 2021 Azadeh Afzar.
@@ -42,6 +52,7 @@
 
 // To ensure that the names declared in this portion of code have C linkage,
 // and thus C++ name mangling is not performed while using this code with C++.
+/** @cond DO_NOT_DOCUMENT */
 #undef __BEGIN_DECLS
 #undef __END_DECLS
 #ifdef __cplusplus
@@ -51,8 +62,11 @@
 #    define __BEGIN_DECLS /* empty */
 #    define __END_DECLS   /* empty */
 #endif
+/** @endcond */
 
+/** @cond DO_NOT_DOCUMENT */
 __BEGIN_DECLS
+/** @endcond */
 
 // this function will calculate the extension size of memory.
 size_t growth_factor_python(arayeh *arayeh);
@@ -61,6 +75,8 @@ size_t growth_factor_python(arayeh *arayeh);
 // empty [available] slot in the array.
 void update_next_index(arayeh *self);
 
+/** @cond DO_NOT_DOCUMENT */
 __END_DECLS
+/** @endcond */
 
 #endif    //__AA_A_ALGORITHMS_H__

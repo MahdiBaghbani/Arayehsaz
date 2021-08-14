@@ -1,7 +1,13 @@
-/** @file       include/arayeh.h
- *  @author     Mohammad Mahdi Baghbani Pourvahid
- *  @date       2020-2021
- *  @copyright  GNU AFFERO GENERAL PUBLIC LICENSE.
+/**
+ * @file       include/arayeh.h
+ * @author     Mohammad Mahdi Baghbani Pourvahid
+ * @date       2020-2021
+ * @version    0.1.0
+ * @copyright  GNU Affero General Public License.
+ *
+ * @brief      Main header file for Arayehsaz Library.
+ * @details    This header contains all the necessary functions and macros of Arayehsaz
+ * library.
  */
 
 /*
@@ -55,6 +61,7 @@
 
 // To ensure that the names declared in this portion of code have C linkage,
 // and thus C++ name mangling is not performed while using this code with C++.
+/** @cond DO_NOT_DOCUMENT */
 #undef __BEGIN_DECLS
 #undef __END_DECLS
 #ifdef __cplusplus
@@ -64,42 +71,84 @@
 #    define __BEGIN_DECLS /* empty */
 #    define __END_DECLS   /* empty */
 #endif
+/** @endcond */
 
-// true false symbolic.
+/** @ingroup arayeh_truefalse
+ * @{
+ */
+
 #define AA_ARAYEH_TRUE  1
 #define AA_ARAYEH_FALSE 0
 
-// return codes.
-#define AA_ARAYEH_FAILURE          0
-#define AA_ARAYEH_SUCCESS          1
-#define AA_ARAYEH_WRONG_TYPE       2
-#define AA_ARAYEH_WRONG_NEW_SIZE   3
-#define AA_ARAYEH_OVERFLOW         4
-#define AA_ARAYEH_REALLOC_DENIED   5
-#define AA_ARAYEH_WRONG_INDEX      6
-#define AA_ARAYEH_NOT_ENOUGH_SPACE 7
-#define AA_ARAYEH_WRONG_STEP       8
+/** @} */
 
-// map characters.
-#define AA_ARAYEH_OFF    '0'
-#define AA_ARAYEH_ON     '1'
-#define AA_ARAYEH_MANUAL '3'
+/**
+ * @defgroup arayeh_errors Preprocessor symbols error codes.
+ *
+ * @brief Error codes for error handling purposes.
+ *
+ * These macros are used to define a set of error codes that arayeh functions would return
+ * in case of error, users can use these codes to debug their code or perform necessary
+ * error handling operations.
+ */
 
-// arayeh types.
-#define AA_ARAYEH_TYPE_CHAR   1
-#define AA_ARAYEH_TYPE_SINT   2
-#define AA_ARAYEH_TYPE_INT    3
-#define AA_ARAYEH_TYPE_LINT   4
-#define AA_ARAYEH_TYPE_FLOAT  5
-#define AA_ARAYEH_TYPE_DOUBLE 6
+/** @ingroup arayeh_errors
+ * @{
+ */
 
+#define AA_ARAYEH_FAILURE          0 /**< @brief operation unsuccessful. */
+#define AA_ARAYEH_SUCCESS          1 /**< @brief operation successful. */
+#define AA_ARAYEH_WRONG_TYPE       2 /**< @brief wrong type for arayeh. */
+#define AA_ARAYEH_WRONG_NEW_SIZE   3 /**< @brief wrong new size for arayeh. */
+#define AA_ARAYEH_OVERFLOW         4 /**< @brief overflow detected. */
+#define AA_ARAYEH_REALLOC_DENIED   5 /**< @brief reallocation cannot be completed. */
+#define AA_ARAYEH_WRONG_INDEX      6 /**< @brief wrong index. */
+#define AA_ARAYEH_NOT_ENOUGH_SPACE 7 /**< @brief not enough memory space. */
+#define AA_ARAYEH_WRONG_STEP       8 /**< @brief wrong step size. */
+
+/** @} */
+
+/** @ingroup arayeh_switches
+ * @{
+ */
+
+#define AA_ARAYEH_OFF    '0' /**< @brief switch is off. */
+#define AA_ARAYEH_ON     '1' /**< @brief switch is on. */
+#define AA_ARAYEH_MANUAL '3' /**< @brief switch is set to manual. */
+
+/** @} */
+
+/**
+ * @defgroup arayeh_types Preprocessor symbols arayeh types.
+ *
+ * @brief Available types for arayeh.
+ *
+ * These macros are used to define available arayeh types, and their values are needed for
+ * internal arayeh functions.
+ */
+
+/** @ingroup arayeh_types
+ * @{
+ */
+
+#define AA_ARAYEH_TYPE_CHAR   1 /**< @brief arayeh type char. */
+#define AA_ARAYEH_TYPE_SINT   2 /**< @brief arayeh type short int. */
+#define AA_ARAYEH_TYPE_INT    3 /**< @brief arayeh type int. */
+#define AA_ARAYEH_TYPE_LINT   4 /**< @brief arayeh type long int. */
+#define AA_ARAYEH_TYPE_FLOAT  5 /**< @brief arayeh type float. */
+#define AA_ARAYEH_TYPE_DOUBLE 6 /**< @brief arayeh type double. */
+
+/** @} */
+
+/** @cond DO_NOT_DOCUMENT */
 __BEGIN_DECLS
+/** @endcond */
 
 // Prototype of arayeh struct.
 typedef struct arayeh_struct arayeh;
 
 /**
- * @brief A union to hold pointer to a supported array types.
+ * @brief A type union to hold pointer to a supported array types.
  *
  * This union holds a pointer to an array of supported type, when initializing arayeh,
  * depending on the type specified by user, one these pointers will be assigned to
@@ -107,61 +156,68 @@ typedef struct arayeh_struct arayeh;
  *
  */
 typedef union {
+    /** @brief pointer to the array of type char. */
+    char *char_pointer;
 
-    char *char_pointer; /**< pointer to the array of type char */
+    /** @brief pointer to the array of type short int. */
+    short int *short_int_pointer;
 
-    short int *short_int_pointer; /**< pointer to the array of type short int */
+    /** @brief pointer to the array of type int. */
+    int *int_pointer;
 
-    int *int_pointer; /**< pointer to the array of type int */
+    /** @brief pointer to the array of type long int. */
+    long int *long_int_pointer;
 
-    long int *long_int_pointer; /**< pointer to the array of type long int */
+    /** @brief pointer to the array of type float. */
+    float *float_pointer;
 
-    float *float_pointer; /**< pointer to the array of type float */
-
-    double *double_pointer; /**< pointer to the array of type double */
+    /** @brief pointer to the array of type double. */
+    double *double_pointer;
 
 } arayeh_types;
 
 /**
- * @brief A Structure to hold arayeh size extension setting..
+ * @brief A type structure to hold arayeh size extension setting.
+ *
+ * This struct hold the method specific settings for arayeh size extension.
  */
 typedef struct {
-
-    // allow extending arayeh size when using add method.
+    /** @brief allow extending arayeh size when using add method. */
     char extend_add;
 
-    // allow extending arayeh size when using insert method.
+    /** @brief allow extending arayeh size when using insert method. */
     char extend_insert;
 
-    // allow extending arayeh size when using fill method.
+    /** @brief allow extending arayeh size when using fill method. */
     char extend_fill;
 
-    // allow extending arayeh size when using merge list method.
+    /** @brief allow extending arayeh size when using merge list method. */
     char extend_merge_arayeh;
 
-    // allow extending arayeh size when using merge list method.
+    /** @brief allow extending arayeh size when using merge list method. */
     char extend_merge_array;
 
 } arayeh_size_settings;
 
 /**
- * @brief A structure to hold arayeh settings.
+ * @brief A type structure to hold arayeh settings.
+ *
+ * This struct holds general arayeh settings.
  */
 typedef struct {
-
-    // allow debug messages to be printed on stdout and stderr.
+    /** @brief allow debug messages to be printed on stdout and stderr. */
     char debug_messages;
 
-    // allow extending arayeh size whenever needed.
+    /** @brief allow extending arayeh size whenever needed. */
     char extend_size;
 
-    // holds method specific size extension settings.
+    /** @brief holds method specific size extension settings. */
     arayeh_size_settings *method_size;
 
 } arayeh_settings;
 
 /**
- * @brief A structure to hold arayeh map.
+ * @brief A type structure to hold arayeh map.
  *
  * This structure uses bitfields of size 1 bit in pack of 8 bits (1 byte)
  * to store the state of each cell in an arayeh as defined below:
@@ -172,22 +228,29 @@ typedef struct {
  * 8 bits to store state of only 1 cell, we can now store state of 8 cells.
  */
 typedef struct {
+    /** @brief holds 1 bit of type char. */
+    unsigned char bit_0 : 1;
 
-   unsigned char bit_0 : 1; /**< holds 1 bit of type char */
+    /** @brief holds 1 bit of type char. */
+    unsigned char bit_1 : 1;
 
-    unsigned char bit_1 : 1; /**< holds 1 bit of type char */
+    /** @brief holds 1 bit of type char. */
+    unsigned char bit_2 : 1;
 
-    unsigned char bit_2 : 1; /**< holds 1 bit of type char */
+    /** @brief holds 1 bit of type char. */
+    unsigned char bit_3 : 1;
 
-    unsigned char bit_3 : 1; /**< holds 1 bit of type char */
+    /** @brief holds 1 bit of type char. */
+    unsigned char bit_4 : 1;
 
-    unsigned char bit_4 : 1; /**< holds 1 bit of type char */
+    /** @brief holds 1 bit of type char. */
+    unsigned char bit_5 : 1;
 
-    unsigned char bit_5 : 1; /**< holds 1 bit of type char */
+    /** @brief holds 1 bit of type char. */
+    unsigned char bit_6 : 1;
 
-    unsigned char bit_6 : 1; /**< holds 1 bit of type char */
-
-    unsigned char bit_7 : 1; /**< holds 1 bit of type char */
+    /** @brief holds 1 bit of type char. */
+    unsigned char bit_7 : 1;
 
 } arayeh_map;
 
@@ -196,93 +259,201 @@ typedef struct {
  */
 typedef struct arayeh_struct {
 
-    /**
-     * @brief Arayeh public properties structure.
-     *
-     * This structure holds arayeh public properties like type,
-     * size etc, which are mirror of arayeh private properties
-     * with same names, changing this structure member's value
-     * will no affect arayeh's internal functioning and will
-     * be updated (corrected) on next use of any method.
-     */
     struct {
+        /** @brief holds type of arayeh. */
+        size_t type;
 
-        size_t type; /**< holds type of arayeh */
+        /** @brief holds next empty cell index. */
+        size_t next;
 
-        size_t next; /**< holds next empty cell index */
+        /** @brief holds number of used cells. */
+        size_t used;
 
-        size_t used; /**< holds number of used cells */
-
-        size_t size; /**< holds total cell size of arayeh */
+        /** @brief holds total cell size of arayeh. */
+        size_t size;
     };
 
     /**
+     * @private
      * @brief Arayeh private properties structure.
      *
-     * This structure holds arayeh properties properties like type,
-     * size etc, changing this structure member's value
+     * This structure holds arayeh properties like type,
+     * size etc, manually changing this structure member's value
      * will corrupt arayeh logic and should be avoided.
+     *
      */
     struct private_properties {
+        /** @brief holds type of arayeh. */
+        size_t type;
 
-        size_t type; /**< holds type of arayeh */
+        /** @brief holds next empty cell index. */
+        size_t next;
 
-        size_t next; /**< holds next empty cell index */
+        /** @brief holds number of used cells. */
+        size_t used;
 
-        size_t used; /**< holds number of used cells */
+        /** @brief holds total cell size of arayeh. */
+        size_t size;
 
-        size_t size; /**< holds total cell size of arayeh */
+        /** @brief holds internal array pointer. */
+        arayeh_types array;
 
-        arayeh_types array; /**< holds internal array pointer */
+        /** @brief holds a map of arayeh cells showing empty or used. */
+        arayeh_map *map;
 
-        arayeh_map *map; /**< holds a map of arayeh cells, indicates they are empty or used */
-
-        arayeh_settings *settings; /**< hold settings for arayeh */
+        /** @brief hold settings for arayeh. */
+        arayeh_settings *settings;
 
     } _private_properties;
 
-    // Public methods of arayehs, accessible for everyone.
     struct {
 
-        // this function will reallocate memory to the arayeh and its map.
+        /**
+         * @brief this function will reallocate memory of the arayeh with new size.
+         *
+         * @param[in] self          pointer to the arayeh object.
+         * @param[in] new_size      size change.
+         *
+         * @return a code that indicates successful operation or an error code defined in
+         * arayeh.h .
+         */
         int (*resize_memory)(arayeh *self, size_t new_size);
 
-        // this function will reallocate memory to the arayeh and its map.
-        // the reallocation with this function increases size of the arayeh.
+        /**
+         * @brief this function will increase the memory of arayeh.
+         *
+         * @param[in] self          pointer to the arayeh object.
+         * @param[in] extend_size   size increment.
+         *
+         * @return a code that indicates successful operation or an error code defined in
+         * arayeh.h .
+         */
         int (*extend_size)(arayeh *self, size_t extend_size);
 
-        // this function will free the arayeh and reset its parameters.
+        /**
+         * @brief this function will free the arayeh and reset its parameters.
+         *
+         * @param[in] self          pointer to pointer to arayeh object.
+         *
+         * @return a code that indicates successful operation or an error code defined in
+         * arayeh.h .
+         */
         int (*free_arayeh)(arayeh **self);
 
-        // this function will create an exact copy of "self" arayeh.
+        /**
+         * @brief this function will create an exact copy of "self" arayeh.
+         *
+         * @param[in] self          pointer to the arayeh object.
+         *
+         * @return A pointer to the initialized arayeh or NULL in case of any error.
+         */
         arayeh *(*duplicate)(arayeh *self);
 
-        // this function will insert an "element" into arayeh at the next empty
-        // location in the arayeh. if arayeh is full, it will extend arayeh size.
+        /**
+         * @brief this function will add an element into the next empty arayeh cell.
+         *
+         * this function will insert an "element" into arayeh at the next empty
+         * location in the arayeh. if arayeh is full, it will extend arayeh size
+         * according to arayeh size settings.
+         *
+         * @param[in] self          pointer to the arayeh object.
+         * @param[in] element       pointer to a variable to be added to the arayeh.
+         *
+         * @return a code that indicates successful operation or an error code defined in
+         * arayeh.h .
+         */
         int (*add)(arayeh *self, void *element);
 
-        // this function will insert an "element" into arayeh at "index".
+        /**
+         * @brief this function will insert an element into an arayeh cell at the
+         * specified index.
+         *
+         * @param[in] self          pointer to the arayeh object.
+         * @param[in] index         index of the arayeh cell to insert the element.
+         * @param[in] element       pointer to a variable to be added to the arayeh.
+         *
+         * @return a code that indicates successful operation or an error code defined in
+         * arayeh.h .
+         */
         int (*insert)(arayeh *self, size_t index, void *element);
 
-        // this function will fill arayeh with an element from index (inclusive)
-        // "start" to index (exclusive) "end" with step size "step".
+        /**
+         * @brief this function will fill a range of arayeh cells arayeh with an element.
+         *
+         * this function will fill arayeh with an element from index (inclusive)
+         * "start" to index (exclusive) "end" with step size "step".
+         *
+         * @param[in] self          pointer to the arayeh object.
+         * @param[in] start_index   starting index (inclusive).
+         * @param[in] step          step size.
+         * @param[in] end_index     ending index (exclusive).
+         * @param[in] element       pointer to a variable to be added to the arayeh.
+         *
+         * @return a code that indicates successful operation or an error code defined in
+         * arayeh.h .
+         *
+         * @warning using a negative number for step would result in a very very big
+         * number because of type conversion to size_t.
+         */
         int (*fill)(arayeh *self, size_t start_index, size_t step, size_t end_index,
                     void *element);
 
-        // this function will merge an arayeh (source) into current arayeh (self), with
-        // specified step from the specified start index of (self) arayeh.
+        /**
+         * @brief this function will merge an arayeh into another arayeh.
+         *
+         * this function will merge an arayeh (source) into current arayeh (self), with
+         * specified step from the specified start index of (self) arayeh.
+         *
+         * @param[in] self          pointer to the arayeh object.
+         * @param[in] start_index   starting index in the arayeh "self".
+         * @param[in] step          step size.
+         * @param[in] source        the arayeh to be merged into the "self" arayeh.
+         *
+         * @return a code that indicates successful operation or an error code defined in
+         * arayeh.h .
+         *
+         * @warning using a negative number for step would result in a very very big
+         * number because of type conversion to size_t.
+         */
         int (*merge_arayeh)(arayeh *self, size_t start_index, size_t step,
                             arayeh *source);
 
-        // this function will merge a default C array
-        // (for example int a[4] = {1, 2, 3, 4};) into arayeh, the starting
-        // index for merging is "startIndex" and the size of C array determines the
-        // last index (in the example above the size of C array is 4).
+        /**
+         * @brief this function will merge a C array into an arayeh.
+         *
+         * this function will merge a default C array
+         * (for example int a[4] = {1, 2, 3, 4};) into arayeh, the starting
+         * index for merging is "startIndex" and the size of C array determines the
+         * last index (in the example above the size of C array is 4).
+         *
+         * @param[in] self          pointer to the arayeh object.
+         * @param[in] start_index   starting index in the arayeh "self".
+         * @param[in] step          step size.
+         * @param[in] array_size    size of the C arayeh.
+         * @param[in] array         pointer the C array to be merged into the arayeh.
+         *
+         * @return a code that indicates successful operation or an error code defined in
+         * arayeh.h .
+         *
+         * @warning using a negative number for step would result in a very very big
+         * number because of type conversion to size_t.
+         */
         int (*merge_array)(arayeh *self, size_t start_index, size_t step,
                            size_t array_size, void *array);
 
-        // this function copies data in "index" cell of the arayeh to the
-        // "destination" memory location.
+        /**
+         * @brief this function will get an element from an arayeh cell.
+         *
+         * this function copies data in "index" cell of the arayeh to the
+         * "destination" memory location.
+         *
+         * @param[in] self              pointer to the arayeh object.
+         * @param[in] index             index of the element to be copied to destination.
+         * @param[in,out] destination   pointer to the destination memory location.
+         *
+         * @return a code that indicates successful operation or an error code defined in
+         * arayeh.h .
+         */
         int (*get)(arayeh *self, size_t index, void *destination);
 
         // this function copies data in "index" cell of the arayeh to the
@@ -300,54 +471,174 @@ typedef struct arayeh_struct {
         // TODO: contains, count, reorder, shuffle, reverse, sort, isEmpty, showSettings
         // TODO: complete error tracing.
 
-        // this function will override arayeh default settings.
+        /**
+         * @brief this function will override arayeh default settings.
+         *
+         * @param[in] self              pointer to the arayeh object.
+         * @param[in] settings          setting to apply to arayeh.
+         */
         void (*set_settings)(arayeh *self, arayeh_settings *settings);
 
-        // this function will override arayeh extend size default settings.
+        /**
+         * @brief this function will override arayeh extend size default settings.
+         *
+         * @param[in] self              pointer to the arayeh object.
+         * @param[in] settings          setting to apply to arayeh.
+         */
         void (*set_size_settings)(arayeh *self, arayeh_size_settings *settings);
 
-        // this function will override the arayehs default growth factor function
-        // with a new function provided by user.
+        /**
+         * @brief  this function sets arayeh growth factor calculator.
+         *
+         * this function will override the arayehs default growth factor function
+         * with a new function provided by user.
+         *
+         * @param[in] self              pointer to the arayeh object.
+         * @param[in] growth_factor     pointer to a growth factor calculator function.
+         */
         void (*set_growth_factor)(arayeh *self, size_t (*growth_factor)(arayeh *));
     };
 
-    // Private methods of arayeh, should not be used by users.
+    /**
+     * @private
+     * @brief Arayeh private methods structure.
+     *
+     * This structure holds arayeh private methods, which are used internally to
+     * perform lots of type related operations.
+     *
+     */
     struct private_methods {
 
-        // this function initializes arayeh pointer.
+        /**
+         * @brief this function initializes arayeh pointer.
+         *
+         * this function will pick the right type for arayeh pointer in the
+         * arayeh_type union and will set it to NULL, it also checks initial_size of
+         * arayeh for possible overflows.
+         *
+         * @param[in] self          pointer to the arayeh object.
+         * @param[in] arayeh_types  arayeh types union.
+         * @param[in] initial_size  size of arayeh.
+         *
+         * @return a code that indicates successful operation or an error code defined in
+         * arayeh.h .
+         */
         int (*init_arayeh)(arayeh *self, arayeh_types *array, size_t initial_size);
 
-        // this function allocates memory for arayeh.
+        /**
+         * @brief this function allocates memory for arayeh based on its type.
+         *
+         * @param[in] self          pointer to the arayeh object.
+         * @param[in] arayeh_types  arayeh types union.
+         * @param[in] initial_size  size of arayeh.
+         *
+         * @return a code that indicates successful operation or an error code defined in
+         * arayeh.h .
+         */
         int (*malloc_arayeh)(arayeh *self, arayeh_types *array, size_t initial_size);
 
-        // this function re-allocates memory for arayeh.
+        /**
+         * @brief this function re-allocates memory for arayeh based on its type.
+         *
+         * @param[in] self          pointer to the arayeh object.
+         * @param[in] arayeh_types  arayeh types union.
+         * @param[in] initial_size  size of arayeh.
+         *
+         * @return a code that indicates successful operation or an error code defined in
+         * arayeh.h .
+         */
         int (*realloc_arayeh)(arayeh *self, arayeh_types *array, size_t initial_size);
 
-        // this frees arayeh memory.
+        /**
+         * @brief this function frees arayeh memory.
+         *
+         * @param[in] self          pointer the arayeh object.
+         *
+         */
         void (*free_arayeh)(arayeh *self);
 
-        // this function is implemented as a way to control the
-        // dynamic growth rate of the arayeh memory space.
+        /**
+         * @brief this function will calculate arayeh growth factor.
+         *
+         * this function is implemented as a way to control the
+         * dynamic growth rate of the arayeh memory space.
+         *
+         * @param[in] self          pointer to the arayeh object.
+         *
+         * @return the size of extra memory space to be added to the current memory space.
+         */
         size_t (*growth_factor)(arayeh *self);
 
-        // this function assigns the initialized pointer of an array to the arayeh
-        // structs pointer.
+        /**
+         * @brief this function will set pointer to internal array of the arayeh.
+         *
+         * this function assigns the address of an initialized pointer to an array to the
+         * arayeh structs pointer.
+         *
+         * @param[in] self          pointer to the arayeh object.
+         * @param[in] arayeh_types  arayeh types union.
+         *
+         */
         void (*set_memory_pointer)(arayeh *self, arayeh_types *array);
 
-        // this function adds an element of a specific type to the arayeh.
+        /**
+         * @brief this function will add an element into an arayeh cell.
+         *
+         * @param[in] self          pointer to the arayeh object.
+         * @param[in] index         index of the arayeh cell to insert the element.
+         * @param[in] element       pointer to a variable to be added to the arayeh.
+         *
+         */
         void (*add_to_arayeh)(arayeh *self, size_t index, void *element);
 
-        // this function merges an arayeh of a specific type into another arayeh.
+        /**
+         * @brief this function will merge an arayeh into another arayeh.
+         *
+         * this function will merge an arayeh (source) into current arayeh (self), with
+         * specified step from the specified start index of (self) arayeh.
+         *
+         * @param[in] self          pointer to the arayeh object.
+         * @param[in] start_index   starting index in the arayeh "self".
+         * @param[in] step          step size.
+         * @param[in] source        the arayeh to be merged into the "self" arayeh.
+         *
+         * @return a code that indicates successful operation or an error code defined in
+         * arayeh.h .
+         */
         int (*merge_from_arayeh)(arayeh *self, size_t start_index, size_t step,
                                  arayeh *source);
 
-        // this function merges a C standard array of a specific type into the
-        // arayeh of the same type.
+        /**
+         * @brief this function will merge a C array into an arayeh.
+         *
+         * this function merges a C standard array of a specific type into the
+         * arayeh of the same type.
+         *
+         * @param[in] self          pointer to the arayeh object.
+         * @param[in] start_index   starting index in the arayeh "self".
+         * @param[in] step          step size.
+         * @param[in] array_size    size of the C arayeh.
+         * @param[in] array         pointer the C array to be merged into the arayeh.
+         *
+         * @return a code that indicates successful operation or an error code defined in
+         * arayeh.h .
+         */
         int (*merge_from_array)(arayeh *self, size_t start_index, size_t step,
                                 size_t array_size, void *array);
 
-        // this function gets an element from arayeh and places it into a destination
-        // memory location provided by caller.
+        /**
+         * @brief get an element from arayeh cell.
+         *
+         * this function gets an element from arayeh and places it into a destination
+         * memory location provided by caller.
+         *
+         * @param[in] self          pointer to the arayeh object.
+         * @param[in] index         index of the element to be copied.
+         * @param[in] destination   pointer to the destination memory location.
+         *
+         * @return a code that indicates successful operation or an error code defined in
+         * arayeh.h .
+         */
         void (*get_from_arayeh)(arayeh *self, size_t index, void *destination);
 
     } _private_methods;
@@ -355,21 +646,21 @@ typedef struct arayeh_struct {
 } arayeh;
 
 /**
- * \brief Creates an arayeh with specified type and size.
+ * @brief Creates an arayeh with specified type and size.
  *
- * This function will create an arayeh of type "type"
- * (one the supported types defined in configuration.h)
- * and size of "initialSize" if it's possible
- * (you have enough memory and right to allocate that memory).
+ * This function will create an arayeh of one the supported types
+ * and size of "initial_size" if it's possible
  *
- * @param initial_size[out]  size of arayeh.
- * @param type[in]           type of arayeh elements.
+ * @param[in] type          type of arayeh.
+ * @param[in] initial_size  size of arayeh.
  *
  * @return A pointer to the initialized arayeh or NULL in case of any error.
  */
 
 arayeh *Arayeh(size_t type, size_t initial_size);
 
+/** @cond DO_NOT_DOCUMENT */
 __END_DECLS
+/** @endcond */
 
 #endif    //__AA_A_ARAYEH_H__

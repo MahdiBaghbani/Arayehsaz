@@ -1,6 +1,16 @@
-/** source/algorithms.c
+/**
+ * @file       source/algorithms.c
+ * @author     Mohammad Mahdi Baghbani Pourvahid
+ * @date       2020-2021
+ * @version    0.1.0
+ * @copyright  GNU Affero General Public License.
+ * @internal
  *
- * This file is a part of:
+ * @brief      Algorithms source file for Arayehsaz Library.
+ * @details    This source contains algorithmic functions for the Arayehsaz library.
+ */
+
+/*
  * Azadeh Afzar - Arayehsaz (AA-A).
  *
  * Copyright (C) 2020 - 2021 Azadeh Afzar.

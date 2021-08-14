@@ -1,6 +1,16 @@
-/** source/methods.c
+/**
+ * @file       source/methods.c
+ * @author     Mohammad Mahdi Baghbani Pourvahid
+ * @date       2020-2021
+ * @version    0.1.0
+ * @copyright  GNU Affero General Public License.
+ * @internal
  *
- * This file is a part of:
+ * @brief      Arayeh methods source file for Arayehsaz Library.
+ * @details    This source contains all the Arayeh public and private methods.
+ */
+
+/*
  * Azadeh Afzar - Arayehsaz (AA-A).
  *
  * Copyright (C) 2020 - 2021 Azadeh Afzar.
@@ -203,8 +213,8 @@ int _free_memory(arayeh **self)
     private_methods->free_arayeh(*self);
 
     // free map array pointer and nullify the pointer.
-    free((*self)->_private_properties.map) ;
-    //free(private_properties->map);
+    free((*self)->_private_properties.map);
+    // free(private_properties->map);
     private_properties->map = NULL;
 
     // free arayeh method specific size settings.
@@ -396,7 +406,7 @@ int _insert_to_arayeh(arayeh *self, size_t index, void *element)
      *
      * ARGUMENTS:
      * self         pointer to the arayeh object.
-     * index        index of the desired arayeh cell to insert the element.
+     * index        index of the arayeh cell to insert the element.
      * element      pointer to a variable to be added to the arayeh.
      *
      * RETURN:

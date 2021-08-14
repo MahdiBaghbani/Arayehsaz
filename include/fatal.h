@@ -1,6 +1,16 @@
-/** include/fatal.h
+/**
+ * @file       include/fatal.h
+ * @author     Mohammad Mahdi Baghbani Pourvahid
+ * @date       2020-2021
+ * @version    0.1.0
+ * @copyright  GNU Affero General Public License.
+ * @internal
  *
- * This file is a part of:
+ * @brief      Error handling header file for Arayehsaz Library.
+ * @details    This header contains Error handling macros.
+ */
+
+/*
  * Azadeh Afzar - Arayehsaz (AA-A).
  *
  * Original writer:

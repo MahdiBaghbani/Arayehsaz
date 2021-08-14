@@ -1,6 +1,16 @@
-/** source/types.c
+/**
+ * @file       source/types.c
+ * @author     Mohammad Mahdi Baghbani Pourvahid
+ * @date       2020-2021
+ * @version    0.1.0
+ * @copyright  GNU Affero General Public License.
+ * @internal
  *
- * This file is a part of:
+ * @brief      Type management source file for Arayehsaz Library.
+ * @details    This source contains type specific Arayeh functions.
+ */
+
+/*
  * Azadeh Afzar - Arayehsaz (AA-A).
  *
  * Copyright (C) 2020 - 2021 Azadeh Afzar.

@@ -1,6 +1,17 @@
-/** source/functions.c
+/**
+ * @file       source/functions.c
+ * @author     Mohammad Mahdi Baghbani Pourvahid
+ * @date       2020-2021
+ * @version    0.1.0
+ * @copyright  GNU Affero General Public License.
+ * @internal
  *
- * This file is a part of:
+ * @brief      Internal functions source file for Arayehsaz Library.
+ * @details    This source contains internal Arayeh functions.
+ */
+
+
+/*
  * Azadeh Afzar - Arayehsaz (AA-A).
  *
  * Copyright (C) 2020 - 2021 Azadeh Afzar.
@@ -44,19 +55,6 @@
 
 int auto_extend_memory(arayeh *self)
 {
-    /*
-     * This function will calculate the extension size of memory and extends arayeh
-     * size.
-     *
-     * ARGUMENTS:
-     * self             pointer to the arayeh object.
-     *
-     * RETURN:
-     * state        a code that indicates successful operation
-     *              or an error code defined in configuration.h .
-     *
-     */
-
     // shorten names for god's sake.
     struct private_methods *private_methods = &self->_private_methods;
 
@@ -75,17 +73,6 @@ int auto_extend_memory(arayeh *self)
 
 void set_public_methods(arayeh *self)
 {
-    /*
-     * This function assigns pointers to public functions of an arayeh instance.
-     *
-     * ARGUMENTS:
-     * self         pointer to the arayeh object.
-     *
-     * RETURN:
-     * no return, it's void dude.
-     *
-     */
-
     self->resize_memory     = _resize_memory;
     self->extend_size       = _extend_size;
     self->free_arayeh       = _free_memory;
@@ -103,18 +90,6 @@ void set_public_methods(arayeh *self)
 
 void set_private_methods(arayeh *self, size_t type)
 {
-    /*
-     * This function assigns pointers to private functions of an arayeh instance.
-     *
-     * ARGUMENTS:
-     * self         pointer to the arayeh object.
-     * type         type of arayeh elements.
-     *
-     * RETURN:
-     * no return, it's void dude.
-     *
-     */
-
     // shorten names for god's sake.
     struct private_methods *private_methods = &self->_private_methods;
 
@@ -204,6 +179,8 @@ int malloc_arayeh_map(arayeh_map **map_pointer, size_t initial_size)
     // track error state in the function.
     int state;
 
+    // map size should be in bytes, this line calculates the least amount of bytes needed
+    // to fit initial_size bits in it.
     size_t map_bytes = initial_size % 8 == 0 ? initial_size / 8 : initial_size / 8 + 1;
     *map_pointer     = (arayeh_map *) malloc(sizeof **map_pointer * map_bytes);
 
@@ -222,6 +199,8 @@ int realloc_arayeh_map(arayeh *self, arayeh_map **map_pointer, size_t new_size)
     // track error state in the function.
     int state;
 
+    // map size should be in bytes, this line calculates the least amount of bytes needed
+    // to fit new_size bits in it.
     size_t map_bytes = new_size % 8 == 0 ? new_size / 8 : new_size / 8 + 1;
     *map_pointer = (arayeh_map *) realloc(map_pointer, sizeof **map_pointer * map_bytes);
 
@@ -237,44 +216,44 @@ int realloc_arayeh_map(arayeh *self, arayeh_map **map_pointer, size_t new_size)
 
 int is_arayeh_cell_filled(arayeh *self, size_t index)
 {
-    int is_filled;
-
+    // these two lines would find the map byte and the bit in that byte.
+    // example: you have an 36 byte map which has 288 bits in total and the index is 46
+    // which means you want the 46th bit, so in order to to access it you should first
+    // locate the byte that 46th is in it by dividing the index by 8:
+    // 46 / 8 = 5.75 , so the 46th bit is in the 5th byte, now you should find the index
+    // of 46th bit in the 5th byte, for this you have to find index mod 8:
+    // 46 mod 8 = 6
+    // so now you know that the 46th bit is in 5th byte at 6th bit! target located :)
     size_t byte_select = index / 8;
     size_t bit_select  = index % 8;
 
+    // get the pointer to the map.
     arayeh_map *map_pointer = self->_private_properties.map;
-    arayeh_map *map_byte    = (map_pointer + byte_select);
 
+    // select the byte.
+    arayeh_map *map_byte = (map_pointer + byte_select);
+
+    // select bit in the byte.
     switch (bit_select) {
     case 0:
-        is_filled = map_byte->bit_0;
-        break;
+        return map_byte->bit_0;
     case 1:
-        is_filled = map_byte->bit_1;
-        break;
+        return map_byte->bit_1;
     case 2:
-        is_filled = map_byte->bit_2;
-        break;
+        return map_byte->bit_2;
     case 3:
-        is_filled = map_byte->bit_3;
-        break;
+        return map_byte->bit_3;
     case 4:
-        is_filled = map_byte->bit_4;
-        break;
+        return map_byte->bit_4;
     case 5:
-        is_filled = map_byte->bit_5;
-        break;
+        return map_byte->bit_5;
     case 6:
-        is_filled = map_byte->bit_6;
-        break;
+        return map_byte->bit_6;
     case 7:
-        is_filled = map_byte->bit_7;
-        break;
+        return map_byte->bit_7;
     default:
         FATAL_OVERFLOW("is_arayeh_cell_filled", AA_ARAYEH_TRUE);
     }
-
-    return is_filled;
 }
 
 int is_arayeh_cell_empty(arayeh *self, size_t index)
@@ -282,14 +261,29 @@ int is_arayeh_cell_empty(arayeh *self, size_t index)
     return !is_arayeh_cell_filled(self, index);
 }
 
-void insert_to_arayeh_map(arayeh *self, size_t index, char value)
+void insert_to_arayeh_map(arayeh *self, size_t index, unsigned char value)
 {
+    // these two lines would find the map byte and the bit in that byte.
+    // example: you have an 36 byte map which has 288 bits in total and the index is 46
+    // which means you want the 46th bit, so in order to to access it you should first
+    // locate the byte that 46th is in it by dividing the index by 8:
+    // 46 / 8 = 5.75 , so the 46th bit is in the 5th byte, now you should find the index
+    // of 46th bit in the 5th byte, for this you have to find index mod 8:
+    // 46 mod 8 = 6
+    // so now you know that the 46th bit is in 5th byte at 6th bit! target located :)
     size_t byte_select = index / 8;
     size_t bit_select  = index % 8;
 
+    // get the pointer to the map.
     arayeh_map *map_pointer = self->_private_properties.map;
-    arayeh_map *map_byte    = (map_pointer + byte_select);
 
+    // select the byte.
+    arayeh_map *map_byte = (map_pointer + byte_select);
+
+    // check value to see if it can be ft into 1 bit, if not, change it to 1.
+    value = (value > 1) ? 1 : value;
+
+    // select bit in the byte.
     switch (bit_select) {
     case 0:
         map_byte->bit_0 = value;

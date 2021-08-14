@@ -1,6 +1,16 @@
-/** include/functions.h
+/**
+ * @file       include/functions.h
+ * @author     Mohammad Mahdi Baghbani Pourvahid
+ * @date       2020-2021
+ * @version    0.1.0
+ * @copyright  GNU Affero General Public License.
+ * @internal
  *
- * This file is a part of:
+ * @brief      Internal functions header file for Arayehsaz Library.
+ * @details    This header contains internal Arayeh functions.
+ */
+
+/*
  * Azadeh Afzar - Arayehsaz (AA-A).
  *
  * Copyright (C) 2020 - 2021 Azadeh Afzar.
@@ -42,6 +52,7 @@
 
 // To ensure that the names declared in this portion of code have C linkage,
 // and thus C++ name mangling is not performed while using this code with C++.
+/** @cond DO_NOT_DOCUMENT */
 #undef __BEGIN_DECLS
 #undef __END_DECLS
 #ifdef __cplusplus
@@ -51,28 +62,88 @@
 #    define __BEGIN_DECLS /* empty */
 #    define __END_DECLS   /* empty */
 #endif
+/** @endcond */
 
+/** @cond DO_NOT_DOCUMENT */
 __BEGIN_DECLS
+/** @endcond */
 
-// This function will calculate the extension size of memory and extends arayeh size.
+/**
+ * @private
+ * @brief This function will calculate the extension size of memory and extends arayeh
+ * size.
+ *
+ * @param[in] self              pointer to the arayeh object.
+ *
+ * @return a code that indicates successful operation or an error code defined in
+ * arayeh.h .
+ */
 int auto_extend_memory(arayeh *self);
 
-// this function assigns pointers to public functions of an arayeh instance.
+/**
+ * @private
+ * @brief This function assigns pointers to public functions of an arayeh instance.
+ *
+ * @param[in] self              pointer to the arayeh object.
+ */
 void set_public_methods(arayeh *self);
 
-// this function assigns pointers to private functions of an arayeh instance.
+/**
+ * @private
+ * @brief This function assigns pointers to private functions of an arayeh instance.
+ *
+ * @param[in] self              pointer to the arayeh object.
+ */
 void set_private_methods(arayeh *self, size_t type);
 
-// this function creates new arayeh map array.
+/**
+ * @private
+ * @brief this function creates new arayeh map array.
+ *
+ * @param[in] map_pointer       pointer to pointer to an arayeh_map.
+ * @param[in] initial_size      initial size of map.
+ *
+ * @return a code that indicates successful operation or an error code defined in
+ * arayeh.h .
+ */
 int malloc_arayeh_map(arayeh_map **map_pointer, size_t initial_size);
 
+/**
+ * @private
+ * @brief this function reallocates memory to an arayeh map array.
+ *
+ * @param[in] self              pointer to the arayeh object.
+ * @param[in] map_pointer       pointer to pointer to an arayeh_map.
+ * @param[in] initial_size      initial size of map.
+ *
+ * @return a code that indicates successful operation or an error code defined in
+ * arayeh.h .
+ */
 int realloc_arayeh_map(arayeh *self, arayeh_map **map_pointer, size_t new_size);
 
+/**
+ * @private
+ * @brief this function checks a cell specified by index for being filled.
+ *
+ * @param[in] self              pointer to the arayeh object.
+ * @param[in] index             index of the map cell for checking.
+ *
+ * @return if cell is filled returns 1 and if not returns 0.
+ */
 int is_arayeh_cell_filled(arayeh *self, size_t index);
 
+/**
+ * @private
+ * @brief this function checks a cell specified by index for being empty.
+ *
+ * @param[in] self              pointer to the arayeh object.
+ * @param[in] index             index of the map cell for checking.
+ *
+ * @return if cell is empty returns 1 and if not returns 0.
+ */
 int is_arayeh_cell_empty(arayeh *self, size_t index);
 
-void insert_to_arayeh_map(arayeh *self, size_t index, char value);
+void insert_to_arayeh_map(arayeh *self, size_t index, unsigned char value);
 
 void arayeh_map_cell_state_change_filled(arayeh *self, size_t index);
 
@@ -84,6 +155,8 @@ void arayeh_map_cell_state_set_all_empty(arayeh *self);
 
 void update_used_counter(arayeh *self, size_t change_size_number);
 
+/** @cond DO_NOT_DOCUMENT */
 __END_DECLS
+/** @endcond */
 
 #endif    //__AA_A_FUNCTIONS_H__
