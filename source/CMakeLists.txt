@@ -1,9 +1,9 @@
 # CMake version.
 cmake_minimum_required(VERSION 3.19 FATAL_ERROR)
 
-# create array shared library.
-add_library(
-        ${CMAKE_PROJECT_NAME}
+# source list for the library.
+set(
+        sources
         arayeh.c
         types.c
         methods.c
@@ -11,18 +11,41 @@ add_library(
         algorithms.c
 )
 
-# set library version, so symlink version and public header.
+# create object library as base.
+add_library(
+        arayehsaz_object
+        OBJECT
+        ${sources}
+)
+
+# shared libraries need PIC (POSITION_INDEPENDENT_CODE).
+set_property(TARGET arayehsaz_object PROPERTY POSITION_INDEPENDENT_CODE 1)
+
+# add shared and static libraries from the base object library.
+add_library(arayehsaz SHARED $<TARGET_OBJECTS:arayehsaz_object>)
+add_library(arayehsaz_static STATIC $<TARGET_OBJECTS:arayehsaz_object>)
+
+# set library version, .so symlink version and public header.
 set_target_properties(
-        ${CMAKE_PROJECT_NAME}
+        arayehsaz
         PROPERTIES
         VERSION ${PROJECT_VERSION}
         SOVERSION ${PROJECT_VERSION_MAJOR}
         PUBLIC_HEADER ${INCLUDE_DIR}/arayeh.h
 )
 
-# install lib.
+# set library version, .so symlink version and public header.
+set_target_properties(
+        arayehsaz
+        PROPERTIES
+        VERSION ${PROJECT_VERSION}
+        SOVERSION ${PROJECT_VERSION_MAJOR}
+        PUBLIC_HEADER ${INCLUDE_DIR}/arayeh.h
+)
+
+# install library.
 install(
-        TARGETS ${CMAKE_PROJECT_NAME}
+        TARGETS arayehsaz
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         CONFIGURATIONS Release
         # INSTALL_INCLUDE_DIR is defined in root cmake file.

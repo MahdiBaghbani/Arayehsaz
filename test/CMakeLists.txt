@@ -1,6 +1,8 @@
 # CMake version.
 cmake_minimum_required(VERSION 3.19 FATAL_ERROR)
 
+include (CTest)
+
 # add unity source directory.
 add_subdirectory("unity test framework")
 

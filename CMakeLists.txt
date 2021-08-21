@@ -13,9 +13,6 @@ project(
         DESCRIPTION "Easy and almost safe dynamic arrays in C."
 )
 
-# Library type.
-set(BUILD_SHARED_LIBS YES)
-
 ########################################################################
 # Setup compiler
 ########################################################################
@@ -28,7 +25,7 @@ set(CMAKE_C_EXTENSIONS OFF)
 # Build docs.
 option(BUILD_DOC "Build documentation" ON)
 
-# set flags.
+# set compiler flags.
 if (
 (
         "${CMAKE_C_COMPILER_ID}" STREQUAL "GNU"
@@ -41,6 +38,7 @@ if (
     add_compile_options(
             -Wall
             -Wextra
+            -Werror
             -Wsign-compare
             -Wno-unused
             -Wno-unused-parameter
@@ -105,6 +103,7 @@ set(
 )
 
 # set the directory path to install headers in target system.
+# would be libdir/arayehsaz.
 set(
         INSTALL_INCLUDE_DIR
         ${CMAKE_INSTALL_INCLUDEDIR}/${CMAKE_PROJECT_NAME}
@@ -140,16 +139,11 @@ add_subdirectory(source)
 ########################################################################
 
 # set a default test build option.
-set(BUILD_TESTING ON)
+option(BUILD_TESTS "Build Tests" ON)
 
-if (BUILD_TESTING)
-    message(
-            STATUS
-            "Creating test targets."
-    )
-    enable_testing()
+if (BUILD_TESTS)
     add_subdirectory(test)
-endif (BUILD_TESTING)
+endif (BUILD_TESTS)
 
 ########################################################################
 # Setup documentation
