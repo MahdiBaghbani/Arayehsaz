@@ -17,13 +17,22 @@ project(
 # Setup compiler
 ########################################################################
 
-# C standard.
+# set C standard.
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED YES)
 set(CMAKE_C_EXTENSIONS OFF)
 
-# Build docs.
-option(BUILD_DOC "Build documentation" ON)
+# Build options.
+option(ENABLE_TESTING "Enable testing" ON)
+option(BUILD_DOCUMENTATION "Build project documentation" ON)
+
+# enforce shared library format.
+if (DEFINED ARAYEHSAZ_SHARED_LIBS)
+    set(BUILD_SHARED_LIBS "Build with shared libraries" "${ARAYEHSAZ_SHARED_LIBS}")
+endif ()
+
+# set a default build type.
+set(DEFAULT_BUILD_TYPE "Release")
 
 # set compiler flags.
 if (
@@ -59,9 +68,6 @@ endif ()
 # Setup build type
 ########################################################################
 
-# set a default build type.
-set(DEFAULT_BUILD_TYPE "Release")
-
 # select the release build type by default to get optimization flags
 if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
     message(
@@ -88,43 +94,23 @@ if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
     )
 endif (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 
-
 ########################################################################
-# Setup source, include and install paths
-########################################################################
-
-# include install default variables.
-include(GNUInstallDirs)
-
-# set path to header files.
-set(
-        INCLUDE_DIR
-        ${PROJECT_SOURCE_DIR}/include
-)
-
-# set the directory path to install headers in target system.
-# would be libdir/arayehsaz.
-set(
-        INSTALL_INCLUDE_DIR
-        ${CMAKE_INSTALL_INCLUDEDIR}/${CMAKE_PROJECT_NAME}
-)
-
-########################################################################
-# Setup project configuration file
+# Setup tests
 ########################################################################
 
-# install configure file, allows third-party applications to easily import arayehsaz.
-configure_file(
-        arayehsaz.pc.in
-        arayehsaz.pc
-        @ONLY
-)
-install(
-        FILES
-        ${CMAKE_BINARY_DIR}/arayehsaz.pc
-        DESTINATION
-        ${CMAKE_INSTALL_DATAROOTDIR}
-)
+if (ENABLE_TESTING)
+    include (CTest)
+    enable_testing()
+    add_subdirectory(test)
+endif (ENABLE_TESTING)
+
+########################################################################
+# Setup documentation
+########################################################################
+
+if(BUILD_DOCUMENTATION)
+    add_subdirectory(document)
+endif()
 
 ########################################################################
 # Add subdirectories
@@ -134,68 +120,9 @@ install(
 add_subdirectory(include)
 add_subdirectory(source)
 
-########################################################################
-# Setup tests
-########################################################################
-
-# set a default test build option.
-option(BUILD_TESTS "Build Tests" ON)
-
-if (BUILD_TESTS)
-    add_subdirectory(test)
-endif (BUILD_TESTS)
-
-########################################################################
-# Setup documentation
-########################################################################
-if (CMAKE_BUILD_TYPE MATCHES "^[Rr]elease")
-    # build the documents only in release builds.
-
-    # check if Doxygen is installed.
-    find_package(Doxygen)
-    if (DOXYGEN_FOUND)
-        # set input and output files.
-        set(
-                DOXYGEN_IN
-                ${PROJECT_SOURCE_DIR}/document/Doxyfile.in
-        )
-        set(
-                DOXYGEN_OUT
-                ${CMAKE_BINARY_DIR}/document/Doxyfile
-        )
-        # request to configure the file.
-        configure_file(
-                ${DOXYGEN_IN}
-                ${DOXYGEN_OUT}
-                @ONLY
-        )
-
-        # note the option ALL which allows to build the docs together with the application.
-        message("Doxygen build started")
-        add_custom_target(
-                document
-                ALL
-                COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
-                WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-                COMMENT "Generating API documentation with Doxygen."
-                VERBATIM
-        )
-    else (DOXYGEN_FOUND)
-        message("Doxygen need to be installed to generate the doxygen documentation.")
-    endif (DOXYGEN_FOUND)
-endif (CMAKE_BUILD_TYPE MATCHES "^[Rr]elease")
-
-########################################################################
-# Setup uninstall procedure
-########################################################################
-configure_file(
-        ${PROJECT_SOURCE_DIR}/cmake/cmake_uninstall.cmake.in
-        ${CMAKE_BINARY_DIR}/cmake_uninstall.cmake
-        IMMEDIATE
-        @ONLY
-)
-
-add_custom_target(
-        uninstall
-        ${CMAKE_COMMAND} -P ${CMAKE_BINARY_DIR}/cmake_uninstall.cmake
-)
+# if Arayehsaz is the main project, include packaging directory.
+string(COMPARE EQUAL "${CMAKE_SOURCE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}" is_top_level)
+option(ARAYEHSAZ_INCLUDE_PACKAGING "Include packaging rules for arayehsaz" "${is_top_level}")
+if (ARAYEHSAZ_INCLUDE_PACKAGING)
+    add_subdirectory(package)
+endif ()

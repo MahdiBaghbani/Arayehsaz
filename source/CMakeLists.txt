@@ -13,25 +13,15 @@ set(
 
 # create object library as base.
 add_library(
-        arayehsaz_object
-        OBJECT
+        arayehsaz
         ${sources}
 )
 
-# shared libraries need PIC (POSITION_INDEPENDENT_CODE).
-set_property(TARGET arayehsaz_object PROPERTY POSITION_INDEPENDENT_CODE 1)
-
-# add shared and static libraries from the base object library.
-add_library(arayehsaz SHARED $<TARGET_OBJECTS:arayehsaz_object>)
-add_library(arayehsaz_static STATIC $<TARGET_OBJECTS:arayehsaz_object>)
-
-# set library version, .so symlink version and public header.
-set_target_properties(
+# add alias.
+add_library(
+        arayehsaz::arayehsaz
+        ALIAS
         arayehsaz
-        PROPERTIES
-        VERSION ${PROJECT_VERSION}
-        SOVERSION ${PROJECT_VERSION_MAJOR}
-        PUBLIC_HEADER ${INCLUDE_DIR}/arayeh.h
 )
 
 # set library version, .so symlink version and public header.
@@ -40,14 +30,27 @@ set_target_properties(
         PROPERTIES
         VERSION ${PROJECT_VERSION}
         SOVERSION ${PROJECT_VERSION_MAJOR}
-        PUBLIC_HEADER ${INCLUDE_DIR}/arayeh.h
+        PUBLIC_HEADER ${PROJECT_SOURCE_DIR}/include/arayeh.h
 )
 
-# install library.
-install(
-        TARGETS arayehsaz
-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        CONFIGURATIONS Release
-        # INSTALL_INCLUDE_DIR is defined in root cmake file.
-        PUBLIC_HEADER DESTINATION ${INSTALL_INCLUDE_DIR}
+target_include_directories(
+        arayehsaz
+        PUBLIC
+        "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>"
+)
+
+target_compile_features(
+        arayehsaz
+        PUBLIC
+        c_std_11
+)
+
+target_compile_definitions(
+        arayehsaz
+        PUBLIC "$<$<NOT:$<BOOL:${BUILD_SHARED_LIBS}>>:arayehsaz_STATIC_DEFINE>"
+)
+
+target_include_directories(
+        arayehsaz
+        PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>"
 )
