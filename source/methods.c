@@ -80,7 +80,6 @@ int _resize_memory(arayeh *self, size_t new_size)
     int state;
 
     // initialize variables for allocating memory.
-    arayeh_map *map_pointer = NULL;
     arayeh_types arayeh_pointer;
 
     // this function identifies the right pointer for arayeh type and sets it to
@@ -94,23 +93,23 @@ int _resize_memory(arayeh *self, size_t new_size)
     }
 
     // reallocate memory to map and arayeh.
-    int map_state    = malloc_arayeh_map(&map_pointer, new_size);
+    // NOTE: in case of failure on each of these reallocation, the current state of arayeh
+    // is preserved, no pointers would be altered! thanks god we're safe and only see
+    // error message.
+    int map_state    = realloc_arayeh_map(self, new_size);
     int arayeh_state = private_methods->realloc_arayeh(self, &arayeh_pointer, new_size);
 
-    // check if memory re-allocated or not.
+    // check if memory reallocated or not.
     if (arayeh_state == AA_ARAYEH_FAILURE || map_state == AA_ARAYEH_FAILURE) {
-        // free map and arayeh pointers.
-        free(map_pointer);
-        private_methods->free_arayeh(self);
-
         // write to stderr and return error code.
         WARN_REALLOC("_resize_memory()", debug);
         return AA_ARAYEH_REALLOC_DENIED;
     }
 
-    // set pointers to memory locations.
+    // everything is OK, we are clear to alter the main arayeh parameters.
+
+    // set arayeh new memory pointers to the main arayeh pointer.
     private_methods->set_memory_pointer(self, &arayeh_pointer);
-    private_properties->map = map_pointer;
 
     // update arayeh parameters.
     private_properties->size = new_size;
@@ -213,8 +212,9 @@ int _free_memory(arayeh **self)
     private_methods->free_arayeh(*self);
 
     // free map array pointer and nullify the pointer.
-    free((*self)->_private_properties.map);
+    // free((*self)->_private_properties.map);
     // free(private_properties->map);
+    free(private_properties->map);
     private_properties->map = NULL;
 
     // free arayeh method specific size settings.

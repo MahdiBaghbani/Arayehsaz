@@ -119,7 +119,7 @@ int malloc_arayeh_map(arayeh_map **map_pointer, size_t initial_size);
  * @return a code that indicates successful operation or an error code defined in
  * arayeh.h .
  */
-int realloc_arayeh_map(arayeh *self, arayeh_map **map_pointer, size_t new_size);
+int realloc_arayeh_map(arayeh *self, size_t new_size);
 
 /**
  * @private

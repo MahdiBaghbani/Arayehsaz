@@ -10,7 +10,6 @@
  * @details    This source contains internal Arayeh functions.
  */
 
-
 /*
  * Azadeh Afzar - Arayehsaz (AA-A).
  *
@@ -185,7 +184,6 @@ int malloc_arayeh_map(arayeh_map **map_pointer, size_t initial_size)
     *map_pointer     = (arayeh_map *) malloc(sizeof **map_pointer * map_bytes);
 
     if (*map_pointer == NULL) {
-        free(*map_pointer);
         state = AA_ARAYEH_FAILURE;
     } else {
         state = AA_ARAYEH_SUCCESS;
@@ -194,21 +192,32 @@ int malloc_arayeh_map(arayeh_map **map_pointer, size_t initial_size)
     return state;
 }
 
-int realloc_arayeh_map(arayeh *self, arayeh_map **map_pointer, size_t new_size)
+int realloc_arayeh_map(arayeh *self, size_t new_size)
 {
     // track error state in the function.
     int state;
 
+    // can we shorten this name? I regret my naming convention :)
+    arayeh_map *map_pointer = self->_private_properties.map;
+
     // map size should be in bytes, this line calculates the least amount of bytes needed
     // to fit new_size bits in it.
     size_t map_bytes = new_size % 8 == 0 ? new_size / 8 : new_size / 8 + 1;
-    *map_pointer = (arayeh_map *) realloc(map_pointer, sizeof **map_pointer * map_bytes);
 
-    if (*map_pointer == NULL) {
-        free(*map_pointer);
+    // first create a new place holder for **map_pointer because It is not guaranteed
+    // that pointer returned by the realloc will be same as old pointer passed to
+    // realloc and one should not depend on it.
+    arayeh_map *new_pointer = NULL;
+    new_pointer = (arayeh_map *) realloc(map_pointer, sizeof *map_pointer * map_bytes);
+
+    // check for a possible null pointer in case of reallocation failure.
+    if (new_pointer == NULL) {
         state = AA_ARAYEH_FAILURE;
     } else {
         state = AA_ARAYEH_SUCCESS;
+        // assign new pointer back to the arayeh map only if its NOT null !!!
+        // yeah you have no idea how much pain this block has caused to my mental health.
+        self->_private_properties.map = new_pointer;
     }
 
     return state;
