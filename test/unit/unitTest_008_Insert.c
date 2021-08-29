@@ -72,7 +72,7 @@ void test_insert(void)
 
     // assert element is inserted in index 0.
     TEST_ASSERT_EQUAL_INT(element, private_properties->array.int_pointer[0]);
-    TEST_ASSERT_EQUAL_CHAR(1, is_arayeh_cell_filled(test_case, 0));
+    TEST_ASSERT_EQUAL_CHAR(1, is_arayeh_map_filled(test_case, 0));
     TEST_ASSERT_EQUAL_INT(1, private_properties->next);
 
     // insert element.
@@ -83,7 +83,7 @@ void test_insert(void)
 
     // assert element is inserted in index 0.
     TEST_ASSERT_EQUAL_INT(element, private_properties->array.int_pointer[5]);
-    TEST_ASSERT_EQUAL_CHAR(1, is_arayeh_cell_filled(test_case, 5));
+    TEST_ASSERT_EQUAL_CHAR(1, is_arayeh_map_filled(test_case, 5));
     TEST_ASSERT_EQUAL_INT(1, private_properties->next);
 
     // free arayeh.
@@ -121,7 +121,7 @@ void test_default_settings_insert_extends_size(void)
     // element insertion.
     TEST_ASSERT_GREATER_THAN_size_t(index, private_properties->size);
     TEST_ASSERT_EQUAL_INT(element, private_properties->array.int_pointer[index]);
-    TEST_ASSERT_EQUAL_CHAR(1, is_arayeh_cell_filled(test_case, index));
+    TEST_ASSERT_EQUAL_CHAR(1, is_arayeh_map_filled(test_case, index));
     TEST_ASSERT_EQUAL_INT(0, private_properties->next);
 
     // free arayeh.
@@ -167,7 +167,7 @@ void test_general_size_extension_OFF(void)
 
     // ensure arayeh is not affected.
     for (size_t i = 0; i < arayeh_size; i++) {
-        TEST_ASSERT_EQUAL_CHAR(0, is_arayeh_cell_filled(test_case, i));
+        TEST_ASSERT_EQUAL_CHAR(0, is_arayeh_map_filled(test_case, i));
     }
 
     // test a negative index number.
@@ -178,7 +178,7 @@ void test_general_size_extension_OFF(void)
 
     // ensure arayeh is not affected.
     for (size_t i = 0; i < arayeh_size; i++) {
-        TEST_ASSERT_EQUAL_CHAR(0, is_arayeh_cell_filled(test_case, i));
+        TEST_ASSERT_EQUAL_CHAR(0, is_arayeh_map_filled(test_case, i));
     }
 
     // free arayeh.
@@ -225,7 +225,7 @@ void test_general_size_extension_MANUAL(void)
     // element insertion.
     TEST_ASSERT_GREATER_THAN_size_t(index, private_properties->size);
     TEST_ASSERT_EQUAL_INT(element, private_properties->array.int_pointer[index]);
-    TEST_ASSERT_EQUAL_CHAR(1, is_arayeh_cell_filled(test_case, index));
+    TEST_ASSERT_EQUAL_CHAR(1, is_arayeh_map_filled(test_case, index));
     TEST_ASSERT_EQUAL_INT(0, private_properties->next);
 
     // free arayeh.
@@ -274,7 +274,7 @@ void test_general_ON_method_specific_insert_extension_OFF(void)
     // element insertion.
     TEST_ASSERT_GREATER_THAN_size_t(index, private_properties->size);
     TEST_ASSERT_EQUAL_INT(element, private_properties->array.int_pointer[index]);
-    TEST_ASSERT_EQUAL_CHAR(1, is_arayeh_cell_filled(test_case, index));
+    TEST_ASSERT_EQUAL_CHAR(1, is_arayeh_map_filled(test_case, index));
     TEST_ASSERT_EQUAL_INT(0, private_properties->next);
 
     // free arayeh.
@@ -331,7 +331,7 @@ void test_general_MANUAL_method_specific_insert_extension_OFF(void)
 
     // ensure arayeh is not affected.
     for (size_t i = 0; i < arayeh_size; i++) {
-        TEST_ASSERT_EQUAL_CHAR(0, is_arayeh_cell_filled(test_case, i));
+        TEST_ASSERT_EQUAL_CHAR(0, is_arayeh_map_filled(test_case, i));
     }
 
     // test a negative index number.
@@ -342,7 +342,7 @@ void test_general_MANUAL_method_specific_insert_extension_OFF(void)
 
     // ensure arayeh is not affected.
     for (size_t i = 0; i < arayeh_size; i++) {
-        TEST_ASSERT_EQUAL_CHAR(0, is_arayeh_cell_filled(test_case, i));
+        TEST_ASSERT_EQUAL_CHAR(0, is_arayeh_map_filled(test_case, i));
     }
 
     // free arayeh.

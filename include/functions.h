@@ -64,6 +64,9 @@
 #endif
 /** @endcond */
 
+#define ADD 1
+#define SUB 2
+
 /** @cond DO_NOT_DOCUMENT */
 __BEGIN_DECLS
 /** @endcond */
@@ -106,7 +109,7 @@ void set_private_methods(arayeh *self, size_t type);
  * @return a code that indicates successful operation or an error code defined in
  * arayeh.h .
  */
-int malloc_arayeh_map(arayeh_map **map_pointer, size_t initial_size);
+int arayeh_map_malloc(arayeh_map **map_pointer, size_t initial_size);
 
 /**
  * @private
@@ -119,7 +122,7 @@ int malloc_arayeh_map(arayeh_map **map_pointer, size_t initial_size);
  * @return a code that indicates successful operation or an error code defined in
  * arayeh.h .
  */
-int realloc_arayeh_map(arayeh *self, size_t new_size);
+int arayeh_map_realloc(arayeh *self, size_t new_size);
 
 /**
  * @private
@@ -130,7 +133,7 @@ int realloc_arayeh_map(arayeh *self, size_t new_size);
  *
  * @return if cell is filled returns 1 and if not returns 0.
  */
-int is_arayeh_cell_filled(arayeh *self, size_t index);
+int is_arayeh_map_filled(arayeh *self, size_t index);
 
 /**
  * @private
@@ -141,19 +144,78 @@ int is_arayeh_cell_filled(arayeh *self, size_t index);
  *
  * @return if cell is empty returns 1 and if not returns 0.
  */
-int is_arayeh_cell_empty(arayeh *self, size_t index);
+int is_arayeh_map_empty(arayeh *self, size_t index);
 
-void insert_to_arayeh_map(arayeh *self, size_t index, unsigned char value);
+/**
+ * @private
+ * @brief this function inserts data into arayeh map.
+ *
+ * @param[in] self              pointer to the arayeh object.
+ * @param[in] index             index of the map cell for insertion.
+ * @param[in] value             data to be inserted.
+ *
+ * @return if cell is empty returns 1 and if not returns 0.
+ */
+void arayeh_map_insert(arayeh *self, size_t index, unsigned char value);
 
+/**
+ * @private
+ * @brief this function flips bit at index.
+ *
+ * @param[in] self              pointer to the arayeh object.
+ * @param[in] index             index of the map cell for flipping.
+ *
+ */
+void arayeh_map_flip(arayeh *self, size_t index);
+
+/**
+ * @private
+ * @brief this function set a cell state in arayeh map to 1.
+ *
+ * @param[in] self              pointer to the arayeh object.
+ * @param[in] index             index of the map cell for changing.
+ *
+ */
 void arayeh_map_cell_state_change_filled(arayeh *self, size_t index);
 
+/**
+ * @private
+ * @brief this function set a cell state in arayeh map to 0.
+ *
+ * @param[in] self              pointer to the arayeh object.
+ * @param[in] index             index of the map cell for changing.
+ *
+ */
 void arayeh_map_cell_state_change_empty(arayeh *self, size_t index);
 
+/**
+ * @private
+ * @brief this function set all cell states in arayeh map to 1.
+ *
+ * @param[in] self              pointer to the arayeh object.
+ *
+ */
 void arayeh_map_cell_state_set_all_filled(arayeh *self);
 
+/**
+ * @private
+ * @brief this function set all cell states in arayeh map to 0.
+ *
+ * @param[in] self              pointer to the arayeh object.
+ *
+ */
 void arayeh_map_cell_state_set_all_empty(arayeh *self);
 
-void update_used_counter(arayeh *self, size_t change_size_number);
+/**
+ * @private
+ * @brief this function updates used value.
+ *
+ * @param[in] self                  pointer to the arayeh object.
+ * @param[in] operator              type of the operator to be used. ex: ADD, SUB, ...
+ * @param[in] change_size_number    size of the change.
+ *
+ */
+void update_used_counter(arayeh *self, uint8_t operator, size_t change_size_number);
 
 /** @cond DO_NOT_DOCUMENT */
 __END_DECLS

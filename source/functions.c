@@ -45,6 +45,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
+#include <stdint.h>
+
 #include "../include/functions.h"
 
 #include "../include/algorithms.h"
@@ -173,7 +175,7 @@ void set_private_methods(arayeh *self, size_t type)
     }
 }
 
-int malloc_arayeh_map(arayeh_map **map_pointer, size_t initial_size)
+int arayeh_map_malloc(arayeh_map **map_pointer, size_t initial_size)
 {
     // track error state in the function.
     int state;
@@ -192,7 +194,7 @@ int malloc_arayeh_map(arayeh_map **map_pointer, size_t initial_size)
     return state;
 }
 
-int realloc_arayeh_map(arayeh *self, size_t new_size)
+int arayeh_map_realloc(arayeh *self, size_t new_size)
 {
     // track error state in the function.
     int state;
@@ -223,7 +225,43 @@ int realloc_arayeh_map(arayeh *self, size_t new_size)
     return state;
 }
 
-int is_arayeh_cell_filled(arayeh *self, size_t index)
+int is_arayeh_map_filled(arayeh *self, size_t index)
+{
+    // these two lines would find the map byte and the bit in that byte.
+    // example: you have an 36 byte map which has 288 bits in total and the index is 46
+    // which means you want the 46th bit, so in order to to access it you should first
+    // locate the byte that 46th is in it by dividing the index by 8:
+    // 46 / 8 = 5.75 , so the 46th bit is in the 5th byte, now you should find the index
+    // of 46th bit in the 5th byte, for this you have to find index mod 8:
+    // 46 mod 8 = 6
+    // so now you know that the 46th bit is in 5th byte at 6th bit! target located :)
+    size_t byte_select = index / 8;
+    size_t bit_select  = index % 8;
+
+    // get the pointer to the map.
+    arayeh_map *map_pointer = self->_private_properties.map;
+
+    // select the byte.
+    arayeh_map map_byte = *(map_pointer + byte_select);
+
+    // select the bit in the byte, by ANDing value of 2^bit_select with map_byte
+    // we extract an 8 bit of data with 7 zeros and the bit_select itself, then we
+    // shift the 8 bit to the right at size of bit_select, so the value of bit select
+    // is in the Least Significant Bit (LSB).
+    // example:
+    // map_byte = 0b10100110
+    // bit_select = 6
+    // 0b10100110 AND 0b00100000 = 0b00100000
+    // 0b00100000 >> 6 = 0b00000001
+    return (map_byte & (1 << bit_select)) >> bit_select;
+}
+
+int is_arayeh_map_empty(arayeh *self, size_t index)
+{
+    return !is_arayeh_map_filled(self, index);
+}
+
+void arayeh_map_insert(arayeh *self, size_t index, uint8_t value)
 {
     // these two lines would find the map byte and the bit in that byte.
     // example: you have an 36 byte map which has 288 bits in total and the index is 46
@@ -242,95 +280,53 @@ int is_arayeh_cell_filled(arayeh *self, size_t index)
     // select the byte.
     arayeh_map *map_byte = (map_pointer + byte_select);
 
-    // select bit in the byte.
-    switch (bit_select) {
-    case 0:
-        return map_byte->bit_0;
-    case 1:
-        return map_byte->bit_1;
-    case 2:
-        return map_byte->bit_2;
-    case 3:
-        return map_byte->bit_3;
-    case 4:
-        return map_byte->bit_4;
-    case 5:
-        return map_byte->bit_5;
-    case 6:
-        return map_byte->bit_6;
-    case 7:
-        return map_byte->bit_7;
-    default:
-        FATAL_OVERFLOW("is_arayeh_cell_filled", AA_ARAYEH_TRUE);
-    }
-}
-
-int is_arayeh_cell_empty(arayeh *self, size_t index)
-{
-    return !is_arayeh_cell_filled(self, index);
-}
-
-void insert_to_arayeh_map(arayeh *self, size_t index, unsigned char value)
-{
-    // these two lines would find the map byte and the bit in that byte.
-    // example: you have an 36 byte map which has 288 bits in total and the index is 46
-    // which means you want the 46th bit, so in order to to access it you should first
-    // locate the byte that 46th is in it by dividing the index by 8:
-    // 46 / 8 = 5.75 , so the 46th bit is in the 5th byte, now you should find the index
-    // of 46th bit in the 5th byte, for this you have to find index mod 8:
-    // 46 mod 8 = 6
-    // so now you know that the 46th bit is in 5th byte at 6th bit! target located :)
-    size_t byte_select = index / 8;
-    size_t bit_select  = index % 8;
-
-    // get the pointer to the map.
-    arayeh_map *map_pointer = self->_private_properties.map;
-
-    // select the byte.
-    arayeh_map *map_byte = (map_pointer + byte_select);
-
-    // check value to see if it can be ft into 1 bit, if not, change it to 1.
+    // check value to see if it can be fit into 1 bit, if not, change it to 1.
     value = (value > 1) ? 1 : value;
 
-    // select bit in the byte.
-    switch (bit_select) {
-    case 0:
-        map_byte->bit_0 = value;
-        break;
-    case 1:
-        map_byte->bit_1 = value;
-        break;
-    case 2:
-        map_byte->bit_2 = value;
-        break;
-    case 3:
-        map_byte->bit_3 = value;
-        break;
-    case 4:
-        map_byte->bit_4 = value;
-        break;
-    case 5:
-        map_byte->bit_5 = value;
-        break;
-    case 6:
-        map_byte->bit_6 = value;
-        break;
-    case 7:
-        map_byte->bit_7 = value;
-        break;
-    default:
-        FATAL_OVERFLOW("insert_to_arayeh_map", AA_ARAYEH_TRUE);
+    // set a bit by ORing the map_byte with 2^bit_select
+    // or unset a bit by ANDing map_byte to NOT of the 2^bit_select
+    // if you don't understand this, here is why you should have paid attention to your
+    // university instructor.
+    if (value == 1) {
+        *map_byte |= (1 << bit_select);
+    } else {
+        *map_byte &= ~(1 << bit_select);
     }
+}
+
+void arayeh_map_flip(arayeh *self, size_t index)
+{
+    // these two lines would find the map byte and the bit in that byte.
+    // example: you have an 36 byte map which has 288 bits in total and the index is 46
+    // which means you want the 46th bit, so in order to to access it you should first
+    // locate the byte that 46th is in it by dividing the index by 8:
+    // 46 / 8 = 5.75 , so the 46th bit is in the 5th byte, now you should find the index
+    // of 46th bit in the 5th byte, for this you have to find index mod 8:
+    // 46 mod 8 = 6
+    // so now you know that the 46th bit is in 5th byte at 6th bit! target located :)
+    size_t byte_select = index / 8;
+    size_t bit_select  = index % 8;
+
+    // get the pointer to the map.
+    arayeh_map *map_pointer = self->_private_properties.map;
+
+    // select the byte.
+    arayeh_map *map_byte = (map_pointer + byte_select);
+
+    // flip a bit by XOR it with 2^bit_select.
+    // if you don't understand this, here is why you should have paid attention to your
+    // university instructor.
+    *map_byte ^= (1 << bit_select);
 }
 
 void arayeh_map_cell_state_change_filled(arayeh *self, size_t index)
 {
-    insert_to_arayeh_map(self, index, 1);
+    arayeh_map_insert(self, index, 1);
 }
 
 void arayeh_map_cell_state_change_empty(arayeh *self, size_t index)
 {
-    insert_to_arayeh_map(self, index, 0);
+    arayeh_map_insert(self, index, 0);
 }
 
 void arayeh_map_cell_state_set_all_filled(arayeh *self)
@@ -347,9 +343,13 @@ void arayeh_map_cell_state_set_all_empty(arayeh *self)
     }
 }
 
-void update_used_counter(arayeh *self, size_t change_size_number)
+void update_used_counter(arayeh *self, uint8_t operator, size_t change_size_number)
 {
     // update both public and private "used" counter.
-    self->_private_properties.used += change_size_number;
+    if(operator == ADD) {
+        self->_private_properties.used += change_size_number;
+    } else {
+        self->_private_properties.used -= change_size_number;
+    }
     self->used = self->_private_properties.used;
 }

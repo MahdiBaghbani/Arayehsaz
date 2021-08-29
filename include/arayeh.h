@@ -52,6 +52,7 @@
 #include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 
 #ifndef SIZE_MAX
 #    ifdef __SIZE_MAX__
@@ -112,9 +113,9 @@
  * @{
  */
 
-#define AA_ARAYEH_OFF    '0' /**< @brief switch is off. */
-#define AA_ARAYEH_ON     '1' /**< @brief switch is on. */
-#define AA_ARAYEH_MANUAL '3' /**< @brief switch is set to manual. */
+#define AA_ARAYEH_OFF    0 /**< @brief switch is off. */
+#define AA_ARAYEH_ON     1 /**< @brief switch is on. */
+#define AA_ARAYEH_MANUAL 3 /**< @brief switch is set to manual. */
 
 /** @} */
 
@@ -217,42 +218,17 @@ typedef struct {
 } arayeh_settings;
 
 /**
- * @brief A type structure to hold arayeh map.
+ * @brief A type def to hold arayeh map.
  *
- * This structure uses bitfields of size 1 bit in pack of 8 bits (1 byte)
+ * This type uses bitfields of size 1 bit in pack of 8 bits (1 byte)
  * to store the state of each cell in an arayeh as defined below:
  * bit 1: means cell is filled with data.
  * bit 0: means cell is empty.
  *
- * This method is used to reduce the size of map to 1/8 as instead of using whole char's
- * 8 bits to store state of only 1 cell, we can now store state of 8 cells.
+ * This method is used to reduce the size of map to 1/8 as instead of using whole 1 byte
+ * (8 bits) to store a boolean state of only 1 cell, we can now store state of 8 cells.
  */
-typedef struct {
-    /** @brief holds 1 bit of type char. */
-    unsigned char bit_0 : 1;
-
-    /** @brief holds 1 bit of type char. */
-    unsigned char bit_1 : 1;
-
-    /** @brief holds 1 bit of type char. */
-    unsigned char bit_2 : 1;
-
-    /** @brief holds 1 bit of type char. */
-    unsigned char bit_3 : 1;
-
-    /** @brief holds 1 bit of type char. */
-    unsigned char bit_4 : 1;
-
-    /** @brief holds 1 bit of type char. */
-    unsigned char bit_5 : 1;
-
-    /** @brief holds 1 bit of type char. */
-    unsigned char bit_6 : 1;
-
-    /** @brief holds 1 bit of type char. */
-    unsigned char bit_7 : 1;
-
-} arayeh_map;
+typedef uint8_t arayeh_map;
 
 /**
  * @brief Arayeh main data structure with public and private members.

@@ -101,7 +101,7 @@ void update_next_index(arayeh *self)
     struct private_properties *private_properties = &self->_private_properties;
 
     while ((private_properties->next < private_properties->size) &&
-           is_arayeh_cell_filled(self, private_properties->next)) {
+           is_arayeh_map_filled(self, private_properties->next)) {
         private_properties->next++;
     }
 

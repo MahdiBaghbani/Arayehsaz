@@ -96,7 +96,7 @@ int _resize_memory(arayeh *self, size_t new_size)
     // NOTE: in case of failure on each of these reallocation, the current state of arayeh
     // is preserved, no pointers would be altered! thanks god we're safe and only see
     // error message.
-    int map_state    = realloc_arayeh_map(self, new_size);
+    int map_state    = arayeh_map_realloc(self, new_size);
     int arayeh_state = private_methods->realloc_arayeh(self, &arayeh_pointer, new_size);
 
     // check if memory reallocated or not.
@@ -382,7 +382,7 @@ int _add_to_arayeh(arayeh *self, void *element)
     arayeh_map_cell_state_change_filled(self, private_properties->next);
 
     // update both public and private "used" counter.
-    update_used_counter(self, 1);
+    update_used_counter(self, ADD, 1);
 
     // update "next" pointer.
     update_next_index(self);
@@ -501,12 +501,12 @@ int _insert_to_arayeh(arayeh *self, size_t index, void *element)
 
         // update "map" if it isn't already counted for this index
         // and increase "used" counter.
-        if (is_arayeh_cell_empty(self, index)) {
+        if (is_arayeh_map_empty(self, index)) {
             // update map.
             arayeh_map_cell_state_change_filled(self, index);
 
             // update both public and private "used" counter.
-            update_used_counter(self, 1);
+            update_used_counter(self, ADD, 1);
         }
     }
 

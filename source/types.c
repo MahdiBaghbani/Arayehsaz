@@ -331,7 +331,7 @@ int _merge_arayeh_type_char(arayeh *self, size_t start_index, size_t step, araye
         insert_index = start_index + arayeh_index;
 
         // do not insert element to self if its source is empty.
-        if (is_arayeh_cell_empty(source, array_index)) {
+        if (is_arayeh_map_empty(source, array_index)) {
             // go to next loop cycle.
             continue;
         }
@@ -376,7 +376,7 @@ int _merge_arayeh_type_short_int(arayeh *self, size_t start_index, size_t step,
         insert_index = start_index + arayeh_index;
 
         // do not insert element to self if its source is empty.
-        if (is_arayeh_cell_empty(source, array_index)) {
+        if (is_arayeh_map_empty(source, array_index)) {
             // go to next loop cycle.
             continue;
         }
@@ -420,7 +420,7 @@ int _merge_arayeh_type_int(arayeh *self, size_t start_index, size_t step, arayeh
         insert_index = start_index + arayeh_index;
 
         // do not insert element to self if its source is empty.
-        if (is_arayeh_cell_empty(source, array_index)) {
+        if (is_arayeh_map_empty(source, array_index)) {
             // go to next loop cycle.
             continue;
         }
@@ -465,7 +465,7 @@ int _merge_arayeh_type_long_int(arayeh *self, size_t start_index, size_t step,
         insert_index = start_index + arayeh_index;
 
         // do not insert element to self if its source is empty.
-        if (is_arayeh_cell_empty(source, array_index)) {
+        if (is_arayeh_map_empty(source, array_index)) {
             // go to next loop cycle.
             continue;
         }
@@ -510,7 +510,7 @@ int _merge_arayeh_type_float(arayeh *self, size_t start_index, size_t step,
         insert_index = start_index + arayeh_index;
 
         // do not insert element if its empty.
-        if (is_arayeh_cell_empty(source, array_index)) {
+        if (is_arayeh_map_empty(source, array_index)) {
             // go to next loop cycle.
             continue;
         }
@@ -555,7 +555,7 @@ int _merge_arayeh_type_double(arayeh *self, size_t start_index, size_t step,
         insert_index = start_index + arayeh_index;
 
         // do not insert element to self if its source is empty.
-        if (is_arayeh_cell_empty(source, array_index)) {
+        if (is_arayeh_map_empty(source, array_index)) {
             // go to next loop cycle.
             continue;
         }

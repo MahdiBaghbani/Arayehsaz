@@ -72,7 +72,7 @@ void test_add(void)
 
     // assert element is added.
     TEST_ASSERT_EQUAL_INT(element, private_properties->array.int_pointer[0]);
-    TEST_ASSERT_EQUAL_CHAR(1, is_arayeh_cell_filled(test_case, 0));
+    TEST_ASSERT_EQUAL_CHAR(1, is_arayeh_map_filled(test_case, 0));
     TEST_ASSERT_EQUAL_INT(1, private_properties->next);
 
     // free arayeh.
@@ -107,7 +107,7 @@ void test_default_settings_add_extends_size(void)
         TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
         // assert elements are added.
         TEST_ASSERT_EQUAL_INT(element, private_properties->array.int_pointer[i]);
-        TEST_ASSERT_EQUAL_CHAR(1, is_arayeh_cell_filled(test_case, i));
+        TEST_ASSERT_EQUAL_CHAR(1, is_arayeh_map_filled(test_case, i));
     }
 
     // free arayeh.
@@ -151,7 +151,7 @@ void test_add_extends_size_alternate_growth_function(void)
         TEST_ASSERT_EQUAL_INT(AA_ARAYEH_SUCCESS, state);
         // assert elements are added.
         TEST_ASSERT_EQUAL_INT(element, private_properties->array.int_pointer[i]);
-        TEST_ASSERT_EQUAL_CHAR(1, is_arayeh_cell_filled(test_case, i));
+        TEST_ASSERT_EQUAL_CHAR(1, is_arayeh_map_filled(test_case, i));
     }
 
     // assert final size.

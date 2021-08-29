@@ -102,7 +102,7 @@ arayeh *Arayeh(size_t type, size_t initial_size)
     }
 
     // allocate memory to map and array.
-    int map_state    = malloc_arayeh_map(&map_pointer, initial_size);
+    int map_state    = arayeh_map_malloc(&map_pointer, initial_size);
     int arayeh_state = private_methods->malloc_arayeh(self, &array_pointer, initial_size);
 
     // check if memory allocated or not.
