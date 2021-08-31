@@ -22,7 +22,26 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED YES)
 set(CMAKE_C_EXTENSIONS OFF)
 
-# Build options.
+# set a default build type.
+set(DEFAULT_BUILD_TYPE "Release")
+
+# set compiler flags.
+set(CMAKE_C_FLAGS_DEBUG "-g")
+set(CMAKE_C_FLAGS_RELEASE "-O3")
+
+add_compile_options(
+        -Wall
+        -Wextra
+        -Werror
+        -Wsign-compare
+        -Wno-unused
+        -Wno-unused-parameter
+        -Wno-missing-field-initializers
+        -std=c11
+        -pedantic
+)
+
+# default build options.
 option(ENABLE_TESTING "Enable testing" ON)
 option(ENABLE_COMPACT_MAP "Enable compact arayeh map" OFF)
 option(BUILD_DOCUMENTATION "Build project documentation" ON)
@@ -30,39 +49,6 @@ option(BUILD_DOCUMENTATION "Build project documentation" ON)
 # enforce shared library format.
 if (DEFINED ARAYEHSAZ_SHARED_LIBS)
     set(BUILD_SHARED_LIBS "Build with shared libraries" "${ARAYEHSAZ_SHARED_LIBS}")
-endif ()
-
-# set a default build type.
-set(DEFAULT_BUILD_TYPE "Release")
-
-# set compiler flags.
-if (
-(
-        "${CMAKE_C_COMPILER_ID}" STREQUAL "GNU"
-        OR
-        "${CMAKE_C_COMPILER_ID}" MATCHES "Clang"
-)
-        AND NOT
-        WIN32
-)
-    add_compile_options(
-            -Wall
-            -Wextra
-            -Werror
-            -Wsign-compare
-            -Wno-unused
-            -Wno-unused-parameter
-            -Wno-missing-field-initializers
-            -std=c11
-            -pedantic
-    )
-endif ()
-
-if ("${CMAKE_C_COMPILER_ID}" MATCHES "Clang")
-    # make sure we don't accidentally copy more than an int
-    add_compile_options(
-            -Wlarge-by-value-copy=8
-    )
 endif ()
 
 ########################################################################
@@ -100,7 +86,7 @@ endif (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 ########################################################################
 
 if (ENABLE_TESTING)
-    include (CTest)
+    include(CTest)
     enable_testing()
     add_subdirectory(test)
 endif (ENABLE_TESTING)
@@ -109,9 +95,9 @@ endif (ENABLE_TESTING)
 # Setup documentation
 ########################################################################
 
-if(BUILD_DOCUMENTATION)
+if (BUILD_DOCUMENTATION)
     add_subdirectory(document)
-endif()
+endif ()
 
 ########################################################################
 # Add subdirectories
