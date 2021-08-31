@@ -50,6 +50,7 @@
 #include "../include/algorithms.h"
 #include "../include/fatal.h"
 #include "../include/functions.h"
+#include "../include/types.h"
 
 int _resize_memory(arayeh *self, size_t new_size)
 {
@@ -536,6 +537,7 @@ int _fill_arayeh(arayeh *self, size_t start_index, size_t step, size_t end_index
      */
 
     // shorten names for god's sake.
+    struct private_methods *private_methods       = &self->_private_methods;
     struct private_properties *private_properties = &self->_private_properties;
 
     // shorten setting names.
@@ -621,11 +623,16 @@ int _fill_arayeh(arayeh *self, size_t start_index, size_t step, size_t end_index
 
     // fill the arayeh using a sequence of insert method.
     for (size_t index = start_index; index < end_index; index += step) {
-        state = (self->insert)(self, index, element);
-        if (state != AA_ARAYEH_SUCCESS) {
-            break;
+        private_methods->add_to_arayeh(self, index, element);
+
+        if (is_arayeh_map_empty(self, index)) {
+            arayeh_map_cell_state_change_filled(self, index);
+            update_used_counter(self, ADD, 1);
         }
     }
+
+    // update "next" pointer.
+    update_next_index(self);
 
     // return error state code.
     return state;
