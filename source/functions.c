@@ -180,10 +180,14 @@ int arayeh_map_malloc(arayeh_map **map_pointer, size_t initial_size)
     // track error state in the function.
     int state;
 
+#ifdef ARAYEH_COMPACT_MAP
     // map size should be in bytes, this line calculates the least amount of bytes needed
     // to fit initial_size bits in it.
     size_t map_bytes = initial_size % 8 == 0 ? initial_size / 8 : initial_size / 8 + 1;
     *map_pointer     = (arayeh_map *) malloc(sizeof **map_pointer * map_bytes);
+#else
+    *map_pointer            = (arayeh_map *) malloc(sizeof **map_pointer * initial_size);
+#endif
 
     if (*map_pointer == NULL) {
         state = AA_ARAYEH_FAILURE;
@@ -202,6 +206,7 @@ int arayeh_map_realloc(arayeh *self, size_t new_size)
     // can we shorten this name? I regret my naming convention :)
     arayeh_map *map_pointer = self->_private_properties.map;
 
+#ifdef ARAYEH_COMPACT_MAP
     // map size should be in bytes, this line calculates the least amount of bytes needed
     // to fit new_size bits in it.
     size_t map_bytes = new_size % 8 == 0 ? new_size / 8 : new_size / 8 + 1;
@@ -211,6 +216,10 @@ int arayeh_map_realloc(arayeh *self, size_t new_size)
     // realloc and one should not depend on it.
     arayeh_map *new_pointer = NULL;
     new_pointer = (arayeh_map *) realloc(map_pointer, sizeof *map_pointer * map_bytes);
+#else
+    arayeh_map *new_pointer = NULL;
+    new_pointer = (arayeh_map *) realloc(map_pointer, sizeof *map_pointer * new_size);
+#endif
 
     // check for a possible null pointer in case of reallocation failure.
     if (new_pointer == NULL) {
@@ -227,6 +236,10 @@ int arayeh_map_realloc(arayeh *self, size_t new_size)
 
 int is_arayeh_map_filled(arayeh *self, size_t index)
 {
+    // get the pointer to the map.
+    arayeh_map *map_pointer = self->_private_properties.map;
+
+#ifdef ARAYEH_COMPACT_MAP
     // these two lines would find the map byte and the bit in that byte.
     // example: you have an 36 byte map which has 288 bits in total and the index is 46
     // which means you want the 46th bit, so in order to to access it you should first
@@ -237,9 +250,6 @@ int is_arayeh_map_filled(arayeh *self, size_t index)
     // so now you know that the 46th bit is in 5th byte at 6th bit! target located :)
     size_t byte_select = index / 8;
     size_t bit_select  = index % 8;
-
-    // get the pointer to the map.
-    arayeh_map *map_pointer = self->_private_properties.map;
 
     // select the byte.
     arayeh_map map_byte = *(map_pointer + byte_select);
@@ -254,6 +264,9 @@ int is_arayeh_map_filled(arayeh *self, size_t index)
     // 0b10100110 AND 0b00100000 = 0b00100000
     // 0b00100000 >> 6 = 0b00000001
     return (map_byte & (1 << bit_select)) >> bit_select;
+#else
+    return *(map_pointer + index);
+#endif
 }
 
 int is_arayeh_map_empty(arayeh *self, size_t index)
@@ -263,6 +276,13 @@ int is_arayeh_map_empty(arayeh *self, size_t index)
 
 void arayeh_map_insert(arayeh *self, size_t index, uint8_t value)
 {
+    // get the pointer to the map.
+    arayeh_map *map_pointer = self->_private_properties.map;
+
+    // check value to see if it can be fit into 1 bit, if not, change it to 1.
+    value = (value > 1) ? 1 : value;
+
+#ifdef ARAYEH_COMPACT_MAP
     // these two lines would find the map byte and the bit in that byte.
     // example: you have an 36 byte map which has 288 bits in total and the index is 46
     // which means you want the 46th bit, so in order to to access it you should first
@@ -274,14 +294,8 @@ void arayeh_map_insert(arayeh *self, size_t index, uint8_t value)
     size_t byte_select = index / 8;
     size_t bit_select  = index % 8;
 
-    // get the pointer to the map.
-    arayeh_map *map_pointer = self->_private_properties.map;
-
     // select the byte.
     arayeh_map *map_byte = (map_pointer + byte_select);
-
-    // check value to see if it can be fit into 1 bit, if not, change it to 1.
-    value = (value > 1) ? 1 : value;
 
     // set a bit by ORing the map_byte with 2^bit_select
     // or unset a bit by ANDing map_byte to NOT of the 2^bit_select
@@ -292,10 +306,17 @@ void arayeh_map_insert(arayeh *self, size_t index, uint8_t value)
     } else {
         *map_byte &= ~(1 << bit_select);
     }
+#else
+    *(map_pointer + index) = value;
+#endif
 }
 
 void arayeh_map_flip(arayeh *self, size_t index)
 {
+    // get the pointer to the map.
+    arayeh_map *map_pointer = self->_private_properties.map;
+
+#ifdef ARAYEH_COMPACT_MAP
     // these two lines would find the map byte and the bit in that byte.
     // example: you have an 36 byte map which has 288 bits in total and the index is 46
     // which means you want the 46th bit, so in order to to access it you should first
@@ -307,9 +328,6 @@ void arayeh_map_flip(arayeh *self, size_t index)
     size_t byte_select = index / 8;
     size_t bit_select  = index % 8;
 
-    // get the pointer to the map.
-    arayeh_map *map_pointer = self->_private_properties.map;
-
     // select the byte.
     arayeh_map *map_byte = (map_pointer + byte_select);
 
@@ -317,6 +335,9 @@ void arayeh_map_flip(arayeh *self, size_t index)
     // if you don't understand this, here is why you should have paid attention to your
     // university instructor.
     *map_byte ^= (1 << bit_select);
+#else
+    *(map_pointer + index) = !*(map_pointer + index);
+#endif
 }
 
 void arayeh_map_cell_state_change_filled(arayeh *self, size_t index)
@@ -346,7 +367,7 @@ void arayeh_map_cell_state_set_all_empty(arayeh *self)
 void update_used_counter(arayeh *self, uint8_t operator, size_t change_size_number)
 {
     // update both public and private "used" counter.
-    if(operator == ADD) {
+    if (operator== ADD) {
         self->_private_properties.used += change_size_number;
     } else {
         self->_private_properties.used -= change_size_number;
