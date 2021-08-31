@@ -11,7 +11,7 @@ set(
         algorithms.c
 )
 
-# create object library as base.
+# create library target.
 add_library(
         arayehsaz
         ${sources}
@@ -44,6 +44,14 @@ target_compile_features(
         PUBLIC
         c_std_11
 )
+
+if (ENABLE_COMPACT_MAP)
+    target_compile_definitions(
+            arayehsaz
+            PRIVATE
+            -DARAYEH_COMPACT_MAP
+    )
+endif (ENABLE_COMPACT_MAP)
 
 target_compile_definitions(
         arayehsaz

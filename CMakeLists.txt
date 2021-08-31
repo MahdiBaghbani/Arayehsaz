@@ -24,6 +24,7 @@ set(CMAKE_C_EXTENSIONS OFF)
 
 # Build options.
 option(ENABLE_TESTING "Enable testing" ON)
+option(ENABLE_COMPACT_MAP "Enable compact arayeh map" OFF)
 option(BUILD_DOCUMENTATION "Build project documentation" ON)
 
 # enforce shared library format.
