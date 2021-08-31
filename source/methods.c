@@ -212,24 +212,18 @@ int _free_memory(arayeh **self)
     private_methods->free_arayeh(*self);
 
     // free map array pointer and nullify the pointer.
-    // free((*self)->_private_properties.map);
-    // free(private_properties->map);
     free(private_properties->map);
     private_properties->map = NULL;
 
-    // free arayeh method specific size settings.
+    // free arayeh method specific size settings and nullify the pointer.
     free(private_properties->settings->method_size);
-
-    // nullify the pointer.
     private_properties->settings->method_size = NULL;
 
-    // free arayeh settings.
+    // free arayeh settings and nullify the pointer.
     free(private_properties->settings);
-
-    // nullify the pointer.
     private_properties->settings = NULL;
 
-    // free arayeh pointer and nullify the arayeh pointer.
+    // free arayeh pointer and nullify the pointer.
     free(*self);
     *self = NULL;
 
