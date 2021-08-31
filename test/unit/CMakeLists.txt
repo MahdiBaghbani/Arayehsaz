@@ -28,4 +28,4 @@ foreach (file ${files})
 
     add_test(NAME ${testCase} COMMAND ${testCase})
 
-endforeach ()
+endforeach (file ${files})
