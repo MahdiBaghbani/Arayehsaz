@@ -70,6 +70,17 @@ void test_filling(size_t arayeh_type, size_t arayeh_size)
     case_fill->free_arayeh(&case_fill);
 }
 
+void test_c_array(size_t arayeh_type, size_t arayeh_size)
+{
+    int *array = (int *) malloc(arayeh_size * sizeof *array);
+
+    for (size_t i = 0; i < arayeh_size; i++) {
+        *(array + i) = (int) i;
+    }
+
+    free(array);
+}
+
 void chronometer(void (*test)(size_t, size_t), size_t arayeh_type, size_t arayeh_size,
                  char *test_module, char *test_name)
 {
@@ -85,7 +96,7 @@ void chronometer(void (*test)(size_t, size_t), size_t arayeh_type, size_t arayeh
 int main(void)
 {
     size_t arayeh_type = AA_ARAYEH_TYPE_INT;
-    size_t arayeh_size = 1000000000;
+    size_t arayeh_size = 2000000000;
     char *test_module  = "Compact Map";
 
     chronometer(test_adding, arayeh_type, arayeh_size, test_module, "adding");
@@ -93,6 +104,8 @@ int main(void)
     chronometer(test_insertion, arayeh_type, arayeh_size, test_module, "insertion");
 
     chronometer(test_filling, arayeh_type, arayeh_size, test_module, "filling");
+
+    chronometer(test_c_array, arayeh_type,arayeh_size, test_module, "C array");
 
     return 0;
 }
