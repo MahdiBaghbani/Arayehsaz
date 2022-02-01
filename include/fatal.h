@@ -1,7 +1,7 @@
 /**
  * @file       include/fatal.h
  * @author     Mohammad Mahdi Baghbani Pourvahid
- * @date       2020-2021
+ * @date       2020-2022
  * @version    0.1.0
  * @copyright  GNU Affero General Public License.
  * @internal
@@ -17,8 +17,8 @@
  * Copyright (C) 2019 Christian W. Zuckschwerdt <zany@triq.net>
  *
  * Adopted by:
- * Copyright (C) 2020 - 2021 Azadeh Afzar.
- * Copyright (C) 2020 - 2021 Mohammad Mahdi Baghbani Pourvahid.
+ * Copyright (C) 2020 - 2022 Azadeh Afzar.
+ * Copyright (C) 2020 - 2022 Mohammad Mahdi Baghbani Pourvahid.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by

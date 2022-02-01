@@ -3,8 +3,8 @@
  * This file is a part of:
  * Azadeh Afzar - Arayehsaz (AA-A).
  *
- * Copyright (C) 2020 - 2021 Azadeh Afzar.
- * Copyright (C) 2020 - 2021 Mohammad Mahdi Baghbani Pourvahid.
+ * Copyright (C) 2020 - 2022 Azadeh Afzar.
+ * Copyright (C) 2020 - 2022 Mohammad Mahdi Baghbani Pourvahid.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
