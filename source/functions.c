@@ -226,8 +226,8 @@ int arayeh_map_realloc(arayeh *self, size_t new_size)
         state = AA_ARAYEH_FAILURE;
     } else {
         state = AA_ARAYEH_SUCCESS;
-        // assign new pointer back to the arayeh map only if its NOT null !!!
-        // yeah you have no idea how much pain this block has caused to my mental health.
+        // assign new pointer back to the arayeh map only if it's NOT null !!!
+        // yeah, you have no idea how much pain this block has caused to my mental health.
         self->_private_properties.map = new_pointer;
     }
 
