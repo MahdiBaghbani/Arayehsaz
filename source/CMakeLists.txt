@@ -51,7 +51,15 @@ if (ENABLE_COMPACT_MAP)
             PRIVATE
             -DARAYEH_COMPACT_MAP
     )
-endif (ENABLE_COMPACT_MAP)
+endif ()
+
+if (ENABLE_COMPACT_MAP)
+    target_compile_definitions(
+            arayehsaz
+            PRIVATE
+            -DARAYEH_MULTI_THREADING
+    )
+endif ()
 
 target_compile_definitions(
         arayehsaz

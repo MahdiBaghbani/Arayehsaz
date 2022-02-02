@@ -13,14 +13,34 @@ project(
         DESCRIPTION "Easy and almost safe dynamic arrays in C."
 )
 
+cmake_host_system_information(RESULT cpu_thread_count QUERY NUMBER_OF_LOGICAL_CORES)
+message(STATUS "CMake ${CMAKE_VERSION} using ${cpu_thread_count} threads")
+add_definitions(-DAA_ARAYEH_CPU_COUNT=${cpu_thread_count})
+
 ########################################################################
 # Setup compiler
 ########################################################################
 
 # set C standard.
-set(CMAKE_C_STANDARD 11)
-set(CMAKE_C_STANDARD_REQUIRED YES)
-set(CMAKE_C_EXTENSIONS OFF)
+if (UNIX AND NOT APPLE)
+    set(CMAKE_C_STANDARD 11)
+    set(CMAKE_C_STANDARD_REQUIRED YES)
+    set(CMAKE_C_EXTENSIONS OFF)
+elseif (WIN32)
+    if (MSVC)
+        set(CMAKE_C_STANDARD 11)
+        set(CMAKE_C_STANDARD_REQUIRED YES)
+        set(CMAKE_C_EXTENSIONS OFF)
+    elseif (MSYS)
+        set(CMAKE_C_STANDARD 11)
+        set(CMAKE_C_STANDARD_REQUIRED YES)
+        set(CMAKE_C_EXTENSIONS OFF)
+    elseif (MINGW)
+        set(CMAKE_C_STANDARD 11)
+        set(CMAKE_C_STANDARD_REQUIRED YES)
+        set(CMAKE_C_EXTENSIONS OFF)
+    endif ()
+endif ()
 
 # set a default build type.
 set(DEFAULT_BUILD_TYPE "Release")
@@ -42,9 +62,14 @@ add_compile_options(
 )
 
 # default build options.
-option(ENABLE_TESTING "Enable testing" ON)
 option(ENABLE_COMPACT_MAP "Enable compact arayeh map" OFF)
+option(ENABLE_MULTI_THREAD "Enable multi threading" OFF)
+message(STATUS "Compact Map: ${ENABLE_COMPACT_MAP}, Multi-Threading: ${ENABLE_MULTI_THREAD}")
+
+# other options.
+option(ENABLE_TESTING "Enable testing" ON)
 option(BUILD_DOCUMENTATION "Build project documentation" ON)
+message(STATUS "Testing: ${ENABLE_TESTING}, Documentation: ${BUILD_DOCUMENTATION}")
 
 # enforce shared library format.
 if (DEFINED ARAYEHSAZ_SHARED_LIBS)
@@ -79,7 +104,9 @@ if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
             "MinSizeRel"
             "RelWithDebInf"
     )
-endif (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+endif ()
+
+message(STATUS "Build Type: ${CMAKE_BUILD_TYPE}")
 
 ########################################################################
 # Setup tests
@@ -89,7 +116,11 @@ if (ENABLE_TESTING)
     include(CTest)
     enable_testing()
     add_subdirectory(test)
-endif (ENABLE_TESTING)
+    if(NOT cpu_thread_count EQUAL 0)
+        set(CTEST_BUILD_FLAGS -j${cpu_thread_count})
+        set(ctest_test_args ${ctest_test_args} PARALLEL_LEVEL ${cpu_thread_count})
+    endif()
+endif ()
 
 ########################################################################
 # Setup documentation
